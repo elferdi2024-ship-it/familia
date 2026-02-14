@@ -1,0 +1,117 @@
+{
+    "Montevideo": {
+        "Montevideo": [
+            "Punta Carretas",
+            "Pocitos",
+            "Carrasco",
+            "Buceo",
+            "Malvín",
+            "Parque Rodó",
+            "Cordón",
+            "Centro",
+            "Prado",
+            "La Blanqueada",
+            "Tres Cruces",
+            "Aguada",
+            "Reducto",
+            "Villa Española",
+            "Unión",
+            "Maroñas",
+            "Punta de Rieles",
+            "Paso de la Arena",
+            "Cerro",
+            "Atahualpa",
+            "Sayago",
+            "Peñarol",
+            "Colón",
+            "Lezica"
+        ]
+    },
+    "Maldonado": {
+        "Punta del Este": [
+            "Península",
+            "Brava",
+            "Mansa",
+            "Roosevelt",
+            "Cantegril",
+            "San Rafael",
+            "L'Auberge",
+            "Golf",
+            "Rincón del Indio",
+            "Beverly Hills",
+            "Lugano"
+        ],
+        "Maldonado": [
+            "Centro",
+            "Pinares",
+            "Las Delicias",
+            "San Francisco",
+            "Cerro Pelado",
+            "Maldonado Nuevo"
+        ],
+        "Piriápolis": [
+            "Centro",
+            "Playa Grande",
+            "Playa Hermosa",
+            "Playa Colorada",
+            "Punta Colorada",
+            "Punta Negra"
+        ],
+        "San Carlos": [
+            "Centro"
+        ],
+        "José Ignacio": [
+            "Pueblo",
+            "La Juanita"
+        ]
+    },
+    "Canelones": {
+        "Ciudad de la Costa": [
+            "Pinar",
+            "Solymar",
+            "Lagomar",
+            "Shangrilá",
+            "San José de Carrasco",
+            "Barra de Carrasco"
+        ],
+        "Atlántida": [
+            "Centro",
+            "Pinares de Atlántida"
+        ],
+        "Salinas": [
+            "Centro",
+            "Marindia"
+        ],
+        "Las Piedras": [
+            "Centro"
+        ],
+        "Pando": [
+            "Centro"
+        ]
+    },
+    "Colonia": {
+        "Colonia del Sacramento": [
+            "Casco Histórico",
+            "Real de San Carlos",
+            "El General"
+        ],
+        "Carmelo": [
+            "Centro"
+        ],
+        "Nueva Helvecia": [
+            "Centro"
+        ]
+    },
+    "Rocha": {
+        "La Paloma": [
+            "Bahía",
+            "La Aguada",
+            "Costa Azul",
+            "Antoniópolis",
+            "La Pedrera"
+        ],
+        "Punta del Diablo": [
+            "Pueblo"
+        ]
+    }
+}

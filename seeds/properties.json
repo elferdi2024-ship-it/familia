@@ -1,0 +1,4684 @@
+[
+  {
+    "title": "Monoambiente luminoso en Cordón Sur",
+    "slug": "monoambiente-luminoso-en-cordon-sur",
+    "description": "Monoambiente luminoso en Cordón Sur. Ubicado en Cordón, Colonia 1845. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 25000,
+    "currency": "UYU",
+    "pricePerM2": 19,
+    "gastosComunes": 4500,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 32,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Colonia 1845",
+    "geolocation": {
+      "lat": -34.902183067929464,
+      "lng": -56.17313943208468
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 58,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dormitorio reciclado en Cordón",
+    "slug": "1-dormitorio-reciclado-en-cordon",
+    "description": "1 dormitorio reciclado en Cordón. Ubicado en Cordón, Guayabos 1720. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 28000,
+    "currency": "UYU",
+    "pricePerM2": 15,
+    "gastosComunes": 5200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 45,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Guayabos 1720",
+    "geolocation": {
+      "lat": -34.90780098941749,
+      "lng": -56.17385168697515
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro",
+      "Sura"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 123,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dormitorios con balcón en Cordón",
+    "slug": "2-dormitorios-con-balcon-en-cordon",
+    "description": "2 dormitorios con balcón en Cordón. Ubicado en Cordón, Fernández Crespo 1950. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 32000,
+    "currency": "UYU",
+    "pricePerM2": 13,
+    "gastosComunes": 6800,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 58,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Fernández Crespo 1950",
+    "geolocation": {
+      "lat": -34.90733555226713,
+      "lng": -56.17357954338477
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 138,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Apto a estrenar Cordón Norte",
+    "slug": "apto-a-estrenar-cordon-norte",
+    "description": "Apto a estrenar Cordón Norte. Ubicado en Cordón, Magallanes 1638. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 30000,
+    "currency": "UYU",
+    "pricePerM2": 17,
+    "gastosComunes": 5000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 42,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Magallanes 1638",
+    "geolocation": {
+      "lat": -34.909702691925006,
+      "lng": -56.17624781729237
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro",
+      "Sura",
+      "Mapfre"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 214,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Studio moderno calle Tristán Narvaja",
+    "slug": "studio-moderno-calle-tristan-narvaja",
+    "description": "Studio moderno calle Tristán Narvaja. Ubicado en Cordón, Tristán Narvaja 1755.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 26000,
+    "currency": "UYU",
+    "pricePerM2": 22,
+    "gastosComunes": 3800,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 28,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Tristán Narvaja 1755",
+    "geolocation": {
+      "lat": -34.9053067440307,
+      "lng": -56.17331298165431
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 78,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm amplio cerca de la Universidad",
+    "slug": "2-dorm-amplio-cerca-de-la-universidad",
+    "description": "2 dorm amplio cerca de la Universidad. Ubicado en Cordón, Eduardo Acevedo 1432. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 145000,
+    "currency": "USD",
+    "pricePerM2": 2231,
+    "gastosComunes": 7200,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 65,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Eduardo Acevedo 1432",
+    "geolocation": {
+      "lat": -34.90252152695313,
+      "lng": -56.17670466734519
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 127,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dormitorio con renta en Centro",
+    "slug": "1-dormitorio-con-renta-en-centro",
+    "description": "1 dormitorio con renta en Centro. Ubicado en Centro, 18 de Julio 1020. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 98000,
+    "currency": "USD",
+    "pricePerM2": 2579,
+    "gastosComunes": 4000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 38,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "18 de Julio 1020",
+    "geolocation": {
+      "lat": -34.909233924359015,
+      "lng": -56.18843220165856
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 110,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Apartamento 2 dorm Plaza Cagancha",
+    "slug": "apartamento-2-dorm-plaza-cagancha",
+    "description": "Apartamento 2 dorm Plaza Cagancha. Ubicado en Centro, Plaza Cagancha 1340.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 27000,
+    "currency": "UYU",
+    "pricePerM2": 12,
+    "gastosComunes": 5500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "Plaza Cagancha 1340",
+    "geolocation": {
+      "lat": -34.907024387999705,
+      "lng": -56.18489061777982
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 199,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Monoambiente ideal inversión Centro",
+    "slug": "monoambiente-ideal-inversion-centro",
+    "description": "Monoambiente ideal inversión Centro. Ubicado en Centro, Rondeau 1515. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 78000,
+    "currency": "USD",
+    "pricePerM2": 2600,
+    "gastosComunes": 3500,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 30,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "Rondeau 1515",
+    "geolocation": {
+      "lat": -34.9028100214814,
+      "lng": -56.185995361737966
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 214,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dormitorio Vivienda Promovida Cordón",
+    "slug": "1-dormitorio-vivienda-promovida-cordon",
+    "description": "1 dormitorio Vivienda Promovida Cordón. Ubicado en Cordón, Jackson 1280. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 125000,
+    "currency": "USD",
+    "pricePerM2": 2604,
+    "gastosComunes": 5800,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 48,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Jackson 1280",
+    "geolocation": {
+      "lat": -34.90846655246812,
+      "lng": -56.173101647025106
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 166,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local comercial sobre 18 de Julio",
+    "slug": "local-comercial-sobre-18-de-julio",
+    "description": "Local comercial sobre 18 de Julio. Ubicado en Centro, 18 de Julio 890.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 45000,
+    "currency": "UYU",
+    "pricePerM2": 16,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 65,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "18 de Julio 890",
+    "geolocation": {
+      "lat": -34.902902492682294,
+      "lng": -56.188488094344756
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 194,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Oficina equipada en Centro",
+    "slug": "oficina-equipada-en-centro",
+    "description": "Oficina equipada en Centro. Ubicado en Centro, Andes 1365.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Oficina",
+    "operation": "Alquiler",
+    "price": 38000,
+    "currency": "UYU",
+    "pricePerM2": 23,
+    "gastosComunes": 6000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "Andes 1365",
+    "geolocation": {
+      "lat": -34.909029551777245,
+      "lng": -56.188450817574385
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 174,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dormitorios familiar Cordón",
+    "slug": "3-dormitorios-familiar-cordon",
+    "description": "3 dormitorios familiar Cordón. Ubicado en Cordón, Canelones 1815.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 35000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": 8500,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 85,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Canelones 1815",
+    "geolocation": {
+      "lat": -34.90294231928161,
+      "lng": -56.175208133384324
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 181,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Penthouse con terraza Cordón Sur",
+    "slug": "penthouse-con-terraza-cordon-sur",
+    "description": "Penthouse con terraza Cordón Sur. Ubicado en Cordón, Constituyente 1685. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 215000,
+    "currency": "USD",
+    "pricePerM2": 2389,
+    "gastosComunes": 9500,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 90,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Constituyente 1685",
+    "geolocation": {
+      "lat": -34.90242375982256,
+      "lng": -56.17663784768676
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 193,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Monoambiente amoblado Centro",
+    "slug": "monoambiente-amoblado-centro",
+    "description": "Monoambiente amoblado Centro. Ubicado en Centro, Ciudadela 1220.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 850,
+    "currency": "USD",
+    "pricePerM2": 34,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 25,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "Ciudadela 1220",
+    "geolocation": {
+      "lat": -34.908422921223874,
+      "lng": -56.19033067452543
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 86,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm a pasos de la Intendencia",
+    "slug": "1-dorm-a-pasos-de-la-intendencia",
+    "description": "1 dorm a pasos de la Intendencia. Ubicado en Centro, San José 1105.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Centro.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 24000,
+    "currency": "UYU",
+    "pricePerM2": 14,
+    "gastosComunes": 4200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Centro",
+    "address": "San José 1105",
+    "geolocation": {
+      "lat": -34.90583681972939,
+      "lng": -56.187658935496046
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 77,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm reciclaje integral Cordón",
+    "slug": "2-dorm-reciclaje-integral-cordon",
+    "description": "2 dorm reciclaje integral Cordón. Ubicado en Cordón, Gaboto 1530. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 168000,
+    "currency": "USD",
+    "pricePerM2": 2710,
+    "gastosComunes": 6500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 62,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Gaboto 1530",
+    "geolocation": {
+      "lat": -34.90271817738944,
+      "lng": -56.17058546499226
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 135,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Apto con garage Cordón",
+    "slug": "apto-con-garage-cordon",
+    "description": "Apto con garage Cordón. Ubicado en Cordón, Paysandú 1150. Vivienda Promovida bajo Ley 18.795 con exoneración tributaria. Ideal para inversores que buscan la mejor relación precio-calidad en Cordón.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 185000,
+    "currency": "USD",
+    "pricePerM2": 2569,
+    "gastosComunes": 7800,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 72,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Cordón",
+    "address": "Paysandú 1150",
+    "geolocation": {
+      "lat": -34.909788342011524,
+      "lng": -56.17730980055723
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 85,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local gastronómico en Ciudad Vieja",
+    "slug": "local-gastronomico-en-ciudad-vieja",
+    "description": "Local gastronómico en Ciudad Vieja. Ubicado en Ciudad Vieja, Sarandí 280.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Ciudad Vieja.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 55000,
+    "currency": "UYU",
+    "pricePerM2": 11,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 2,
+    "area": 120,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Ciudad Vieja",
+    "address": "Sarandí 280",
+    "geolocation": {
+      "lat": -34.90543385010477,
+      "lng": -56.20348850187521
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 124,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm luminoso Palermo",
+    "slug": "1-dorm-luminoso-palermo",
+    "description": "1 dorm luminoso Palermo. Ubicado en Palermo, Gonzalo Ramírez 1780.  Ideal para inquilinos que buscan la mejor relación precio-calidad en Palermo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 26500,
+    "currency": "UYU",
+    "pricePerM2": 15,
+    "gastosComunes": 4800,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 42,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Palermo",
+    "address": "Gonzalo Ramírez 1780",
+    "geolocation": {
+      "lat": -34.91388826099854,
+      "lng": -56.17728525035339
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 119,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm VP La Blanqueada a estrenar",
+    "slug": "2-dorm-vp-la-blanqueada-a-estrenar",
+    "description": "2 dorm VP La Blanqueada a estrenar. Zona La Blanqueada, sobre Br. Artigas 2340. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 155000,
+    "currency": "USD",
+    "pricePerM2": 2583,
+    "gastosComunes": 7000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 60,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Br. Artigas 2340",
+    "geolocation": {
+      "lat": -34.89269897686841,
+      "lng": -56.158285962217974
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 37,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm rentabilidad asegurada VP",
+    "slug": "1-dorm-rentabilidad-asegurada-vp",
+    "description": "1 dorm rentabilidad asegurada VP. Zona La Blanqueada, sobre Rivera 2680. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 115000,
+    "currency": "USD",
+    "pricePerM2": 2614,
+    "gastosComunes": 5200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 44,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Rivera 2680",
+    "geolocation": {
+      "lat": -34.89164802677935,
+      "lng": -56.15739046459773
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 35,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Monoambiente inversor La Blanqueada",
+    "slug": "monoambiente-inversor-la-blanqueada",
+    "description": "Monoambiente inversor La Blanqueada. Zona La Blanqueada, sobre Garibaldi 2520. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 88000,
+    "currency": "USD",
+    "pricePerM2": 2667,
+    "gastosComunes": 3800,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 33,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Garibaldi 2520",
+    "geolocation": {
+      "lat": -34.891079329858165,
+      "lng": -56.16295386868853
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 199,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dorm familiar La Blanqueada",
+    "slug": "3-dorm-familiar-la-blanqueada",
+    "description": "3 dorm familiar La Blanqueada. Zona La Blanqueada, sobre José L. Terra 2855.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 38000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": 9000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 90,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "José L. Terra 2855",
+    "geolocation": {
+      "lat": -34.89171618670921,
+      "lng": -56.15807371776179
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro",
+      "Sura"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 35,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm con balcón Tres Cruces",
+    "slug": "2-dorm-con-balcon-tres-cruces",
+    "description": "2 dorm con balcón Tres Cruces. Zona Tres Cruces, sobre Acevedo Díaz 1420. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 30000,
+    "currency": "UYU",
+    "pricePerM2": 13,
+    "gastosComunes": 6200,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Acevedo Díaz 1420",
+    "geolocation": {
+      "lat": -34.894196930188315,
+      "lng": -56.168474027210365
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 63,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm frente a terminal Tres Cruces",
+    "slug": "1-dorm-frente-a-terminal-tres-cruces",
+    "description": "1 dorm frente a terminal Tres Cruces. Zona Tres Cruces, sobre Miguelete 1830.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 26000,
+    "currency": "UYU",
+    "pricePerM2": 16,
+    "gastosComunes": 4500,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 38,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Miguelete 1830",
+    "geolocation": {
+      "lat": -34.896533974877734,
+      "lng": -56.17427347178465
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 61,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Penthouse VP con terraza privada",
+    "slug": "penthouse-vp-con-terraza-privada",
+    "description": "Penthouse VP con terraza privada. Zona La Blanqueada, sobre Br. Artigas 2580. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 235000,
+    "currency": "USD",
+    "pricePerM2": 2136,
+    "gastosComunes": 12000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 110,
+    "garages": 2,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Br. Artigas 2580",
+    "geolocation": {
+      "lat": -34.886278955465755,
+      "lng": -56.15600236679587
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "views": 34,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "Studio Tres Cruces ideal Airbnb",
+    "slug": "studio-tres-cruces-ideal-airbnb",
+    "description": "Studio Tres Cruces ideal Airbnb. Zona Tres Cruces, sobre Galicia 1265. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 92000,
+    "currency": "USD",
+    "pricePerM2": 3067,
+    "gastosComunes": 3200,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 30,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Galicia 1265",
+    "geolocation": {
+      "lat": -34.8922556113019,
+      "lng": -56.169245076177646
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 37,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm garage cubierto Tres Cruces",
+    "slug": "2-dorm-garage-cubierto-tres-cruces",
+    "description": "2 dorm garage cubierto Tres Cruces. Zona Tres Cruces, sobre Dr. Javier Barrios Amorín 1590. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 148000,
+    "currency": "USD",
+    "pricePerM2": 2552,
+    "gastosComunes": 6800,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 58,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Dr. Javier Barrios Amorín 1590",
+    "geolocation": {
+      "lat": -34.89168243609001,
+      "lng": -56.171635490769546
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 175,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 3 dorm con jardín La Blanqueada",
+    "slug": "casa-3-dorm-con-jardin-la-blanqueada",
+    "description": "Casa 3 dorm con jardín La Blanqueada. Zona La Blanqueada, sobre Joaquín Requena 2720.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 195000,
+    "currency": "USD",
+    "pricePerM2": 1393,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 140,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Joaquín Requena 2720",
+    "geolocation": {
+      "lat": -34.88913181418487,
+      "lng": -56.15998830998918
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 92,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Apto temporal amoblado Tres Cruces",
+    "slug": "apto-temporal-amoblado-tres-cruces",
+    "description": "Apto temporal amoblado Tres Cruces. Zona Tres Cruces, sobre Arenal Grande 1340.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 750,
+    "currency": "USD",
+    "pricePerM2": 19,
+    "gastosComunes": null,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Arenal Grande 1340",
+    "geolocation": {
+      "lat": -34.89584776888554,
+      "lng": -56.16905780077054
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 194,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm VP piso alto La Blanqueada",
+    "slug": "2-dorm-vp-piso-alto-la-blanqueada",
+    "description": "2 dorm VP piso alto La Blanqueada. Zona La Blanqueada, sobre Garibaldi 2780. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 162000,
+    "currency": "USD",
+    "pricePerM2": 2382,
+    "gastosComunes": 7500,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 68,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Garibaldi 2780",
+    "geolocation": {
+      "lat": -34.889608215840326,
+      "lng": -56.161382826325514
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 80,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm amoblado La Blanqueada",
+    "slug": "1-dorm-amoblado-la-blanqueada",
+    "description": "1 dorm amoblado La Blanqueada. Zona La Blanqueada, sobre Br. España 2650. Proyecto Vivienda Promovida — exoneración ITP + IRPF/IRAE por 10 años. Excelente ubicación con todos los servicios a pasos.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 28000,
+    "currency": "UYU",
+    "pricePerM2": 17,
+    "gastosComunes": 5000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "La Blanqueada",
+    "address": "Br. España 2650",
+    "geolocation": {
+      "lat": -34.886980790383056,
+      "lng": -56.16083503457645
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Sura"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 112,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Oficina premium Tres Cruces",
+    "slug": "oficina-premium-tres-cruces",
+    "description": "Oficina premium Tres Cruces. Zona Tres Cruces, sobre Arenal Grande 1510.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Oficina",
+    "operation": "Alquiler",
+    "price": 42000,
+    "currency": "UYU",
+    "pricePerM2": 20,
+    "gastosComunes": 7000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 50,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Arenal Grande 1510",
+    "geolocation": {
+      "lat": -34.89191275653384,
+      "lng": -56.17474661005328
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 38,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Garaje doble cubierto Tres Cruces",
+    "slug": "garaje-doble-cubierto-tres-cruces",
+    "description": "Garaje doble cubierto Tres Cruces. Zona Tres Cruces, sobre Justicia 1680.  Excelente ubicación con todos los servicios a pasos.",
+    "type": "Garaje o Cochera",
+    "operation": "Venta",
+    "price": 32000,
+    "currency": "USD",
+    "pricePerM2": 1143,
+    "gastosComunes": 1500,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 28,
+    "garages": 2,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Tres Cruces",
+    "address": "Justicia 1680",
+    "geolocation": {
+      "lat": -34.89421127693476,
+      "lng": -56.172307919615086
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 63,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dorm premium frente al mar Pocitos",
+    "slug": "3-dorm-premium-frente-al-mar-pocitos",
+    "description": "3 dorm premium frente al mar Pocitos. Pocitos, Montevideo — Rambla República del Perú 1250.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 320000,
+    "currency": "USD",
+    "pricePerM2": 2667,
+    "gastosComunes": 15000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 120,
+    "garages": 2,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Pocitos",
+    "address": "Rambla República del Perú 1250",
+    "geolocation": {
+      "lat": -34.92171465586836,
+      "lng": -56.15221123346805
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "mixto"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600573472556-e8d173de1d21?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "views": 382,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Penthouse Pocitos Nuevo vista al río",
+    "slug": "penthouse-pocitos-nuevo-vista-al-rio",
+    "description": "Penthouse Pocitos Nuevo vista al río. Pocitos Nuevo, Montevideo — 26 de Marzo 3280.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 385000,
+    "currency": "USD",
+    "pricePerM2": 2567,
+    "gastosComunes": 18000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "area": 150,
+    "garages": 2,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Pocitos Nuevo",
+    "address": "26 de Marzo 3280",
+    "geolocation": {
+      "lat": -34.91743615453989,
+      "lng": -56.14922491687253
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "mixto"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600573472556-e8d173de1d21?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Premium",
+    "badgeColor": "bg-amber-500",
+    "views": 198,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm moderno Pocitos Nuevo",
+    "slug": "2-dorm-moderno-pocitos-nuevo",
+    "description": "2 dorm moderno Pocitos Nuevo. Pocitos Nuevo, Montevideo — Benito Blanco 3540. Vivienda Promovida Ley 18.795. Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 42000,
+    "currency": "UYU",
+    "pricePerM2": 13,
+    "gastosComunes": 9500,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 75,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Pocitos Nuevo",
+    "address": "Benito Blanco 3540",
+    "geolocation": {
+      "lat": -34.91422125901217,
+      "lng": -56.151469534083844
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro",
+      "Sura"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 350,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa con jardín y piscina Malvín",
+    "slug": "casa-con-jardin-y-piscina-malvin",
+    "description": "Casa con jardín y piscina Malvín. Malvín, Montevideo — Amazonas 2640.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 290000,
+    "currency": "USD",
+    "pricePerM2": 1611,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 180,
+    "garages": 2,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Malvín",
+    "address": "Amazonas 2640",
+    "geolocation": {
+      "lat": -34.91195231279537,
+      "lng": -56.11403887019031
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Oportunidad",
+    "badgeColor": "bg-green-500",
+    "views": 501,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm a pasos de la rambla Malvín",
+    "slug": "1-dorm-a-pasos-de-la-rambla-malvin",
+    "description": "1 dorm a pasos de la rambla Malvín. Malvín, Montevideo — Orinoco 5180.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 28000,
+    "currency": "UYU",
+    "pricePerM2": 15,
+    "gastosComunes": 5500,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 45,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Malvín",
+    "address": "Orinoco 5180",
+    "geolocation": {
+      "lat": -34.91203526529872,
+      "lng": -56.11255885651834
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 193,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Duplex Punta Carretas con terraza",
+    "slug": "duplex-punta-carretas-con-terraza",
+    "description": "Duplex Punta Carretas con terraza. Punta Carretas, Montevideo — Ellauri 520.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 345000,
+    "currency": "USD",
+    "pricePerM2": 2556,
+    "gastosComunes": 14000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 135,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Punta Carretas",
+    "address": "Ellauri 520",
+    "geolocation": {
+      "lat": -34.9284327338135,
+      "lng": -56.15853543690705
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "mixto"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600573472556-e8d173de1d21?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Recién Ingresado",
+    "badgeColor": "bg-blue-500",
+    "views": 434,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm Buceo con vista",
+    "slug": "2-dorm-buceo-con-vista",
+    "description": "2 dorm Buceo con vista. Buceo, Montevideo — Luis A. de Herrera 3180. Vivienda Promovida Ley 18.795. Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 198000,
+    "currency": "USD",
+    "pricePerM2": 2912,
+    "gastosComunes": 7800,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 68,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Buceo",
+    "address": "Luis A. de Herrera 3180",
+    "geolocation": {
+      "lat": -34.91160864362518,
+      "lng": -56.13263433359748
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 66,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Monoambiente Parque Rodó",
+    "slug": "monoambiente-parque-rodo",
+    "description": "Monoambiente Parque Rodó. Parque Rodó, Montevideo — Pablo de María 1080.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 22000,
+    "currency": "UYU",
+    "pricePerM2": 19,
+    "gastosComunes": 3500,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 28,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Parque Rodó",
+    "address": "Pablo de María 1080",
+    "geolocation": {
+      "lat": -34.91703498340408,
+      "lng": -56.16684570138629
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 524,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa Carrasco 4 dorm premium",
+    "slug": "casa-carrasco-4-dorm-premium",
+    "description": "Casa Carrasco 4 dorm premium. Carrasco, Montevideo — Av. Bolivia 2680.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 520000,
+    "currency": "USD",
+    "pricePerM2": 1857,
+    "gastosComunes": null,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 280,
+    "garages": 3,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Carrasco",
+    "address": "Av. Bolivia 2680",
+    "geolocation": {
+      "lat": -34.88626846066387,
+      "lng": -56.056340294180245
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "mixto"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Premium",
+    "badgeColor": "bg-amber-500",
+    "views": 432,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm VP piso alto Buceo",
+    "slug": "2-dorm-vp-piso-alto-buceo",
+    "description": "2 dorm VP piso alto Buceo. Buceo, Montevideo — Rivera 3450. Vivienda Promovida Ley 18.795. Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 175000,
+    "currency": "USD",
+    "pricePerM2": 2431,
+    "gastosComunes": 8200,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 72,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Buceo",
+    "address": "Rivera 3450",
+    "geolocation": {
+      "lat": -34.9146091511463,
+      "lng": -56.13262917171225
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 456,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Loft artístico Parque Rodó",
+    "slug": "loft-artistico-parque-rodo",
+    "description": "Loft artístico Parque Rodó. Parque Rodó, Montevideo — Gonzalo Ramírez 2180.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 30000,
+    "currency": "UYU",
+    "pricePerM2": 13,
+    "gastosComunes": 5000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Parque Rodó",
+    "address": "Gonzalo Ramírez 2180",
+    "geolocation": {
+      "lat": -34.91379212714235,
+      "lng": -56.16595305160048
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 89,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno en Carrasco Norte",
+    "slug": "terreno-en-carrasco-norte",
+    "description": "Terreno en Carrasco Norte. Carrasco, Montevideo — Camino Carrasco 6350.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 185000,
+    "currency": "USD",
+    "pricePerM2": 411,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 450,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Carrasco",
+    "address": "Camino Carrasco 6350",
+    "geolocation": {
+      "lat": -34.88528335677294,
+      "lng": -56.057066237333885
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 139,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dorm Punta Carretas Shopping",
+    "slug": "3-dorm-punta-carretas-shopping",
+    "description": "3 dorm Punta Carretas Shopping. Punta Carretas, Montevideo — José Ellauri 750.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 55000,
+    "currency": "UYU",
+    "pricePerM2": 14,
+    "gastosComunes": 11000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 95,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Punta Carretas",
+    "address": "José Ellauri 750",
+    "geolocation": {
+      "lat": -34.92791117529969,
+      "lng": -56.16391634912179
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro",
+      "Sura",
+      "Mapfre"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 530,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm con patio en Malvín",
+    "slug": "1-dorm-con-patio-en-malvin",
+    "description": "1 dorm con patio en Malvín. Malvín, Montevideo — Hipólito Yrigoyen 5320.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 142000,
+    "currency": "USD",
+    "pricePerM2": 2731,
+    "gastosComunes": 5800,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 52,
+    "garages": 0,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Malvín",
+    "address": "Hipólito Yrigoyen 5320",
+    "geolocation": {
+      "lat": -34.90925254785823,
+      "lng": -56.11109281277968
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 310,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Alquiler temporal premium Pocitos",
+    "slug": "alquiler-temporal-premium-pocitos",
+    "description": "Alquiler temporal premium Pocitos. Pocitos, Montevideo — Bvar. España 2880.  Zona residencial premium con excelentes servicios y conectividad.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 1200,
+    "currency": "USD",
+    "pricePerM2": 17,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 70,
+    "garages": 1,
+    "department": "Montevideo",
+    "city": "Montevideo",
+    "neighborhood": "Pocitos",
+    "address": "Bvar. España 2880",
+    "geolocation": {
+      "lat": -34.92270802682209,
+      "lng": -56.154175188577646
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 100,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 3 dorm con jardín Solymar",
+    "slug": "casa-3-dorm-con-jardin-solymar",
+    "description": "Casa 3 dorm con jardín Solymar. Solymar, Ciudad de la Costa, Canelones. Av. Giannattasio km 24.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 165000,
+    "currency": "USD",
+    "pricePerM2": 1179,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 140,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Solymar",
+    "address": "Av. Giannattasio km 24",
+    "geolocation": {
+      "lat": -34.83265490325964,
+      "lng": -55.95545368705778
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 40,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm a estrenar Lagomar",
+    "slug": "2-dorm-a-estrenar-lagomar",
+    "description": "2 dorm a estrenar Lagomar. Lagomar, Ciudad de la Costa, Canelones. Av. de las Américas 8540. Vivienda Promovida Ley 18.795. Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 128000,
+    "currency": "USD",
+    "pricePerM2": 1969,
+    "gastosComunes": 5500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 65,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Lagomar",
+    "address": "Av. de las Américas 8540",
+    "geolocation": {
+      "lat": -34.82535404893023,
+      "lng": -55.97469801920226
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 143,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 4 dorm con piscina Shangrilá",
+    "slug": "casa-4-dorm-con-piscina-shangrila",
+    "description": "Casa 4 dorm con piscina Shangrilá. Shangrilá, Ciudad de la Costa, Canelones. Av. Shangrilá 3280.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 220000,
+    "currency": "USD",
+    "pricePerM2": 1100,
+    "gastosComunes": null,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "area": 200,
+    "garages": 2,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Shangrilá",
+    "address": "Av. Shangrilá 3280",
+    "geolocation": {
+      "lat": -34.82504897780188,
+      "lng": -55.9354558779386
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Oportunidad",
+    "badgeColor": "bg-green-500",
+    "views": 94,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm moderno El Pinar",
+    "slug": "1-dorm-moderno-el-pinar",
+    "description": "1 dorm moderno El Pinar. El Pinar, Ciudad de la Costa, Canelones. Ruta Interbalnearia km 28.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 22000,
+    "currency": "UYU",
+    "pricePerM2": 12,
+    "gastosComunes": 3800,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 42,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "El Pinar",
+    "address": "Ruta Interbalnearia km 28",
+    "geolocation": {
+      "lat": -34.81212496372207,
+      "lng": -55.91372714595644
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 106,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 500m² Marindia",
+    "slug": "terreno-500m-marindia",
+    "description": "Terreno 500m² Marindia. Marindia, Ciudad de la Costa, Canelones. Calle 21 y Rambla.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 45000,
+    "currency": "USD",
+    "pricePerM2": 90,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 500,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Marindia",
+    "address": "Calle 21 y Rambla",
+    "geolocation": {
+      "lat": -34.804209172675364,
+      "lng": -55.8556237287179
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 117,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm familiar Solymar Norte",
+    "slug": "2-dorm-familiar-solymar-norte",
+    "description": "2 dorm familiar Solymar Norte. Solymar, Ciudad de la Costa, Canelones. Camino Picasso 1250.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 25000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": 4500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 60,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Solymar",
+    "address": "Camino Picasso 1250",
+    "geolocation": {
+      "lat": -34.83192339348702,
+      "lng": -55.95675104709058
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 141,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa reciclada Médanos de Solymar",
+    "slug": "casa-reciclada-medanos-de-solymar",
+    "description": "Casa reciclada Médanos de Solymar. Médanos de Solymar, Ciudad de la Costa, Canelones. Calle de los Cisnes 340.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 145000,
+    "currency": "USD",
+    "pricePerM2": 1526,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 95,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Médanos de Solymar",
+    "address": "Calle de los Cisnes 340",
+    "geolocation": {
+      "lat": -34.821463759366665,
+      "lng": -55.944119016091676
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 83,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Duplex San José de Carrasco",
+    "slug": "duplex-san-jose-de-carrasco",
+    "description": "Duplex San José de Carrasco. San José de Carrasco, Ciudad de la Costa, Canelones. Av. Italia y Camino de las Tropas.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 185000,
+    "currency": "USD",
+    "pricePerM2": 1423,
+    "gastosComunes": 7000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 130,
+    "garages": 2,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "San José de Carrasco",
+    "address": "Av. Italia y Camino de las Tropas",
+    "geolocation": {
+      "lat": -34.85065079807233,
+      "lng": -55.98369932464093
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 111,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Monoambiente Parque Carrasco",
+    "slug": "monoambiente-parque-carrasco",
+    "description": "Monoambiente Parque Carrasco. Parque Carrasco, Ciudad de la Costa, Canelones. Av. Giannattasio km 19.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 18000,
+    "currency": "UYU",
+    "pricePerM2": 14,
+    "gastosComunes": 3000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 30,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Parque Carrasco",
+    "address": "Av. Giannattasio km 19",
+    "geolocation": {
+      "lat": -34.85528730156267,
+      "lng": -55.99757195819102
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 100,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 3 dorm Lagomar Sur",
+    "slug": "casa-3-dorm-lagomar-sur",
+    "description": "Casa 3 dorm Lagomar Sur. Lagomar, Ciudad de la Costa, Canelones. Rambla Costanera 4580.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Casa",
+    "operation": "Alquiler",
+    "price": 32000,
+    "currency": "UYU",
+    "pricePerM2": 7,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "area": 110,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Lagomar",
+    "address": "Rambla Costanera 4580",
+    "geolocation": {
+      "lat": -34.831987206341964,
+      "lng": -55.97144975851749
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN",
+      "Porto Seguro"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 41,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local comercial Solymar centro",
+    "slug": "local-comercial-solymar-centro",
+    "description": "Local comercial Solymar centro. Solymar, Ciudad de la Costa, Canelones. Av. Giannattasio km 23.5.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 28000,
+    "currency": "UYU",
+    "pricePerM2": 12,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Solymar",
+    "address": "Av. Giannattasio km 23.5",
+    "geolocation": {
+      "lat": -34.82985925450811,
+      "lng": -55.952892435749504
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 104,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm VP El Pinar Norte",
+    "slug": "2-dorm-vp-el-pinar-norte",
+    "description": "2 dorm VP El Pinar Norte. El Pinar, Ciudad de la Costa, Canelones. Ruta Interbalnearia km 29. Vivienda Promovida Ley 18.795. Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 108000,
+    "currency": "USD",
+    "pricePerM2": 1964,
+    "gastosComunes": 4200,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "El Pinar",
+    "address": "Ruta Interbalnearia km 29",
+    "geolocation": {
+      "lat": -34.81347837372537,
+      "lng": -55.91006608681206
+    },
+    "viviendaPromovida": true,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 161,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa quinta Marindia",
+    "slug": "casa-quinta-marindia",
+    "description": "Casa quinta Marindia. Marindia, Ciudad de la Costa, Canelones. Camino del Indio 580.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 175000,
+    "currency": "USD",
+    "pricePerM2": 700,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 250,
+    "garages": 2,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Marindia",
+    "address": "Camino del Indio 580",
+    "geolocation": {
+      "lat": -34.80123061371087,
+      "lng": -55.85518199291611
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "views": 56,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 350m² Shangrilá Sur",
+    "slug": "terreno-350m-shangrila-sur",
+    "description": "Terreno 350m² Shangrilá Sur. Shangrilá, Ciudad de la Costa, Canelones. Calle 10 entre 27 y 29.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 52000,
+    "currency": "USD",
+    "pricePerM2": 149,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 350,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Shangrilá",
+    "address": "Calle 10 entre 27 y 29",
+    "geolocation": {
+      "lat": -34.827415016001744,
+      "lng": -55.93610834917068
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 145,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm amoblado Solymar playa",
+    "slug": "1-dorm-amoblado-solymar-playa",
+    "description": "1 dorm amoblado Solymar playa. Solymar, Ciudad de la Costa, Canelones. Rambla Rep. de México 820.  Zona en pleno crecimiento a minutos de Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 550,
+    "currency": "USD",
+    "pricePerM2": 14,
+    "gastosComunes": null,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Ciudad de la Costa",
+    "neighborhood": "Solymar",
+    "address": "Rambla Rep. de México 820",
+    "geolocation": {
+      "lat": -34.835347019147505,
+      "lng": -55.95124762940634
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 112,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 2 dorm Las Piedras centro",
+    "slug": "casa-2-dorm-las-piedras-centro",
+    "description": "Casa 2 dorm Las Piedras centro. Las Piedras, Canelones. Av. Artigas 520. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 85000,
+    "currency": "USD",
+    "pricePerM2": 1063,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 80,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Las Piedras",
+    "neighborhood": "Las Piedras",
+    "address": "Av. Artigas 520",
+    "geolocation": {
+      "lat": -34.7271199612558,
+      "lng": -56.22277156818372
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 78,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dorm familiar Las Piedras",
+    "slug": "3-dorm-familiar-las-piedras",
+    "description": "3 dorm familiar Las Piedras. Las Piedras, Canelones. Rivera 1340. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Casa",
+    "operation": "Alquiler",
+    "price": 20000,
+    "currency": "UYU",
+    "pricePerM2": 5,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "area": 100,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Las Piedras",
+    "neighborhood": "Las Piedras",
+    "address": "Rivera 1340",
+    "geolocation": {
+      "lat": -34.72734270724246,
+      "lng": -56.21712762586124
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 13,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 600m² Colón",
+    "slug": "terreno-600m-colon",
+    "description": "Terreno 600m² Colón. Colón, Canelones. Ruta 1 km 18. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 38000,
+    "currency": "USD",
+    "pricePerM2": 63,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 600,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Colón",
+    "neighborhood": "Colón",
+    "address": "Ruta 1 km 18",
+    "geolocation": {
+      "lat": -34.7705159122945,
+      "lng": -56.241176697498965
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 45,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm económico La Paz",
+    "slug": "1-dorm-economico-la-paz",
+    "description": "1 dorm económico La Paz. La Paz, Canelones. Av. César Mayo Gutiérrez 880. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 15000,
+    "currency": "UYU",
+    "pricePerM2": 9,
+    "gastosComunes": 2500,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 38,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "La Paz",
+    "neighborhood": "La Paz",
+    "address": "Av. César Mayo Gutiérrez 880",
+    "geolocation": {
+      "lat": -34.760871826350744,
+      "lng": -56.22468281984513
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 26,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 3 dorm con garage Colón",
+    "slug": "casa-3-dorm-con-garage-colon",
+    "description": "Casa 3 dorm con garage Colón. Colón, Canelones. Camino Colón 2450. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 95000,
+    "currency": "USD",
+    "pricePerM2": 864,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 1,
+    "area": 110,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Colón",
+    "neighborhood": "Colón",
+    "address": "Camino Colón 2450",
+    "geolocation": {
+      "lat": -34.766868844768815,
+      "lng": -56.24387201516161
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 11,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local comercial Las Piedras",
+    "slug": "local-comercial-las-piedras",
+    "description": "Local comercial Las Piedras. Las Piedras, Canelones. 18 de Mayo 640. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 18000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 45,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Las Piedras",
+    "neighborhood": "Las Piedras",
+    "address": "18 de Mayo 640",
+    "geolocation": {
+      "lat": -34.72887915955477,
+      "lng": -56.21870127602824
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 38,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa nueva Barros Blancos",
+    "slug": "casa-nueva-barros-blancos",
+    "description": "Casa nueva Barros Blancos. Barros Blancos, Canelones. Ruta 8 km 22. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 78000,
+    "currency": "USD",
+    "pricePerM2": 1040,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 75,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Barros Blancos",
+    "neighborhood": "Barros Blancos",
+    "address": "Ruta 8 km 22",
+    "geolocation": {
+      "lat": -34.7553415795561,
+      "lng": -56.1933043380982
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 42,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm Canelones ciudad",
+    "slug": "2-dorm-canelones-ciudad",
+    "description": "2 dorm Canelones ciudad. Canelones ciudad, Canelones. Av. Suárez 450. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 16000,
+    "currency": "UYU",
+    "pricePerM2": 7,
+    "gastosComunes": 3000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Canelones ciudad",
+    "neighborhood": "Canelones ciudad",
+    "address": "Av. Suárez 450",
+    "geolocation": {
+      "lat": -34.53530831178646,
+      "lng": -56.278990634087286
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 22,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 4 dorm gran terreno La Paz",
+    "slug": "casa-4-dorm-gran-terreno-la-paz",
+    "description": "Casa 4 dorm gran terreno La Paz. La Paz, Canelones. Camino La Paz 1820. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 110000,
+    "currency": "USD",
+    "pricePerM2": 688,
+    "gastosComunes": null,
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "area": 160,
+    "garages": 2,
+    "department": "Canelones",
+    "city": "La Paz",
+    "neighborhood": "La Paz",
+    "address": "Camino La Paz 1820",
+    "geolocation": {
+      "lat": -34.760719255802684,
+      "lng": -56.22527903357151
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 81,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 800m² Barros Blancos",
+    "slug": "terreno-800m-barros-blancos",
+    "description": "Terreno 800m² Barros Blancos. Barros Blancos, Canelones. Ruta 8 km 24.5. Zona residencial accesible con buena conectividad hacia Montevideo.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 28000,
+    "currency": "USD",
+    "pricePerM2": 35,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 800,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Barros Blancos",
+    "neighborhood": "Barros Blancos",
+    "address": "Ruta 8 km 24.5",
+    "geolocation": {
+      "lat": -34.75330585345909,
+      "lng": -56.18877966204607
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 22,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa frente al mar Atlántida",
+    "slug": "casa-frente-al-mar-atlantida",
+    "description": "Casa frente al mar Atlántida. Atlántida, Costa de Oro, Canelones. Rambla Dr. P. Williman 1250. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 195000,
+    "currency": "USD",
+    "pricePerM2": 1300,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 150,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Atlántida",
+    "neighborhood": "Atlántida",
+    "address": "Rambla Dr. P. Williman 1250",
+    "geolocation": {
+      "lat": -34.775822247938386,
+      "lng": -55.75985965403626
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Frente al Mar",
+    "badgeColor": "bg-cyan-500",
+    "views": 52,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm céntrico Atlántida",
+    "slug": "2-dorm-centrico-atlantida",
+    "description": "2 dorm céntrico Atlántida. Atlántida, Costa de Oro, Canelones. Calle 3 y Av. Argentina. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 20000,
+    "currency": "UYU",
+    "pricePerM2": 8,
+    "gastosComunes": 4000,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 58,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Atlántida",
+    "neighborhood": "Atlántida",
+    "address": "Calle 3 y Av. Argentina",
+    "geolocation": {
+      "lat": -34.77234783987263,
+      "lng": -55.75459501088543
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 138,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Cabaña Parque del Plata",
+    "slug": "cabana-parque-del-plata",
+    "description": "Cabaña Parque del Plata. Parque del Plata, Costa de Oro, Canelones. Calle del Diálogo 380. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Casa",
+    "operation": "Alquiler Temporal",
+    "price": 450,
+    "currency": "USD",
+    "pricePerM2": 8,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Parque del Plata",
+    "neighborhood": "Parque del Plata",
+    "address": "Calle del Diálogo 380",
+    "geolocation": {
+      "lat": -34.75684927873384,
+      "lng": -55.7227017881025
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 99,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 400m² La Floresta",
+    "slug": "terreno-400m-la-floresta",
+    "description": "Terreno 400m² La Floresta. La Floresta, Costa de Oro, Canelones. Calle 13 entre A y B. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 42000,
+    "currency": "USD",
+    "pricePerM2": 105,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 400,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "La Floresta",
+    "neighborhood": "La Floresta",
+    "address": "Calle 13 entre A y B",
+    "geolocation": {
+      "lat": -34.75019841458542,
+      "lng": -55.68834832892158
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 54,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 3 dorm Salinas centro",
+    "slug": "casa-3-dorm-salinas-centro",
+    "description": "Casa 3 dorm Salinas centro. Salinas, Costa de Oro, Canelones. Av. Artigas 780. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 155000,
+    "currency": "USD",
+    "pricePerM2": 1192,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 130,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Salinas",
+    "neighborhood": "Salinas",
+    "address": "Av. Artigas 780",
+    "geolocation": {
+      "lat": -34.7909854006874,
+      "lng": -55.82517241053465
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 43,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm temporal Atlántida playa",
+    "slug": "1-dorm-temporal-atlantida-playa",
+    "description": "1 dorm temporal Atlántida playa. Atlántida, Costa de Oro, Canelones. Calle 1 y Rambla. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 400,
+    "currency": "USD",
+    "pricePerM2": 11,
+    "gastosComunes": null,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 35,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Atlántida",
+    "neighborhood": "Atlántida",
+    "address": "Calle 1 y Rambla",
+    "geolocation": {
+      "lat": -34.771954322183724,
+      "lng": -55.758060378264254
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 98,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local comercial Atlántida centro",
+    "slug": "local-comercial-atlantida-centro",
+    "description": "Local comercial Atlántida centro. Atlántida, Costa de Oro, Canelones. Calle 2 y Av. Argentina. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 22000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 50,
+    "garages": 0,
+    "department": "Canelones",
+    "city": "Atlántida",
+    "neighborhood": "Atlántida",
+    "address": "Calle 2 y Av. Argentina",
+    "geolocation": {
+      "lat": -34.76845785316548,
+      "lng": -55.757192515554
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 47,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa con jardín Parque del Plata",
+    "slug": "casa-con-jardin-parque-del-plata",
+    "description": "Casa con jardín Parque del Plata. Parque del Plata, Costa de Oro, Canelones. Calle del Arroyo 220. Zona balnearia con excelente potencial turístico y residencial.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 125000,
+    "currency": "USD",
+    "pricePerM2": 1389,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 90,
+    "garages": 1,
+    "department": "Canelones",
+    "city": "Parque del Plata",
+    "neighborhood": "Parque del Plata",
+    "address": "Calle del Arroyo 220",
+    "geolocation": {
+      "lat": -34.76006373632641,
+      "lng": -55.722072676083734
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "supergas",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 101,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Penthouse Punta del Este frente al mar",
+    "slug": "penthouse-punta-del-este-frente-al-mar",
+    "description": "Penthouse Punta del Este frente al mar. Punta del Este, Maldonado. Rambla Gral. Artigas Parada 5. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 450000,
+    "currency": "USD",
+    "pricePerM2": 2813,
+    "gastosComunes": 22000,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "area": 160,
+    "garages": 2,
+    "department": "Maldonado",
+    "city": "Punta del Este",
+    "neighborhood": "Punta del Este",
+    "address": "Rambla Gral. Artigas Parada 5",
+    "geolocation": {
+      "lat": -34.95313643273445,
+      "lng": -54.93299702684203
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600573472556-e8d173de1d21?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Premium",
+    "badgeColor": "bg-amber-500",
+    "views": 115,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm Punta del Este Península",
+    "slug": "2-dorm-punta-del-este-peninsula",
+    "description": "2 dorm Punta del Este Península. Punta del Este, Maldonado. Calle 20 y Gorlero. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 285000,
+    "currency": "USD",
+    "pricePerM2": 3353,
+    "gastosComunes": 14000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 85,
+    "garages": 1,
+    "department": "Maldonado",
+    "city": "Punta del Este",
+    "neighborhood": "Punta del Este",
+    "address": "Calle 20 y Gorlero",
+    "geolocation": {
+      "lat": -34.95876119369561,
+      "lng": -54.932054596359144
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 208,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Apto temporal Punta del Este",
+    "slug": "apto-temporal-punta-del-este",
+    "description": "Apto temporal Punta del Este. Punta del Este, Maldonado. Av. Gorlero 980. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 1800,
+    "currency": "USD",
+    "pricePerM2": 26,
+    "gastosComunes": null,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 70,
+    "garages": 1,
+    "department": "Maldonado",
+    "city": "Punta del Este",
+    "neighborhood": "Punta del Este",
+    "address": "Av. Gorlero 980",
+    "geolocation": {
+      "lat": -34.956411192816816,
+      "lng": -54.9350216674603
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 159,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa 4 dorm La Barra premium",
+    "slug": "casa-4-dorm-la-barra-premium",
+    "description": "Casa 4 dorm La Barra premium. La Barra, Maldonado. Ruta 10 km 162. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 520000,
+    "currency": "USD",
+    "pricePerM2": 2080,
+    "gastosComunes": null,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 250,
+    "garages": 2,
+    "department": "Maldonado",
+    "city": "La Barra",
+    "neighborhood": "La Barra",
+    "address": "Ruta 10 km 162",
+    "geolocation": {
+      "lat": -34.937888807825516,
+      "lng": -54.8777714600188
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "badge": "Premium",
+    "badgeColor": "bg-amber-500",
+    "views": 146,
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "title": "Loft Manantiales con vista",
+    "slug": "loft-manantiales-con-vista",
+    "description": "Loft Manantiales con vista. Manantiales, Maldonado. Ruta 10 km 165. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 340000,
+    "currency": "USD",
+    "pricePerM2": 3579,
+    "gastosComunes": 12000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 95,
+    "garages": 1,
+    "department": "Maldonado",
+    "city": "Manantiales",
+    "neighborhood": "Manantiales",
+    "address": "Ruta 10 km 165",
+    "geolocation": {
+      "lat": -34.92792757604226,
+      "lng": -54.86030125633227
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "A",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600573472556-e8d173de1d21?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Losa Radiante",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Acepta Mascotas"
+    ],
+    "views": 323,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "2 dorm centro Maldonado",
+    "slug": "2-dorm-centro-maldonado",
+    "description": "2 dorm centro Maldonado. Maldonado ciudad, Maldonado. 18 de Julio 840. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Alquiler",
+    "price": 22000,
+    "currency": "UYU",
+    "pricePerM2": 10,
+    "gastosComunes": 4500,
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 55,
+    "garages": 0,
+    "department": "Maldonado",
+    "city": "Maldonado",
+    "neighborhood": "Maldonado ciudad",
+    "address": "18 de Julio 840",
+    "geolocation": {
+      "lat": -34.90732945730903,
+      "lng": -54.96185831053624
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "ANDA",
+      "CGN"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 189,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Casa Piriápolis con vista al cerro",
+    "slug": "casa-piriapolis-con-vista-al-cerro",
+    "description": "Casa Piriápolis con vista al cerro. Piriápolis, Maldonado. Calle Tucumán 520. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Casa",
+    "operation": "Venta",
+    "price": 165000,
+    "currency": "USD",
+    "pricePerM2": 1269,
+    "gastosComunes": null,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 130,
+    "garages": 1,
+    "department": "Maldonado",
+    "city": "Piriápolis",
+    "neighborhood": "Piriápolis",
+    "address": "Calle Tucumán 520",
+    "geolocation": {
+      "lat": -34.86652754230624,
+      "lng": -55.27582169933135
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab6b3850b5b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Parrillero",
+      "Jardín",
+      "Aire Acondicionado",
+      "Calefacción",
+      "Lavadero"
+    ],
+    "views": 45,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "1 dorm temporal Piriápolis centro",
+    "slug": "1-dorm-temporal-piriapolis-centro",
+    "description": "1 dorm temporal Piriápolis centro. Piriápolis, Maldonado. Rambla de los Argentinos 1450. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Alquiler Temporal",
+    "price": 500,
+    "currency": "USD",
+    "pricePerM2": 13,
+    "gastosComunes": null,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 38,
+    "garages": 0,
+    "department": "Maldonado",
+    "city": "Piriápolis",
+    "neighborhood": "Piriápolis",
+    "address": "Rambla de los Argentinos 1450",
+    "geolocation": {
+      "lat": -34.86384301764698,
+      "lng": -55.27280269688972
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "D",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 302,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Terreno 700m² Manantiales",
+    "slug": "terreno-700m-manantiales",
+    "description": "Terreno 700m² Manantiales. Manantiales, Maldonado. Ruta 10 km 164.5. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Terreno",
+    "operation": "Venta",
+    "price": 150000,
+    "currency": "USD",
+    "pricePerM2": 214,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "area": 700,
+    "garages": 0,
+    "department": "Maldonado",
+    "city": "Manantiales",
+    "neighborhood": "Manantiales",
+    "address": "Ruta 10 km 164.5",
+    "geolocation": {
+      "lat": -34.923314327494296,
+      "lng": -54.86449901170324
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 260,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "3 dorm familiar Maldonado ciudad",
+    "slug": "3-dorm-familiar-maldonado-ciudad",
+    "description": "3 dorm familiar Maldonado ciudad. Maldonado ciudad, Maldonado. Av. Roosevelt 3280. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 145000,
+    "currency": "USD",
+    "pricePerM2": 1526,
+    "gastosComunes": 7000,
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 95,
+    "garages": 1,
+    "department": "Maldonado",
+    "city": "Maldonado",
+    "neighborhood": "Maldonado ciudad",
+    "address": "Av. Roosevelt 3280",
+    "geolocation": {
+      "lat": -34.90630145441388,
+      "lng": -54.964157907456034
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "C",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Garage / Cochera",
+      "Seguridad 24hs",
+      "Piscina",
+      "Parrillero",
+      "Gimnasio",
+      "Aire Acondicionado",
+      "Terraza / Balcón",
+      "Ascensor"
+    ],
+    "views": 90,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Local gastronómico Punta del Este",
+    "slug": "local-gastronomico-punta-del-este",
+    "description": "Local gastronómico Punta del Este. Punta del Este, Maldonado. Av. Gorlero 650. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Local Comercial",
+    "operation": "Alquiler",
+    "price": 85000,
+    "currency": "UYU",
+    "pricePerM2": 20,
+    "gastosComunes": null,
+    "bedrooms": 0,
+    "bathrooms": 2,
+    "area": 100,
+    "garages": 0,
+    "department": "Maldonado",
+    "city": "Punta del Este",
+    "neighborhood": "Punta del Este",
+    "address": "Av. Gorlero 650",
+    "geolocation": {
+      "lat": -34.95643674339493,
+      "lng": -54.93991865037462
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [
+      "Depósito"
+    ],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": null,
+    "images": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción"
+    ],
+    "views": 126,
+    "featured": false,
+    "status": "active"
+  },
+  {
+    "title": "Studio Punta del Este inversión",
+    "slug": "studio-punta-del-este-inversion",
+    "description": "Studio Punta del Este inversión. Punta del Este, Maldonado. Calle 28 y Gorlero. Zona turística premium con alta demanda de alquiler temporal e inversión.",
+    "type": "Apartamento",
+    "operation": "Venta",
+    "price": 175000,
+    "currency": "USD",
+    "pricePerM2": 4375,
+    "gastosComunes": 8000,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "area": 40,
+    "garages": 0,
+    "department": "Maldonado",
+    "city": "Punta del Este",
+    "neighborhood": "Punta del Este",
+    "address": "Calle 28 y Gorlero",
+    "geolocation": {
+      "lat": -34.9588734450658,
+      "lng": -54.933773638058966
+    },
+    "viviendaPromovida": false,
+    "acceptedGuarantees": [],
+    "utilityStatus": {
+      "saneamiento": "conectado",
+      "gas": "cañería",
+      "agua": "OSE",
+      "electricidad": "UTE"
+    },
+    "energyLabel": "B",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560448204771-d5118743ea68?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1493809842364-78f73bb4b3f4?w=800&h=600&fit=crop"
+    ],
+    "amenities": [
+      "Aire Acondicionado",
+      "Calefacción",
+      "Terraza / Balcón",
+      "Ascensor",
+      "Lavadero"
+    ],
+    "views": 150,
+    "featured": false,
+    "status": "active"
+  }
+]

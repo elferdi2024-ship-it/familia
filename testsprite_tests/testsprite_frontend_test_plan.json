@@ -1,0 +1,1666 @@
+[
+  {
+    "id": "TC001",
+    "title": "Homepage loads hero section and core search controls",
+    "description": "Verifies the homepage renders the hero content and the primary search controls are visible and usable.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Hero section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property type dropdown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Operation dropdown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Smart search bar\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Buscar button\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Select property type from homepage dropdown",
+    "description": "Verifies a user can open the property type dropdown and select a property type, and the selection is shown on the homepage.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Property type dropdown\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property type options list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Apartamento\" option"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Apartamento\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property type dropdown\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Select operation Venta from homepage dropdown",
+    "description": "Verifies a user can select the Venta operation and the selection is displayed.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Operation dropdown\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Operation options list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Venta\" option"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Venta\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Select operation Alquiler from homepage dropdown",
+    "description": "Verifies a user can select the Alquiler operation and the selection is displayed.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Operation dropdown\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Operation options list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Alquiler\" option"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Alquiler\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Smart search shows autocomplete suggestions for a valid query fragment",
+    "description": "Verifies typing into the smart search bar displays autocomplete suggestions.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Smart search bar\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"mon\" into \"Smart search bar\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Autocomplete suggestions\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Buscar button\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Search redirects to /search after selecting type, operation, and using smart search",
+    "description": "Verifies the end-to-end homepage search workflow navigates to the search results page and shows the property grid.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Property type dropdown\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Casa\" option"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Operation dropdown\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Venta\" option"
+      },
+      {
+        "type": "action",
+        "description": "Type \"punta\" into \"Smart search bar\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Buscar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/search\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Typing 1–2 characters does not show autocomplete suggestions",
+    "description": "Verifies the autocomplete does not appear for very short input (1–2 characters).",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Smart search bar\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"a\" into \"Smart search bar\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Autocomplete suggestions\" is not visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"b\" into \"Smart search bar\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Autocomplete suggestions\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Short query search navigates to /search and shows empty state when no results",
+    "description": "Verifies searching with a short input can navigate to /search and shows an empty state message when there are no matches.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Smart search bar\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"zz\" into \"Smart search bar\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Buscar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/search\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No se encontraron resultados\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Featured property cards render on homepage and can be opened",
+    "description": "Verifies featured property cards are visible on the homepage and a user can open a property details page from a card (without validating card data correctness).",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Featured properties section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Featured property card\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Featured property card\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property details page content\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Favorite toggle on a featured card changes visible state",
+    "description": "Verifies a user can toggle the favorite control on a featured property card and see a visible state change.",
+    "category": "Homepage Hero and Smart Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Featured property card\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorite toggle\" on a featured property card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited state indicator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorite toggle\" on the same featured property card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited state indicator\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Load search results and navigate to a property detail from the results grid",
+    "description": "Verifies the /search page loads results with loading skeletons and allows navigating to a property detail via a PropertyCard.",
+    "category": "Property Search with Filters",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"loading skeletons\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property results grid\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on a PropertyCard in the results grid"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/property/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property photo gallery\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Location cascading dropdowns enforce selection order (department enables city, city enables neighborhood)",
+    "description": "Verifies the cascading behavior of department → city → neighborhood filters on /search.",
+    "category": "Property Search with Filters",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"department dropdown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"city dropdown (disabled)\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"neighborhood dropdown (disabled)\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select a department from the department dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"city dropdown\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select a city from the city dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"neighborhood dropdown\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Zero-results empty state appears when filters return no matches",
+    "description": "Verifies the search shows an empty state message when filters produce zero results.",
+    "category": "Property Search with Filters",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property results grid\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select filters that return zero matches (choose a very restrictive combination)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Sin resultados\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"empty state\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Clear all filters from empty state using \"Limpiar\" and verify results return",
+    "description": "Verifies clicking \"Limpiar\" clears filters and reloads results after an empty state.",
+    "category": "Property Search with Filters",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Select filters that return zero matches (choose a very restrictive combination)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"empty state\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Limpiar\" to clear all filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"loading skeletons\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"empty state\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Save a configured search as a guest user",
+    "description": "Verifies that clicking \"Guardar Búsqueda\" saves the current filter set and shows a visible confirmation message for a non-authenticated user.",
+    "category": "Property Search with Filters",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Alquiler\" from the operation filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Casa\" from the property type filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select a bedroom count from the bedrooms filter control"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Guardar Búsqueda\" to save current filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Búsqueda guardada\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Saved search persists and is visible on the Saved Searches page",
+    "description": "Verifies a saved search created from /search is visible in /saved-searches.",
+    "category": "Property Search with Filters",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Alquiler Temporal\" from the operation filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Apartamento\" from the property type filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Guardar Búsqueda\" to save current filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Búsqueda guardada\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Saved Searches\" navigation link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/saved-searches\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"saved searches list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Clear filters after saving search and verify UI resets to default state",
+    "description": "Verifies that after saving a search, clicking \"Limpiar\" resets filter selections and the grid remains functional.",
+    "category": "Property Search with Filters",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Venta\" from the operation filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Casa\" from the property type filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Guardar Búsqueda\" to save current filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Búsqueda guardada\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Limpiar\" to clear all filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"operation filter\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "View property detail core information and amenities",
+    "description": "Verifies a user can open a property detail page and see key info like price, specs, description, and amenities.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/search\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/property/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property price\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property specs (area, bedrooms, bathrooms)\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the property description section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"amenities list with checkmarks\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Navigate the photo gallery using arrows",
+    "description": "Verifies the property photo gallery can be navigated using left/right arrows.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"photo gallery\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the gallery next/right navigation arrow"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"current gallery image\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the gallery previous/left navigation arrow"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"current gallery image\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Submit lead successfully from the contact form",
+    "description": "Verifies a user can fill and submit the contact form and see a success confirmation.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the contact form section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"contact form\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"test.user@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Hola, me interesa esta propiedad. ¿Podemos coordinar una visita?\" into the message field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" / \"Enviar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"success\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Contact form validation when required fields are missing",
+    "description": "Verifies the contact form shows validation errors and does not show success when required fields are missing.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the contact form section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"contact form\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" / \"Enviar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"success\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Invalid email format shows validation error",
+    "description": "Verifies the contact form rejects an invalid email address format.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the contact form section"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-an-email\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Mensaje de prueba\" into the message field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" / \"Enviar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"success\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Toggle favorite on a property from the detail page",
+    "description": "Verifies the user can toggle the favorite state from the property detail page UI.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"favorite (heart) button\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the favorite (heart) button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Saved\" or \"Added to favorites\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the favorite (heart) button again"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Saved\" or \"Added to favorites\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Invalid/nonexistent property ID shows friendly not found message",
+    "description": "Verifies the property detail page shows a friendly not found message for an invalid ID.",
+    "category": "Property Detail and Lead Capture",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first property card in the results grid"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/property/\""
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /property/this-id-should-not-exist-404"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"not found\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"property detail content\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Publish a new property successfully through all wizard steps",
+    "description": "Verifies an authenticated user can complete the full 3-step wizard, publish the property, and see the success confirmation.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Apartamento\" as the property type"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Complete details step inputs and proceed to review",
+    "description": "Verifies a user can fill required details (price, currency, rooms, area, description) and advance to the review step.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"120000\" into the price field"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Toggle promoted housing and select guarantees and amenities",
+    "description": "Verifies a user can toggle vivienda promovida and choose guarantees and amenities on the details step without blocking progression.",
+    "category": "Property Publishing Wizard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Vivienda promovida\" checkbox"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Review step shows entered information before publishing",
+    "description": "Verifies the review page is reachable and shows a visible review/summary section prior to publishing.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Publish from review and land on success confirmation",
+    "description": "Verifies clicking \"Publicar Ahora\" publishes and navigates to the success page with a visible confirmation message.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/review\""
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "Validation prevents advancing from step 1 when required location fields are missing",
+    "description": "Verifies the wizard blocks progression to details if required address/location inputs are not provided.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Casa\" as the property type"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Venta\" as the operation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "Validation prevents advancing from details when price is missing or invalid",
+    "description": "Verifies the details step shows a visible error and prevents going to review when price is empty or invalid.",
+    "category": "Property Publishing Wizard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "Edit an owned property and save changes from review step",
+    "description": "Verifies that an authenticated owner can open the edit wizard from My Properties, see pre-populated fields, change a field, and save updates to reach the success confirmation.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/my-properties\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Editar\" on the first property in the list"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "Edit wizard loads with pre-populated data (Step 1)",
+    "description": "Verifies that opening Edit from My Properties lands in the publish wizard and shows existing values already filled on the first step.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Editar\" on the first property in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Editar\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Edit wizard allows navigating through steps to Review",
+    "description": "Verifies that an owner in edit mode can proceed through the wizard steps and reach the Review step where saving changes is available.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Editar\" on the first property in the list"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Siguiente\" or \"Continuar\" button to go to the next step"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/details\""
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Save changes from Review step and see success confirmation",
+    "description": "Verifies that clicking \"Guardar Cambios\" on the review step completes update and shows the success page confirmation.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Editar\" on the first property in the list"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Review\" or \"Revisar\" to open the review step"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Guardar Cambios\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC036",
+    "title": "After saving changes, return to My Properties and verify listing is still present",
+    "description": "Verifies that after an edit save completes, the user can return to My Properties and still sees their listing in the list (not removed).",
+    "category": "Property Editing (My Properties)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Editar\" on the first property in the list"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Review\" or \"Revisar\" to open the review step"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/publish/success\""
+      }
+    ]
+  },
+  {
+    "id": "TC037",
+    "title": "Delete an owned property and confirm it is removed from the list",
+    "description": "Verifies that an authenticated owner can delete a listing from My Properties, confirm deletion, and no longer see it in the list afterward.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/my-properties\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Eliminar\" on the first property in the list"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Confirmar\" in the deletion confirmation dialog"
+      }
+    ]
+  },
+  {
+    "id": "TC038",
+    "title": "Cancel deletion keeps the property in the list",
+    "description": "Verifies that starting a delete from My Properties and cancelling does not remove the property and the list remains unchanged visually.",
+    "category": "Property Editing (My Properties)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"My Properties\" in the navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Eliminar\" on the first property in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Confirmar\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Cancelar\" in the deletion confirmation dialog"
+      }
+    ]
+  },
+  {
+    "id": "TC039",
+    "title": "Attempt to edit a non-owned property via edit link shows permission error or blocks editing",
+    "description": "Verifies that when navigating to an edit wizard for a property not owned by the logged-in user, the UI blocks editing via an error message or redirect back to My Properties.",
+    "category": "Property Editing (My Properties)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /publish?edit=nonOwnedPropertyId"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No tienes permiso\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/my-properties\""
+      }
+    ]
+  },
+  {
+    "id": "TC040",
+    "title": "Guest can favorite a property from Search and see it in Favorites grid",
+    "description": "Verifies a guest user can toggle a favorite from search results and the favorited property appears on the /favorites page.",
+    "category": "Favorites System",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on any property card to toggle favorite"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited heart icon\" is visible on that same property card"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorites\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/favorites\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorites grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in favorites\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC041",
+    "title": "Guest can unfavorite a previously favorited property and it disappears from Favorites",
+    "description": "Verifies a guest user can remove a favorite and the favorites list updates accordingly.",
+    "category": "Favorites System",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on any property card to toggle favorite"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorites\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in favorites\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on the favorited property card in the favorites grid to toggle unfavorite"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Empty favorites state\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC042",
+    "title": "Authenticated user can favorite from Search and see it in Favorites (cloud-synced)",
+    "description": "Verifies an authenticated user can favorite a property and later see it listed in the favorites page.",
+    "category": "Favorites System",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL does not contain \"/login\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Search\" in the site navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on any property card to toggle favorite"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorites\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in favorites\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC043",
+    "title": "Favorite toggle is reflected consistently across Search and Favorites views",
+    "description": "Verifies that toggling a favorite in one view is reflected when navigating to the other view in the same session.",
+    "category": "Favorites System",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /search"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on any property card to toggle favorite"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited heart icon\" is visible on that same property card"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorites\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in favorites\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Search\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited heart icon\" is visible on at least one property card"
+      }
+    ]
+  },
+  {
+    "id": "TC044",
+    "title": "Guest favorites remain visible after leaving Search and going to Favorites",
+    "description": "Verifies that guest favorites persist within the session and are still displayed when moving between pages.",
+    "category": "Favorites System",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Homepage property cards\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click heart icon on any property card to toggle favorite"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Favorited heart icon\" is visible on that same property card"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Favorites\" in the site navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/favorites\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in favorites\" is visible"
+      }
+    ]
+  }
+]
