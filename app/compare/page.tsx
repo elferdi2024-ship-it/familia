@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export default function ComparePage() {
     return (
-        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased pt-16 md:pt-20 max-w-7xl mx-auto px-4 md:px-6 pb-12">
+        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased max-w-7xl mx-auto px-4 md:px-6 pb-12">
             {/* Breadcrumbs & Title */}
             <div className="mb-6 md:mb-8">
                 <nav className="flex text-xs text-slate-500 mb-2 gap-2">
@@ -27,10 +27,10 @@ export default function ComparePage() {
                             <tr className="align-top">
                                 <th className="label-column p-6 text-left border-b border-border-light dark:border-slate-800 bg-neutral-light dark:bg-slate-800/50 w-[180px] sticky top-0 z-10">
                                     <div className="pt-2">
-                                        <button className="text-primary hover:text-blue-700 flex items-center gap-1 text-sm font-semibold">
+                                        <Link href="/search" className="text-primary hover:text-blue-700 flex items-center gap-1 text-sm font-semibold">
                                             <span className="material-icons text-sm">add_circle</span>
                                             Agregar más
-                                        </button>
+                                        </Link>
                                     </div>
                                 </th>
                                 {/* Property 1 */}

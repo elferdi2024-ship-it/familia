@@ -49,8 +49,8 @@ export default function HomePage() {
   return (
     <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-20 md:pb-0">
 
-      {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[480px] md:h-[75vh] md:min-h-[600px] flex items-center justify-center overflow-hidden">
+      {/* Hero Section - DEFINITIVE CLEARANCE */}
+      <section className="relative h-[65vh] min-h-[500px] md:h-[75vh] md:min-h-[600px] flex flex-col items-center justify-start pt-32 md:pt-0 md:justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
             alt="Montevideo Rambla"
@@ -363,7 +363,7 @@ export default function HomePage() {
             <p className="text-base md:text-lg text-slate-600 dark:text-slate-300 mb-6 md:mb-8 font-medium">
               Explorá el mercado uruguayo con nuestro mapa interactivo. Encontrá las mejores zonas para vivir o invertir en Montevideo, Maldonado, Canelones y más.
             </p>
-            <Link href="/search" className="bg-primary text-white px-6 md:px-8 py-3.5 md:py-4 rounded-full font-bold shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center gap-2 max-w-fit text-sm md:text-base">
+            <Link href="/search?view=map" className="bg-primary text-white px-6 md:px-8 py-3.5 md:py-4 rounded-full font-bold shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center gap-2 max-w-fit text-sm md:text-base">
               <span className="material-icons">map</span>
               Abrir Mapa de Uruguay
             </Link>

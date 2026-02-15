@@ -3,14 +3,18 @@
 import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, Suspense } from "react"
+import { useEffect, Suspense, useState } from "react"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
+import { useAuth } from "@/contexts/AuthContext"
+import { AuthModal } from "@/components/auth/AuthModal"
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
     const router = useRouter()
     const searchParams = useSearchParams()
     const editId = searchParams.get("edit")
+    const { user, loading } = useAuth()
+    const [showAuthModal, setShowAuthModal] = useState(false)
 
     useEffect(() => {
         if (editId) {
@@ -24,6 +28,41 @@ function PublishPageContent() {
             return
         }
         router.push("/publish/details")
+    }
+
+    if (loading) {
+        return (
+            <div className="min-h-screen pt-32 flex flex-col items-center">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        )
+    }
+
+    if (!user) {
+        return (
+            <div className="min-h-screen pt-32 pb-20 px-6 flex flex-col items-center justify-center font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
+                <div className="max-w-md w-full text-center space-y-6">
+                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span className="material-icons text-4xl text-primary">lock_person</span>
+                    </div>
+                    <h1 className="text-3xl font-extrabold mb-2">Ingresa para publicar</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg mb-8">
+                        Para publicar una propiedad en Dominio Total necesitas tener una cuenta. Es gratis y te tomará menos de 1 minuto.
+                    </p>
+                    <button
+                        onClick={() => setShowAuthModal(true)}
+                        className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+                    >
+                        <span className="material-icons">login</span>
+                        Iniciar Sesión / Registrarse
+                    </button>
+                    <Link href="/" className="block text-slate-400 hover:text-primary font-bold text-sm mt-8 transition-colors">
+                        Volver al inicio
+                    </Link>
+                </div>
+                <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+            </div>
+        )
     }
 
     return (

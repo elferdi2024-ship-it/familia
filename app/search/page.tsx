@@ -32,7 +32,7 @@ function SearchPageInner() {
     // Real data state
     const [properties, setProperties] = useState<Property[]>([])
     const [showFilters, setShowFilters] = useState(false)
-    const [showMap, setShowMap] = useState(false)
+    const [showMap, setShowMap] = useState(searchParams.get('view') === 'map')
     const [savedToast, setSavedToast] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const { saveSearch } = useSavedSearches()
@@ -121,6 +121,10 @@ function SearchPageInner() {
             ...(type ? { propertyTypes: type.split(',').filter(Boolean) } : {}),
             ...(q ? { query: q } : {}),
         }))
+        const view = searchParams.get('view')
+        if (view === 'map') {
+            setShowMap(true)
+        }
     }, [searchParams])
 
     // Lock body scroll when filter sheet is open on mobile
@@ -322,9 +326,7 @@ function SearchPageInner() {
     )
 
     return (
-        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col">
-            <div className="pt-16 md:pt-20"></div>
-
+        <div className="min-h-screen bg-white dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col">
             <div className="flex flex-1 overflow-hidden">
                 {/* Desktop Sidebar Filters — hidden on mobile */}
                 <aside className="hidden md:block w-[300px] xl:w-[340px] flex-shrink-0 border-r border-primary/10 bg-white dark:bg-background-dark overflow-y-auto hide-scrollbar p-6">
@@ -337,7 +339,7 @@ function SearchPageInner() {
 
                 {/* Mobile Filter Sheet (Full Screen Overlay) */}
                 {showFilters && (
-                    <div className="md:hidden fixed inset-0 z-50 flex flex-col bg-white dark:bg-background-dark">
+                    <div className="md:hidden fixed inset-0 z-[200] flex flex-col bg-white dark:bg-background-dark">
                         {/* Sheet Header */}
                         <div className="flex items-center justify-between px-4 py-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
                             <h2 className="font-bold text-lg">Filtros</h2>
@@ -363,41 +365,6 @@ function SearchPageInner() {
                         <div className="flex-shrink-0 p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark safe-bottom">
                             <button
                                 onClick={() => setShowFilters(false)}
-                                className="w-full bg-primary text-white py-4 rounded-xl font-bold text-base shadow-lg shadow-primary/20"
-                            >
-                                Ver {properties.length} propiedades
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Main Content Area */}
-                <main className="flex-1 flex flex-col min-w-0">
-                    {/* Top Bar — responsive */}
-                    <div className="min-h-[48px] md:h-14 px-4 md:px-6 py-2 md:py-0 flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-40 gap-2">
-                        <div className="flex items-center gap-2 md:gap-4 overflow-hidden">
-                            <span className="font-bold text-slate-900 dark:text-white text-sm md:text-base whitespace-nowrap">{properties.length} propiedades</span>
-                            <div className="hidden md:block h-4 w-px bg-slate-200 dark:bg-slate-700 flex-shrink-0"></div>
-                            {/* Desktop filter chips — hidden on mobile */}
-                            <div className="hidden md:flex gap-2 items-center flex-wrap">
-                                {filters.department && (
-                                    <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
-                                        {filters.department}
-                                        <button onClick={() => removeFilter('department', null)} className="material-icons text-[14px] hover:text-red-500">close</button>
-                                    </span>
-                                )}
-                                {filters.city && (
-                                    <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
-                                        {filters.city}
-                                        <button onClick={() => removeFilter('city', null)} className="material-icons text-[14px] hover:text-red-500">close</button>
-                                    </span>
-                                )}
-                                {filters.neighborhood && (
-                                    <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
-                                        {filters.neighborhood}
-                                        <button onClick={() => removeFilter('neighborhood', null)} className="material-icons text-[14px] hover:text-red-500">close</button>
-                                    </span>
-                                )}
                                 {filters.bedrooms && (
                                     <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
                                         {filters.bedrooms} Dorm.
@@ -430,213 +397,213 @@ function SearchPageInner() {
                                         Limpiar todo
                                     </button>
                                 )}
-                            </div>
-                        </div>
-                        {/* Mobile: active filter count + sort */}
-                        <div className="flex items-center justify-between md:justify-end gap-2">
-                            {/* Mobile filter chips (scrollable) */}
-                            <div className="flex md:hidden gap-1.5 items-center overflow-x-auto no-scrollbar flex-1 mr-2">
-                                {filters.department && (
-                                    <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.department}</span>
-                                )}
-                                {filters.city && (
-                                    <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.city}</span>
-                                )}
-                                {filters.bedrooms && (
-                                    <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.bedrooms} Dorm.</span>
-                                )}
-                                {filters.amenities.length > 0 && (
-                                    <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">+{filters.amenities.length} filtros</span>
-                                )}
-                            </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                                <button
-                                    onClick={() => {
-                                        saveSearch({
-                                            label: [filters.operation, filters.department, filters.city, filters.neighborhood, filters.query].filter(Boolean).join(" · ") || "Búsqueda general",
-                                            operation: filters.operation,
-                                            propertyTypes: filters.propertyTypes,
-                                            query: filters.query,
-                                            department: filters.department,
-                                            city: filters.city,
-                                            neighborhood: filters.neighborhood,
-                                            priceMin: filters.priceMin,
-                                            priceMax: filters.priceMax,
-                                            bedrooms: filters.bedrooms,
-                                        })
-                                        setSavedToast(true)
-                                        setTimeout(() => setSavedToast(false), 2500)
-                                    }}
-                                    className="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg transition-all hover:border-primary/30"
-                                >
-                                    <span className="material-icons text-sm">{savedToast ? 'check_circle' : 'bookmark_border'}</span>
-                                    {savedToast ? 'Guardada ✓' : 'Guardar búsqueda'}
-                                </button>
-                                <span className="text-xs font-medium text-slate-400 hidden sm:inline">Ordenar:</span>
-                                <button className="text-sm font-bold flex items-center gap-0.5 whitespace-nowrap hover:text-primary transition-colors cursor-pointer">
-                                    Recientes <span className="material-icons text-sm">expand_more</span>
-                                </button>
-                            </div>
                         </div>
                     </div>
+                    {/* Mobile: active filter count + sort */}
+                <div className="flex items-center justify-between md:justify-end gap-2">
+                    {/* Mobile filter chips (scrollable) */}
+                    <div className="flex md:hidden gap-1.5 items-center overflow-x-auto no-scrollbar flex-1 mr-2">
+                        {filters.department && (
+                            <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.department}</span>
+                        )}
+                        {filters.city && (
+                            <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.city}</span>
+                        )}
+                        {filters.bedrooms && (
+                            <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">{filters.bedrooms} Dorm.</span>
+                        )}
+                        {filters.amenities.length > 0 && (
+                            <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">+{filters.amenities.length} filtros</span>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                        <button
+                            onClick={() => {
+                                saveSearch({
+                                    label: [filters.operation, filters.department, filters.city, filters.neighborhood, filters.query].filter(Boolean).join(" · ") || "Búsqueda general",
+                                    operation: filters.operation,
+                                    propertyTypes: filters.propertyTypes,
+                                    query: filters.query,
+                                    department: filters.department,
+                                    city: filters.city,
+                                    neighborhood: filters.neighborhood,
+                                    priceMin: filters.priceMin,
+                                    priceMax: filters.priceMax,
+                                    bedrooms: filters.bedrooms,
+                                })
+                                setSavedToast(true)
+                                setTimeout(() => setSavedToast(false), 2500)
+                            }}
+                            className="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg transition-all hover:border-primary/30"
+                        >
+                            <span className="material-icons text-sm">{savedToast ? 'check_circle' : 'bookmark_border'}</span>
+                            {savedToast ? 'Guardada ✓' : 'Guardar búsqueda'}
+                        </button>
+                        <span className="text-xs font-medium text-slate-400 hidden sm:inline">Ordenar:</span>
+                        <button className="text-sm font-bold flex items-center gap-0.5 whitespace-nowrap hover:text-primary transition-colors cursor-pointer">
+                            Recientes <span className="material-icons text-sm">expand_more</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                    {/* Content: List + Map */}
-                    <div className="flex-1 flex overflow-hidden relative">
-                        {/* Listing Grid — full width on mobile, 50% on desktop */}
-                        <section className={`${showMap ? 'hidden md:block' : 'w-full'} md:w-1/2 overflow-y-auto p-4 pb-24 md:p-6 md:pb-6 bg-slate-50/50 dark:bg-slate-900/50 hide-scrollbar`}>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4 md:gap-6">
-                                {isLoading ? (
-                                    <PropertyGridSkeleton count={6} />
-                                ) : properties.length === 0 ? (
-                                    <div className="col-span-full py-20 text-center">
-                                        <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <span className="material-icons text-slate-400 text-4xl">search_off</span>
-                                        </div>
-                                        <h3 className="text-xl font-bold mb-2">No encontramos propiedades</h3>
-                                        <p className="text-slate-500 mb-6">Prueba ajustando los filtros o buscando en otra zona.</p>
-                                        <button onClick={clearFilters} className="text-primary font-bold hover:underline">Limpiar todos los filtros</button>
-                                    </div>
-                                ) : (
-                                    properties.map((property) => (
-                                        <Link key={property.id} href={`/property/${property.id}`} className="block">
-                                            <div className="property-card bg-white dark:bg-background-dark rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all group relative">
-                                                <div className="aspect-[4/3] md:aspect-[3/4] relative overflow-hidden">
-                                                    <Image
-                                                        fill
-                                                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                                                        alt={property.title}
-                                                        src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop"}
-                                                        sizes="(max-width: 768px) 100vw, 25vw"
-                                                    />
-                                                    <div className="absolute top-3 left-3 flex flex-col gap-2">
-                                                        {property.badge && (
-                                                            <span className={`${property.badgeColor || 'bg-primary/90'} backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider`}>
-                                                                {property.badge}
-                                                            </span>
-                                                        )}
-                                                        {property.viviendaPromovida && (
-                                                            <span className="bg-blue-600/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider">
-                                                                VP
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    {/* Hover Actions — desktop only */}
-                                                    <div className="hover-actions absolute inset-x-0 bottom-0 p-4 flex gap-2 opacity-0 translate-y-4 transition-all duration-300 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100 group-hover:translate-y-0 hidden md:flex">
-                                                        <button className="flex-1 bg-primary text-white py-2.5 rounded font-bold text-sm shadow-lg">Contactar</button>
-                                                        <FavoriteButton propertyId={property.id} className="w-10 h-10 bg-white dark:bg-slate-800 rounded flex items-center justify-center text-slate-900 dark:text-white shadow-lg" />
-                                                    </div>
-                                                    {/* Mobile favorite button — always visible */}
-                                                    <div className="md:hidden absolute top-3 right-3">
-                                                        <FavoriteButton propertyId={property.id} className="w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-600 shadow-md" />
-                                                    </div>
-                                                </div>
-                                                <div className="p-3.5 md:p-4">
-                                                    <div className="flex justify-between items-start mb-1">
-                                                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-primary">
-                                                            {formatPrice(property.price, property.currency)}
-                                                        </h3>
-                                                    </div>
-                                                    <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">{property.title}</p>
-                                                    <p className="text-xs text-slate-500 mb-3">{property.neighborhood}, {property.city}</p>
-                                                    <div className="flex items-center gap-3 text-slate-500 text-xs border-t border-slate-100 dark:border-slate-800 pt-3">
-                                                        <span className="flex items-center gap-1"><span className="material-icons text-base">bed</span> {property.bedrooms}</span>
-                                                        <span className="flex items-center gap-1"><span className="material-icons text-base">bathtub</span> {property.bathrooms}</span>
-                                                        <span className="flex items-center gap-1"><span className="material-icons text-base">square_foot</span> {property.area}m²</span>
-                                                    </div>
-                                                </div>
+            {/* Content: List + Map */}
+            <div className="flex-1 flex overflow-hidden relative">
+                {/* Listing Grid — full width on mobile, 50% on desktop */}
+                <section className={`${showMap ? 'hidden md:block' : 'w-full'} md:w-1/2 overflow-y-auto p-4 pb-24 md:p-6 md:pb-6 bg-slate-50/50 dark:bg-slate-900/50 hide-scrollbar`}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4 md:gap-6">
+                        {isLoading ? (
+                            <PropertyGridSkeleton count={6} />
+                        ) : properties.length === 0 ? (
+                            <div className="col-span-full py-20 text-center">
+                                <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="material-icons text-slate-400 text-4xl">search_off</span>
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">No encontramos propiedades</h3>
+                                <p className="text-slate-500 mb-6">Prueba ajustando los filtros o buscando en otra zona.</p>
+                                <button onClick={clearFilters} className="text-primary font-bold hover:underline">Limpiar todos los filtros</button>
+                            </div>
+                        ) : (
+                            properties.map((property) => (
+                                <Link key={property.id} href={`/property/${property.id}`} className="block">
+                                    <div className="property-card bg-white dark:bg-background-dark rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all group relative">
+                                        <div className="aspect-[4/3] md:aspect-[3/4] relative overflow-hidden">
+                                            <Image
+                                                fill
+                                                className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                                alt={property.title}
+                                                src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop"}
+                                                sizes="(max-width: 768px) 100vw, 25vw"
+                                            />
+                                            <div className="absolute top-3 left-3 flex flex-col gap-2">
+                                                {property.badge && (
+                                                    <span className={`${property.badgeColor || 'bg-primary/90'} backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider`}>
+                                                        {property.badge}
+                                                    </span>
+                                                )}
+                                                {property.viviendaPromovida && (
+                                                    <span className="bg-blue-600/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider">
+                                                        VP
+                                                    </span>
+                                                )}
                                             </div>
-                                        </Link>
-                                    ))
-                                )}
-                            </div>
-                        </section>
-
-                        {/* Map View — hidden on mobile by default, full on toggle */}
-                        <section className={`${showMap ? 'block' : 'hidden'} md:block md:w-1/2 w-full relative bg-slate-200`}>
-                            <Image
-                                fill
-                                className="object-cover"
-                                alt="Map of Montevideo"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS3tqEbJXll60SW3vuu77a6MgWk2kkqvIJj-3FPuQIvD24JgqiVHN7qvOS7_7IVvGKxZKSe0lZvSEewoaidrBpWJp_B54eOBtINAA40IR8i-ubf6Jr6UZbJnnCfzoehI80gJB3vDS2JHyEfyiBsfeHh7DSd2YvSBwO8Xir_V5vNrANpG6mPK1IuUNgAapmeaZ5bpmYg1ShIHcM4JKI9cFyKJvNjp20QhDaLX9eiVU-jQfGA22BEnWzEEfa-_MjfxOe7KqXJt70-0Ld"
-                                sizes="50vw"
-                            />
-                            {/* Floating Map Markers */}
-                            <div className="absolute top-1/4 left-1/3 group cursor-pointer">
-                                <div className="bg-primary text-white px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-white flex items-center gap-1 group-hover:scale-110 transition-transform">
-                                    USD 450k
-                                </div>
-                                <div className="w-0.5 h-3 bg-primary mx-auto"></div>
-                            </div>
-                            <div className="absolute top-1/2 left-2/3 group cursor-pointer">
-                                <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
-                                    USD 325k
-                                </div>
-                                <div className="w-0.5 h-3 bg-primary mx-auto"></div>
-                            </div>
-                            <div className="absolute bottom-1/3 left-1/4 group cursor-pointer">
-                                <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
-                                    USD 890k
-                                </div>
-                                <div className="w-0.5 h-3 bg-primary mx-auto"></div>
-                            </div>
-                            <div className="absolute bottom-1/4 right-1/4 group cursor-pointer">
-                                <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
-                                    USD 215k
-                                </div>
-                                <div className="w-0.5 h-3 bg-primary mx-auto"></div>
-                            </div>
-                            {/* Map Controls */}
-                            <div className="absolute bottom-20 md:bottom-6 right-4 md:right-6 flex flex-col gap-2">
-                                <button title="Acercar" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors">
-                                    <span className="material-icons">add</span>
-                                </button>
-                                <button title="Alejar" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors">
-                                    <span className="material-icons">remove</span>
-                                </button>
-                                <button title="Mi ubicación" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors mt-2">
-                                    <span className="material-icons">my_location</span>
-                                </button>
-                            </div>
-                            {/* Map Layers Toggle */}
-                            <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                                <div className="bg-white dark:bg-background-dark shadow-xl rounded-lg p-1 flex gap-1">
-                                    <button className="px-4 py-2 text-xs font-bold bg-primary text-white rounded">Mapa</button>
-                                    <button className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">Satélite</button>
-                                </div>
-                            </div>
-                            {/* Mobile: Back to list button */}
-                            <button
-                                onClick={() => setShowMap(false)}
-                                className="md:hidden absolute top-4 left-4 bg-white dark:bg-slate-900 dark:text-white shadow-xl rounded-full px-4 py-2 flex items-center gap-2 font-bold text-sm"
-                            >
-                                <span className="material-icons text-base">arrow_back</span>
-                                Ver Lista
-                            </button>
-                        </section>
+                                            {/* Hover Actions — desktop only */}
+                                            <div className="hover-actions absolute inset-x-0 bottom-0 p-4 flex gap-2 opacity-0 translate-y-4 transition-all duration-300 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100 group-hover:translate-y-0 hidden md:flex">
+                                                <button className="flex-1 bg-primary text-white py-2.5 rounded font-bold text-sm shadow-lg">Contactar</button>
+                                                <FavoriteButton propertyId={property.id} className="w-10 h-10 bg-white dark:bg-slate-800 rounded flex items-center justify-center text-slate-900 dark:text-white shadow-lg" />
+                                            </div>
+                                            {/* Mobile favorite button — always visible */}
+                                            <div className="md:hidden absolute top-3 right-3">
+                                                <FavoriteButton propertyId={property.id} className="w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-600 shadow-md" />
+                                            </div>
+                                        </div>
+                                        <div className="p-3.5 md:p-4">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <h3 className="text-xl md:text-2xl font-bold tracking-tight text-primary">
+                                                    {formatPrice(property.price, property.currency)}
+                                                </h3>
+                                            </div>
+                                            <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">{property.title}</p>
+                                            <p className="text-xs text-slate-500 mb-3">{property.neighborhood}, {property.city}</p>
+                                            <div className="flex items-center gap-3 text-slate-500 text-xs border-t border-slate-100 dark:border-slate-800 pt-3">
+                                                <span className="flex items-center gap-1"><span className="material-icons text-base">bed</span> {property.bedrooms}</span>
+                                                <span className="flex items-center gap-1"><span className="material-icons text-base">bathtub</span> {property.bathrooms}</span>
+                                                <span className="flex items-center gap-1"><span className="material-icons text-base">square_foot</span> {property.area}m²</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        )}
                     </div>
-                </main>
-            </div>
+                </section>
 
-            {/* Mobile FABs — Floating Action Buttons */}
-            {/* Mobile FABs — Floating Action Buttons */}
-            <div className="md:hidden fixed bottom-28 left-0 right-0 flex justify-center gap-3 z-[100] px-4 pointer-events-none">
-                <button
-                    onClick={() => setShowFilters(true)}
-                    className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200 pointer-events-auto active:scale-95 transition-transform"
-                >
-                    <span className="material-icons text-lg">tune</span>
-                    Filtros
-                    {hasFilters && <span className="w-2 h-2 bg-primary rounded-full"></span>}
-                </button>
-                <button
-                    onClick={() => setShowMap(!showMap)}
-                    className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm pointer-events-auto active:scale-95 transition-transform"
-                >
-                    <span className="material-icons text-lg">{showMap ? 'view_list' : 'map'}</span>
-                    {showMap ? 'Ver Lista' : 'Ver Mapa'}
-                </button>
+                {/* Map View — hidden on mobile by default, full on toggle */}
+                <section className={`${showMap ? 'block' : 'hidden'} md:block md:w-1/2 w-full relative bg-slate-200`}>
+                    <Image
+                        fill
+                        className="object-cover"
+                        alt="Map of Montevideo"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS3tqEbJXll60SW3vuu77a6MgWk2kkqvIJj-3FPuQIvD24JgqiVHN7qvOS7_7IVvGKxZKSe0lZvSEewoaidrBpWJp_B54eOBtINAA40IR8i-ubf6Jr6UZbJnnCfzoehI80gJB3vDS2JHyEfyiBsfeHh7DSd2YvSBwO8Xir_V5vNrANpG6mPK1IuUNgAapmeaZ5bpmYg1ShIHcM4JKI9cFyKJvNjp20QhDaLX9eiVU-jQfGA22BEnWzEEfa-_MjfxOe7KqXJt70-0Ld"
+                        sizes="50vw"
+                    />
+                    {/* Floating Map Markers */}
+                    <div className="absolute top-1/4 left-1/3 group cursor-pointer">
+                        <div className="bg-primary text-white px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-white flex items-center gap-1 group-hover:scale-110 transition-transform">
+                            USD 450k
+                        </div>
+                        <div className="w-0.5 h-3 bg-primary mx-auto"></div>
+                    </div>
+                    <div className="absolute top-1/2 left-2/3 group cursor-pointer">
+                        <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
+                            USD 325k
+                        </div>
+                        <div className="w-0.5 h-3 bg-primary mx-auto"></div>
+                    </div>
+                    <div className="absolute bottom-1/3 left-1/4 group cursor-pointer">
+                        <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
+                            USD 890k
+                        </div>
+                        <div className="w-0.5 h-3 bg-primary mx-auto"></div>
+                    </div>
+                    <div className="absolute bottom-1/4 right-1/4 group cursor-pointer">
+                        <div className="bg-white dark:bg-slate-800 text-primary px-3 py-1.5 rounded-full font-bold text-xs shadow-xl border-2 border-primary flex items-center gap-1 group-hover:scale-110 transition-transform">
+                            USD 215k
+                        </div>
+                        <div className="w-0.5 h-3 bg-primary mx-auto"></div>
+                    </div>
+                    {/* Map Controls */}
+                    <div className="absolute bottom-20 md:bottom-6 right-4 md:right-6 flex flex-col gap-2">
+                        <button title="Acercar" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors">
+                            <span className="material-icons">add</span>
+                        </button>
+                        <button title="Alejar" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors">
+                            <span className="material-icons">remove</span>
+                        </button>
+                        <button title="Mi ubicación" className="w-11 h-11 bg-white dark:bg-background-dark shadow-xl rounded-lg flex items-center justify-center text-slate-800 dark:text-white hover:text-primary transition-colors mt-2">
+                            <span className="material-icons">my_location</span>
+                        </button>
+                    </div>
+                    {/* Map Layers Toggle */}
+                    <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                        <div className="bg-white dark:bg-background-dark shadow-xl rounded-lg p-1 flex gap-1">
+                            <button className="px-4 py-2 text-xs font-bold bg-primary text-white rounded">Mapa</button>
+                            <button className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded">Satélite</button>
+                        </div>
+                    </div>
+                    {/* Mobile: Back to list button */}
+                    <button
+                        onClick={() => setShowMap(false)}
+                        className="md:hidden absolute top-4 left-4 bg-white dark:bg-slate-900 dark:text-white shadow-xl rounded-full px-4 py-2 flex items-center gap-2 font-bold text-sm"
+                    >
+                        <span className="material-icons text-base">arrow_back</span>
+                        Ver Lista
+                    </button>
+                </section>
             </div>
-        </div>
+        </main>
+        </div >
+
+        {/* Mobile FABs — Floating Action Buttons */ }
+    {/* Mobile FABs — Floating Action Buttons */ }
+    <div className="md:hidden fixed bottom-28 left-0 right-0 flex justify-center gap-3 z-[100] px-4 pointer-events-none">
+        <button
+            onClick={() => setShowFilters(true)}
+            className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200 pointer-events-auto active:scale-95 transition-transform"
+        >
+            <span className="material-icons text-lg">tune</span>
+            Filtros
+            {hasFilters && <span className="w-2 h-2 bg-primary rounded-full"></span>}
+        </button>
+        <button
+            onClick={() => setShowMap(!showMap)}
+            className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm pointer-events-auto active:scale-95 transition-transform"
+        >
+            <span className="material-icons text-lg">{showMap ? 'view_list' : 'map'}</span>
+            {showMap ? 'Ver Lista' : 'Ver Mapa'}
+        </button>
+    </div>
+        </div >
     )
 }
 

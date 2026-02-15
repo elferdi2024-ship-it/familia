@@ -88,7 +88,7 @@ export default function RootLayout({
                   />
                 </div>
                 <Navbar />
-                <main className="pb-20 md:pb-0">{children}</main>
+                <main className="pt-24 md:pt-28 pb-20 md:pb-0">{children}</main>
                 <Footer />
                 <BottomTabBar />
               </PublishProvider>

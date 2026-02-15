@@ -11,7 +11,7 @@ export default function FavoritesPage() {
     const favoriteProperties = PROPERTIES.filter(p => favorites.includes(p.id))
 
     return (
-        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-24 md:pb-12">
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
@@ -107,8 +107,8 @@ export default function FavoritesPage() {
                                         )}
                                         {property.energyLabel && (
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${property.energyLabel <= "B" ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                                                    : property.energyLabel <= "D" ? "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
-                                                        : "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                                                : property.energyLabel <= "D" ? "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
+                                                    : "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300"
                                                 }`}>
                                                 Energía {property.energyLabel}
                                             </span>

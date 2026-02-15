@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { db } from "@/lib/firebase"
 import { doc, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore"
-import { Property, formatPrice } from "@/lib/data"
+import { Property, formatPrice, PROPERTIES } from "@/lib/data"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { FloorplanViewer } from "@/components/FloorplanViewer"
 import { NeighborhoodMap } from "@/components/NeighborhoodMap"
@@ -28,6 +28,18 @@ export default function PropertyDetailPage() {
 
     useEffect(() => {
         async function fetchProperty() {
+            setLoading(true)
+
+            // Try finding in static/mock data first (for demo/development)
+            // Check if id is in mock data range (simple numeric IDs)
+            const mockProperty = PROPERTIES.find(p => p.id === id)
+
+            if (mockProperty) {
+                setProperty(mockProperty)
+                setLoading(false)
+                return
+            }
+
             if (!id || !db) {
                 setLoading(false)
                 return
@@ -37,6 +49,9 @@ export default function PropertyDetailPage() {
                 const docSnap = await getDoc(docRef)
                 if (docSnap.exists()) {
                     setProperty({ id: docSnap.id, ...docSnap.data() } as Property)
+                } else {
+                    // If not found in DB and not in mock data
+                    console.log("Property not found in DB")
                 }
             } catch (error) {
                 console.error("Error fetching property:", error)
@@ -216,10 +231,29 @@ export default function PropertyDetailPage() {
                     </Link>
                     {/* Share/Save */}
                     <div className="absolute top-3 right-3 flex gap-2">
-                        <button className="w-10 h-10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md text-slate-900 dark:text-white">
+                        <button
+                            onClick={async () => {
+                                try {
+                                    if (navigator.share) {
+                                        await navigator.share({
+                                            title: property.title,
+                                            text: `Mira esta propiedad en ${property.neighborhood}, ${property.city}`,
+                                            url: window.location.href,
+                                        })
+                                    } else {
+                                        await navigator.clipboard.writeText(window.location.href)
+                                        // Simple visual feedback could be added here, currently just silent copy or we can add a state for "Copied!" tooltip
+                                        alert("Enlace copiado al portapapeles")
+                                    }
+                                } catch (error) {
+                                    console.error("Error sharing:", error)
+                                }
+                            }}
+                            className="w-10 h-10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md text-slate-900 dark:text-white active:scale-90 transition-transform"
+                        >
                             <span className="material-icons text-lg">share</span>
                         </button>
-                        <FavoriteButton propertyId="1" className="w-10 h-10" />
+                        <FavoriteButton propertyId={property.id} className="w-10 h-10" />
                     </div>
                 </section>
 
@@ -561,15 +595,18 @@ export default function PropertyDetailPage() {
                 </div>
             </main>
 
-            {/* Mobile Sticky Bottom CTA Bar */}
-            <div className="lg:hidden fixed bottom-4 left-4 right-4 bg-white border border-slate-200 shadow-2xl z-[1000] pb-2 pt-2 rounded-2xl">
+            {/* Mobile Contact Bar - DEFINITIVE FIX: HIGH Z-INDEX */}
+            <div
+                className="lg:hidden fixed bottom-0 left-0 right-0 z-[999] bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 safe-area-bottom shadow-[0_-10px_30px_rgba(0,0,0,0.1)]"
+                style={{ zIndex: 999 }}
+            >
                 <div className="flex items-center justify-between px-4 py-3 gap-3">
                     <div className="flex-1 min-w-0">
                         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Precio de {property.operation}</p>
-                        <p className="text-xl font-bold text-slate-900 truncate">{formatPrice(property.price, property.currency)}</p>
+                        <p className="text-xl font-bold text-slate-900 dark:text-white truncate">{formatPrice(property.price, property.currency)}</p>
                     </div>
                     <div className="flex gap-2 flex-shrink-0">
-                        <a href={`tel:${property.agentPhone}`} className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-700 active:bg-slate-100">
+                        <a href={`tel:${property.agentPhone}`} className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 active:bg-slate-100 dark:active:bg-slate-700">
                             <span className="material-icons">phone</span>
                         </a>
                         <a

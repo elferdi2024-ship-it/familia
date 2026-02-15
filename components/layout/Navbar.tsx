@@ -64,12 +64,21 @@ export function Navbar() {
 
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-4">
-            <Link href="/publish" className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${pathname.startsWith("/publish")
-              ? "text-primary bg-primary/5"
-              : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
-              }`}>
-              Publicar
-            </Link>
+            {user ? (
+              <Link href="/publish" className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${pathname.startsWith("/publish")
+                ? "text-primary bg-primary/5"
+                : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                }`}>
+                Publicar
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-5 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg"
+              >
+                Publicar
+              </button>
+            )}
 
             {user ? (
               <div className="flex items-center gap-4">
@@ -112,7 +121,19 @@ export function Navbar() {
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/compare">Comparar</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="#">Servicios</Link>
             <div className="h-px bg-primary/10"></div>
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary" href="/publish">Publicar Propiedad</Link>
+            {user ? (
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary" href="/publish">Publicar Propiedad</Link>
+            ) : (
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false)
+                  setShowAuthModal(true)
+                }}
+                className="text-primary text-left"
+              >
+                Publicar Propiedad
+              </button>
+            )}
 
             {user ? (
               <div className="flex items-center justify-between p-4 rounded-xl bg-primary/5">
