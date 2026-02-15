@@ -12,7 +12,12 @@ import { db } from "@/lib/firebase"
 import { collection, query, getDocs, limit } from "firebase/firestore"
 import { Property, formatPrice } from "@/lib/data"
 
-function SearchPageInner() {
+function SearchPageInner({ showFilters, setShowFilters, showMap, setShowMap }: {
+    showFilters: boolean,
+    setShowFilters: (val: boolean) => void,
+    showMap: boolean,
+    setShowMap: (val: boolean) => void
+}) {
     const searchParams = useSearchParams()
 
     const [filters, setFilters] = useState({
@@ -31,8 +36,6 @@ function SearchPageInner() {
 
     // Real data state
     const [properties, setProperties] = useState<Property[]>([])
-    const [showFilters, setShowFilters] = useState(false)
-    const [showMap, setShowMap] = useState(searchParams.get('view') === 'map')
     const [savedToast, setSavedToast] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const { saveSearch } = useSavedSearches()
@@ -50,10 +53,15 @@ function SearchPageInner() {
             const q = query(propertiesRef, limit(200))
 
             const querySnapshot = await getDocs(q)
-            let docs = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            } as Property))
+            let docs = querySnapshot.docs.map(doc => {
+                const data = doc.data()
+                return {
+                    id: doc.id,
+                    ...data,
+                    // If publishedAt is a Firestore Timestamp, convert to ISO string
+                    publishedAt: data.publishedAt?.toDate?.()?.toISOString() || data.publishedAt || new Date().toISOString()
+                } as Property
+            })
 
             // Client-side filtering
             if (filters.operation) {
@@ -89,8 +97,8 @@ function SearchPageInner() {
 
             // Sort by publishedAt descending
             docs.sort((a, b) => {
-                const aTime = (a as any).publishedAt?.seconds || 0
-                const bTime = (b as any).publishedAt?.seconds || 0
+                const aTime = new Date(a.publishedAt).getTime()
+                const bTime = new Date(b.publishedAt).getTime()
                 return bTime - aTime
             })
 
@@ -363,8 +371,7 @@ function SearchPageInner() {
                         </div>
                         {/* Sheet Footer */}
                         <div className="flex-shrink-0 p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark safe-bottom">
-                            <button
-                                onClick={() => setShowFilters(false)}
+                            <div className="flex flex-wrap gap-2 mb-4">
                                 {filters.bedrooms && (
                                     <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
                                         {filters.bedrooms} Dorm.
@@ -397,9 +404,16 @@ function SearchPageInner() {
                                         Limpiar todo
                                     </button>
                                 )}
+                            </div>
+                            <button
+                                onClick={() => setShowFilters(false)}
+                                className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg active:scale-95"
+                            >
+                                Ver {properties.length} Propiedades
+                            </button>
                         </div>
                     </div>
-                    {/* Mobile: active filter count + sort */}
+                )}
                 <div className="flex items-center justify-between md:justify-end gap-2">
                     {/* Mobile filter chips (scrollable) */}
                     <div className="flex md:hidden gap-1.5 items-center overflow-x-auto no-scrollbar flex-1 mr-2">
@@ -524,7 +538,7 @@ function SearchPageInner() {
                         fill
                         className="object-cover"
                         alt="Map of Montevideo"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS3tqEbJXll60SW3vuu77a6MgWk2kkqvIJj-3FPuQIvD24JgqiVHN7qvOS7_7IVvGKxZKSe0lZvSEewoaidrBpWJp_B54eOBtINAA40IR8i-ubf6Jr6UZbJnnCfzoehI80gJB3vDS2JHyEfyiBsfeHh7DSd2YvSBwO8Xir_V5vNrANpG6mPK1IuUNgAapmeaZ5bpmYg1ShIHcM4JKI9cFyKJvNjp20QhDaLX9eiVU-jQfGA22BEnWzEEfa-_MjfxOe7KqXJt70-0Ld"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS3tqEbJXll60SW3vuu77a6MgWk2kkqvIJj-3FPuQIvD24JgqiVHN7qvOS7_7IVnGGxZKSe0lZvSEewoaidrBpWJp_B54eOBtINAA40IR8i-ubf6Jr6UZbJnnCfzoehI80gJB3vDS2JHyEfyiBsfeHh7DSd2YvSBwO8Xir_V5vNrANpG6mPK1IuUNgAapmeaZ5bpmYg1ShIHcM4JKI9cFyKJvNjp20QhDaLX9eiVU-jQfGA22BEnWzEEfa-_MjfxOe7KqXJt70-0Ld"
                         sizes="50vw"
                     />
                     {/* Floating Map Markers */}
@@ -581,29 +595,55 @@ function SearchPageInner() {
                     </button>
                 </section>
             </div>
-        </main>
-        </div >
+        </div>
+    )
+}
 
-        {/* Mobile FABs — Floating Action Buttons */ }
-    {/* Mobile FABs — Floating Action Buttons */ }
-    <div className="md:hidden fixed bottom-28 left-0 right-0 flex justify-center gap-3 z-[100] px-4 pointer-events-none">
-        <button
-            onClick={() => setShowFilters(true)}
-            className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200 pointer-events-auto active:scale-95 transition-transform"
-        >
-            <span className="material-icons text-lg">tune</span>
-            Filtros
-            {hasFilters && <span className="w-2 h-2 bg-primary rounded-full"></span>}
-        </button>
-        <button
-            onClick={() => setShowMap(!showMap)}
-            className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm pointer-events-auto active:scale-95 transition-transform"
-        >
-            <span className="material-icons text-lg">{showMap ? 'view_list' : 'map'}</span>
-            {showMap ? 'Ver Lista' : 'Ver Mapa'}
-        </button>
-    </div>
-        </div >
+{/* Mobile FABs — Floating Action Buttons */ }
+function FloatingActionButtons({ showFilters, setShowFilters, showMap, setShowMap, hasFilters }: {
+    showFilters: boolean,
+    setShowFilters: (val: boolean) => void,
+    showMap: boolean,
+    setShowMap: (val: boolean) => void,
+    hasFilters: boolean
+}) {
+    return (
+        <div className="md:hidden fixed bottom-28 left-0 right-0 flex justify-center gap-3 z-[100] px-4 pointer-events-none">
+            <button
+                onClick={() => setShowFilters(true)}
+                className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200 pointer-events-auto active:scale-95 transition-transform"
+            >
+                <span className="material-icons text-lg">tune</span>
+                Filtros
+                {hasFilters && <span className="w-2 h-2 bg-primary rounded-full"></span>}
+            </button>
+            <button
+                onClick={() => setShowMap(!showMap)}
+                className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm pointer-events-auto active:scale-95 transition-transform"
+            >
+                <span className="material-icons text-lg">{showMap ? 'view_list' : 'map'}</span>
+                {showMap ? 'Ver Lista' : 'Ver Mapa'}
+            </button>
+        </div>
+    )
+}
+
+function SearchPageContent() {
+    const [showFilters, setShowFilters] = useState(false)
+    const [showMap, setShowMap] = useState(false)
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+        if (searchParams.get('view') === 'map') {
+            setShowMap(true)
+        }
+    }, [searchParams])
+
+    return (
+        <>
+            <SearchPageInner showFilters={showFilters} setShowFilters={setShowFilters} showMap={showMap} setShowMap={setShowMap} />
+            <FloatingActionButtons showFilters={showFilters} setShowFilters={setShowFilters} showMap={showMap} setShowMap={setShowMap} hasFilters={false} />
+        </>
     )
 }
 
@@ -617,7 +657,7 @@ export default function SearchPage() {
                 </div>
             </div>
         }>
-            <SearchPageInner />
+            <SearchPageContent />
         </Suspense>
     )
 }

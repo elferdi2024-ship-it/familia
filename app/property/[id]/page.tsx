@@ -242,7 +242,7 @@ export default function PropertyDetailPage() {
                                         })
                                     } else {
                                         await navigator.clipboard.writeText(window.location.href)
-                                        // Simple visual feedback could be added here, currently just silent copy or we can add a state for "Copied!" tooltip
+                                        // Simple visual feedback could be added here, currently just silent copy or we can add a state for &quot;Copied!&quot; tooltip
                                         alert("Enlace copiado al portapapeles")
                                     }
                                 } catch (error) {
@@ -530,7 +530,7 @@ export default function PropertyDetailPage() {
                                     </div>
                                     <div>
                                         <p className="font-bold text-slate-900">{property.agentName || "Agente DominioTotal"}</p>
-                                        <p className="text-xs text-slate-500 font-medium">Agente Verificado • {property.agentPhone || "Contactar por web"}</p>
+                                        <p className="text-xs text-slate-500 font-medium">Agente Verificado • {property.agentPhone || 'Contactar por web'}</p>
                                     </div>
                                 </div>
                                 {leadSuccess ? (
@@ -640,7 +640,7 @@ export default function PropertyDetailPage() {
                             </div>
                             <div>
                                 <p className="font-bold text-slate-900">{property.agentName || "Agente DominioTotal"}</p>
-                                <p className="text-xs text-slate-500">{property.agentPhone || "Contactar por web"}</p>
+                                <p className="text-xs text-slate-500">{property.agentPhone || 'Contactar por web'}</p>
                             </div>
                         </div>
                         {leadSuccess ? (
