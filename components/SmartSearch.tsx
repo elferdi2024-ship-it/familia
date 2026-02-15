@@ -7,46 +7,82 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 type Suggestion = {
     id: string
     label: string
     type: "location" | "property" | "feature"
-    icon: React.ReactNode
+    icon?: React.ReactNode
+    value?: string
 }
 
-const MOCK_SUGGESTIONS: Suggestion[] = [
-    { id: "pocitos", label: "Pocitos, Montevideo", type: "location", icon: <MapPin className="h-4 w-4 text-blue-500" /> },
-    { id: "carrasco", label: "Carrasco, Montevideo", type: "location", icon: <MapPin className="h-4 w-4 text-blue-500" /> },
-    { id: "punta-carretas", label: "Punta Carretas, Montevideo", type: "location", icon: <MapPin className="h-4 w-4 text-blue-500" /> },
-    { id: "jose-ignacio", label: "José Ignacio, Maldonado", type: "location", icon: <MapPin className="h-4 w-4 text-blue-500" /> },
-    { id: "penthouse", label: "Penthouse", type: "property", icon: <Building2 className="h-4 w-4 text-emerald-500" /> },
-    { id: "casa", label: "Casa con Jardín", type: "property", icon: <Building2 className="h-4 w-4 text-emerald-500" /> },
-    { id: "vista-mar", label: "Vista al Mar", type: "feature", icon: <TrendingUp className="h-4 w-4 text-purple-500" /> },
-    { id: "pozo", label: "Proyectos en Pozo", type: "feature", icon: <TrendingUp className="h-4 w-4 text-purple-500" /> },
-]
-
 export function SmartSearch() {
+    const router = useRouter()
     const [query, setQuery] = React.useState("")
     const [isOpen, setIsOpen] = React.useState(false)
     const [selectedTags, setSelectedTags] = React.useState<Suggestion[]>([])
+    const [suggestions, setSuggestions] = React.useState<Suggestion[]>([])
+    const [loading, setLoading] = React.useState(false)
     const containerRef = React.useRef<HTMLDivElement>(null)
 
-    const filteredSuggestions = MOCK_SUGGESTIONS.filter(
-        (item) =>
-            item.label.toLowerCase().includes(query.toLowerCase()) &&
-            !selectedTags.find((tag) => tag.id === item.id)
-    )
+    // Debounce search
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            if (query.length >= 2) {
+                fetchSuggestions(query)
+            } else {
+                setSuggestions([])
+            }
+        }, 300)
+
+        return () => clearTimeout(timer)
+    }, [query])
+
+    const fetchSuggestions = async (q: string) => {
+        setLoading(true)
+        try {
+            const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(q)}`)
+            const data = await res.json()
+            setSuggestions(data.suggestions || [])
+        } catch (error) {
+            console.error("Error fetching suggestions:", error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const getIcon = (type: string) => {
+        switch (type) {
+            case 'location': return <MapPin className="h-4 w-4 text-blue-500" />
+            case 'property': return <Building2 className="h-4 w-4 text-emerald-500" />
+            default: return <TrendingUp className="h-4 w-4 text-purple-500" />
+        }
+    }
 
     const handleSelect = (suggestion: Suggestion) => {
-        setSelectedTags([...selectedTags, suggestion])
+        if (!selectedTags.find(t => t.id === suggestion.id)) {
+            setSelectedTags([...selectedTags, suggestion])
+        }
         setQuery("")
-        // Keep open for multiple selection or close? Let's keep input focused but maybe close dropdown if we want single select behavior usually search is complex. 
-        // For this UX, adding tags feels "smart".
+        setIsOpen(false)
     }
 
     const removeTag = (id: string) => {
         setSelectedTags(selectedTags.filter((tag) => tag.id !== id))
+    }
+
+    const handleSearch = () => {
+        const params = new URLSearchParams()
+
+        selectedTags.forEach(tag => {
+            if (tag.type === 'location') params.append('location', tag.value || tag.label)
+            if (tag.type === 'property') params.append('type', tag.value || tag.label)
+        })
+
+        if (query) params.append('q', query)
+
+        router.push(`/search?${params.toString()}`)
     }
 
     // Close on click outside
@@ -87,12 +123,17 @@ export function SmartSearch() {
                             value={query}
                             onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
                             onFocus={() => setIsOpen(true)}
-                            placeholder={selectedTags.length > 0 ? "Agregar más filtros..." : "Buscar por ubicación, tipo..."}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                            placeholder={selectedTags.length > 0 ? "Agregar más filtros..." : "Buscar por ubicación, tipo (ej. Pocitos)..."}
                             className="h-10 min-w-[150px] flex-1 border-0 bg-transparent p-0 text-lg text-white placeholder:text-slate-300 focus-visible:ring-0"
                         />
                     </div>
 
-                    <Button size="lg" className="hidden h-10 rounded-xl bg-blue-600 px-6 font-semibold text-white hover:bg-blue-700 sm:flex">
+                    <Button
+                        size="lg"
+                        onClick={handleSearch}
+                        className="hidden h-10 rounded-xl bg-blue-600 px-6 font-semibold text-white hover:bg-blue-700 sm:flex"
+                    >
                         Buscar
                     </Button>
                 </div>
@@ -100,7 +141,7 @@ export function SmartSearch() {
 
             {/* Dropdown Suggestions */}
             <AnimatePresence>
-                {isOpen && (filteredSuggestions.length > 0 || query.length === 0) && (
+                {isOpen && (suggestions.length > 0 || query.length > 1) && (
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -108,20 +149,14 @@ export function SmartSearch() {
                         className="absolute top-full left-0 right-0 z-50 overflow-hidden rounded-b-2xl border border-t-0 border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-xl"
                     >
                         <div className="p-2">
-                            {query === "" && selectedTags.length === 0 && (
-                                <div className="px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                                    Sugerencias Populares
-                                </div>
-                            )}
-
-                            {filteredSuggestions.map((suggestion) => (
+                            {suggestions.map((suggestion) => (
                                 <button
                                     key={suggestion.id}
                                     onClick={() => handleSelect(suggestion)}
                                     className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm text-slate-200 hover:bg-white/10 transition-colors"
                                 >
                                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800">
-                                        {suggestion.icon}
+                                        {getIcon(suggestion.type)}
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="font-medium">{suggestion.label}</span>
@@ -130,9 +165,15 @@ export function SmartSearch() {
                                 </button>
                             ))}
 
-                            {filteredSuggestions.length === 0 && query !== "" && (
+                            {suggestions.length === 0 && query.length > 1 && !loading && (
                                 <div className="p-4 text-center text-sm text-slate-400">
                                     No se encontraron resultados para "{query}"
+                                </div>
+                            )}
+
+                            {loading && (
+                                <div className="p-4 text-center text-sm text-slate-400">
+                                    Buscando...
                                 </div>
                             )}
                         </div>

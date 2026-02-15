@@ -124,7 +124,7 @@ export interface Property {
 
     // ── Metadata ──
     userId?: string                 // 🇺🇾 ID del usuario que publicó
-    status?: "active" | "pending"   // 🇺🇾 Estado de la publicación
+    status?: "active" | "pending" | "paused" | "sold"   // 🇺🇾 Estado de la publicación
     views: number                   // Para "Visto X veces hoy"
     publishedAt: string             // ISO date
     updatedAt: string

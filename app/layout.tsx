@@ -20,8 +20,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DominioTotal — Propiedades en Uruguay",
+  metadataBase: new URL('https://dominiototal.vercel.app'),
+  title: {
+    default: "DominioTotal — Propiedades en Uruguay",
+    template: "%s | DominioTotal"
+  },
   description: "Encontrá tu próximo hogar. 12.842 propiedades activas en Uruguay.",
+  alternates: {
+    canonical: './',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_UY',
+    url: 'https://dominiototal.vercel.app',
+    siteName: 'DominioTotal',
+  }
 };
 
 export default function RootLayout({
@@ -43,6 +56,37 @@ export default function RootLayout({
           <FavoritesProvider>
             <SavedSearchesProvider>
               <PublishProvider>
+                <div className="json-ld-container">
+                  <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                      __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "RealEstateAgent",
+                        "name": "DominioTotal",
+                        "url": "https://dominiototal.vercel.app",
+                        "logo": "https://dominiototal.vercel.app/logo.png",
+                        "image": "https://dominiototal.vercel.app/og-image.jpg",
+                        "description": "Encontrá tu próximo hogar en Uruguay. Inmobiliaria líder en Montevideo, Canelones y Maldonado.",
+                        "address": {
+                          "@type": "PostalAddress",
+                          "streetAddress": "Av. 18 de Julio 1234",
+                          "addressLocality": "Montevideo",
+                          "addressRegion": "Montevideo",
+                          "postalCode": "11100",
+                          "addressCountry": "UY"
+                        },
+                        "geo": {
+                          "@type": "GeoCoordinates",
+                          "latitude": -34.9011,
+                          "longitude": -56.1645
+                        },
+                        "telephone": "+598 99 123 456",
+                        "priceRange": "$$$"
+                      })
+                    }}
+                  />
+                </div>
                 <Navbar />
                 <main className="pb-20 md:pb-0">{children}</main>
                 <Footer />

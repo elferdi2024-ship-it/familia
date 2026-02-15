@@ -1,60 +1,82 @@
 "use client"
 
 import * as React from "react"
-import { MapPin, GraduationCap, Utensils, Trees, ShoppingBag, Info } from "lucide-react"
+import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from "@react-google-maps/api"
+import { MapPin, GraduationCap, Utensils, Trees, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
+const containerStyle = {
+    width: '100%',
+    height: '100%',
+    borderRadius: '0.75rem',
+}
+
+// Montevideo Center as default
+const defaultCenter = {
+    lat: -34.9011,
+    lng: -56.1645
+}
 
 interface Poi {
     id: string
     label: string
     category: "school" | "restaurant" | "park" | "shopping"
-    x: number // Percentage 0-100
-    y: number // Percentage 0-100
+    lat: number
+    lng: number
     description: string
 }
 
-const MOCK_POIS: Poi[] = [
-    { id: "1", label: "British Schools", category: "school", x: 20, y: 30, description: "Colegio bilingüe de primer nivel international." },
-    { id: "2", label: "Mercado del Inmigrante", category: "restaurant", x: 60, y: 50, description: "Paseo gastronómico con variedad de opciones." },
-    { id: "3", label: "Parque Villa Biarritz", category: "park", x: 40, y: 70, description: "Gran espacio verde ideal para deportes y relax." },
-    { id: "4", label: "Punta Carretas Shopping", category: "shopping", x: 80, y: 40, description: "El centro comercial más exclusivo de la zona." },
-    { id: "5", label: "Restaurante La Perdiz", category: "restaurant", x: 55, y: 45, description: "Clásico restaurante de comida tradicional." },
-]
-
-const CATEGORY_ICONS = {
-    school: <GraduationCap className="h-4 w-4" />,
-    restaurant: <Utensils className="h-4 w-4" />,
-    park: <Trees className="h-4 w-4" />,
-    shopping: <ShoppingBag className="h-4 w-4" />,
-}
+import { getNearbyPlaces } from "@/actions/get-nearby-places"
 
 const CATEGORY_COLORS = {
-    school: "bg-blue-500",
-    restaurant: "bg-orange-500",
-    park: "bg-green-500",
-    shopping: "bg-purple-500",
+    school: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+    restaurant: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png",
+    park: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+    shopping: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
 }
 
-export function NeighborhoodMap({ location }: { location: string }) {
+export function NeighborhoodMap({ location, coordinates }: { location: string, coordinates?: { lat: number, lng: number } }) {
+    const { isLoaded } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "" })
+
+    const [map, setMap] = React.useState<google.maps.Map | null>(null)
     const [activeCategory, setActiveCategory] = React.useState<string | null>(null)
+    const [selectedPoi, setSelectedPoi] = React.useState<Poi | null>(null)
+    const [pois, setPois] = React.useState<Poi[]>([])
+
+    const center = coordinates || defaultCenter
+
+    React.useEffect(() => {
+        if (coordinates) {
+            getNearbyPlaces(coordinates.lat, coordinates.lng).then(setPois)
+        }
+    }, [coordinates])
 
     const filteredPois = activeCategory
-        ? MOCK_POIS.filter(poi => poi.category === activeCategory)
-        : MOCK_POIS
+        ? pois.filter(poi => poi.category === activeCategory)
+        : pois
+
+    const onLoad = React.useCallback(function callback(map: google.maps.Map) {
+        setMap(map)
+    }, [])
+
+    const onUnmount = React.useCallback(function callback(map: google.maps.Map) {
+        setMap(null)
+    }, [])
+
+    if (!isLoaded) return <div className="aspect-[21/9] w-full rounded-xl bg-slate-100 animate-pulse flex items-center justify-center text-slate-400">Cargando mapa...</div>
 
     return (
         <div className="space-y-4 rounded-xl border bg-card p-4 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                     <h3 className="text-lg font-semibold flex items-center gap-2">
                         <MapPin className="h-5 w-5 text-primary" />
                         Explora el Barrio
                     </h3>
-                    <p className="text-sm text-muted-foreground">Puntos de interés cercanos a esta propiedad.</p>
+                    <p className="text-sm text-muted-foreground">Ubicación exacta y puntos de interés.</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     <Button
                         variant={activeCategory === null ? "secondary" : "ghost"}
                         size="sm"
@@ -82,46 +104,55 @@ export function NeighborhoodMap({ location }: { location: string }) {
                 </div>
             </div>
 
-            <div className="relative aspect-[21/9] w-full overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
-                {/* Map Placeholder */}
-                <div
-                    className="absolute inset-0 opacity-50 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop')] bg-cover bg-center grayscale transition-all hover:grayscale-0"
-                />
+            <div className="relative aspect-[21/9] w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800">
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={center}
+                    zoom={15}
+                    onLoad={onLoad}
+                    onUnmount={onUnmount}
+                    options={{
+                        disableDefaultUI: false,
+                        zoomControl: true,
+                        streetViewControl: true,
+                        mapTypeControl: false,
+                        fullscreenControl: true,
+                    }}
+                >
+                    {/* Main Property Marker */}
+                    <MarkerF
+                        position={center}
+                        title={location}
+                    // animation={google.maps.Animation.DROP} // Removed to avoid typing issues if types not fully loaded
+                    />
 
-                {/* Center Point (The Property) */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                    <div className="relative flex items-center justify-center">
-                        <span className="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-primary opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-white"></span>
-                    </div>
-                </div>
-
-                {/* POIs */}
-                <TooltipProvider delayDuration={0}>
+                    {/* POI Markers */}
                     {filteredPois.map((poi) => (
-                        <Tooltip key={poi.id}>
-                            <TooltipTrigger asChild>
-                                <button
-                                    className={`absolute -translate-x-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-white shadow-lg transition-transform hover:scale-110 z-10 ${CATEGORY_COLORS[poi.category]}`}
-                                    style={{ top: `${poi.y}%`, left: `${poi.x}%` }}
-                                >
-                                    {CATEGORY_ICONS[poi.category]}
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top">
-                                <div className="text-center">
-                                    <p className="font-bold">{poi.label}</p>
-                                    <p className="text-xs text-muted-foreground">{poi.description}</p>
-                                </div>
-                            </TooltipContent>
-                        </Tooltip>
+                        <MarkerF
+                            key={poi.id}
+                            position={{ lat: poi.lat, lng: poi.lng }}
+                            title={poi.label}
+                            icon={CATEGORY_COLORS[poi.category]}
+                            onClick={() => setSelectedPoi(poi)}
+                        />
                     ))}
-                </TooltipProvider>
 
-                {/* Overlay Labels for Context */}
-                <div className="absolute bottom-2 right-2 rounded-md bg-white/80 px-2 py-1 text-xs font-bold text-slate-800 backdrop-blur-sm">
-                    {location}
-                </div>
+                    {/* InfoWindow for Selected POI */}
+                    {selectedPoi && (
+                        <InfoWindowF
+                            position={{ lat: selectedPoi.lat, lng: selectedPoi.lng }}
+                            onCloseClick={() => setSelectedPoi(null)}
+                        >
+                            <div className="p-2 min-w-[150px]">
+                                <h4 className="font-bold text-sm mb-1">{selectedPoi.label}</h4>
+                                <p className="text-xs text-gray-600 mb-2">{selectedPoi.description}</p>
+                                <Badge variant="outline" className="text-[10px] uppercase">
+                                    {selectedPoi.category === 'restaurant' ? 'Gastronomía' : selectedPoi.category}
+                                </Badge>
+                            </div>
+                        </InfoWindowF>
+                    )}
+                </GoogleMap>
             </div>
         </div>
     )

@@ -322,7 +322,7 @@ function SearchPageInner() {
     )
 
     return (
-        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-screen flex flex-col">
+        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col">
             <div className="pt-16 md:pt-20"></div>
 
             <div className="flex flex-1 overflow-hidden">
@@ -483,7 +483,7 @@ function SearchPageInner() {
                     {/* Content: List + Map */}
                     <div className="flex-1 flex overflow-hidden relative">
                         {/* Listing Grid — full width on mobile, 50% on desktop */}
-                        <section className={`${showMap ? 'hidden md:block' : 'w-full'} md:w-1/2 overflow-y-auto p-4 md:p-6 bg-slate-50/50 dark:bg-slate-900/50 hide-scrollbar`}>
+                        <section className={`${showMap ? 'hidden md:block' : 'w-full'} md:w-1/2 overflow-y-auto p-4 pb-24 md:p-6 md:pb-6 bg-slate-50/50 dark:bg-slate-900/50 hide-scrollbar`}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4 md:gap-6">
                                 {isLoading ? (
                                     <PropertyGridSkeleton count={6} />
@@ -618,10 +618,11 @@ function SearchPageInner() {
             </div>
 
             {/* Mobile FABs — Floating Action Buttons */}
-            <div className="md:hidden fixed bottom-6 left-0 right-0 flex justify-center gap-3 z-50 px-4">
+            {/* Mobile FABs — Floating Action Buttons */}
+            <div className="md:hidden fixed bottom-28 left-0 right-0 flex justify-center gap-3 z-[100] px-4 pointer-events-none">
                 <button
                     onClick={() => setShowFilters(true)}
-                    className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200"
+                    className="flex items-center gap-2 bg-white text-slate-900 px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm border border-slate-200 pointer-events-auto active:scale-95 transition-transform"
                 >
                     <span className="material-icons text-lg">tune</span>
                     Filtros
@@ -629,7 +630,7 @@ function SearchPageInner() {
                 </button>
                 <button
                     onClick={() => setShowMap(!showMap)}
-                    className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm"
+                    className="flex items-center gap-2 bg-primary text-white px-5 py-3.5 rounded-full shadow-2xl font-bold text-sm pointer-events-auto active:scale-95 transition-transform"
                 >
                     <span className="material-icons text-lg">{showMap ? 'view_list' : 'map'}</span>
                     {showMap ? 'Ver Lista' : 'Ver Mapa'}

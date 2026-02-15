@@ -9,10 +9,18 @@ interface AuthModalProps {
     onClose: () => void
 }
 
+type AuthMode = "login" | "register"
+
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-    const { loginWithGoogle } = useAuth()
+    const { loginWithGoogle, loginWithEmail, registerWithEmail } = useAuth()
+    const [mode, setMode] = useState<AuthMode>("login")
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
+
+    // Form State
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
 
     const handleGoogleLogin = async () => {
         setLoading(true)
@@ -25,6 +33,43 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
+
+        try {
+            if (mode === "login") {
+                await loginWithEmail(email, password)
+            } else {
+                if (!name) {
+                    throw new Error("El nombre es requerido para registrarse.")
+                }
+                await registerWithEmail(email, password, name)
+            }
+            onClose()
+        } catch (err: any) {
+            console.error(err)
+            // Firebase Error Mapping
+            if (err.code === "auth/invalid-credential") {
+                setError("Email o contraseña incorrectos.")
+            } else if (err.code === "auth/email-already-in-use") {
+                setError("Este email ya está registrado.")
+            } else if (err.code === "auth/weak-password") {
+                setError("La contraseña debe tener al menos 6 caracteres.")
+            } else {
+                setError(err.message || "Ocurrió un error. Intentalo de nuevo.")
+            }
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const toggleMode = () => {
+        setMode(mode === "login" ? "register" : "login")
+        setError(null)
     }
 
     return (
@@ -48,10 +93,14 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl z-[101] overflow-hidden border border-white/20 dark:border-slate-800"
                     >
                         <div className="p-8">
-                            <div className="flex justify-between items-center mb-8">
+                            <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <h2 className="text-2xl font-black text-slate-900 dark:text-white">Bienvenido</h2>
-                                    <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Ingresá para guardar tus favoritos</p>
+                                    <h2 className="text-2xl font-black text-slate-900 dark:text-white">
+                                        {mode === "login" ? "Bienvenido" : "Crear Cuenta"}
+                                    </h2>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
+                                        {mode === "login" ? "Ingresá para continuar" : "Registrate para guardar favoritos"}
+                                    </p>
                                 </div>
                                 <button
                                     onClick={onClose}
@@ -70,39 +119,87 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <button
                                 onClick={handleGoogleLogin}
                                 disabled={loading}
-                                className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-800 py-4 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
+                                className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-800 py-3.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
                             >
-                                {loading ? (
+                                {loading && !email ? ( // Show spinner only if google login clicked (inferred by empty email/pass field usage or specific state) - actually using global loading for now is mostly fine but let's be precise
                                     <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                                 ) : (
                                     <>
                                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-                                        Continuar con Google
+                                        {mode === "login" ? "Ingresar con Google" : "Registrarse con Google"}
                                     </>
                                 )}
                             </button>
 
-                            <div className="relative my-8 text-center">
+                            <div className="relative my-6 text-center">
                                 <div className="absolute inset-0 flex items-center">
                                     <div className="w-full border-t border-slate-100 dark:border-slate-800"></div>
                                 </div>
                                 <span className="relative px-4 bg-white dark:bg-slate-900 text-slate-400 text-xs font-bold uppercase tracking-widest">O con mail</span>
                             </div>
 
-                            <div className="space-y-4">
-                                <input
-                                    type="email"
-                                    placeholder="Tu email"
-                                    className="w-full px-4 py-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
-                                />
-                                <button className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-[0.98]">
-                                    Siguiente
-                                </button>
-                            </div>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                {mode === "register" && (
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-500 uppercase ml-1">Nombre</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Tu nombre completo"
+                                            required
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                        />
+                                    </div>
+                                )}
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase ml-1">Email</label>
+                                    <input
+                                        type="email"
+                                        placeholder="tu@email.com"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase ml-1">Contraseña</label>
+                                    <input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        required
+                                        minLength={6}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                    />
+                                </div>
 
-                            <p className="mt-8 text-center text-xs text-slate-400 font-medium px-4">
-                                Al continuar, aceptás nuestros <a href="#" className="text-primary hover:underline">Términos de Servicio</a> y <a href="#" className="text-primary hover:underline">Política de Privacidad</a>.
-                            </p>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center"
+                                >
+                                    {loading ? (
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    ) : (
+                                        mode === "login" ? "Ingresar" : "Crear Cuenta"
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-6 text-center">
+                                <p className="text-sm text-slate-500 font-medium">
+                                    {mode === "login" ? "¿No tenés cuenta?" : "¿Ya tenés cuenta?"}
+                                    <button
+                                        onClick={toggleMode}
+                                        className="ml-2 text-primary hover:underline font-bold"
+                                    >
+                                        {mode === "login" ? "Registrate" : "Ingresá"}
+                                    </button>
+                                </p>
+                            </div>
                         </div>
                     </motion.div>
                 </>
