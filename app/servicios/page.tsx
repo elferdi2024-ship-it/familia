@@ -175,7 +175,9 @@ function ContactModal({
         setIsSubmitting(true)
 
         const formData = new FormData(e.currentTarget)
-        formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE")
+        // Hardcoded key as per user request to ensure it works, while also allowing env var
+        const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "522bee8c-a34d-4451-b57c-927ec9c97016"
+        formData.append("access_key", accessKey)
         formData.append("subject", `Solicitud Servicio — ${formData.get("service_type")}`)
         formData.append("from_name", "Atlantida Group Services")
 
@@ -206,7 +208,7 @@ function ContactModal({
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -215,10 +217,10 @@ function ContactModal({
                         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
                     />
                     <motion.div
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.95, opacity: 0 }}
-                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden"
+                        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
                     >
                         {success ? (
                             <div className="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
@@ -234,79 +236,89 @@ function ContactModal({
                             </div>
                         ) : (
                             <>
-                                <div className="p-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
-                                    <h3 className="text-xl font-bold">Solicitud de Servicio</h3>
+                                <div className="shrink-0 p-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
+                                    <h3 className="text-xl font-black uppercase tracking-tight">Solicitud de Servicio</h3>
                                     <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                                         <X className="w-5 h-5 text-slate-400" />
                                     </button>
                                 </div>
-                                <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Nombre y Apellido</label>
-                                            <div className="relative">
-                                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <input required name="name" type="text" className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm" placeholder="Ej: Juan Pérez" />
+                                <div className="overflow-y-auto flex-1 custom-scrollbar">
+                                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 pb-24 md:pb-8">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Nombre y Apellido</label>
+                                                <div className="relative">
+                                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                    <input required name="name" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Juan Pérez" />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Teléfono</label>
+                                                <div className="relative">
+                                                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                    <input required name="phone" type="tel" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: 099 123 456" />
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Teléfono</label>
+                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Email de Contacto</label>
                                             <div className="relative">
-                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <input required name="phone" type="tel" className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm" placeholder="Ej: 099 123 456" />
+                                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <input required name="email" type="email" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="juan@ejemplo.com" />
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Email</label>
-                                        <div className="relative">
-                                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                            <input required name="email" type="email" className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm" placeholder="juan@ejemplo.com" />
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Tipo de Servicio</label>
+                                            <div className="relative">
+                                                <select
+                                                    required
+                                                    name="service_type"
+                                                    defaultValue={selectedService}
+                                                    className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium appearance-none"
+                                                >
+                                                    <option value="">Seleccione un servicio</option>
+                                                    {[...OWNER_SERVICES, ...INVESTOR_SERVICES].map(s => (
+                                                        <option key={s.id} value={s.title}>{s.title}</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Tipo de Servicio</label>
-                                        <select
-                                            required
-                                            name="service_type"
-                                            defaultValue={selectedService}
-                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm appearance-none"
-                                        >
-                                            <option value="">Seleccione un servicio</option>
-                                            {[...OWNER_SERVICES, ...INVESTOR_SERVICES].map(s => (
-                                                <option key={s.id} value={s.title}>{s.title}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Zona de la propiedad</label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                            <input required name="zone" type="text" className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm" placeholder="Ej: Pocitos, Montevideo" />
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Zona de la propiedad</label>
+                                            <div className="relative">
+                                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <input required name="zone" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Pocitos, Montevideo" />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">Mensaje / Detalle</label>
-                                        <textarea name="message" rows={3} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm resize-none" placeholder="Cuéntanos un poco más sobre tu necesidad..."></textarea>
-                                    </div>
+                                        <div className="space-y-2 text-white">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Mensaje / Detalle</label>
+                                            <textarea name="message" rows={4} className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium resize-none" placeholder="Cuéntanos un poco más sobre tu necesidad..."></textarea>
+                                        </div>
 
-                                    <button
-                                        disabled={isSubmitting}
-                                        type="submit"
-                                        className="w-full py-4 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
-                                    >
-                                        {isSubmitting ? (
-                                            <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                                        ) : (
-                                            "Enviar solicitud"
-                                        )}
-                                    </button>
-                                    <p className="text-[10px] text-center text-slate-400">Te contactaremos a la brevedad para coordinar el servicio.</p>
-                                </form>
+                                        <div className="md:pt-4">
+                                            <button
+                                                disabled={isSubmitting}
+                                                type="submit"
+                                                className="w-full py-5 bg-primary text-white rounded-[1.5rem] font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
+                                            >
+                                                {isSubmitting ? (
+                                                    <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                                ) : (
+                                                    <>
+                                                        Enviar solicitud
+                                                        <ArrowRight className="w-5 h-5" />
+                                                    </>
+                                                )}
+                                            </button>
+                                            <p className="mt-4 text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">Respuesta garantizada en menos de 24hs</p>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         )}
                     </motion.div>
