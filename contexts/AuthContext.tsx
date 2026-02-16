@@ -60,11 +60,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, [])
 
     const loginWithGoogle = async () => {
+        if (!auth) {
+            console.error("Firebase auth is not initialized. Check your .env.local configuration.")
+            throw new Error("El servicio de autenticación no está disponible.")
+        }
         const provider = new GoogleAuthProvider()
         try {
             await signInWithPopup(auth, provider)
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error signing in with Google:", error)
+            if (error.code === 'auth/unauthorized-domain') {
+                console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
+            }
             throw error
         }
     }
