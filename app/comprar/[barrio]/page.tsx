@@ -44,10 +44,24 @@ export async function generateStaticParams() {
     // Barrios principales para pre-renderizado SEO
     return [
         { barrio: 'pocitos' },
+        { barrio: 'punta-carretas' },
+        { barrio: 'carrasco' },
+        { barrio: 'buceo' },
         { barrio: 'cordon' },
         { barrio: 'centro' },
+        { barrio: 'ciudad-vieja' },
+        { barrio: 'parque-rodo' },
         { barrio: 'malvin' },
+        { barrio: 'punta-gorda' },
+        { barrio: 'la-blanqueada' },
+        { barrio: 'tres-cruces' },
         { barrio: 'aguada' },
-        { barrio: 'punta-carretas' }
+        { barrio: 'palermo' },
+        { barrio: 'barrio-sur' },
+        { barrio: 'parque-batlle' },
+        { barrio: 'larranaga' },
+        { barrio: 'union' },
+        { barrio: 'sayago' },
+        { barrio: 'penarol' }
     ]
 }

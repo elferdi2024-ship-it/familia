@@ -26,7 +26,7 @@ function isRateLimited(key: string, maxRequests: number): boolean {
   return entry.count > maxRequests
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Redirect /properties/[id] to /property/[id] (fix duplicate URLs for SEO)

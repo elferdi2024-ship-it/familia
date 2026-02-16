@@ -45,6 +45,46 @@ export const SEO_BARRIOS_DATA: Record<string, SEOBarrioContent> = {
         ],
         averagePrice: "USD 1.900 / m²",
         buyerProfile: "Público práctico, empresas y compradores de primera vivienda."
+    },
+    "Punta Carretas": {
+        intro: "Punta Carretas es sinónimo de exclusividad y sofisticación. Con el shopping como epicentro y el club de golf rodeándolo, es una de las zonas más premium.",
+        advantages: [
+            "Entorno arbolado y residencial de alta gama.",
+            "Gastronomía de primer nivel.",
+            "Cercanía a la Rambla de Montevideo."
+        ],
+        averagePrice: "USD 3.200 / m²",
+        buyerProfile: "Perfiles de alto poder adquisitivo y extranjeros."
+    },
+    "Carrasco": {
+        intro: "La zona más exclusiva y verde de la capital. Casas señoriales y un estilo de vida relajado junto al mar definen a este emblemático barrio.",
+        advantages: [
+            "Seguridad y privacidad.",
+            "Los mejores colegios internacionales.",
+            "Centros comerciales de diseño y lujo."
+        ],
+        averagePrice: "USD 3.500 / m²",
+        buyerProfile: "Familias consolidadas y ejecutivos de multinacionales."
+    },
+    "Buceo": {
+        intro: "El nuevo centro de negocios. Buceo combina el dinamismo del World Trade Center con el encanto del Puerto del Buceo.",
+        advantages: [
+            "Cercanía a Montevideo Shopping y WTC.",
+            "Mix perfecto entre oficinas y residencias.",
+            "Vistas espectaculares al puerto."
+        ],
+        averagePrice: "USD 2.600 / m²",
+        buyerProfile: "Empresarios, solteros y parejas jóvenes."
+    },
+    "Parque Rodó": {
+        intro: "Bohemio, verde y universitario. Un barrio con alma propia, famoso por su gran parque y su cercanía a las facultades de ingeniería y economía.",
+        advantages: [
+            "Gran pulmón verde de la ciudad.",
+            "Ambiente creativo y relajado.",
+            "Cercanía a la Playa Ramírez."
+        ],
+        averagePrice: "USD 2.300 / m²",
+        buyerProfile: "Interesados en la cultura, estudiantes y amantes de la naturaleza."
     }
 }
 

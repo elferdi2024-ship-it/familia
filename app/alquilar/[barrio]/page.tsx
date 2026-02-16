@@ -43,10 +43,24 @@ export default async function AlquilarBarrioPage({ params }: Props) {
 export async function generateStaticParams() {
     return [
         { barrio: 'pocitos' },
+        { barrio: 'punta-carretas' },
+        { barrio: 'carrasco' },
+        { barrio: 'buceo' },
         { barrio: 'cordon' },
         { barrio: 'centro' },
-        { barrio: 'malvin' },
+        { barrio: 'ciudad-vieja' },
         { barrio: 'parque-rodo' },
-        { barrio: 'palermo' }
+        { barrio: 'malvin' },
+        { barrio: 'punta-gorda' },
+        { barrio: 'la-blanqueada' },
+        { barrio: 'tres-cruces' },
+        { barrio: 'aguada' },
+        { barrio: 'palermo' },
+        { barrio: 'barrio-sur' },
+        { barrio: 'parque-batlle' },
+        { barrio: 'larranaga' },
+        { barrio: 'union' },
+        { barrio: 'sayago' },
+        { barrio: 'penarol' }
     ]
 }
