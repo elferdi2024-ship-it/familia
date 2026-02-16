@@ -30,7 +30,7 @@ export default function ProfilePage() {
     if (!user) return null
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-background-dark pt-24 pb-20">
+        <div className="min-h-screen bg-slate-50 dark:bg-background-dark pt-24 md:pt-28 pb-20">
             <div className="max-w-4xl mx-auto px-4 md:px-6">
                 {/* Profile Header */}
                 <section className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-800 mb-8">

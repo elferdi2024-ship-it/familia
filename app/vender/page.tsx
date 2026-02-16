@@ -20,7 +20,7 @@ export default function SellPropertyPage() {
     return (
         <div className="bg-white dark:bg-slate-950 min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-20 pb-12 md:pt-32 md:pb-24 border-b border-slate-100 dark:border-slate-800 overflow-hidden">
+            <section className="relative pt-24 pb-12 md:pt-32 md:pb-24 border-b border-slate-100 dark:border-slate-800 overflow-hidden">
                 <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full"></div>
 
                 <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">

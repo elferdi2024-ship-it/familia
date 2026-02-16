@@ -76,7 +76,7 @@ function PublishPageContent() {
     }
 
     return (
-        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col pt-20">
+        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col pt-24 md:pt-28">
             {/* MAIN CONTENT */}
             <main className="flex-grow py-12 px-6">
                 <div className="max-w-4xl mx-auto">

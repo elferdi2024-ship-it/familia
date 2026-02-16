@@ -142,7 +142,7 @@ export default function PropertyDetailPage() {
         : [{ alt: "Placeholder", src: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop" }]
 
     return (
-        <div className="bg-background-light text-slate-900 font-display pt-16 md:pt-20 pb-24 md:pb-0">
+        <div className="bg-background-light text-slate-900 font-display pt-24 md:pt-28 pb-24 md:pb-0">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

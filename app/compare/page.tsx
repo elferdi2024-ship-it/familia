@@ -70,7 +70,7 @@ export default function ComparePage() {
     }
 
     return (
-        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased max-w-7xl mx-auto px-4 md:px-6 pb-12">
+        <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased max-w-7xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-12">
             {/* Breadcrumbs & Title */}
             <div className="mb-6 md:mb-8">
                 <nav className="flex text-xs text-slate-500 mb-2 gap-2">

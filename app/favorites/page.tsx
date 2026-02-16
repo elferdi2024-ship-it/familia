@@ -11,7 +11,7 @@ export default function FavoritesPage() {
     const favoriteProperties = PROPERTIES.filter(p => favorites.includes(p.id))
 
     return (
-        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-24 md:pb-12">
+        <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pt-24 md:pt-28 pb-24 md:pb-12">
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">

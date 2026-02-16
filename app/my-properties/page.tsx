@@ -222,7 +222,7 @@ export default function MyPropertiesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-20 px-4">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 md:pt-28 pb-20 px-4">
             <div className="max-w-6xl mx-auto space-y-8">
 
                 {/* Header & Actions */}

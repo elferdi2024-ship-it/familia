@@ -236,7 +236,7 @@ export function SearchContent({
     )
 
     return (
-        <div className="min-h-screen bg-white dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col pt-20">
+        <div className="min-h-screen bg-white dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col pt-24 md:pt-28">
             {/* SEO Header - Only shown on SEO routes */}
             {(seoTitle || seoDescription) && (
                 <div className="bg-slate-50 dark:bg-slate-900 px-6 py-6 border-b border-slate-200 dark:border-slate-800">

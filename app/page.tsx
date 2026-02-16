@@ -48,7 +48,7 @@ export default function HomePage() {
   if (searchQuery) searchParams.set("q", searchQuery)
 
   return (
-    <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-32 md:pb-0 -mt-24 md:-mt-28">
+    <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-32 md:pb-0">
 
       {/* Hero Section v4 - AUTHORITY & DATA */}
       <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-center overflow-hidden">
