@@ -23,8 +23,6 @@ import {
     User
 } from "lucide-react"
 import { toast } from "sonner"
-import { Navbar } from "@/components/layout/Navbar"
-import { Footer } from "@/components/layout/Footer"
 
 // --- Data Structures ---
 
@@ -325,7 +323,6 @@ export default function ServicesPage() {
 
     return (
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-            <Navbar />
 
             {/* 1. HERO PRINCIPAL - ENHANCED WITH VIDEO BANNER */}
             <section className="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
@@ -515,7 +512,7 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            <Footer />
+
 
             {/* 4. MODAL INTEGRADO */}
             <ContactModal
