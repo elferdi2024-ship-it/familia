@@ -26,6 +26,15 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
   },
+  async redirects() {
+    return [
+      {
+        source: '/properties/:id',
+        destination: '/property/:id',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -65,9 +74,9 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com https://vercel.live",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: https: blob:",
+              "img-src 'self' data: https: blob: https://maps.gstatic.com https://maps.googleapis.com https://lh3.googleusercontent.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://maps.googleapis.com https://maps.gstatic.com https://*.googleapis.com https://firebasestorage.googleapis.com https://vercel.live",
+              "connect-src 'self' https://maps.googleapis.com https://maps.gstatic.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://firebasestorage.googleapis.com https://vercel.live",
               "frame-src 'self' https://vercel.live",
               "object-src 'none'",
               "base-uri 'self'",

@@ -9,7 +9,10 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "es",
-  "categories": ["business", "lifestyle"],
+  "categories": [
+    "business",
+    "lifestyle"
+  ],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",

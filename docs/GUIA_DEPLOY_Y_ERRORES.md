@@ -8,59 +8,56 @@
 ## 🚨 Lecciones Críticas de Deploy (LEER ANTES DE DEPLOYAR)
 
 ### 1. Conflicto Middleware vs Proxy
-**Error:** `Both middleware file "./middleware.ts" and proxy file "./proxy.ts" are detected.`
-**Causa:** Next.js 16+ no permite tener ambos archivos en la raíz. `proxy.ts` es el nuevo estándar y actúa como middleware.
 **Solución:**
-- ✅ **MANTENER:** `proxy.ts` (contiene la lógica de rate limiting y redirecciones).
-- ❌ **ELIMINAR:** `middleware.ts`.
-- **Nota:** Si `middleware.ts` se vuelve a generar, eliminarlo antes del build.
+- ✅ **Usar:** `proxy.ts`.
+- ❌ **Eliminar:** `middleware.ts`.
+- **Config:** Usar matcher restrictivo para no afectar SSG/Performance:
+  ```typescript
+  export const config = {
+    matcher: ['/api/:path*'],
+  }
+  ```
 
-### 2. Despliegue de Firestore Rules
-**Error:** Las reglas de seguridad no se despliegan automáticamente con Vercel.
-**Solución:**
-Se requiere un paso manual. Hemos creado un script para facilitar esto:
+### 2. Content Security Policy (CSP) & Google Maps
+**Solución Vital:**
+En `next.config.ts`, asegurar que `script-src`, `connect-src` e `img-src` incluyan los dominios de Google Maps y Firebase.
+*Nota: El error más común es olvidar `img-src` para los tiles del mapa.*
+
+### 3. Firestore Rules
+**Verificación Obligatoria:**
+Antes de deployar, verificar que no existan reglas permisivas (`allow read, write: if true;`).
 ```bash
+# Testear reglas sin aplicar cambios
+npx firebase-tools deploy --only firestore:rules --dry-run
+
+# Deploy real
 npm run deploy:firestore
 ```
-*Si falla por autenticación:*
-```bash
-npx firebase-tools login
-npx firebase-tools use --add  # Seleccionar 'familiainmo-6fec6'
-npm run deploy:firestore
-```
 
-### 3. PWA Icons
-**Problema:** La PWA no es instalable si faltan los iconos.
-**Solución:**
-- Los iconos NO se generan automáticamente.
-- Deben colocarse manualmente en `public/icons/`.
-- Ver instrucciones en `public/icons/README.txt`.
+### 4. PWA Icons
+**Requisitos Lighthouse:**
+- `icon-192x192.png`
+- `icon-512x512.png`
+- `manifest.json` debe tener `"display": "standalone"`.
 
----
-
-## 🛠️ Comandos Útiles
-
-| Acción | Comando |
-|--------|---------|
-| **Build Local** | `npm run build` |
-| **Deploy Firestore** | `npm run deploy:firestore` |
-| **Verificar Lint** | `npm run lint` |
-| **Generar Seeds** | `npm run seed:generate` |
+### 5. Variables de Entorno en Vercel (CRÍTICO)
+El 60% de los errores de deploy silenciosos se deben a esto. Verificar en dashboard de Vercel:
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
 
 ---
 
-## 📝 Checklist Pre-Deploy
+## � Checklist Final Profesional (Versión Blindada)
 
-1. [ ] Verificar que NO existe `middleware.ts` en la raíz.
-2. [ ] Correr `npm run build` localmente para asegurar consistencia.
-3. [ ] Si se cambiaron reglas de seguridad, correr `npm run deploy:firestore`.
-4. [ ] Verificar que `next.config.ts` tiene los headers CSP actualizados.
+**PRE-DEPLOY CHECKLIST — DominioTotal**
 
----
-
-## 🔍 Log de Cambios Recientes
-
-- **Fix Build:** Eliminado `middleware.ts` redundante.
-- **Seguridad:** Agregado CSP header en `next.config.ts`.
-- **Seguridad:** Rate limiting activo vía `proxy.ts`.
-- **DX:** Agregado script `deploy:firestore`.
+- [ ] No existe `middleware.ts`.
+- [ ] `proxy.ts` tiene matcher mínimo necesario (`['/api/:path*']`).
+- [ ] `next.config.ts` incluye redirects y headers CSP correctos.
+- [ ] `img-src` configurado correctamente en CSP (incluye maps/firebase).
+- [ ] Variables de entorno cargadas en Vercel.
+- [ ] `npm run build` pasa sin errores localmente.
+- [ ] Firestore rules no están permisivas (`--dry-run` verificado).
+- [ ] PWA icons (192x192, 512x512) cargados en `public/icons/`.
