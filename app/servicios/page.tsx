@@ -407,7 +407,7 @@ export default function ServicesPage() {
                         >
                             <button
                                 onClick={() => scrollTo(ownersRef as React.RefObject<HTMLDivElement>)}
-                                className="group relative px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(59,130,246,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden"
+                                className="group relative px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(59,130,246,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
                             >
                                 <span className="relative z-10">🏠 Soy Propietario</span>
                                 <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
@@ -415,12 +415,13 @@ export default function ServicesPage() {
                             </button>
                             <button
                                 onClick={() => scrollTo(investorsRef as React.RefObject<HTMLDivElement>)}
-                                className="group px-12 py-6 bg-white/5 backdrop-blur-xl border-2 border-white/30 text-white rounded-[2rem] font-black text-lg hover:bg-white/20 hover:border-white/50 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4"
+                                className="group relative px-12 py-6 bg-emerald-500 text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(16,185,129,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
                             >
-                                📈 Soy Inversor
-                                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <span className="relative z-10">📈 Soy Inversor</span>
+                                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors relative z-10">
                                     <ChevronRight className="w-5 h-5" />
                                 </div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </button>
                         </motion.div>
                     </div>
