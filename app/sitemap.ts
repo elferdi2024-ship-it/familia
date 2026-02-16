@@ -12,41 +12,43 @@ const BARRIOS_MONTEVIDEO = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const now = new Date().toISOString()
+
     const entries: MetadataRoute.Sitemap = [
         // Core pages
         {
             url: baseUrl,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'daily',
             priority: 1,
         },
         {
             url: `${baseUrl}/search`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'daily',
             priority: 0.9,
         },
         {
             url: `${baseUrl}/search?operation=Venta`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'daily',
             priority: 0.8,
         },
         {
             url: `${baseUrl}/search?operation=Alquiler`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'daily',
             priority: 0.8,
         },
         {
             url: `${baseUrl}/vender`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.7,
         },
         {
             url: `${baseUrl}/compare`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'monthly',
             priority: 0.5,
         },
@@ -54,16 +56,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // SEO neighborhood pages
     for (const barrio of BARRIOS_MONTEVIDEO) {
+        if (!barrio) continue
         entries.push(
             {
-                url: `${baseUrl}/comprar/${barrio}`,
-                lastModified: new Date(),
+                url: `${baseUrl}/comprar/${barrio.toLowerCase()}`,
+                lastModified: now,
                 changeFrequency: 'daily',
                 priority: 0.7,
             },
             {
-                url: `${baseUrl}/alquilar/${barrio}`,
-                lastModified: new Date(),
+                url: `${baseUrl}/alquilar/${barrio.toLowerCase()}`,
+                lastModified: now,
                 changeFrequency: 'daily',
                 priority: 0.7,
             }
@@ -78,9 +81,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             const snapshot = await getDocs(q)
 
             snapshot.docs.forEach(doc => {
+                if (!doc.id) return
                 entries.push({
                     url: `${baseUrl}/property/${doc.id}`,
-                    lastModified: new Date(),
+                    lastModified: now,
                     changeFrequency: 'weekly',
                     priority: 0.6,
                 })
@@ -90,5 +94,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    return entries
+    return entries.map(entry => ({
+        ...entry,
+        lastModified: entry.lastModified || now
+    }))
 }

@@ -5,7 +5,7 @@ import { usePublish } from "@/contexts/PublishContext"
 import { useRouter } from "next/navigation"
 import { ImageUploader } from "@/components/publish/ImageUploader"
 import { GUARANTEES, AMENITIES } from "@/lib/data"
-import { PublishStep2Schema } from "@/lib/validation"
+import { PublishStep2Schema } from "@/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@/lib/tracking"
 
