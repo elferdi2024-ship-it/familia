@@ -51,7 +51,7 @@ export default function HomePage() {
     <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-32 md:pb-0">
 
       {/* Hero Section v4 - AUTHORITY & DATA */}
-      <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             alt="Montevideo Hub"
