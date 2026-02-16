@@ -6,6 +6,8 @@ import {
     User,
     signOut,
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
@@ -44,6 +46,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return
         }
 
+        // Handle Redirect Result
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result) {
+                    console.log("User signed in via redirect:", result.user)
+                }
+            })
+            .catch((error) => {
+                console.error("Error handling redirect result:", error)
+            })
+
         let cancelled = false
 
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -66,7 +79,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         const provider = new GoogleAuthProvider()
         try {
-            await signInWithPopup(auth, provider)
+            // Using redirect instead of popup for better mobile compatibility
+            await signInWithRedirect(auth, provider)
         } catch (error: any) {
             console.error("Error signing in with Google:", error)
             if (error.code === 'auth/unauthorized-domain') {
