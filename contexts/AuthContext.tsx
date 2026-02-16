@@ -51,11 +51,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .then((result) => {
                 if (result) {
                     console.log("User signed in via redirect:", result.user)
+                    alert(`¡Éxito! Volviste de Google como: ${result.user.email}`) // Debug success
+                } else {
+                    console.log("No redirect result found.")
+                    // alert("Volviste a la página, pero no hay resultado de redirección (null).") // Optional: trigger if needed
                 }
             })
             .catch((error) => {
                 console.error("Error handling redirect result:", error)
-                alert(`Error al volver de Google: ${error.message}`) // Temporary debug alert
+                alert(`Error al volver de Google: ${error.message}`)
             })
 
         let cancelled = false
@@ -64,6 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (!cancelled) {
                 setUser(currentUser)
                 setLoading(false)
+                if (currentUser) {
+                    // alert(`AuthStateChanged detectó usuario: ${currentUser.email}`) // Debug auth state
+                }
             }
         })
 
@@ -76,15 +83,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const loginWithGoogle = async () => {
         if (!auth) {
             console.error("Firebase auth is not initialized. Check your .env.local configuration.")
+            alert("Error: Firebase Auth no está inicializado. Faltan variables de entorno.") // Alert if auth missing
             throw new Error("El servicio de autenticación no está disponible.")
         }
         const provider = new GoogleAuthProvider()
         try {
+            alert("Iniciando redirección a Google...") // Debug start of flow
             // Using redirect instead of popup for better mobile compatibility
             await signInWithRedirect(auth, provider)
         } catch (error: any) {
             console.error("Error signing in with Google:", error)
-            alert(`Error al iniciar Google Login: ${error.message}`) // Temporary debug alert
+            alert(`Error al iniciar Google Login: ${error.message}`)
             if (error.code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
                 alert("Dominio no autorizado en Firebase Console. Por favor agrégalo en Authentication > Settings > Authorized domains.")
