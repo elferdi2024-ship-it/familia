@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             })
             .catch((error) => {
                 console.error("Error handling redirect result:", error)
+                alert(`Error al volver de Google: ${error.message}`) // Temporary debug alert
             })
 
         let cancelled = false
@@ -83,8 +84,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await signInWithRedirect(auth, provider)
         } catch (error: any) {
             console.error("Error signing in with Google:", error)
+            alert(`Error al iniciar Google Login: ${error.message}`) // Temporary debug alert
             if (error.code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
+                alert("Dominio no autorizado en Firebase Console. Por favor agrégalo en Authentication > Settings > Authorized domains.")
             }
             throw error
         }
