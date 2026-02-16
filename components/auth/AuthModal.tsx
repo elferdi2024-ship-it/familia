@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { useAuth } from "@/contexts/AuthContext"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -72,7 +73,29 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         setError(null)
     }
 
-    return (
+    // Portal Mounting Effect
+    const [mounted, setMounted] = useState(false)
+    useEffect(() => {
+        setMounted(true)
+        return () => setMounted(false)
+    }, [])
+
+    // Scroll Lock Effect
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = "unset"
+        }
+        return () => {
+            document.body.style.overflow = "unset"
+        }
+    }, [isOpen])
+
+    if (!mounted) return null
+
+    // We render into document.body to avoid stacking context issues
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <>
@@ -82,18 +105,18 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999]"
                     />
 
                     {/* Modal Container - Scrollable Wrapper */}
-                    <div className="fixed inset-0 z-[101] overflow-y-auto">
+                    <div className="fixed inset-0 z-[10000] overflow-y-auto">
                         <div className="flex min-h-full items-center justify-center p-4">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-800 relative"
+                                className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-800 relative my-8"
                             >
                                 <div className="p-8">
                                     <div className="flex justify-between items-center mb-6">
@@ -124,7 +147,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                                         disabled={loading}
                                         className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-800 py-3.5 rounded-xl font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-sm active:scale-[0.98] disabled:opacity-50"
                                     >
-                                        {loading && !email ? ( // Show spinner only if google login clicked (inferred by empty email/pass field usage or specific state) - actually using global loading for now is mostly fine but let's be precise
+                                        {loading && !email ? (
                                             <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                                         ) : (
                                             <>
@@ -209,6 +232,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     </div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     )
 }
