@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/firebase"
 import { collection, query, getDocs, limit, where, orderBy, Timestamp } from "firebase/firestore"
 import { Property } from "@/lib/data"
-import { SearchFiltersSchema } from "@/lib/validations"
+import { SearchFiltersSchema } from "@/lib/schemas"
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)

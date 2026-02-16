@@ -1,6 +1,6 @@
 "use server"
 
-import { NearbyPlacesSchema } from "@/lib/validations"
+import { NearbyPlacesSchema } from "@/lib/schemas"
 
 interface Poi {
     id: string
