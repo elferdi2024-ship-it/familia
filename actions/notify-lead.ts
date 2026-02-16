@@ -3,7 +3,7 @@
 import { sendLeadEmail } from "@/lib/mail"
 import { db } from "@/lib/firebase"
 import { doc, getDoc } from "firebase/firestore"
-import { LeadSchema } from "@/lib/schemas"
+import { LeadSchema } from "@/lib/validations"
 
 export async function notifyLead(leadData: unknown) {
     // 1. Validate input with Zod

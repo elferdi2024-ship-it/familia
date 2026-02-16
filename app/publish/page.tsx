@@ -7,7 +7,7 @@ import { useEffect, Suspense, useState } from "react"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
-import { PublishStep1Schema } from "@/lib/schemas"
+import { PublishStep1Schema } from "@/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@/lib/tracking"
 
