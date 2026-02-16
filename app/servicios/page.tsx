@@ -103,29 +103,44 @@ const INVESTOR_SERVICES = [
 function ServiceCard({ service, onClick }: { service: typeof OWNER_SERVICES[0], onClick: () => void }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            whileHover={{ y: -5 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 transition-all group flex flex-col h-full"
+            whileHover={{ y: -10 }}
+            className="group relative bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 transition-all duration-500 overflow-hidden flex flex-col h-full"
         >
+            {/* Background Accent on Hover */}
             <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"
                 style={{ backgroundColor: service.color }}
+            />
+
+            <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:rotate-6 transition-all duration-500"
+                style={{ backgroundColor: service.color, boxShadow: `0 10px 20px ${service.color}33` }}
             >
-                <service.icon className="w-7 h-7 text-white" />
+                <service.icon className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">{service.title}</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-primary transition-colors">
+                {service.title}
+            </h3>
+
+            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-10 flex-grow">
                 {service.text}
             </p>
-            <button
-                onClick={onClick}
-                className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 hover:text-primary transition-colors mt-auto group/btn"
-            >
-                Solicitar servicio
-                <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-            </button>
+
+            <div className="pt-6 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/20">
+                <button
+                    onClick={onClick}
+                    className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.15em] text-slate-400 group-hover:text-primary transition-all"
+                >
+                    Solicitar ahora
+                    <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all">
+                        <ChevronRight className="w-4 h-4" />
+                    </div>
+                </button>
+            </div>
         </motion.div>
     )
 }
@@ -288,6 +303,8 @@ function ContactModal({
     )
 }
 
+import Image from "next/image"
+
 // --- Main Page ---
 
 export default function ServicesPage() {
@@ -303,68 +320,106 @@ export default function ServicesPage() {
     }
 
     const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
-        ref.current?.scrollIntoView({ behavior: "smooth" })
+        ref.current?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
 
     return (
-        <div className="min-h-screen bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+        <div className="min-h-screen bg-[#FDFDFD] dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
             <Navbar />
 
-            {/* 1. HERO PRINCIPAL */}
-            <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden px-4">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 pointer-events-none opacity-50 dark:opacity-20">
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px]" />
-                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-400/10 rounded-full blur-[80px]" />
+            {/* 1. HERO PRINCIPAL - ENHANCED WITH BANNER */}
+            <section className="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
+                {/* Background Image with Overlay */}
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        alt="Montevideo Real Estate"
+                        fill
+                        priority
+                        className="object-cover"
+                        src="/portada.webp"
+                        sizes="100vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[#FDFDFD] dark:to-background-dark"></div>
                 </div>
 
-                <div className="max-w-4xl mx-auto text-center">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-black tracking-tight mb-6 leading-tight"
-                    >
-                        Soluciones inmobiliarias que <br className="hidden md:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-500">simplifican decisiones.</span>
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed"
-                    >
-                        Acompañamos propietarios e inversores con servicios técnicos, legales y estratégicos en un solo lugar.
-                    </motion.p>
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center"
-                    >
-                        <button
-                            onClick={() => scrollTo(ownersRef as React.RefObject<HTMLDivElement>)}
-                            className="px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold shadow-xl hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
+                    <div className="max-w-4xl">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-8"
                         >
-                            🏠 Soy propietario
-                        </button>
-                        <button
-                            onClick={() => scrollTo(investorsRef as React.RefObject<HTMLDivElement>)}
-                            className="px-10 py-4 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-2xl font-bold shadow-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                            Soluciones Integrales Atlantida Group
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-5xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[0.95]"
                         >
-                            📈 Soy inversor
-                        </button>
-                    </motion.div>
+                            Impulsamos tu <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-emerald-300">Patrimonio Inmobiliario</span>
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl leading-relaxed font-medium"
+                        >
+                            Acompañamos propietarios e inversores con servicios técnicos, legales y estratégicos en un solo lugar. Simple. Profesional. Eficiente.
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="flex flex-col sm:flex-row gap-6"
+                        >
+                            <button
+                                onClick={() => scrollTo(ownersRef as React.RefObject<HTMLDivElement>)}
+                                className="group px-10 py-5 bg-primary text-white rounded-2xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                            >
+                                🏠 Soy Propietario
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                            <button
+                                onClick={() => scrollTo(investorsRef as React.RefObject<HTMLDivElement>)}
+                                className="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                            >
+                                📈 Soy Inversor
+                            </button>
+                        </motion.div>
+                    </div>
                 </div>
+
+                {/* Scroll Indicator */}
+                <motion.div
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30"
+                >
+                    <div className="w-6 h-10 rounded-full border-2 border-current flex justify-center pt-2">
+                        <div className="w-1 h-2 bg-current rounded-full" />
+                    </div>
+                </motion.div>
             </section>
 
             {/* 2. SERVICIOS PARA PROPIETARIOS */}
-            <section ref={ownersRef} className="py-20 px-4 bg-white dark:bg-slate-950/20">
+            <section ref={ownersRef} className="py-32 px-4 relative">
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 -z-10" />
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Gestión integral para tu propiedad</h2>
-                        <p className="text-slate-500 max-w-xl mx-auto">Desde la preparación hasta la firma. Nos ocupamos de todo.</p>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                        <div className="max-w-2xl">
+                            <span className="text-primary font-black uppercase tracking-[0.2em] text-sm mb-4 block">Gestión Especializada</span>
+                            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">Soluciones para <br /><span className="text-slate-400">Propietarios</span></h2>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl md:max-w-xs font-medium">Desde la preparación hasta la firma. Nos ocupamos de cada detalle técnico y legal.</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {OWNER_SERVICES.map(service => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {OWNER_SERVICES.map((service, idx) => (
                             <ServiceCard
                                 key={service.id}
                                 service={service}
@@ -376,13 +431,17 @@ export default function ServicesPage() {
             </section>
 
             {/* 3. SERVICIOS PARA INVERSORES */}
-            <section ref={investorsRef} className="py-20 px-4">
+            <section ref={investorsRef} className="py-32 px-4 bg-slate-50 dark:bg-slate-900/30 relative overflow-hidden">
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500/20 to-emerald-500/0" />
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Estrategia y respaldo para decisiones inteligentes</h2>
-                        <p className="text-slate-500 max-w-xl mx-auto">Invertir requiere información, análisis y acompañamiento profesional.</p>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                        <div className="max-w-2xl">
+                            <span className="text-emerald-500 font-black uppercase tracking-[0.2em] text-sm mb-4 block">Inteligencia de Mercado</span>
+                            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">Estrategia para <br /><span className="text-slate-400">Inversores</span></h2>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl md:max-w-xs font-medium">Invertir requiere datos, visión y acompañamiento profesional constante.</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {INVESTOR_SERVICES.map(service => (
                             <ServiceCard
                                 key={service.id}
@@ -393,7 +452,6 @@ export default function ServicesPage() {
                     </div>
                 </div>
             </section>
-
             {/* 5. SECCIÓN DIFERENCIAL FINAL */}
             <section className="py-24 px-4 bg-slate-900 text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] -z-1" />
@@ -403,22 +461,22 @@ export default function ServicesPage() {
                         Centralizamos servicios técnicos, legales y estratégicos para que no tengas que coordinar proveedores por separado.
                         Trabajamos con profesionales de confianza y procesos claros.
                     </p>
-                    <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 opacity-60">
-                        <div className="flex flex-col items-center">
-                            <span className="text-3xl font-bold mb-1">100%</span>
-                            <span className="text-xs uppercase tracking-widest font-bold">Respaldo</span>
+                    <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-blue-600">100%</span>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-blue-400 transition-colors">Respaldo Integral</span>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <span className="text-3xl font-bold mb-1">+15</span>
-                            <span className="text-xs uppercase tracking-widest font-bold">Aliados</span>
+                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-emerald-400 to-emerald-600">+15</span>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-emerald-400 transition-colors">Aliados Técnicos</span>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <span className="text-3xl font-bold mb-1">8/10</span>
-                            <span className="text-xs uppercase tracking-widest font-bold">Conversión</span>
+                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-orange-400 to-red-500">8/10</span>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-orange-400 transition-colors">Conversión Leads</span>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <span className="text-3xl font-bold mb-1">24hs</span>
-                            <span className="text-xs uppercase tracking-widest font-bold">Respuesta</span>
+                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-purple-400 to-pink-600">24hs</span>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-purple-400 transition-colors">Respuesta Media</span>
                         </div>
                     </div>
                 </div>
@@ -428,26 +486,26 @@ export default function ServicesPage() {
             <section className="py-24 px-4 bg-white dark:bg-background-dark border-t border-slate-100 dark:border-slate-800">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-12">¿Qué necesitás resolver hoy?</h2>
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-6 justify-center">
                         <button
                             onClick={() => openModal("Gestionar mi propiedad")}
-                            className="px-8 py-4 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl font-bold text-slate-800 dark:text-white transition-all border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2"
+                            className="group px-8 py-5 bg-white dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-slate-900 rounded-2xl font-black text-slate-900 dark:text-white transition-all duration-300 border-2 border-slate-900 dark:border-white flex items-center justify-center gap-3 active:scale-95"
                         >
                             Gestionar mi propiedad
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <button
                             onClick={() => openModal("Analizar una inversión")}
-                            className="px-8 py-4 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl font-bold text-slate-800 dark:text-white transition-all border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2"
+                            className="group px-8 py-5 bg-emerald-50 dark:bg-emerald-950/20 hover:bg-emerald-500 hover:text-white rounded-2xl font-black text-emerald-600 dark:text-emerald-400 transition-all duration-300 border-2 border-emerald-500/20 flex items-center justify-center gap-3 active:scale-95"
                         >
                             Analizar una inversión
-                            <ArrowRight className="w-4 h-4" />
+                            <TrendingUp className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                         </button>
                         <button
                             onClick={() => openModal("Hablar con un asesor")}
-                            className="px-8 py-4 bg-primary text-white hover:bg-blue-700 rounded-2xl font-bold shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
+                            className="px-8 py-5 bg-primary text-white hover:bg-blue-700 rounded-2xl font-black shadow-2xl shadow-primary/30 transition-all flex items-center justify-center gap-3 active:scale-95"
                         >
-                            <MessageSquare className="w-4 h-4" />
+                            <MessageSquare className="w-5 h-5" />
                             Hablar con un asesor
                         </button>
                     </div>
