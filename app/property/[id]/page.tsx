@@ -11,7 +11,7 @@ import { FavoriteButton } from "@/components/FavoriteButton"
 import { FloorplanViewer } from "@/components/FloorplanViewer"
 import { NeighborhoodMap } from "@/components/NeighborhoodMap"
 import { notifyLead } from "@/actions/notify-lead"
-import { LeadSchema } from "@/lib/schemas"
+import { LeadSchema } from "@/lib/validations"
 import { toast } from "sonner"
 
 export default function PropertyDetailPage() {
