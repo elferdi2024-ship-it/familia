@@ -1,7 +1,7 @@
 {
-  "name": "DominioTotal - Propiedades en Uruguay",
-  "short_name": "DominioTotal",
-  "description": "Encontrá tu próximo hogar en Uruguay. La mejor experiencia mobile para buscar propiedades.",
+  "name": "Atlantida Group Soluciones Inmobiliarias",
+  "short_name": "Atlantida Group",
+  "description": "Encontrá tu próximo hogar en Uruguay con Atlantida Group. La mejor experiencia para buscar propiedades.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

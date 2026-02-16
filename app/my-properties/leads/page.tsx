@@ -226,7 +226,7 @@ export default function LeadsDashboard() {
                                         {/* Actions */}
                                         <div className="flex flex-row md:flex-col gap-2 shrink-0">
                                             <a
-                                                href={`https://wa.me/${lead.leadPhone?.replace(/\D/g, '')}?text=Hola ${lead.leadName}, vi tu consulta por "${lead.propertyTitle}" en DominioTotal.`}
+                                                href={`https://wa.me/${lead.leadPhone?.replace(/\D/g, '')}?text=Hola ${lead.leadName}, vi tu consulta por "${lead.propertyTitle}" en Atlantida Group.`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="bg-green-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-green-600 transition-colors"

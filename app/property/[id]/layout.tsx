@@ -11,13 +11,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Propiedad ${id}`,
     description: "Encontrá tu próximo hogar en Uruguay. Ver detalles, fotos y contactar al agente.",
     openGraph: {
-      title: `Propiedad | DominioTotal`,
+      title: `Propiedad | Atlantida Group`,
       description: "Encontrá tu próximo hogar en Uruguay.",
       type: "website",
-      url: `https://dominiototal.vercel.app/property/${id}`,
+      url: `https://atlantidagroup.uy/property/${id}`,
     },
     alternates: {
-      canonical: `https://dominiototal.vercel.app/property/${id}`,
+      canonical: `https://atlantidagroup.uy/property/${id}`,
     },
   }
 }

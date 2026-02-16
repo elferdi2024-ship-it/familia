@@ -37,9 +37,11 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className={`text-2xl font-extrabold tracking-tighter transition-transform group-hover:scale-105 ${isScrolled ? "text-primary" : "text-white drop-shadow-md"}`}>
-              DOMINIO<span className={`${isScrolled ? "text-slate-400 font-light" : "text-white/80 font-light"}`}>TOTAL</span>
-            </div>
+            <img
+              src="/atlantida-logo.png"
+              alt="Atlantida Group"
+              className={`h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : ""}`}
+            />
           </Link>
           <div className="hidden md:flex items-center gap-1 text-sm font-bold uppercase tracking-wider">
             {navLinks.map((link) => {

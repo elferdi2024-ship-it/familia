@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const capitalizedBarrio = decodedBarrio.charAt(0).toUpperCase() + decodedBarrio.slice(1)
 
     return {
-        title: `Alquiler de Apartamentos y Casas en ${capitalizedBarrio} | DominioTotal`,
+        title: `Alquiler de Apartamentos y Casas en ${capitalizedBarrio} | Atlantida Group`,
         description: `Encontrá tu próximo alquiler en ${capitalizedBarrio}, Montevideo. Variedad de garantías (ANDA, CGN) y precios por m².`,
         openGraph: {
             title: `Alquileres en ${capitalizedBarrio}`,

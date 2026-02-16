@@ -154,7 +154,7 @@ export default function PropertyDetailPage() {
                         "datePosted": property.publishedAt,
                         "validFrom": property.publishedAt,
                         "image": property.images,
-                        "url": `https://dominiototal.vercel.app/property/${property.id}`,
+                        "url": `https://atlantidagroup.uy/property/${property.id}`,
                         "address": {
                             "@type": "PostalAddress",
                             "streetAddress": property.address || "Dirección no disponible",
@@ -172,10 +172,10 @@ export default function PropertyDetailPage() {
                             "priceCurrency": property.currency,
                             "price": property.price,
                             "availability": "https://schema.org/InStock",
-                            "url": `https://dominiototal.vercel.app/property/${property.id}`,
+                            "url": `https://atlantidagroup.uy/property/${property.id}`,
                             "seller": {
                                 "@type": "RealEstateAgent",
-                                "name": property.agentName || "DominioTotal",
+                                "name": property.agentName || "Atlantida Group",
                                 "telephone": property.agentPhone
                             }
                         },
@@ -541,7 +541,7 @@ export default function PropertyDetailPage() {
                                         />
                                     </div>
                                     <div>
-                                        <p className="font-bold text-slate-900">{property.agentName || "Agente DominioTotal"}</p>
+                                        <p className="font-bold text-slate-900">{property.agentName || "Agente Atlantida Group"}</p>
                                         <p className="text-xs text-slate-500 font-medium">Agente Verificado • {property.agentPhone || 'Contactar por web'}</p>
                                     </div>
                                 </div>
@@ -665,7 +665,7 @@ export default function PropertyDetailPage() {
                                 <span className="material-icons text-2xl">account_circle</span>
                             </div>
                             <div>
-                                <p className="font-bold text-slate-900">{property.agentName || "Agente DominioTotal"}</p>
+                                <p className="font-bold text-slate-900">{property.agentName || "Agente Atlantida Group"}</p>
                                 <p className="text-xs text-slate-500">{property.agentPhone || 'Contactar por web'}</p>
                             </div>
                         </div>

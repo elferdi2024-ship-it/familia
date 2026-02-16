@@ -25,14 +25,14 @@ export async function sendLeadEmail(to: string, leadData: LeadEmailData) {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: 'DominioTotal <noreply@resend.dev>',
+            from: 'Atlantida Group <noreply@resend.dev>',
             to: [to],
             subject: `Nuevo Lead: ${leadData.propertyTitle}`,
             html: `
                 <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
                     <div style="background: linear-gradient(135deg, #0a4ecd 0%, #1e40af 100%); padding: 32px 24px; border-radius: 12px 12px 0 0;">
                         <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800;">Nuevo Lead Recibido</h1>
-                        <p style="color: #93c5fd; margin: 8px 0 0; font-size: 14px;">DominioTotal - Plataforma Inmobiliaria</p>
+                        <p style="color: #93c5fd; margin: 8px 0 0; font-size: 14px;">Atlantida Group - Plataforma Inmobiliaria</p>
                     </div>
 
                     <div style="padding: 24px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
@@ -55,8 +55,8 @@ export async function sendLeadEmail(to: string, leadData: LeadEmailData) {
                         </div>
 
                         <div style="margin-top: 24px; text-align: center;">
-                            ${leadData.leadPhone ? `<a href="https://wa.me/${leadData.leadPhone.replace(/\D/g, '')}?text=Hola ${leadData.leadName}, vi tu consulta por ${leadData.propertyTitle} en DominioTotal." style="background-color: #25d366; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 700; font-size: 14px; margin-right: 8px;">Responder por WhatsApp</a>` : ''}
-                            <a href="https://dominiototal.vercel.app/my-properties/leads" style="background-color: #0a4ecd; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 700; font-size: 14px;">Ver en Dashboard</a>
+                            ${leadData.leadPhone ? `<a href="https://wa.me/${leadData.leadPhone.replace(/\D/g, '')}?text=Hola ${leadData.leadName}, vi tu consulta por ${leadData.propertyTitle} en Atlantida Group." style="background-color: #25d366; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 700; font-size: 14px; margin-right: 8px;">Responder por WhatsApp</a>` : ''}
+                            <a href="https://Atlantida Group.vercel.app/my-properties/leads" style="background-color: #0a4ecd; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 700; font-size: 14px;">Ver en Dashboard</a>
                         </div>
 
                         <p style="font-size: 12px; color: #94a3b8; margin-top: 24px; text-align: center;">

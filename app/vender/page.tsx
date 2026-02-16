@@ -26,7 +26,7 @@ export default function SellPropertyPage() {
                 <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
                     <div className="space-y-8">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-bold uppercase tracking-widest">
-                            <Zap className="h-3 w-3" /> Exclusividad DominioTotal
+                            <Zap className="h-3 w-3" /> Exclusividad Atlantida Group
                         </div>
                         <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">
                             Vendemos tu propiedad en <span className="text-primary">tiempo récord</span>.

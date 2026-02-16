@@ -83,7 +83,7 @@ export function PropertyClient({ property, marketData }: PropertyClientProps) {
         ? property.images.map((src, i) => ({ alt: `Property photo ${i + 1}`, src }))
         : [{ alt: "Placeholder", src: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop" }]
 
-    const safeTitle = property.title || "Propiedad en DominioTotal"
+    const safeTitle = property.title || "Propiedad en Atlantida Group"
     const safeDescription = property.description || "Detalle de propiedad en venta o alquiler en Uruguay."
     const safePrice = property.price || 0
     const safeCurrency = property.currency || "USD"

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = 'https://dominiototal.vercel.app'
+    const baseUrl = 'https://Atlantida Group.vercel.app'
 
     return {
         rules: [

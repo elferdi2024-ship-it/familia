@@ -24,7 +24,22 @@
             "Sayago",
             "Peñarol",
             "Colón",
-            "Lezica"
+            "Lezica",
+            "Pocitos Nuevo",
+            "Malvín Norte",
+            "Punta Gorda",
+            "Carrasco Norte",
+            "Jacinto Vera",
+            "Figari",
+            "Palermo",
+            "Barrio Sur",
+            "Ciudad Vieja",
+            "Brazo Oriental",
+            "Aires Puros",
+            "Belvedere",
+            "La Teja",
+            "Capurro",
+            "Bella Vista"
         ]
     },
     "Maldonado": {
@@ -39,7 +54,12 @@
             "Golf",
             "Rincón del Indio",
             "Beverly Hills",
-            "Lugano"
+            "Lugano",
+            "Aidy Grill",
+            "La Pastora",
+            "Chiberta",
+            "El Tesoro",
+            "Design District"
         ],
         "Maldonado": [
             "Centro",
@@ -47,7 +67,30 @@
             "Las Delicias",
             "San Francisco",
             "Cerro Pelado",
-            "Maldonado Nuevo"
+            "Maldonado Nuevo",
+            "Lausana",
+            "Biarritz",
+            "La Sonrisa",
+            "Parque Burnett",
+            "Lomas de San Vicente"
+        ],
+        "La Barra": [
+            "Pueblo La Barra",
+            "Montoya",
+            "El Tesoro",
+            "Laguna Blanca"
+        ],
+        "Manantiales": [
+            "Pueblo",
+            "El Chorro",
+            "Balneario Buenos Aires"
+        ],
+        "Punta Ballena": [
+            "Las Grutas",
+            "Solanas",
+            "Portezuelo",
+            "La Laguna",
+            "Sierra de la Ballena"
         ],
         "Piriápolis": [
             "Centro",
@@ -55,37 +98,73 @@
             "Playa Hermosa",
             "Playa Colorada",
             "Punta Colorada",
-            "Punta Negra"
+            "Punta Negra",
+            "San Francisco",
+            "Punta Fría"
         ],
         "San Carlos": [
-            "Centro"
+            "Centro",
+            "Barrio Rodriguez",
+            "Pueblo Eden"
         ],
         "José Ignacio": [
             "Pueblo",
-            "La Juanita"
+            "La Juanita",
+            "Santa Monica",
+            "Garzón"
         ]
     },
     "Canelones": {
         "Ciudad de la Costa": [
-            "Pinar",
+            "El Pinar",
             "Solymar",
             "Lagomar",
             "Shangrilá",
             "San José de Carrasco",
-            "Barra de Carrasco"
+            "Barra de Carrasco",
+            "Lomas de Solymar",
+            "Parque de Carrasco",
+            "Colinas de Solymar",
+            "Médanos de Solymar",
+            "Montes de Solymar"
         ],
         "Atlántida": [
             "Centro",
-            "Pinares de Atlántida"
+            "Pinares de Atlántida",
+            "Villa Argentina",
+            "Fortín de Santa Rosa"
+        ],
+        "Parque del Plata": [
+            "Norte",
+            "Sur"
+        ],
+        "La Floresta": [
+            "Pueblo",
+            "Costa Azul",
+            "Bello Horizonte"
         ],
         "Salinas": [
             "Centro",
-            "Marindia"
+            "Marindia",
+            "Pinamar",
+            "Neptunia"
         ],
         "Las Piedras": [
-            "Centro"
+            "Centro",
+            "Pueblo Nuevo",
+            "Barrio Obelisco"
         ],
         "Pando": [
+            "Centro",
+            "Estanque de Pando"
+        ],
+        "Canelones City": [
+            "Centro"
+        ],
+        "Progreso": [
+            "Centro"
+        ],
+        "Santa Lucía": [
             "Centro"
         ]
     },
@@ -93,12 +172,20 @@
         "Colonia del Sacramento": [
             "Casco Histórico",
             "Real de San Carlos",
-            "El General"
+            "El General",
+            "Ferrando"
         ],
         "Carmelo": [
-            "Centro"
+            "Centro",
+            "Playa Seré"
         ],
         "Nueva Helvecia": [
+            "Centro"
+        ],
+        "Juan Lacaze": [
+            "Centro"
+        ],
+        "Tarariras": [
             "Centro"
         ]
     },
@@ -108,10 +195,52 @@
             "La Aguada",
             "Costa Azul",
             "Antoniópolis",
-            "La Pedrera"
+            "La Pedrera",
+            "Punta Rubia"
         ],
         "Punta del Diablo": [
+            "Pueblo",
+            "Playa de la Viuda",
+            "Playa del Rivero"
+        ],
+        "Cabo Polonio": [
             "Pueblo"
+        ],
+        "La Coronilla": [
+            "Centro"
+        ]
+    },
+    "Salto": {
+        "Salto City": [
+            "Centro",
+            "Cerro",
+            "Barrio Artigas",
+            "Termas del Daymán"
+        ]
+    },
+    "Paysandú": {
+        "Paysandú City": [
+            "Centro",
+            "Barrio Industrial",
+            "Termas de Guaviyú"
+        ]
+    },
+    "San José": {
+        "San José de Mayo": [
+            "Centro"
+        ],
+        "Ciudad del Plata": [
+            "Delta del Tigre",
+            "Playa Pascual"
+        ],
+        "Libertad": [
+            "Centro"
+        ]
+    },
+    "Rivera": {
+        "Rivera City": [
+            "Centro",
+            "Paso de la Estiva"
         ]
     }
 }

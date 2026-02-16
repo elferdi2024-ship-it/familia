@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: "Calculadora de Hipoteca Uruguay",
     description: "Calcula tu cuota mensual de hipoteca en Uruguay. Simula prestamos para compra de vivienda con tasas actualizadas de bancos uruguayos.",
     openGraph: {
-        title: "Calculadora de Hipoteca Uruguay | DominioTotal",
+        title: "Calculadora de Hipoteca Uruguay | Atlantida Group",
         description: "Simula tu cuota mensual y conoce cuanto podes pedir de prestamo hipotecario.",
     },
 }

@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, Suspense, useState } from "react"
+import { useEffect, Suspense, useState, useMemo } from "react"
+import geoData from "@/data/uruguay-geo.json"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
@@ -14,6 +15,19 @@ import { LocationPicker } from "@/components/publish/LocationPicker"
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
+
+    const cities = useMemo(() => {
+        if (!data.department) return []
+        const typedGeoData = geoData as Record<string, Record<string, string[]>>
+        return Object.keys(typedGeoData[data.department] || {})
+    }, [data.department])
+
+    const neighborhoods = useMemo(() => {
+        if (!data.department || !data.city) return []
+        const typedGeoData = geoData as Record<string, Record<string, string[]>>
+        const rawNeighborhoods = typedGeoData[data.department]?.[data.city] || []
+        return Array.from(new Set(rawNeighborhoods))
+    }, [data.department, data.city])
     const router = useRouter()
     const searchParams = useSearchParams()
     const editId = searchParams.get("edit")
@@ -31,6 +45,9 @@ function PublishPageContent() {
             address: data.address,
             type: data.type,
             operation: data.operation,
+            department: data.department,
+            city: data.city,
+            neighborhood: data.neighborhood,
         })
         if (!parsed.success) {
             const first = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
@@ -58,7 +75,7 @@ function PublishPageContent() {
                     </div>
                     <h1 className="text-3xl font-extrabold mb-2">Ingresa para publicar</h1>
                     <p className="text-slate-500 dark:text-slate-400 text-lg mb-8">
-                        Para publicar una propiedad en Dominio Total necesitas tener una cuenta. Es gratis y te tomará menos de 1 minuto.
+                        Para publicar una propiedad en Atlantida Group necesitas tener una cuenta. Es gratis y te tomará menos de 1 minuto.
                     </p>
                     <button
                         onClick={() => setShowAuthModal(true)}
@@ -174,26 +191,76 @@ function PublishPageContent() {
                                         Arrastra el pin para ubicar exactamente la propiedad.
                                     </p>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
                                     <div className="space-y-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-6">Barrio</label>
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Departamento</label>
+                                        <div className="relative group">
+                                            <select
+                                                value={data.department}
+                                                onChange={(e) => updateData({ department: e.target.value, city: "", neighborhood: "" })}
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer"
+                                            >
+                                                <option value="">Selecciona...</option>
+                                                {Object.keys(geoData).map(dept => (
+                                                    <option key={dept} value={dept}>{dept}</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Localidad / Ciudad</label>
+                                        <div className="relative group">
+                                            <select
+                                                disabled={!data.department}
+                                                value={data.city}
+                                                onChange={(e) => updateData({ city: e.target.value, neighborhood: "" })}
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer disabled:opacity-50"
+                                            >
+                                                <option value="">Selecciona...</option>
+                                                {cities.map(city => (
+                                                    <option key={city} value={city}>{city}</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Barrio</label>
+                                        <div className="relative group">
+                                            <select
+                                                disabled={!data.city}
+                                                value={data.neighborhood}
+                                                onChange={(e) => updateData({ neighborhood: e.target.value })}
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer disabled:opacity-50"
+                                            >
+                                                <option value="">Selecciona...</option>
+                                                {neighborhoods.map(nb => (
+                                                    <option key={nb} value={nb}>{nb}</option>
+                                                ))}
+                                                <option value="Otro">Otro...</option>
+                                            </select>
+                                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {data.neighborhood === "Otro" && (
+                                    <div className="space-y-4 pt-4">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-6">Especificar Barrio</label>
                                         <input
                                             className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
-                                            placeholder="Ej: Pocitos"
+                                            placeholder="Escribe el nombre del barrio"
                                             type="text"
-                                            value={data.neighborhood}
                                             onChange={(e) => updateData({ neighborhood: e.target.value })}
                                         />
                                     </div>
-                                    <div className="space-y-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-6">Apto / Casa Nº</label>
-                                        <input
-                                            className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
-                                            placeholder="Ej: 402"
-                                            type="text"
-                                        />
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </section>
                         {/* NAVIGATION BUTTONS */}

@@ -46,7 +46,7 @@ export default function PublishReviewPage() {
                     ...data,
                     title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
                     userId: user.uid,
-                    agentName: user.displayName || "Usuario de DominioTotal",
+                    agentName: user.displayName || "Usuario de Atlantida Group",
                     agentPhone: data.agentPhone,
                     publishedAt: serverTimestamp(),
                     updatedAt: serverTimestamp(),

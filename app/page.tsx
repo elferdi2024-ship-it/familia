@@ -72,7 +72,7 @@ export default function HomePage() {
 
           <h1 className="mb-6 text-4xl font-black tracking-tight text-white md:text-7xl">
             Encontrá tu próximo <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">hogar en Uruguay</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">bienvenido a Atlantida Group</span>
           </h1>
 
           <p className="mb-10 text-lg font-medium text-slate-200 md:text-xl">

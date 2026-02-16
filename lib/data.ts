@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────
-// lib/data.ts — Schema Definitivo DominioTotal
+// lib/data.ts — Schema Definitivo Atlantida Group
 // ──────────────────────────────────────────────────────────────────────
 // Este schema es 1:1 con el modelo de Firestore del Sprint 4.
 // Los datos mock acá abajo simulan propiedades reales de Montevideo

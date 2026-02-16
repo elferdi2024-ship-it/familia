@@ -25,40 +25,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://dominiototal.vercel.app'),
+  metadataBase: new URL('https://atlantidagroup.uy'),
   title: {
-    default: "DominioTotal — Propiedades en Uruguay | Comprar, Alquilar, Vender",
-    template: "%s | DominioTotal"
+    default: "Atlantida Group Soluciones Inmobiliarias — Propiedades en Uruguay | Comprar, Alquilar, Vender",
+    template: "%s | Atlantida Group"
   },
   description: "La mejor plataforma inmobiliaria de Uruguay. Busca casas, apartamentos y terrenos en venta o alquiler. Vivienda Promovida, garantias transparentes y busqueda inteligente.",
   keywords: [
     "inmobiliaria uruguay", "propiedades montevideo", "alquilar apartamento",
     "comprar casa uruguay", "vivienda promovida", "ley 18795",
     "alquiler pocitos", "venta apartamento montevideo", "inmuebles uruguay",
-    "garantia anda", "garantia cgn", "dominiototal"
+    "garantia anda", "garantia cgn", "atlantida group"
   ],
   alternates: {
-    canonical: 'https://dominiototal.vercel.app',
+    canonical: 'https://atlantidagroup.uy',
   },
   openGraph: {
     type: 'website',
     locale: 'es_UY',
-    url: 'https://dominiototal.vercel.app',
-    siteName: 'DominioTotal',
-    title: 'DominioTotal — Propiedades en Uruguay',
-    description: 'Encontra tu proximo hogar. La mejor experiencia mobile para buscar propiedades en Uruguay.',
+    url: 'https://atlantidagroup.uy',
+    siteName: 'Atlantida Group',
+    title: 'Atlantida Group Soluciones Inmobiliarias — Propiedades en Uruguay',
+    description: 'Encontrá tu próximo hogar. La mejor experiencia mobile para buscar propiedades en Uruguay.',
     images: [{
       url: '/og-image.jpg',
       width: 1200,
       height: 630,
-      alt: 'DominioTotal - Plataforma Inmobiliaria Uruguay',
+      alt: 'Atlantida Group - Plataforma Inmobiliaria Uruguay',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DominioTotal — Propiedades en Uruguay',
+    title: 'Atlantida Group — Propiedades en Uruguay',
     description: 'Busca casas y apartamentos en venta o alquiler en Uruguay.',
-    images: ['/og-image.jpg'],
+    images: ['/atlantida-logo.png'],
   },
   robots: {
     index: true,
@@ -93,7 +93,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#1e3a5f" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="DominioTotal" />
+        <meta name="apple-mobile-web-app-title" content="Atlantida Group" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -114,10 +114,10 @@ export default function RootLayout({
                         __html: JSON.stringify({
                           "@context": "https://schema.org",
                           "@type": "RealEstateAgent",
-                          "name": "DominioTotal",
-                          "url": "https://dominiototal.vercel.app",
-                          "logo": "https://dominiototal.vercel.app/logo.png",
-                          "image": "https://dominiototal.vercel.app/og-image.jpg",
+                          "name": "Atlantida Group Soluciones Inmobiliarias",
+                          "url": "https://Atlantida Group.vercel.app",
+                          "logo": "https://Atlantida Group.vercel.app/atlantida-logo.png",
+                          "image": "https://Atlantida Group.vercel.app/atlantida-logo.png",
                           "description": "Encontrá tu próximo hogar en Uruguay. Inmobiliaria líder en Montevideo, Canelones y Maldonado.",
                           "address": {
                             "@type": "PostalAddress",
@@ -135,8 +135,8 @@ export default function RootLayout({
                           "telephone": "+598 99 123 456",
                           "priceRange": "$$$",
                           "sameAs": [
-                            "https://www.instagram.com/dominiototal",
-                            "https://www.facebook.com/dominiototal"
+                            "https://www.instagram.com/Atlantida Group",
+                            "https://www.facebook.com/Atlantida Group"
                           ]
                         })
                       }}

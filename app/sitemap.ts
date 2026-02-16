@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { db } from '@/lib/firebase'
 import { collection, getDocs, limit, query } from 'firebase/firestore'
 
-const baseUrl = 'https://dominiototal.vercel.app'
+const baseUrl = 'https://Atlantida Group.vercel.app'
 
 const BARRIOS_MONTEVIDEO = [
     'Pocitos', 'Punta-Carretas', 'Carrasco', 'Buceo', 'Cordon',

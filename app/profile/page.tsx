@@ -49,7 +49,7 @@ export default function ProfilePage() {
                         </div>
 
                         <div className="text-center md:text-left flex-1">
-                            <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-1">{user.displayName || "Usuario de DominioTotal"}</h1>
+                            <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-1">{user.displayName || "Usuario de Atlantida Group"}</h1>
                             <p className="text-slate-500 dark:text-slate-400 font-medium mb-4">{user.email}</p>
 
                             <div className="flex flex-wrap justify-center md:justify-start gap-3">
