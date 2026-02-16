@@ -40,7 +40,7 @@ export function Navbar() {
             <img
               src="/atlantida-isotype.png"
               alt="Atlantida Group"
-              className={`h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : ""}`}
+              className={`h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-110 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : ""}`}
             />
           </Link>
           <div className="hidden md:flex items-center gap-1 text-sm font-bold uppercase tracking-wider">

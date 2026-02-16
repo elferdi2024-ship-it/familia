@@ -58,10 +58,10 @@ export default function HomePage() {
             fill
             priority
             className="object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfMvv_cucSUX8J5YIBk8CNdN5fwhks2Wz-19l-yVR41J3stvX6VKPim3D-D0wU0Q2DhyzYt5CdbR5xmft3ey8k8Ve3kOgLI0mCSsBQ8KZpH4Fwf2pEjsNoJ13p5sGPsiI7q6GTS5nfUR1t2ZUFNj0TfsYWFEZrSxIeTkeSKCYU5i9mVE3ErMJjVtPcvvYnM-RaD6RVL7ULsqdhhY-LL55GwxE8GbYF0UI4H-71Ohgq824SjzrDA_J3Y0fZM-td_bKUSyWjBURm-9XF"
+            src="/portada.webp"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background-light dark:to-background-dark"></div>
         </div>
 
         <div className="relative z-10 w-full max-w-5xl px-4 md:px-6 text-center text-white">
@@ -70,9 +70,9 @@ export default function HomePage() {
             Más de 12.800 propiedades activas en Uruguay
           </div>
 
-          <h1 className="mb-6 text-4xl font-black tracking-tight text-white md:text-7xl">
+          <h1 className="mb-6 text-4xl font-black tracking-tight text-white md:text-7xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
             Encontrá tu próximo <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">bienvenido a Atlantida Group</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-emerald-300">Hogar en Uruguay</span>
           </h1>
 
           <p className="mb-10 text-lg font-medium text-slate-200 md:text-xl">
