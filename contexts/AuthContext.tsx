@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     alert(`¡Éxito! Volviste de Google como: ${result.user.email}`) // Debug success
                 } else {
                     console.log("No redirect result found.")
-                    // alert("Volviste a la página, pero no hay resultado de redirección (null).") // Optional: trigger if needed
+                    alert("Alerta de Depuración: Volviste a la página, pero 'getRedirectResult' devolvió NULL. La sesión no se recuperó.")
                 }
             })
             .catch((error) => {
