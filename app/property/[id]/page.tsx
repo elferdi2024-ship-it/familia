@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { db } from "@/lib/firebase"
-import { doc, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore"
+import { doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, increment } from "firebase/firestore"
 import { Property, formatPrice, PROPERTIES } from "@/lib/data"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { FloorplanViewer } from "@/components/FloorplanViewer"
@@ -50,7 +50,17 @@ export default function PropertyDetailPage() {
                 const docRef = doc(db, "properties", id as string)
                 const docSnap = await getDoc(docRef)
                 if (docSnap.exists()) {
-                    setProperty({ id: docSnap.id, ...docSnap.data() } as Property)
+                    const data = docSnap.data()
+                    setProperty({ ...data, id: docSnap.id } as Property)
+
+                    // Increment views (passive)
+                    try {
+                        await updateDoc(docRef, {
+                            views: increment(1)
+                        })
+                    } catch (e) {
+                        console.error("Error updating views:", e)
+                    }
                 } else {
                     // If not found in DB and not in mock data
                     console.log("Property not found in DB")

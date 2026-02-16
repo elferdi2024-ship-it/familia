@@ -22,6 +22,7 @@ interface AuthContextType {
     loginWithGoogle: () => Promise<void>
     loginWithEmail: (email: string, password: string) => Promise<void>
     registerWithEmail: (email: string, password: string, name: string) => Promise<void>
+    updateUserProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>
     logout: () => Promise<void>
 }
 
@@ -31,6 +32,7 @@ const AuthContext = createContext<AuthContextType>({
     loginWithGoogle: async () => { },
     loginWithEmail: async () => { },
     registerWithEmail: async () => { },
+    updateUserProfile: async () => { },
     logout: async () => { },
 })
 
@@ -103,6 +105,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             throw error
         }
     }
+    const updateUserProfile = async (profileData: { displayName?: string; photoURL?: string }) => {
+        if (!auth.currentUser) throw new Error("No hay usuario autenticado")
+        try {
+            await updateProfile(auth.currentUser, profileData)
+            // Trigger a refresh of the user state
+            setUser({ ...auth.currentUser })
+        } catch (error) {
+            console.error("Error updating profile:", error)
+            throw error
+        }
+    }
 
     const logout = async () => {
         try {
@@ -114,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithEmail, registerWithEmail, logout }}>
+        <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithEmail, registerWithEmail, updateUserProfile, logout }}>
             {children}
         </AuthContext.Provider>
     )

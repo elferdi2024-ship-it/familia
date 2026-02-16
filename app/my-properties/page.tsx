@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { db } from "@/lib/firebase"
-import { collection, query, where, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore"
+import { db, auth } from "@/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "firebase/firestore"
 import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
+import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
 import {
     Table,
@@ -78,6 +79,48 @@ export default function MyPropertiesPage() {
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
     const [searchTerm, setSearchTerm] = useState("")
     const [statusFilter, setStatusFilter] = useState("all")
+    const { updateUserProfile } = useAuth()
+
+    // Profile Edit States
+    const [isProfileOpen, setIsProfileOpen] = useState(false)
+    const [profileName, setProfileName] = useState(user?.displayName || "")
+    const [profilePhone, setProfilePhone] = useState("")
+    const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
+
+    useEffect(() => {
+        if (user) {
+            setProfileName(user.displayName || "")
+            const fetchProfile = async () => {
+                const docSnap = await getDoc(doc(db, "users", user.uid))
+                if (docSnap.exists()) {
+                    setProfilePhone(docSnap.data().phone || "")
+                }
+            }
+            fetchProfile()
+        }
+    }, [user])
+
+    const handleProfileUpdate = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setIsUpdatingProfile(true)
+        try {
+            await updateUserProfile({ displayName: profileName })
+            if (db) {
+                await setDoc(doc(db, "users", user!.uid), {
+                    displayName: profileName,
+                    phone: profilePhone,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true })
+            }
+            toast.success("Perfil actualizado con éxito")
+            setIsProfileOpen(false)
+        } catch (error) {
+            console.error(error)
+            toast.error("Error al actualizar perfil")
+        } finally {
+            setIsUpdatingProfile(false)
+        }
+    }
 
     const fetchData = async () => {
         if (!user || !db) return
@@ -227,10 +270,72 @@ export default function MyPropertiesPage() {
 
                 {/* Header & Actions */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-black text-slate-900 dark:text-white">Panel de Agente</h1>
-                        <p className="text-slate-500 dark:text-slate-400 mt-1">Bienvenido, {user.displayName || 'Usuario'}</p>
+                    <div className="flex items-center gap-4">
+                        <div>
+                            <h1 className="text-3xl font-black text-slate-900 dark:text-white">Panel de Agente</h1>
+                            <p className="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
+                                Bienvenido, {user.displayName || 'Usuario'}
+                                <button
+                                    onClick={() => setIsProfileOpen(true)}
+                                    className="ml-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-[10px] font-bold text-primary transition-colors flex items-center gap-1"
+                                >
+                                    <span className="material-icons text-xs">edit</span>
+                                    EDITAR MIS DATOS
+                                </button>
+                            </p>
+                        </div>
                     </div>
+
+                    <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>Editar Mi Perfil</DialogTitle>
+                                <DialogDescription>
+                                    Actualiza tu información profesional para los leads y propiedades.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <form onSubmit={handleProfileUpdate} className="space-y-6 pt-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase text-slate-500">Nombre Público</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                        value={profileName}
+                                        onChange={(e) => setProfileName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase text-slate-500">Teléfono / WhatsApp</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        placeholder="Ej: 099 123 456"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                        value={profilePhone}
+                                        onChange={(e) => setProfilePhone(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex gap-3 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsProfileOpen(false)}
+                                        className="flex-1 py-3 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-sm"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isUpdatingProfile}
+                                        className="flex-1 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 disabled:opacity-50"
+                                    >
+                                        {isUpdatingProfile ? "Guardando..." : "Guardar Cambios"}
+                                    </button>
+                                </div>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
+
                     <Link href="/publish" className="bg-primary text-white px-6 py-3 rounded-full font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all">
                         <span className="material-icons">add</span> Publicar Nueva
                     </Link>
