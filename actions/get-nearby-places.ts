@@ -1,5 +1,7 @@
 "use server"
 
+import { NearbyPlacesSchema } from "@/lib/validations"
+
 interface Poi {
     id: string
     label: string
@@ -12,6 +14,13 @@ interface Poi {
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 export async function getNearbyPlaces(lat: number, lng: number): Promise<Poi[]> {
+    // Validate coordinates
+    const validation = NearbyPlacesSchema.safeParse({ lat, lng })
+    if (!validation.success) {
+        console.error("Invalid coordinates:", validation.error.flatten())
+        return []
+    }
+
     if (!GOOGLE_MAPS_API_KEY) {
         console.error("Missing Google Maps API Key");
         return [];

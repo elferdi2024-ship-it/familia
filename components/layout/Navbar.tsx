@@ -23,9 +23,9 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/search", label: "Propiedades" },
+    { href: "/vender", label: "Vender" },
     { href: "/compare", label: "Comparar" },
     { href: "/favorites", label: "Favoritos" },
-    { href: "/saved-searches", label: "Búsquedas" },
   ]
 
   return (
@@ -107,19 +107,22 @@ export function Navbar() {
           <button
             className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-primary/5 text-primary"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
-            <span className="material-icons">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+            <span className="material-icons" aria-hidden="true">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background-dark border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
+        <div id="mobile-menu" role="navigation" aria-label="Menú móvil" className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background-dark border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider">
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/compare">Comparar</Link>
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="#">Servicios</Link>
             <div className="h-px bg-primary/10"></div>
             {user ? (
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary" href="/publish">Publicar Propiedad</Link>

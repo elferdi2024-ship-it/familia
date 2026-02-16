@@ -77,7 +77,13 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     // 3. Persist to localStorage (Only for guests)
     useEffect(() => {
         if (loaded && !user) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
+            } catch (error) {
+                if ((error as DOMException)?.name === 'QuotaExceededError') {
+                    console.warn('localStorage quota exceeded for favorites')
+                }
+            }
         }
     }, [favorites, loaded, user])
 

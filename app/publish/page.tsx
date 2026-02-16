@@ -7,6 +7,8 @@ import { useEffect, Suspense, useState } from "react"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
+import { PublishStep1Schema } from "@/lib/validation"
+import { toast } from "sonner"
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
@@ -23,8 +25,14 @@ function PublishPageContent() {
     }, [editId])
 
     const handleNext = () => {
-        if (!data.address) {
-            alert("Por favor ingresa una ubicación")
+        const parsed = PublishStep1Schema.safeParse({
+            address: data.address,
+            type: data.type,
+            operation: data.operation,
+        })
+        if (!parsed.success) {
+            const first = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
+            toast.error(first || "Completa los campos obligatorios")
             return
         }
         router.push("/publish/details")

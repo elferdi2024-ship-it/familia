@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight } from "lucide-react"
 import { CompareBar } from "@/components/CompareBar"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
@@ -49,143 +50,110 @@ export default function HomePage() {
   return (
     <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-20 md:pb-0">
 
-      {/* Hero Section - DEFINITIVE CLEARANCE */}
-      <section className="relative h-[65vh] min-h-[500px] md:h-[75vh] md:min-h-[600px] flex flex-col items-center justify-start pt-32 md:pt-0 md:justify-center overflow-hidden">
+      {/* Hero Section v4 - AUTHORITY & DATA */}
+      <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            alt="Montevideo Rambla"
+            alt="Montevideo Hub"
             fill
             priority
             className="object-cover"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfMvv_cucSUX8J5YIBk8CNdN5fwhks2Wz-19l-yVR41J3stvX6VKPim3D-D0wU0Q2DhyzYt5CdbR5xmft3ey8k8Ve3kOgLI0mCSsBQ8KZpH4Fwf2pEjsNoJ13p5sGPsiI7q6GTS5nfUR1t2ZUFNj0TfsYWFEZrSxIeTkeSKCYU5i9mVE3ErMJjVtPcvvYnM-RaD6RVL7ULsqdhhY-LL55GwxE8GbYF0UI4H-71Ohgq824SjzrDA_J3Y0fZM-td_bKUSyWjBURm-9XF"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80"></div>
         </div>
-        <div className="relative z-10 w-full max-w-4xl px-4 md:px-6 text-center text-white">
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold mb-3 md:mb-4 tracking-tight">
-            Encontrá tu próximo hogar.
+
+        <div className="relative z-10 w-full max-w-5xl px-4 md:px-6 text-center text-white">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-md border border-white/20">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Más de 12.800 propiedades activas en Uruguay
+          </div>
+
+          <h1 className="mb-6 text-4xl font-black tracking-tight text-white md:text-7xl">
+            Encontrá tu próximo <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">hogar en Uruguay</span>
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl font-medium opacity-90 mb-6 md:mb-10">
-            12.842 propiedades activas en Uruguay
+
+          <p className="mb-10 text-lg font-medium text-slate-200 md:text-xl">
+            La forma más rápida y segura de comprar o alquilar tu propiedad.
           </p>
 
-          {/* Search Capsule with Dropdowns */}
-          <div className="bg-white dark:bg-background-dark rounded-2xl md:rounded-full shadow-2xl max-w-3xl mx-auto overflow-visible">
-            {/* Mobile: stacked rows — Desktop: single row */}
-            <div className="flex flex-col md:flex-row md:items-center md:h-[64px] p-2 gap-2 md:gap-0">
+          {/* Dominant Tabs */}
+          <div className="mx-auto mb-[-1px] flex w-fit gap-1 bg-black/20 backdrop-blur-xl p-1.5 rounded-t-2xl border-x border-t border-white/10">
+            {["Comprar", "Alquilar", "Vender"].map((tab) => (
+              <Link
+                key={tab}
+                href={tab === "Vender" ? "/vender" : `/search?operation=${tab}`}
+                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${tab === "Comprar"
+                  ? "bg-primary text-white shadow-lg"
+                  : "text-white/70 hover:bg-white/10"
+                  }`}
+              >
+                {tab}
+              </Link>
+            ))}
+          </div>
 
-              {/* Row 1 (mobile) / Left section (desktop): Dropdowns */}
-              <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Property Type Dropdown */}
-                <div ref={typeRef} className="relative">
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-2 md:p-3 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-1">
+
+              {/* Selector de Operación (Venta/Alquiler) */}
+              <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl md:rounded-full md:ml-1">
+                {OPERATIONS.map((op) => (
                   <button
-                    onClick={() => { setShowTypeDropdown(!showTypeDropdown); setShowOpDropdown(false) }}
-                    className={`flex items-center gap-1.5 h-11 px-3 md:px-4 rounded-xl md:rounded-full text-sm font-bold transition-all border ${showTypeDropdown || selectedTypes.length > 0
-                      ? "border-primary bg-primary/5 text-primary"
-                      : "border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-primary/50"
+                    key={op}
+                    onClick={() => setOperation(op)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${operation === op
+                      ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
+                      : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                       }`}
                   >
-                    <span className="material-icons text-lg">home_work</span>
-                    <span className="max-w-[120px] truncate">{typeLabel}</span>
-                    <span className="material-icons text-base">{showTypeDropdown ? "expand_less" : "expand_more"}</span>
+                    {op}
                   </button>
-
-                  {/* Type Dropdown Panel */}
-                  {showTypeDropdown && (
-                    <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                      {/* "Todos" option */}
-                      <button
-                        onClick={() => setSelectedTypes([])}
-                        className={`w-full flex items-center justify-between px-4 py-3 text-left text-sm font-semibold transition-colors ${selectedTypes.length === 0
-                          ? "text-primary bg-primary/5"
-                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                          }`}
-                      >
-                        Todos
-                        {selectedTypes.length === 0 && (
-                          <span className="material-icons text-primary text-lg">check</span>
-                        )}
-                      </button>
-                      <div className="h-px bg-slate-100 dark:bg-slate-800 mx-2"></div>
-                      {PROPERTY_TYPES.map(t => {
-                        const isSelected = selectedTypes.includes(t)
-                        return (
-                          <button
-                            key={t}
-                            onClick={() => toggleType(t)}
-                            className={`w-full flex items-center justify-between px-4 py-3 text-left text-sm font-semibold transition-colors ${isSelected
-                              ? "text-primary bg-primary/5"
-                              : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                              }`}
-                          >
-                            {t}
-                            {isSelected && (
-                              <span className="material-icons text-primary text-lg">check</span>
-                            )}
-                          </button>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
-
-                {/* Operation Dropdown */}
-                <div ref={opRef} className="relative">
-                  <button
-                    onClick={() => { setShowOpDropdown(!showOpDropdown); setShowTypeDropdown(false) }}
-                    className={`flex items-center gap-1.5 h-11 px-3 md:px-4 rounded-xl md:rounded-full text-sm font-bold transition-all border ${showOpDropdown
-                      ? "border-primary bg-primary/5 text-primary"
-                      : "border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-primary/50"
-                      }`}
-                  >
-                    <span className="truncate">{operation}</span>
-                    <span className="material-icons text-base">{showOpDropdown ? "expand_less" : "expand_more"}</span>
-                  </button>
-
-                  {/* Operation Dropdown Panel */}
-                  {showOpDropdown && (
-                    <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                      {OPERATIONS.map(op => (
-                        <button
-                          key={op}
-                          onClick={() => { setOperation(op); setShowOpDropdown(false) }}
-                          className={`w-full flex items-center justify-between px-4 py-3 text-left text-sm font-semibold transition-colors ${operation === op
-                            ? "text-primary bg-primary/5 font-bold"
-                            : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
-                            }`}
-                        >
-                          {op}
-                          {operation === op && (
-                            <span className="material-icons text-primary text-lg">check</span>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
 
-              {/* Divider (desktop only) */}
-              <div className="hidden md:block w-px h-8 bg-slate-200 dark:bg-slate-700 mx-2"></div>
-
-              {/* Row 2 (mobile) / Right section (desktop): Search input */}
-              <div className="flex items-center h-12 md:h-full flex-1 min-w-0 px-3 md:px-1">
-                <span className="material-icons text-slate-400 mr-2">search</span>
+              {/* Input de búsqueda */}
+              <div className="flex-1 flex items-center px-4 py-2 md:py-0">
+                <Search className="h-5 w-5 text-slate-400 mr-3" />
                 <input
-                  className="flex-1 bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white placeholder-slate-400 text-base font-medium outline-none min-w-0"
-                  placeholder="Barrio, ciudad o calle..."
-                  type="text"
+                  className="w-full bg-transparent border-none focus:outline-none text-sm md:text-base font-medium placeholder-slate-400 text-slate-900 dark:text-white"
+                  placeholder="¿Dónde quieres vivir? (Barrio, calle...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Link
-                  href={`/search?${searchParams.toString()}`}
-                  className="bg-primary text-white w-11 h-11 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform flex-shrink-0 ml-2"
-                >
-                  <span className="material-icons">arrow_forward</span>
-                </Link>
               </div>
+
+              {/* Botón de acción principal */}
+              <Link
+                href={`/search?${searchParams.toString()}`}
+                className="bg-primary hover:bg-primary/90 text-white px-6 h-12 md:h-12 rounded-xl md:rounded-full flex items-center justify-center gap-2 font-bold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+              >
+                <Search className="h-4 w-4 md:hidden" />
+                <span className="uppercase tracking-widest text-xs md:text-sm">Buscar</span>
+                <ArrowRight className="h-4 w-4 hidden md:block" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Social Proof / System Live Status Mini UX */}
+          <div className="mt-10 flex flex-wrap justify-center items-center gap-6 md:gap-12 animate-in fade-in duration-1000 delay-300">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+              <span className="text-sm font-black uppercase tracking-widest opacity-70">Sistema en Vivo</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl font-black text-primary">12.432</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Inmuebles Analizados</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl font-black text-primary">USD 2.840</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">m² Promedio Montevideo</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-2xl font-black text-emerald-500">842</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Oportunidades Detectadas</span>
             </div>
           </div>
         </div>
@@ -194,20 +162,26 @@ export default function HomePage() {
       {/* Trust + Activity Strip */}
       <CompareBar />
 
-      {/* Category Discovery Chips */}
-      <section className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
+      {/* Category Discovery Chips v4 */}
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex flex-col items-center mb-8">
+          <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-2">Explorá por estilo</span>
+          <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-slate-900 dark:text-white">¿Qué estás buscando hoy?</h2>
+        </div>
         <div className="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
           {[
-            { icon: "apartment", label: "Apartamentos" },
-            { icon: "home", label: "Casas" },
-            { icon: "waves", label: "Frente al mar" },
-            { icon: "trending_up", label: "Inversión" },
-            { icon: "landscape", label: "Chacras y Campos" },
-            { icon: "location_city", label: "Proyectos" }
+            { icon: "apartment", label: "Apartamentos", color: "text-blue-500", bg: "bg-blue-50" },
+            { icon: "home", label: "Casas", color: "text-emerald-500", bg: "bg-emerald-50" },
+            { icon: "waves", label: "Frente al mar", color: "text-cyan-500", bg: "bg-cyan-50" },
+            { icon: "trending_up", label: "Inversión", color: "text-orange-500", bg: "bg-orange-50" },
+            { icon: "landscape", label: "Chacras y Campos", color: "text-amber-600", bg: "bg-amber-50" },
+            { icon: "location_city", label: "Proyectos", color: "text-indigo-500", bg: "bg-indigo-50" }
           ].map((cat, i) => (
-            <button key={i} className="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
-              <span className="material-icons text-primary text-lg">{cat.icon}</span>
-              <span className="text-sm font-bold">{cat.label}</span>
+            <button key={i} className="group relative flex-none flex flex-col items-center gap-3 px-8 py-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+              <div className={`w-14 h-14 rounded-full ${cat.bg} dark:bg-slate-800 flex items-center justify-center transition-transform group-hover:scale-110 duration-300`}>
+                <span className={`material-icons text-2xl ${cat.color}`}>{cat.icon}</span>
+              </div>
+              <span className="text-sm font-black uppercase tracking-widest text-slate-700 dark:text-slate-200">{cat.label}</span>
             </button>
           ))}
         </div>

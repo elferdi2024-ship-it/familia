@@ -11,6 +11,8 @@ import { FavoriteButton } from "@/components/FavoriteButton"
 import { FloorplanViewer } from "@/components/FloorplanViewer"
 import { NeighborhoodMap } from "@/components/NeighborhoodMap"
 import { notifyLead } from "@/actions/notify-lead"
+import { LeadSchema } from "@/lib/validation"
+import { toast } from "sonner"
 
 export default function PropertyDetailPage() {
     const { id } = useParams()
@@ -66,37 +68,47 @@ export default function PropertyDetailPage() {
         e.preventDefault()
         if (!property || !db) return
 
+        const leadPayload = {
+            propertyId: property.id,
+            propertyTitle: property.title,
+            agentId: property.userId || "system",
+            leadName,
+            leadEmail,
+            leadMessage,
+        }
+        const parsed = LeadSchema.safeParse(leadPayload)
+        if (!parsed.success) {
+            const first = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
+            toast.error(first || "Revisa los datos del formulario")
+            return
+        }
+
         setIsSubmittingLead(true)
         try {
             const leadData = {
-                propertyId: property.id,
-                propertyTitle: property.title,
-                agentId: property.userId || "system",
+                ...leadPayload,
                 agentName: property.agentName || "Usuario",
-                leadName,
-                leadEmail,
-                leadMessage,
-                createdAt: serverTimestamp(), // Note: This is Firestore timestamp, for email passed as NOW
-                status: "new"
+                createdAt: serverTimestamp(),
+                status: "new",
             }
-
             await addDoc(collection(db, "leads"), leadData)
 
-            // Send Email Notification (Server Action)
-            // Pass a plain object for the server action (timestamp might need serialization if passed directly, 
-            // but we can re-create it or just pass strings)
-            await notifyLead({
-                ...leadData,
-                createdAt: new Date().toISOString() // Pass string for Server Action serialization
+            const result = await notifyLead({
+                ...leadPayload,
+                createdAt: new Date().toISOString(),
             })
+            if (!result.success) {
+                toast.error("Consulta enviada, pero no pudimos notificar al agente.")
+            }
 
             setLeadSuccess(true)
             setLeadName("")
             setLeadEmail("")
             setLeadMessage("")
+            toast.success("¡Consulta enviada!")
         } catch (error) {
             console.error("Error submitting lead:", error)
-            alert("Error al enviar la consulta. Por favor intente de nuevo.")
+            toast.error("Error al enviar la consulta. Por favor intenta de nuevo.")
         } finally {
             setIsSubmittingLead(false)
         }

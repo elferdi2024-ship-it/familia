@@ -37,7 +37,7 @@ const CATEGORY_COLORS = {
 }
 
 export function NeighborhoodMap({ location, coordinates }: { location: string, coordinates?: { lat: number, lng: number } }) {
-    const { isLoaded } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "" })
+    const { isLoaded, loadError } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "" })
 
     const [map, setMap] = React.useState<google.maps.Map | null>(null)
     const [activeCategory, setActiveCategory] = React.useState<string | null>(null)
@@ -63,6 +63,18 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
     const onUnmount = React.useCallback(function callback(map: google.maps.Map) {
         setMap(null)
     }, [])
+
+    if (loadError) {
+        return (
+            <div className="aspect-[21/9] w-full rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                    <MapPin className="h-6 w-6 text-slate-400" />
+                </div>
+                <h3 className="font-bold text-slate-900 mb-1">Mapa temporalmente no disponible</h3>
+                <p className="text-sm text-slate-500 max-w-xs">Hubo un problema cargando la API de Google Maps. Por favor, verifica la configuración de la clave API.</p>
+            </div>
+        )
+    }
 
     if (!isLoaded) return <div className="aspect-[21/9] w-full rounded-xl bg-slate-100 animate-pulse flex items-center justify-center text-slate-400">Cargando mapa...</div>
 

@@ -8,6 +8,7 @@ import { collection, addDoc, updateDoc, doc, serverTimestamp } from "firebase/fi
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { formatPrice } from "@/lib/data"
+import { toast } from "sonner"
 
 export default function PublishReviewPage() {
     const { data, resetData, isEditing, editingId } = usePublish()
@@ -17,7 +18,7 @@ export default function PublishReviewPage() {
 
     const handlePublish = async () => {
         if (!user || !db) {
-            alert("Debes estar autenticado para publicar")
+            toast.error("Debes estar autenticado para publicar")
             return
         }
 
@@ -34,8 +35,10 @@ export default function PublishReviewPage() {
             } else {
                 // CREATE
                 const propertyRef = collection(db, "properties")
+                const title = data.description?.slice(0, 200) || `${data.type} ${data.operation} en ${data.neighborhood || data.address}`
                 const newProperty = {
                     ...data,
+                    title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
                     userId: user.uid,
                     agentName: user.displayName || "Usuario de DominioTotal",
                     agentPhone: "", // User can add this in profile
@@ -44,8 +47,7 @@ export default function PublishReviewPage() {
                     status: "pending", // Moderation queue
                     featured: false,
                     views: 0,
-                    // Slug generation
-                    slug: `${data.type.toLowerCase()}-${data.neighborhood.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString().slice(-4)}`
+                    slug: `${data.type.toLowerCase()}-${(data.neighborhood || "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
                 }
                 await addDoc(propertyRef, newProperty)
             }
@@ -54,7 +56,7 @@ export default function PublishReviewPage() {
             router.push("/publish/success")
         } catch (error) {
             console.error("Error publishing property:", error)
-            alert("Error al publicar la propiedad. Por favor intente de nuevo.")
+            toast.error("Error al publicar la propiedad. Por favor intente de nuevo.")
         } finally {
             setIsPublishing(false)
         }

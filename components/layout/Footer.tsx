@@ -58,9 +58,14 @@ export function Footer() {
                 </div>
 
                 <div className="pt-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        © {new Date().getFullYear()} DOMINIO TOTAL URUGUAY - TODOS LOS DERECHOS RESERVADOS
-                    </p>
+                    <div className="flex flex-col items-center md:items-start gap-1">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            © {new Date().getFullYear()} DOMINIO TOTAL URUGUAY - TODOS LOS DERECHOS RESERVADOS
+                        </p>
+                        <p className="text-[9px] font-bold text-slate-400/60 uppercase tracking-tighter">
+                            Desarrollado con <span className="text-red-500/50">❤️</span> por <span className="text-primary/60">Facundo Fernández</span>
+                        </p>
+                    </div>
                     <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                         <Link className="hover:text-primary" href="#">Privacidad</Link>
                         <Link className="hover:text-primary" href="#">Términos</Link>

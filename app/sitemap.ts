@@ -1,9 +1,19 @@
 import { MetadataRoute } from 'next'
+import { db } from '@/lib/firebase'
+import { collection, getDocs, limit, query } from 'firebase/firestore'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://dominiototal.vercel.app'
+const baseUrl = 'https://dominiototal.vercel.app'
 
-    return [
+const BARRIOS_MONTEVIDEO = [
+    'Pocitos', 'Punta-Carretas', 'Carrasco', 'Buceo', 'Cordon',
+    'Centro', 'Ciudad-Vieja', 'Parque-Rodo', 'Malvin', 'Punta-Gorda',
+    'La-Blanqueada', 'Tres-Cruces', 'Aguada', 'Palermo', 'Barrio-Sur',
+    'Parque-Batlle', 'Larrañaga', 'Union', 'Sayago', 'Peñarol',
+]
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const entries: MetadataRoute.Sitemap = [
+        // Core pages
         {
             url: baseUrl,
             lastModified: new Date(),
@@ -14,19 +24,71 @@ export default function sitemap(): MetadataRoute.Sitemap {
             url: `${baseUrl}/search`,
             lastModified: new Date(),
             changeFrequency: 'daily',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/search?operation=Venta`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/profile`,
+            url: `${baseUrl}/search?operation=Alquiler`,
             lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
+            changeFrequency: 'daily',
+            priority: 0.8,
         },
         {
-            url: `${baseUrl}/my-properties`,
+            url: `${baseUrl}/vender`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/compare`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
         },
     ]
+
+    // SEO neighborhood pages
+    for (const barrio of BARRIOS_MONTEVIDEO) {
+        entries.push(
+            {
+                url: `${baseUrl}/comprar/${barrio}`,
+                lastModified: new Date(),
+                changeFrequency: 'daily',
+                priority: 0.7,
+            },
+            {
+                url: `${baseUrl}/alquilar/${barrio}`,
+                lastModified: new Date(),
+                changeFrequency: 'daily',
+                priority: 0.7,
+            }
+        )
+    }
+
+    // Dynamic property pages from Firestore
+    if (db) {
+        try {
+            const propertiesRef = collection(db, 'properties')
+            const q = query(propertiesRef, limit(500))
+            const snapshot = await getDocs(q)
+
+            snapshot.docs.forEach(doc => {
+                entries.push({
+                    url: `${baseUrl}/property/${doc.id}`,
+                    lastModified: new Date(),
+                    changeFrequency: 'weekly',
+                    priority: 0.6,
+                })
+            })
+        } catch (error) {
+            console.error('Error generating sitemap from Firestore:', error)
+        }
+    }
+
+    return entries
 }

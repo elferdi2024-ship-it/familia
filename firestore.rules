@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Properties Collection
+    match /properties/{propertyId} {
+      allow read: if true;
+
+      allow create: if isAuthenticated() &&
+                      request.resource.data.userId == request.auth.uid &&
+                      request.resource.data.title.size() >= 10 &&
+                      request.resource.data.title.size() <= 200 &&
+                      request.resource.data.price > 0 &&
+                      request.resource.data.images.size() >= 1 &&
+                      request.resource.data.images.size() <= 20;
+
+      allow update: if isOwner(resource.data.userId) || isAdmin();
+
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId);
+    }
+
+    // Leads Collection
+    match /leads/{leadId} {
+      allow read: if isAuthenticated() &&
+                    (resource.data.agentId == request.auth.uid || isAdmin());
+
+      allow create: if request.resource.data.leadName.size() > 0 &&
+                      request.resource.data.leadEmail.matches('.*@.*\\..*') &&
+                      request.resource.data.leadMessage.size() >= 10;
+
+      allow update, delete: if false;
+    }
+
+    // Saved Searches Collection
+    match /savedSearches/{searchId} {
+      allow read, write: if isAuthenticated() &&
+                           resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() &&
+                      request.resource.data.userId == request.auth.uid;
+    }
+
+    // Notifications Collection (future)
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() &&
+                    resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+  }
+}

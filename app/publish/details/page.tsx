@@ -5,6 +5,8 @@ import { usePublish } from "@/contexts/PublishContext"
 import { useRouter } from "next/navigation"
 import { ImageUploader } from "@/components/publish/ImageUploader"
 import { GUARANTEES, AMENITIES } from "@/lib/data"
+import { PublishStep2Schema } from "@/lib/validation"
+import { toast } from "sonner"
 
 export default function PublishDetailsPage() {
     const { data, updateData } = usePublish()
@@ -12,12 +14,13 @@ export default function PublishDetailsPage() {
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault()
-        if (data.images.length === 0) {
-            alert("Por favor sube al menos una foto")
-            return
-        }
-        if (data.price <= 0) {
-            alert("Por favor ingresa un precio válido")
+        const parsed = PublishStep2Schema.safeParse({
+            images: data.images,
+            price: data.price,
+        })
+        if (!parsed.success) {
+            const first = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
+            toast.error(first || "Completa los campos obligatorios")
             return
         }
         router.push("/publish/review")

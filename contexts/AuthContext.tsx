@@ -43,12 +43,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return
         }
 
+        let cancelled = false
+
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser)
-            setLoading(false)
+            if (!cancelled) {
+                setUser(currentUser)
+                setLoading(false)
+            }
         })
 
-        return () => unsubscribe()
+        return () => {
+            cancelled = true
+            unsubscribe()
+        }
     }, [])
 
     const loginWithGoogle = async () => {

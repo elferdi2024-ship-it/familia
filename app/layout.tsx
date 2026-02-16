@@ -7,7 +7,12 @@ import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { SavedSearchesProvider } from "@/contexts/SavedSearchesContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PublishProvider } from "@/contexts/PublishContext";
+import { ComparisonProvider } from "@/contexts/ComparisonContext";
+import { ComparisonFloatingBar } from "@/components/ComparisonFloatingBar";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,53 +53,80 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0a4ecd" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="DominioTotal" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Skip link for accessibility */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-bold">
+          Saltar al contenido principal
+        </a>
         <AuthProvider>
           <FavoritesProvider>
             <SavedSearchesProvider>
               <PublishProvider>
-                <div className="json-ld-container">
-                  <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                      __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "RealEstateAgent",
-                        "name": "DominioTotal",
-                        "url": "https://dominiototal.vercel.app",
-                        "logo": "https://dominiototal.vercel.app/logo.png",
-                        "image": "https://dominiototal.vercel.app/og-image.jpg",
-                        "description": "Encontrá tu próximo hogar en Uruguay. Inmobiliaria líder en Montevideo, Canelones y Maldonado.",
-                        "address": {
-                          "@type": "PostalAddress",
-                          "streetAddress": "Av. 18 de Julio 1234",
-                          "addressLocality": "Montevideo",
-                          "addressRegion": "Montevideo",
-                          "postalCode": "11100",
-                          "addressCountry": "UY"
-                        },
-                        "geo": {
-                          "@type": "GeoCoordinates",
-                          "latitude": -34.9011,
-                          "longitude": -56.1645
-                        },
-                        "telephone": "+598 99 123 456",
-                        "priceRange": "$$$"
-                      })
+                <ComparisonProvider>
+                  <div className="json-ld-container">
+                    <script
+                      type="application/ld+json"
+                      dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                          "@context": "https://schema.org",
+                          "@type": "RealEstateAgent",
+                          "name": "DominioTotal",
+                          "url": "https://dominiototal.vercel.app",
+                          "logo": "https://dominiototal.vercel.app/logo.png",
+                          "image": "https://dominiototal.vercel.app/og-image.jpg",
+                          "description": "Encontrá tu próximo hogar en Uruguay. Inmobiliaria líder en Montevideo, Canelones y Maldonado.",
+                          "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "Av. 18 de Julio 1234",
+                            "addressLocality": "Montevideo",
+                            "addressRegion": "Montevideo",
+                            "postalCode": "11100",
+                            "addressCountry": "UY"
+                          },
+                          "geo": {
+                            "@type": "GeoCoordinates",
+                            "latitude": -34.9011,
+                            "longitude": -56.1645
+                          },
+                          "telephone": "+598 99 123 456",
+                          "priceRange": "$$$",
+                          "sameAs": [
+                            "https://www.instagram.com/dominiototal",
+                            "https://www.facebook.com/dominiototal"
+                          ]
+                        })
+                      }}
+                    />
+                  </div>
+                  <Navbar />
+                  <main id="main-content" className="pt-24 md:pt-28 pb-20 md:pb-0">{children}</main>
+                  <Footer />
+                  <BottomTabBar />
+                  <ComparisonFloatingBar />
+                  <Toaster
+                    position="top-right"
+                    richColors
+                    closeButton
+                    toastOptions={{
+                      duration: 4000,
+                      className: 'font-sans',
                     }}
                   />
-                </div>
-                <Navbar />
-                <main className="pt-24 md:pt-28 pb-20 md:pb-0">{children}</main>
-                <Footer />
-                <BottomTabBar />
+                </ComparisonProvider>
               </PublishProvider>
             </SavedSearchesProvider>
           </FavoritesProvider>
         </AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
