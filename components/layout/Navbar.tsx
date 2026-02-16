@@ -38,7 +38,7 @@ export function Navbar() {
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-2 group">
             <img
-              src="/atlantida-logo.png"
+              src="/atlantida-isotype.png"
               alt="Atlantida Group"
               className={`h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : ""}`}
             />
