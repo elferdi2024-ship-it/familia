@@ -330,12 +330,14 @@ export default function ServicesPage() {
             {/* 1. HERO PRINCIPAL - ENHANCED WITH VIDEO BANNER */}
             <section className="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
                 {/* Background Video with Overlay */}
-                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 z-0 text-white">
                     <video
                         autoPlay
                         loop
                         muted
                         playsInline
+                        preload="auto"
+                        poster="/portada.webp"
                         className="w-full h-full object-cover"
                     >
                         <source src="/flotantes-atlantida.mp4" type="video/mp4" />
