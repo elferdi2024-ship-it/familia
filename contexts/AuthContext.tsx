@@ -46,22 +46,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return
         }
 
-        // Handle Redirect Result
-        getRedirectResult(auth)
-            .then((result) => {
-                if (result) {
-                    console.log("User signed in via redirect:", result.user)
-                    alert(`¡Éxito! Volviste de Google como: ${result.user.email}`) // Debug success
-                } else {
-                    console.log("No redirect result found.")
-                    alert("Alerta de Depuración: Volviste a la página, pero 'getRedirectResult' devolvió NULL. La sesión no se recuperó.")
-                }
-            })
-            .catch((error) => {
-                console.error("Error handling redirect result:", error)
-                alert(`Error al volver de Google: ${error.message}`)
-            })
-
         let cancelled = false
 
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -69,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(currentUser)
                 setLoading(false)
                 if (currentUser) {
-                    // alert(`AuthStateChanged detectó usuario: ${currentUser.email}`) // Debug auth state
+                    console.log("AuthStateChanged detectó usuario:", currentUser.email)
                 }
             }
         })
@@ -83,20 +67,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const loginWithGoogle = async () => {
         if (!auth) {
             console.error("Firebase auth is not initialized. Check your .env.local configuration.")
-            alert("Error: Firebase Auth no está inicializado. Faltan variables de entorno.") // Alert if auth missing
+            alert("Error: Firebase Auth no está inicializado. Faltan variables de entorno.")
             throw new Error("El servicio de autenticación no está disponible.")
         }
         const provider = new GoogleAuthProvider()
         try {
-            alert("Iniciando redirección a Google...") // Debug start of flow
-            // Using redirect instead of popup for better mobile compatibility
-            await signInWithRedirect(auth, provider)
+            console.log("Intentando signInWithPopup...")
+            // Reverting to popup as redirect is losing session state in this environment
+            // COOP headers in next.config.ts should now allow this to work without 'popup-closed-by-user' error
+            const result = await signInWithPopup(auth, provider)
+            alert(`¡Éxito! Login correcto con: ${result.user.email}`)
         } catch (error: any) {
             console.error("Error signing in with Google:", error)
             alert(`Error al iniciar Google Login: ${error.message}`)
             if (error.code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
                 alert("Dominio no autorizado en Firebase Console. Por favor agrégalo en Authentication > Settings > Authorized domains.")
+            }
+            if (error.code === 'auth/popup-closed-by-user') {
+                alert("El popup se cerró antes de terminar. Si no lo cerraste tú, puede ser un bloqueador de ventanas emergentes.")
             }
             throw error
         }
