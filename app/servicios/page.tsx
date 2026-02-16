@@ -327,18 +327,19 @@ export default function ServicesPage() {
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
             <Navbar />
 
-            {/* 1. HERO PRINCIPAL - ENHANCED WITH BANNER */}
+            {/* 1. HERO PRINCIPAL - ENHANCED WITH VIDEO BANNER */}
             <section className="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
-                {/* Background Image with Overlay */}
+                {/* Background Video with Overlay */}
                 <div className="absolute inset-0 z-0">
-                    <Image
-                        alt="Montevideo Real Estate"
-                        fill
-                        priority
-                        className="object-cover"
-                        src="/portada.webp"
-                        sizes="100vw"
-                    />
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
+                    >
+                        <source src="/flotantes-atlantida.mp4" type="video/mp4" />
+                    </video>
                     <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[#FDFDFD] dark:to-background-dark"></div>
                 </div>
 
