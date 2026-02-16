@@ -294,7 +294,18 @@ export function SearchContent({
                         </section>
 
                         <section className={`${showMap ? 'block' : 'hidden'} md:block md:w-1/2 w-full relative`}>
-                            {isLoaded && (
+                            {loadError && (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-slate-50 dark:bg-slate-900">
+                                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                                        <span className="material-icons text-slate-400 text-3xl">map</span>
+                                    </div>
+                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Error cargando el Mapa</h3>
+                                    <p className="text-sm text-slate-500 max-w-sm">
+                                        No se pudo cargar Google Maps. Esto suele deberse a que la clave API no está configurada correctamente o le falta facturación habilitada.
+                                    </p>
+                                </div>
+                            )}
+                            {!loadError && isLoaded && (
                                 <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13}>
                                     {properties.map(p => p.geolocation && (
                                         <MarkerF key={p.id} position={p.geolocation} label={{ text: `$${(p.price / 1000).toFixed(0)}k`, className: "bg-white text-primary px-2 py-1 rounded border-2 border-primary font-bold text-[10px]" }} icon={{ path: 0, scale: 0 }} />
