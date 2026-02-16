@@ -29,113 +29,128 @@ import { toast } from "sonner"
 const OWNER_SERVICES = [
     {
         id: "mantenimiento",
-        title: "Mantenimiento y Reparaciones",
-        text: "Coordinamos plomería, electricidad, pintura y mejoras generales para que tu propiedad esté lista para alquilar o vender.",
+        title: "Gestión de Mantenimiento y Reformas",
+        text: "Nos encargamos de que tu propiedad brille y mantenga su valor. Coordinamos equipos especializados en plomería, electricidad, pintura y diseño de interiores. Preparamos cada ambiente para maximizar su atractivo antes de una visita clave.",
         icon: Key,
         color: "#1E3A5F",
-        textColor: "text-white"
+        features: ["Equipos verificados", "Presupuestos cerrados", "Supervisión de obra"]
     },
     {
         id: "revision",
-        title: "Revisión Técnica Integral",
-        text: "Evaluamos instalaciones eléctricas y sanitarias para prevenir problemas antes de una operación.",
+        title: "Revisión Técnica y Diagnóstico",
+        text: "Evita sorpresas desagradables en medio de una negociación. Realizamos inspecciones profundas de instalaciones y estructuras, entregando un reporte de estado que garantiza transparencia y acelera el cierre de la operación.",
         icon: Zap,
         color: "#1F4F46",
-        textColor: "text-white"
+        features: ["Certificación técnica", "Detección de humedades", "Eficiencia energética"]
     },
     {
         id: "legal",
-        title: "Asesoramiento Legal y Notarial",
-        text: "Contratos de alquiler, compraventa y respaldo jurídico en cada paso.",
+        title: "Blindaje Legal y Notarial",
+        text: "Seguridad jurídica total en cada contrato. Nuestros expertos redactan y revisan documentos de compraventa y alquiler, asegurando el cumplimiento de todas las normativas locales y protegiendo tu patrimonio ante cualquier contingencia.",
         icon: Scale,
         color: "#2F2F2F",
-        textColor: "text-white"
+        features: ["Contratos a medida", "Sucesiones y títulos", "Gestión de garantías"]
     },
     {
         id: "tasacion",
-        title: "Tasación y Análisis de Mercado",
-        text: "Definimos el valor estratégico de tu propiedad según contexto real de mercado.",
+        title: "Tasación de Alto Impacto",
+        text: "No solo damos un precio; entregamos una estrategia. Analizamos el contexto real del mercado, la demanda por zona y el potencial de tu inmueble para definir un valor competitivo que atraiga ofertas serias en tiempo récord.",
         icon: TrendingUp,
         color: "#5B2C2C",
-        textColor: "text-white"
+        features: ["Análisis comparativo", "Tendencias de mercado", "Reporte profesional"]
     }
 ]
 
 const INVESTOR_SERVICES = [
     {
         id: "busqueda",
-        title: "Búsqueda Estratégica de Oportunidades",
-        text: "Identificamos propiedades con potencial de valorización o renta.",
+        title: "Hunting Estratégico de Activos",
+        text: "Identificamos oportunidades 'off-market' con alto potencial de plusvalía. Buscamos propiedades con estructuras sólidas en zonas de crecimiento proyectado, garantizando una entrada segura y con margen de rentabilidad.",
         icon: Search,
         color: "#0F2C4C",
-        textColor: "text-white"
+        features: ["Zonas emergentes", "Oportunidades únicas", "Visión a largo plazo"]
     },
     {
         id: "rentabilidad",
-        title: "Análisis de Rentabilidad",
-        text: "Evaluamos proyección de retorno y viabilidad de inversión.",
+        title: "Ingeniería de Rentabilidad",
+        text: "Calculamos el ROI real antes de que pongas un peso. Realizamos proyecciones de flujo de caja, análisis de costos operativos y estimaciones de renta para que inviertas con datos sólidos, no con corazonadas.",
         icon: PieChart,
         color: "#204B3A",
-        textColor: "text-white"
+        features: ["Cálculo de ROI", "Cashflow proyectado", "Análisis impositivo"]
     },
     {
         id: "estructuracion",
-        title: "Estructuración Legal de Inversión",
-        text: "Acompañamiento jurídico y contractual para operaciones seguras.",
+        title: "Estructuración Legal de Negocios",
+        text: "Acompañamos la creación de fideicomisos, sociedades y acuerdos de inversión. Aseguramos que la arquitectura legal de tu inversión sea eficiente impositivamente y completamente segura para todos los intervinientes.",
         icon: FileText,
         color: "#3A3A3A",
-        textColor: "text-white"
+        features: ["Vehículos de inversión", "Protección de socios", "Compliance legal"]
     },
     {
         id: "gestion",
-        title: "Optimización y Gestión de Activos",
-        text: "Coordinamos mejoras y mantenimiento para potenciar valor.",
+        title: "Project Management Inmobiliario",
+        text: "Transformamos activos obsoletos en máquinas de generar renta. Coordinamos desde el reciclaje total hasta el 'flipping' inmobiliario, gestionando proveedores y tiempos para que tu inversión se valorice día tras día.",
         icon: Building2,
         color: "#2C3E50",
-        textColor: "text-white"
+        features: ["Supervisión de reciclaje", "Optimización de costos", "Puesta en valor"]
     }
 ]
 
 // --- Components ---
 
-function ServiceCard({ service, onClick }: { service: typeof OWNER_SERVICES[0], onClick: () => void }) {
+function ServiceCard({ service, onClick }: { service: any, onClick: () => void }) {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ y: -10 }}
-            className="group relative bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 transition-all duration-500 overflow-hidden flex flex-col h-full"
+            whileHover={{ y: -12 }}
+            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 transition-all duration-500 overflow-hidden flex flex-col h-full"
         >
-            {/* Background Accent on Hover */}
+            {/* Animated Background Gradient */}
             <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-white via-transparent to-black"
+                style={{ backgroundColor: service.color }}
+            />
+
+            {/* Decorative Corner Light */}
+            <div
+                className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[80px] opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
                 style={{ backgroundColor: service.color }}
             />
 
             <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:rotate-6 transition-all duration-500"
-                style={{ backgroundColor: service.color, boxShadow: `0 10px 20px ${service.color}33` }}
+                className="w-20 h-20 rounded-3xl flex items-center justify-center mb-10 shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 relative z-10"
+                style={{ backgroundColor: service.color, boxShadow: `0 15px 35px ${service.color}44` }}
             >
-                <service.icon className="w-8 h-8 text-white" />
+                <service.icon className="w-10 h-10 text-white" />
             </div>
 
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-primary transition-colors">
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-5 leading-tight group-hover:text-primary transition-colors relative z-10">
                 {service.title}
             </h3>
 
-            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-10 flex-grow">
+            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-8 flex-grow relative z-10">
                 {service.text}
             </p>
 
-            <div className="pt-6 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/20">
+            {/* Feature Tags */}
+            <div className="flex flex-wrap gap-2 mb-10 relative z-10">
+                {service.features?.map((f: string, i: number) => (
+                    <span key={i} className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700 group-hover:border-primary/20 group-hover:text-primary transition-colors">
+                        {f}
+                    </span>
+                ))}
+            </div>
+
+            <div className="pt-8 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/20 relative z-10">
                 <button
                     onClick={onClick}
-                    className="flex items-center gap-3 text-sm font-black uppercase tracking-[0.15em] text-slate-400 group-hover:text-primary transition-all"
+                    className="w-full flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-primary transition-all"
                 >
-                    Solicitar ahora
-                    <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all">
-                        <ChevronRight className="w-4 h-4" />
+                    <span>Comenzar ahora</span>
+                    <div className="w-10 h-10 rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:shadow-lg group-hover:shadow-primary/20">
+                        <ChevronRight className="w-5 h-5" />
                     </div>
                 </button>
             </div>
@@ -376,20 +391,24 @@ export default function ServicesPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="flex flex-col sm:flex-row gap-6"
+                            className="flex flex-col sm:flex-row gap-8"
                         >
                             <button
                                 onClick={() => scrollTo(ownersRef as React.RefObject<HTMLDivElement>)}
-                                className="group px-10 py-5 bg-primary text-white rounded-2xl font-bold shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                                className="group relative px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(59,130,246,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden"
                             >
-                                🏠 Soy Propietario
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                <span className="relative z-10">🏠 Soy Propietario</span>
+                                <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </button>
                             <button
                                 onClick={() => scrollTo(investorsRef as React.RefObject<HTMLDivElement>)}
-                                className="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                                className="group px-12 py-6 bg-white/5 backdrop-blur-xl border-2 border-white/30 text-white rounded-[2rem] font-black text-lg hover:bg-white/20 hover:border-white/50 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4"
                             >
                                 📈 Soy Inversor
+                                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                    <ChevronRight className="w-5 h-5" />
+                                </div>
                             </button>
                         </motion.div>
                     </div>
