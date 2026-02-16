@@ -7,6 +7,7 @@ import { ImageUploader } from "@/components/publish/ImageUploader"
 import { GUARANTEES, AMENITIES } from "@/lib/data"
 import { PublishStep2Schema } from "@/lib/validation"
 import { toast } from "sonner"
+import { trackEvent } from "@/lib/tracking"
 
 export default function PublishDetailsPage() {
     const { data, updateData } = usePublish()
@@ -23,6 +24,7 @@ export default function PublishDetailsPage() {
             toast.error(first || "Completa los campos obligatorios")
             return
         }
+        trackEvent.publishStep2Completed()
         router.push("/publish/review")
     }
     return (

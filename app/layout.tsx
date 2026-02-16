@@ -27,19 +27,53 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://dominiototal.vercel.app'),
   title: {
-    default: "DominioTotal — Propiedades en Uruguay",
+    default: "DominioTotal — Propiedades en Uruguay | Comprar, Alquilar, Vender",
     template: "%s | DominioTotal"
   },
-  description: "Encontrá tu próximo hogar. 12.842 propiedades activas en Uruguay.",
+  description: "La mejor plataforma inmobiliaria de Uruguay. Busca casas, apartamentos y terrenos en venta o alquiler. Vivienda Promovida, garantias transparentes y busqueda inteligente.",
+  keywords: [
+    "inmobiliaria uruguay", "propiedades montevideo", "alquilar apartamento",
+    "comprar casa uruguay", "vivienda promovida", "ley 18795",
+    "alquiler pocitos", "venta apartamento montevideo", "inmuebles uruguay",
+    "garantia anda", "garantia cgn", "dominiototal"
+  ],
   alternates: {
-    canonical: './',
+    canonical: 'https://dominiototal.vercel.app',
   },
   openGraph: {
     type: 'website',
     locale: 'es_UY',
     url: 'https://dominiototal.vercel.app',
     siteName: 'DominioTotal',
-  }
+    title: 'DominioTotal — Propiedades en Uruguay',
+    description: 'Encontra tu proximo hogar. La mejor experiencia mobile para buscar propiedades en Uruguay.',
+    images: [{
+      url: '/og-image.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'DominioTotal - Plataforma Inmobiliaria Uruguay',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DominioTotal — Propiedades en Uruguay',
+    description: 'Busca casas y apartamentos en venta o alquiler en Uruguay.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'verificacion-google-aqui',
+  },
 };
 
 export default function RootLayout({

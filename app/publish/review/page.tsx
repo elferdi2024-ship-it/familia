@@ -8,6 +8,7 @@ import { collection, addDoc, updateDoc, doc, serverTimestamp } from "firebase/fi
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { formatPrice } from "@/lib/data"
+import { trackEvent } from "@/lib/tracking"
 import { toast } from "sonner"
 
 export default function PublishReviewPage() {
@@ -52,6 +53,7 @@ export default function PublishReviewPage() {
                 await addDoc(propertyRef, newProperty)
             }
 
+            trackEvent.publishStep3Completed()
             resetData()
             router.push("/publish/success")
         } catch (error) {

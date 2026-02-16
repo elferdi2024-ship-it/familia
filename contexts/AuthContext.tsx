@@ -9,7 +9,8 @@ import {
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    updateProfile
+    updateProfile,
+    sendEmailVerification
 } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 
@@ -84,9 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 await updateProfile(auth.currentUser, {
                     displayName: name
                 })
-                // Trigger a reload to update the user object with the new profile
-                // userCredential.user.reload() usually updates the internal state
-                // but setting user state manually might be needed if onAuthStateChanged doesn't fire immediately with updated profile
+                await sendEmailVerification(auth.currentUser)
             }
         } catch (error) {
             console.error("Error registering with Email:", error)

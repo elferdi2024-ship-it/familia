@@ -199,18 +199,27 @@ export function SearchContent({
             </div>
 
             <div className="space-y-4">
-                <select value={filters.department} onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                    <option value="">Departamento</option>
-                    {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
-                </select>
-                <select disabled={!filters.department} value={filters.city} onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                    <option value="">Ciudad</option>
-                    {cities.map(city => <option key={city} value={city}>{city}</option>)}
-                </select>
-                <select disabled={!filters.city} value={filters.neighborhood} onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                    <option value="">Barrio</option>
-                    {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
-                </select>
+                <div>
+                    <label htmlFor="filter-department" className="sr-only">Departamento</label>
+                    <select id="filter-department" value={filters.department} onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
+                        <option value="">Departamento</option>
+                        {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="filter-city" className="sr-only">Ciudad</label>
+                    <select id="filter-city" disabled={!filters.department} value={filters.city} onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
+                        <option value="">Ciudad</option>
+                        {cities.map(city => <option key={city} value={city}>{city}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="filter-neighborhood" className="sr-only">Barrio</label>
+                    <select id="filter-neighborhood" disabled={!filters.city} value={filters.neighborhood} onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
+                        <option value="">Barrio</option>
+                        {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
+                    </select>
+                </div>
             </div>
 
             <div>

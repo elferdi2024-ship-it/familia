@@ -2,235 +2,81 @@ version: "2"
 type: frontend
 tech_stack:
   - TypeScript
-  - Next.js 16.1.6 (App Router)
-  - React 19.2.3
-  - Tailwind CSS 4
-  - shadcn/ui + Radix UI
-  - Framer Motion 12.34
-  - Firebase Auth + Firestore + Cloud Storage
+  - Next.js 16 (App Router)
+  - Firebase (Firestore & Auth)
+  - CSS Modules / Tailwind CSS
+  - Material Icons
 routes:
   - path: /
     file: app/page.tsx
     auth_required: false
-    description: Homepage with hero section, property type/operation dropdowns, featured property cards, and smart search bar
+    description: Home page with featured properties and quick search
   - path: /search
     file: app/search/page.tsx
     auth_required: false
-    description: Property search page with faceted filters (operation, type, location, price, bedrooms), Firestore-backed results grid, and save search functionality
+    description: Advanced search with filters and map view
   - path: /property/[id]
     file: app/property/[id]/page.tsx
     auth_required: false
-    description: Dynamic property detail page fetched from Firestore by ID with photo gallery, stats, amenities, map, and lead capture contact form
-  - path: /compare
-    file: app/compare/page.tsx
-    auth_required: false
-    description: Side-by-side comparison of up to 3 properties
+    description: Detailed property view with contact form and map
   - path: /favorites
     file: app/favorites/page.tsx
-    auth_required: false
-    description: Grid of user-favorited properties synced via localStorage (guest) or Firestore (authenticated)
+    auth_required: true (optional for guest)
+    description: User's saved properties
   - path: /saved-searches
     file: app/saved-searches/page.tsx
-    auth_required: false
-    description: List of saved search queries with filters, synced via localStorage or Firestore
-  - path: /publish
-    file: app/publish/page.tsx
     auth_required: true
-    description: Step 1 of property publishing wizard - select type, operation, and location
-  - path: /publish/details
-    file: app/publish/details/page.tsx
-    auth_required: true
-    description: Step 2 of publishing wizard - upload images to Cloud Storage, set price, bedrooms, bathrooms, area, description
-  - path: /publish/review
-    file: app/publish/review/page.tsx
-    auth_required: true
-    description: Step 3 of publishing wizard - review summary, publish (addDoc) or save changes (updateDoc)
-  - path: /publish/success
-    file: app/publish/success/page.tsx
-    auth_required: true
-    description: Success confirmation page after publishing or editing a property
+    description: List of saved search criteria with real-time sync
   - path: /profile
     file: app/profile/page.tsx
     auth_required: true
-    description: User profile dashboard with avatar, email, account info
+    description: User profile and settings
   - path: /my-properties
     file: app/my-properties/page.tsx
     auth_required: true
-    description: Dashboard listing user's own published properties with edit and delete actions
-features:
-  - name: Homepage Hero and Search
-    description: Landing page with hero section, property type and operation dropdowns, and a smart search bar that redirects to /search with query params
-    files:
-      - app/page.tsx
-      - components/SmartSearch.tsx
-    entry_route: /
-    user_interactions:
-      - View hero section with tagline and background
-      - Click on property type dropdown to select property types
-      - Click on operation dropdown to select Venta/Alquiler
-      - Type in smart search bar for autocomplete suggestions
-      - Click "Buscar" button to navigate to /search with filters
-      - Scroll down to see featured property cards
-      - Click heart icon on property cards to toggle favorites
-    api_calls: []
+    description: Agent dashboard for managing listed properties
+  - path: /compare
+    file: app/compare/page.tsx
     auth_required: false
-  - name: Property Search with Filters
-    description: Full-featured search page that queries Firestore with dynamic filters for operation, type, location, price range, and bedrooms
+    description: Side-by-side property comparison
+  - path: /publish
+    file: app/publish/page.tsx
+    auth_required: true
+    description: Multi-step property listing entry point
+features:
+  - name: Advanced Real Estate Search
+    description: Dynamic filtering system with map toggle and real-time POI
     files:
       - app/search/page.tsx
-      - components/PropertyCard.tsx
-      - components/Skeletons.tsx
+      - components/SmartSearch.tsx
     entry_route: /search
     user_interactions:
-      - View property grid loaded from Firestore
-      - Select operation filter (Venta/Alquiler/Alquiler Temporal)
-      - Select property type filter (Casa/Apartamento/etc)
-      - Select department, city, neighborhood cascading dropdowns
-      - Adjust price range slider
-      - Select bedroom count
-      - Click "Limpiar" to clear all filters
-      - Click "Guardar Búsqueda" to save current filters
-      - Click on a PropertyCard to navigate to /property/[id]
-      - View loading skeletons while data loads
-      - View empty state message when no results
-    api_calls:
-      - method: GET
-        endpoint: Firestore collection "properties" with query constraints
-    auth_required: false
-  - name: Property Detail and Lead Capture
-    description: Dynamic property page fetched from Firestore showing gallery, features, amenities, neighborhood map, and a contact form that saves leads to Firestore
-    files:
-      - app/property/[id]/page.tsx
-      - components/NeighborhoodMap.tsx
-      - components/FloorplanViewer.tsx
-      - components/FavoriteButton.tsx
-    entry_route: /property/[id]
-    user_interactions:
-      - View photo gallery with navigation arrows
-      - See property price, area, bedrooms, bathrooms, garages
-      - Read full property description
-      - View amenities list with checkmarks
-      - View neighborhood map
-      - View floorplan if available
-      - See "Vivienda Promovida" badge if applicable
-      - Fill contact form with name, email, and message
-      - Submit contact form to capture lead in Firestore
-      - See success confirmation after lead submission
-      - Click WhatsApp button
-      - Use mobile sticky CTA bar to contact agent
-      - Toggle favorite on the property
-    api_calls:
-      - method: GET
-        endpoint: Firestore document "properties/{id}"
-      - method: POST
-        endpoint: Firestore collection "leads" (addDoc)
-    auth_required: false
-  - name: Property Publishing Wizard
-    description: Multi-step wizard to publish a new property, including image upload to Cloud Storage and saving to Firestore
-    files:
-      - app/publish/page.tsx
-      - app/publish/details/page.tsx
-      - app/publish/review/page.tsx
-      - app/publish/success/page.tsx
-      - components/publish/ImageUploader.tsx
-      - contexts/PublishContext.tsx
-    entry_route: /publish
-    user_interactions:
-      - Select property type (Casa, Apartamento, etc)
-      - Select operation (Venta, Alquiler)
-      - Enter address
-      - Select department, city, neighborhood
-      - Click Next to go to details step
-      - Upload property images
-      - Enter price and select currency
-      - Enter bedrooms, bathrooms, area
-      - Write description
-      - Toggle vivienda promovida checkbox
-      - Select accepted guarantees
-      - Select amenities
-      - Click Next to go to review step
-      - Review all entered information
-      - Click "Publicar Ahora" to save to Firestore
-      - See success confirmation page
-    api_calls:
-      - method: POST
-        endpoint: Firebase Cloud Storage (image upload)
-      - method: POST
-        endpoint: Firestore collection "properties" (addDoc)
-    auth_required: true
-  - name: Property Editing
-    description: Edit existing properties from dashboard, pre-populating the publish wizard with Firestore data and using updateDoc to save changes
+      - Select operation type (Sale/Rent)
+      - Filter by neighborhood, price, bedrooms
+      - Toggle between List and Map view
+      - Save search for notifications
+  - name: Property CRM for Agents
+    description: Management of leads and property lifecycle
     files:
       - app/my-properties/page.tsx
-      - app/publish/page.tsx
-      - app/publish/review/page.tsx
       - contexts/PublishContext.tsx
     entry_route: /my-properties
     user_interactions:
-      - View list of own published properties
-      - Click "Editar" button on a property card
-      - Navigate to /publish?edit=[id] with pre-populated data
-      - Modify any field across wizard steps
-      - Click "Guardar Cambios" on review page
-      - See success confirmation
-      - Click "Eliminar" to delete a property
-    api_calls:
-      - method: GET
-        endpoint: Firestore query "properties" where userId == currentUser
-      - method: GET
-        endpoint: Firestore document "properties/{id}" (for edit pre-population)
-      - method: PUT
-        endpoint: Firestore document "properties/{id}" (updateDoc)
-      - method: DELETE
-        endpoint: Firestore document "properties/{id}" (deleteDoc)
-    auth_required: true
-  - name: Favorites System
-    description: Toggle favorite properties with heart icon, persisted in localStorage for guests and synced to Firestore for authenticated users
+      - View list of own properties
+      - Track leads per property
+      - Edit or delete listings
+  - name: Uruguayan Market Specialization
+    description: Specific fields for Ley 18.795 (Vivienda Promovida) and local guarantees
     files:
-      - components/FavoriteButton.tsx
-      - contexts/FavoritesContext.tsx
-      - app/favorites/page.tsx
-    entry_route: /favorites
+      - lib/data.ts
+      - components/PropertyCard.tsx
     user_interactions:
-      - Click heart icon on any property card to toggle favorite
-      - Navigate to /favorites to see all favorited properties
-      - See empty state if no favorites saved
-      - Login to sync local favorites to cloud
-    api_calls:
-      - method: PUT
-        endpoint: Firestore document "users/{uid}" (setDoc with merge)
-    auth_required: false
-  - name: Authentication
-    description: Google OAuth login via Firebase Auth with glassmorphism modal and automatic data sync on login
-    files:
-      - components/auth/AuthModal.tsx
-      - contexts/AuthContext.tsx
-      - components/layout/Navbar.tsx
-    entry_route: /
-    user_interactions:
-      - Click login button in navbar
-      - See glassmorphism auth modal
-      - Click "Continuar con Google" button
-      - Complete Google OAuth flow
-      - See navbar update with user avatar and name
-      - Click logout to sign out
-    api_calls:
-      - method: POST
-        endpoint: Firebase Auth (signInWithPopup)
-    auth_required: false
+      - Identify properties with tax benefits
+      - View accepted rental guarantees (ANDA, Porto, etc.)
 known_limitations:
-  - issue: Stats grid on property detail page contains static hardcoded values (price/m2, time on market, rentability)
-    location: app/property/[id]/page.tsx
-    impact: Price per m2 and rentability are not dynamically calculated
-  - issue: Homepage featured property cards use mock data instead of Firestore
-    location: app/page.tsx
-    impact: Homepage cards do not reflect real published properties
-  - issue: Agent information on property detail is partially static (avatar image is hardcoded)
-    location: app/property/[id]/page.tsx
-    impact: Agent photo is a hardcoded URL, name and phone are dynamic
-  - issue: No email notifications for leads
-    location: app/property/[id]/page.tsx
-    impact: Leads are saved to Firestore but agents are not notified
-  - issue: NeighborhoodMap uses static map rendering, not Google Maps API
-    location: components/NeighborhoodMap.tsx
-    impact: Map is not interactive with real markers
+  - issue: Static sitemap for stability
+    location: app/sitemap.ts
+    impact: Dynamic property URLs need manual or periodic update logic for SEO
+  - issue: Search params state management
+    location: app/search/page.tsx
+    impact: Requires Suspense boundaries to avoid build worker crashes

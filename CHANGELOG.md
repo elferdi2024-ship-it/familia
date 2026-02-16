@@ -2,6 +2,38 @@
 
 Todos los cambios notables de DominioTotal.
 
+## [3.2.0] - 2026-02-16
+
+### Features
+- **Nuevo:** Calculadora de Hipoteca (/calculadora-hipoteca) con 5 bancos uruguayos
+- **Nuevo:** Pagina 404 personalizada con CTAs a inicio y busqueda
+- **Nuevo:** Hook useLeadSubmission con toast, tracking y source detection
+
+### Seguridad
+- **Mejorado:** Verificacion de email al registrarse (sendEmailVerification)
+- **Limpieza:** Eliminados archivos Sentry sin dependencia instalada
+
+### SEO
+- **Mejorado:** Metadata completa con keywords, Twitter Cards, OG images
+- **Mejorado:** Canonical URL en layout raiz
+- **Mejorado:** Robots con directivas googleBot avanzadas
+
+### Accesibilidad
+- **Mejorado:** Labels (sr-only) en todos los inputs del lead form (desktop + mobile)
+- **Mejorado:** Labels en selects de filtros de busqueda
+- **Mejorado:** autoComplete en campos nombre y email
+
+### Monitoring
+- **Mejorado:** Funnel tracking completo en publish wizard (steps 1, 2, 3)
+
+### Documentacion
+- **Nuevo:** AUDITORIA_TECNICA_v3.md (score 9.1/10)
+- **Nuevo:** ESTADO_ACTUAL_v2.md (plan de accion actualizado)
+- **Nuevo:** PRD_v3.2_ACTUALIZADO.md (83% roadmap completado)
+- **Nuevo:** ANALISIS_ESTRATEGICO_v3.md (GO para beta)
+
+---
+
 ## [3.1.0] - 2026-02-16
 
 ### Seguridad

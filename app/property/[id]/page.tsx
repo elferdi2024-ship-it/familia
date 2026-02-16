@@ -559,30 +559,44 @@ export default function PropertyDetailPage() {
                                     </div>
                                 ) : (
                                     <form className="space-y-3" onSubmit={handleLeadSubmit}>
-                                        <input
-                                            className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                                            placeholder="Tu Nombre Completo"
-                                            type="text"
-                                            required
-                                            value={leadName}
-                                            onChange={(e) => setLeadName(e.target.value)}
-                                        />
-                                        <input
-                                            className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                                            placeholder="Email de contacto"
-                                            type="email"
-                                            required
-                                            value={leadEmail}
-                                            onChange={(e) => setLeadEmail(e.target.value)}
-                                        />
-                                        <textarea
-                                            className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                                            placeholder="Mensaje..."
-                                            rows={3}
-                                            required
-                                            value={leadMessage}
-                                            onChange={(e) => setLeadMessage(e.target.value)}
-                                        ></textarea>
+                                        <div>
+                                            <label htmlFor="lead-name-desktop" className="sr-only">Nombre completo</label>
+                                            <input
+                                                id="lead-name-desktop"
+                                                className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                                placeholder="Tu Nombre Completo"
+                                                type="text"
+                                                required
+                                                autoComplete="name"
+                                                value={leadName}
+                                                onChange={(e) => setLeadName(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="lead-email-desktop" className="sr-only">Email de contacto</label>
+                                            <input
+                                                id="lead-email-desktop"
+                                                className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                                placeholder="Email de contacto"
+                                                type="email"
+                                                required
+                                                autoComplete="email"
+                                                value={leadEmail}
+                                                onChange={(e) => setLeadEmail(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="lead-msg-desktop" className="sr-only">Mensaje</label>
+                                            <textarea
+                                                id="lead-msg-desktop"
+                                                className="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                                placeholder="Mensaje..."
+                                                rows={3}
+                                                required
+                                                value={leadMessage}
+                                                onChange={(e) => setLeadMessage(e.target.value)}
+                                            ></textarea>
+                                        </div>
                                         <button
                                             disabled={isSubmittingLead}
                                             className="w-full bg-slate-900 text-white py-4 font-bold rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-50"
@@ -672,30 +686,44 @@ export default function PropertyDetailPage() {
                             </div>
                         ) : (
                             <form className="space-y-3" onSubmit={handleLeadSubmit}>
-                                <input
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                                    placeholder="Tu Nombre"
-                                    type="text"
-                                    required
-                                    value={leadName}
-                                    onChange={(e) => setLeadName(e.target.value)}
-                                />
-                                <input
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                                    placeholder="Email"
-                                    type="email"
-                                    required
-                                    value={leadEmail}
-                                    onChange={(e) => setLeadEmail(e.target.value)}
-                                />
-                                <textarea
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                                    placeholder="Mensaje..."
-                                    rows={3}
-                                    required
-                                    value={leadMessage}
-                                    onChange={(e) => setLeadMessage(e.target.value)}
-                                ></textarea>
+                                <div>
+                                    <label htmlFor="lead-name-mobile" className="sr-only">Nombre</label>
+                                    <input
+                                        id="lead-name-mobile"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                                        placeholder="Tu Nombre"
+                                        type="text"
+                                        required
+                                        autoComplete="name"
+                                        value={leadName}
+                                        onChange={(e) => setLeadName(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lead-email-mobile" className="sr-only">Email</label>
+                                    <input
+                                        id="lead-email-mobile"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                                        placeholder="Email"
+                                        type="email"
+                                        required
+                                        autoComplete="email"
+                                        value={leadEmail}
+                                        onChange={(e) => setLeadEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lead-msg-mobile" className="sr-only">Mensaje</label>
+                                    <textarea
+                                        id="lead-msg-mobile"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                                        placeholder="Mensaje..."
+                                        rows={3}
+                                        required
+                                        value={leadMessage}
+                                        onChange={(e) => setLeadMessage(e.target.value)}
+                                    ></textarea>
+                                </div>
                                 <button
                                     disabled={isSubmittingLead}
                                     className="w-full bg-primary text-white py-4 font-bold rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50"

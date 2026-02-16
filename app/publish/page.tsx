@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { PublishStep1Schema } from "@/lib/validation"
 import { toast } from "sonner"
+import { trackEvent } from "@/lib/tracking"
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
@@ -35,6 +36,7 @@ function PublishPageContent() {
             toast.error(first || "Completa los campos obligatorios")
             return
         }
+        trackEvent.publishStep1Completed()
         router.push("/publish/details")
     }
 
