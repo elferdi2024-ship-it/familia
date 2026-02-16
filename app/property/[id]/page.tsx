@@ -472,19 +472,31 @@ export default function PropertyDetailPage() {
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div className="p-4 rounded-xl bg-white border border-slate-100 shadow-sm">
                                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Saneamiento</p>
-                                    <p className="text-sm font-bold text-green-600 flex items-center gap-1"><span className="material-icons text-sm">check_circle</span> Conectado</p>
+                                    <p className="text-sm font-bold text-slate-700 capitalize flex items-center gap-1">
+                                        <span className="material-icons text-sm text-green-600">check_circle</span>
+                                        {property.utilityStatus?.saneamiento || "conectado"}
+                                    </p>
                                 </div>
                                 <div className="p-4 rounded-xl bg-white border border-slate-100 shadow-sm">
                                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Gas</p>
-                                    <p className="text-sm font-bold text-green-600 flex items-center gap-1"><span className="material-icons text-sm">check_circle</span> Cañería</p>
+                                    <p className="text-sm font-bold text-slate-700 capitalize flex items-center gap-1">
+                                        <span className="material-icons text-sm text-green-600">check_circle</span>
+                                        {property.utilityStatus?.gas || "cañería"}
+                                    </p>
                                 </div>
                                 <div className="p-4 rounded-xl bg-white border border-slate-100 shadow-sm">
                                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Agua</p>
-                                    <p className="text-sm font-bold text-slate-700 flex items-center gap-1"><span className="material-icons text-sm">water_drop</span> OSE</p>
+                                    <p className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                                        <span className="material-icons text-sm text-blue-500">water_drop</span>
+                                        {property.utilityStatus?.agua || "OSE"}
+                                    </p>
                                 </div>
                                 <div className="p-4 rounded-xl bg-white border border-slate-100 shadow-sm">
                                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Electricidad</p>
-                                    <p className="text-sm font-bold text-slate-700 flex items-center gap-1"><span className="material-icons text-sm">bolt</span> UTE</p>
+                                    <p className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                                        <span className="material-icons text-sm text-orange-500">bolt</span>
+                                        {property.utilityStatus?.electricidad || "UTE"}
+                                    </p>
                                 </div>
                             </div>
                         </div>

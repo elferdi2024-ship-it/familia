@@ -175,6 +175,82 @@ export default function PublishDetailsPage() {
                         </div>
                     </section>
 
+                    {/* Section: Servicios (UY Specific) */}
+                    <section>
+                        <div className="flex items-center gap-2 mb-6">
+                            <span className="material-icons text-primary">plumbing</span>
+                            <h2 className="text-lg font-semibold">Servicios del Inmueble</h2>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 outline-none">
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-bold uppercase text-slate-500">Saneamiento</label>
+                                <select
+                                    value={data.utilityStatus.saneamiento}
+                                    onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, saneamiento: e.target.value as any } })}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                >
+                                    <option value="conectado">Conectado</option>
+                                    <option value="pozo">Pozo Séptico</option>
+                                    <option value="pendiente">Pendiente</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-bold uppercase text-slate-500">Gas</label>
+                                <select
+                                    value={data.utilityStatus.gas}
+                                    onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, gas: e.target.value as any } })}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                >
+                                    <option value="cañería">Cañería</option>
+                                    <option value="supergas">Supergas</option>
+                                    <option value="sin servicio">Sin servicio</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-bold uppercase text-slate-500">Agua</label>
+                                <select
+                                    value={data.utilityStatus.agua}
+                                    onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, agua: e.target.value as any } })}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                >
+                                    <option value="OSE">OSE</option>
+                                    <option value="pozo">Pozo</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-bold uppercase text-slate-500">Electricidad</label>
+                                <select
+                                    value={data.utilityStatus.electricidad}
+                                    onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, electricidad: e.target.value as any } })}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                >
+                                    <option value="UTE">UTE</option>
+                                    <option value="solar">Solar</option>
+                                    <option value="mixto">Mixto</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Section: Planos */}
+                    <section>
+                        <div className="flex items-center gap-2 mb-4">
+                            <span className="material-icons text-primary">architecture</span>
+                            <h2 className="text-lg font-semibold">Planos de la propiedad (Opcional)</h2>
+                        </div>
+                        <div className="relative">
+                            <input
+                                className="w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary p-4 pl-12"
+                                placeholder="URL de la imagen del plano (PNG, JPG)..."
+                                type="url"
+                                value={data.floorplanUrl || ""}
+                                onChange={(e) => updateData({ floorplanUrl: e.target.value })}
+                            />
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-icons text-slate-400">link</span>
+                        </div>
+                        <p className="mt-2 text-xs text-slate-500">Cargue el plano para que los interesados tengan una mejor idea de la distribución.</p>
+                    </section>
+
                     {/* Section: Uruguay Specifics */}
                     <section className="bg-primary/5 p-8 rounded-2xl border border-primary/10">
                         <div className="flex items-center gap-2 mb-6">

@@ -31,6 +31,13 @@ export interface PublishData {
     // Step 3: Social & Features
     amenities: string[]
     agentPhone?: string
+    utilityStatus: {
+        saneamiento: "conectado" | "pozo" | "pendiente"
+        gas: "cañería" | "supergas" | "sin servicio"
+        agua: "OSE" | "pozo"
+        electricidad: "UTE" | "solar" | "mixto"
+    }
+    floorplanUrl?: string
 }
 
 const initialData: PublishData = {
@@ -54,6 +61,13 @@ const initialData: PublishData = {
     guarantees: [],
     amenities: [],
     agentPhone: "",
+    utilityStatus: {
+        saneamiento: "conectado",
+        gas: "cañería",
+        agua: "OSE",
+        electricidad: "UTE",
+    },
+    floorplanUrl: "",
 }
 
 interface PublishContextType {
@@ -126,6 +140,13 @@ export function PublishProvider({ children }: { children: ReactNode }) {
                     guarantees: property.acceptedGuarantees || [],
                     amenities: property.amenities,
                     agentPhone: property.agentPhone || "",
+                    utilityStatus: property.utilityStatus || {
+                        saneamiento: "conectado",
+                        gas: "cañería",
+                        agua: "OSE",
+                        electricidad: "UTE",
+                    },
+                    floorplanUrl: property.floorplanUrl || "",
                 })
             }
         } catch (error) {
