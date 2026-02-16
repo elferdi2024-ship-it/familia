@@ -52,9 +52,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (!cancelled) {
                 setUser(currentUser)
                 setLoading(false)
-                if (currentUser) {
-                    console.log("AuthStateChanged detectó usuario:", currentUser.email)
-                }
             }
         })
 
@@ -67,25 +64,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const loginWithGoogle = async () => {
         if (!auth) {
             console.error("Firebase auth is not initialized. Check your .env.local configuration.")
-            alert("Error: Firebase Auth no está inicializado. Faltan variables de entorno.")
             throw new Error("El servicio de autenticación no está disponible.")
         }
         const provider = new GoogleAuthProvider()
         try {
-            console.log("Intentando signInWithPopup...")
             // Reverting to popup as redirect is losing session state in this environment
             // COOP headers in next.config.ts should now allow this to work without 'popup-closed-by-user' error
-            const result = await signInWithPopup(auth, provider)
-            alert(`¡Éxito! Login correcto con: ${result.user.email}`)
+            await signInWithPopup(auth, provider)
         } catch (error: any) {
             console.error("Error signing in with Google:", error)
-            alert(`Error al iniciar Google Login: ${error.message}`)
             if (error.code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
-                alert("Dominio no autorizado en Firebase Console. Por favor agrégalo en Authentication > Settings > Authorized domains.")
-            }
-            if (error.code === 'auth/popup-closed-by-user') {
-                alert("El popup se cerró antes de terminar. Si no lo cerraste tú, puede ser un bloqueador de ventanas emergentes.")
             }
             throw error
         }
