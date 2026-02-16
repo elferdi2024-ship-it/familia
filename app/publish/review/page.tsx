@@ -12,7 +12,7 @@ import { trackEvent } from "@/lib/tracking"
 import { toast } from "sonner"
 
 export default function PublishReviewPage() {
-    const { data, resetData, isEditing, editingId } = usePublish()
+    const { data, updateData, resetData, isEditing, editingId } = usePublish()
     const { user } = useAuth()
     const router = useRouter()
     const [isPublishing, setIsPublishing] = useState(false)
@@ -20,6 +20,11 @@ export default function PublishReviewPage() {
     const handlePublish = async () => {
         if (!user || !db) {
             toast.error("Debes estar autenticado para publicar")
+            return
+        }
+
+        if (!data.agentPhone || data.agentPhone.length < 8) {
+            toast.error("Por favor ingresa un número de contacto válido")
             return
         }
 
@@ -42,10 +47,10 @@ export default function PublishReviewPage() {
                     title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
                     userId: user.uid,
                     agentName: user.displayName || "Usuario de DominioTotal",
-                    agentPhone: "", // User can add this in profile
+                    agentPhone: data.agentPhone,
                     publishedAt: serverTimestamp(),
                     updatedAt: serverTimestamp(),
-                    status: "pending", // Moderation queue
+                    status: "active", // Published immediately
                     featured: false,
                     views: 0,
                     slug: `${data.type.toLowerCase()}-${(data.neighborhood || "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
@@ -114,9 +119,9 @@ export default function PublishReviewPage() {
                                     <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-4">
                                         <span className="material-icons text-primary mt-0.5">insights</span>
                                         <div>
-                                            <h4 className="text-sm font-bold text-primary mb-1">Análisis de Mercado: {data.neighborhood}</h4>
+                                            <h4 className="text-sm font-bold text-primary mb-1">Análisis de Mercado: {data.neighborhood || data.city}</h4>
                                             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                                                Propiedades similares en <span className="font-bold">{data.neighborhood}</span> tienen un precio promedio de <span className="font-bold">USD {(data.price * 1.05).toLocaleString()}</span>. Tu precio es competitivo.
+                                                Propiedades similares en <span className="font-bold">{data.neighborhood || data.city}</span> tienen un precio promedio de <span className="font-bold">{formatPrice(data.price * 1.05, data.currency)}</span>. Tu precio es competitivo.
                                             </p>
                                         </div>
                                     </div>
@@ -130,22 +135,39 @@ export default function PublishReviewPage() {
                                         <span className="material-icons text-primary">contact_phone</span>
                                         <h2 className="text-lg font-bold">Datos de Contacto</h2>
                                     </div>
-                                    <button className="text-primary text-sm font-bold hover:underline flex items-center gap-1">
-                                        <span className="material-icons text-xs">edit</span> Editar
-                                    </button>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary border-2 border-primary/20">
-                                        <span className="material-icons text-3xl">account_circle</span>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-slate-800 dark:text-white">{user?.displayName || "Tu Nombre"}</h3>
-                                        <p className="text-sm text-slate-500">{user?.email}</p>
-                                        <div className="flex items-center gap-4 mt-2">
-                                            <div className="flex items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-400">
-                                                <span className="material-icons text-xs">verified_user</span> Usuario Verificado
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary border-2 border-primary/20 overflow-hidden">
+                                            {user?.photoURL ? (
+                                                <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <span className="material-icons text-3xl">account_circle</span>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-slate-800 dark:text-white">{user?.displayName || "Tu Nombre"}</h3>
+                                            <p className="text-sm text-slate-500">{user?.email}</p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="material-icons text-xs text-green-500">verified_user</span>
+                                                <span className="text-xs font-medium text-slate-400">Usuario Verificado</span>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-bold text-slate-500 uppercase tracking-wide">WhatsApp / Teléfono de contacto</label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-icons text-slate-400">phone</span>
+                                            <input
+                                                type="tel"
+                                                placeholder="Ej: 099 123 456"
+                                                value={data.agentPhone}
+                                                onChange={(e) => updateData({ agentPhone: e.target.value })}
+                                                className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-800 rounded-xl focus:border-primary focus:ring-0 transition-all font-bold"
+                                            />
+                                        </div>
+                                        <p className="text-[10px] text-slate-400">Este número será visible para los interesados en tu propiedad.</p>
                                     </div>
                                 </div>
                             </section>

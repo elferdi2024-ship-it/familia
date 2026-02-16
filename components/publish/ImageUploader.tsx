@@ -21,41 +21,45 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
         if (!files || files.length === 0 || !user) return
 
         setUploading(true)
-        const newUrls: string[] = [...images]
+        const fileList = Array.from(files)
+        const progressMap: { [key: string]: number } = {}
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]
-
+        const uploadPromises = fileList.map(async (file) => {
             // Limit to 10MB
             if (file.size > 10 * 1024 * 1024) {
-                alert(`El archivo ${file.name} supera los 10MB`)
-                continue
+                console.warn(`El archivo ${file.name} supera los 10MB`)
+                return null
             }
 
             const storageRef = ref(storage, `properties/${user.uid}/${Date.now()}-${file.name}`)
             const uploadTask = uploadBytesResumable(storageRef, file)
 
-            await new Promise<void>((resolve, reject) => {
+            return new Promise<string | null>((resolve) => {
                 uploadTask.on(
                     "state_changed",
                     (snapshot) => {
-                        const prog = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-                        setProgress(prog)
+                        const prog = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        progressMap[file.name] = prog
+                        // Calculate average progress
+                        const totalProgress = Object.values(progressMap).reduce((a, b) => a + b, 0)
+                        setProgress(Math.round(totalProgress / fileList.length))
                     },
                     (error) => {
-                        console.error("Upload failed", error)
-                        reject(error)
+                        console.error(`Upload failed for ${file.name}`, error)
+                        resolve(null)
                     },
                     async () => {
                         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
-                        newUrls.push(downloadURL)
-                        resolve()
+                        resolve(downloadURL)
                     }
                 )
             })
-        }
+        })
 
-        onImagesChange(newUrls)
+        const uploadedUrls = await Promise.all(uploadPromises)
+        const validUrls = uploadedUrls.filter((url): url is string => url !== null)
+
+        onImagesChange([...images, ...validUrls])
         setUploading(false)
         setProgress(0)
     }

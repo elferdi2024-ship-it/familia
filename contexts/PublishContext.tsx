@@ -30,6 +30,7 @@ export interface PublishData {
 
     // Step 3: Social & Features
     amenities: string[]
+    agentPhone?: string
 }
 
 const initialData: PublishData = {
@@ -52,6 +53,7 @@ const initialData: PublishData = {
     viviendaPromovida: false,
     guarantees: [],
     amenities: [],
+    agentPhone: "",
 }
 
 interface PublishContextType {
@@ -123,6 +125,7 @@ export function PublishProvider({ children }: { children: ReactNode }) {
                     viviendaPromovida: property.viviendaPromovida,
                     guarantees: property.acceptedGuarantees || [],
                     amenities: property.amenities,
+                    agentPhone: property.agentPhone || "",
                 })
             }
         } catch (error) {

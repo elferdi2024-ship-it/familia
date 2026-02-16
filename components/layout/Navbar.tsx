@@ -26,18 +26,19 @@ export function Navbar() {
     { href: "/vender", label: "Vender" },
     { href: "/compare", label: "Comparar" },
     { href: "/favorites", label: "Favoritos" },
+    ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
   ]
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-      ? "bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 py-3"
+      ? "bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 py-3 shadow-sm"
       : "bg-transparent py-5"
       }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="text-2xl font-extrabold tracking-tighter text-primary group-hover:scale-105 transition-transform">
-              DOMINIO<span className="text-slate-400 font-light">TOTAL</span>
+            <div className={`text-2xl font-extrabold tracking-tighter transition-transform group-hover:scale-105 ${isScrolled ? "text-primary" : "text-white drop-shadow-md"}`}>
+              DOMINIO<span className={`${isScrolled ? "text-slate-400 font-light" : "text-white/80 font-light"}`}>TOTAL</span>
             </div>
           </Link>
           <div className="hidden md:flex items-center gap-1 text-sm font-bold uppercase tracking-wider">
@@ -47,14 +48,16 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   className={`relative px-4 py-2 rounded-lg transition-all ${isActive
-                    ? "text-primary bg-primary/5"
-                    : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                    ? isScrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
+                    : isScrolled
+                      ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
                     }`}
                   href={link.href}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-primary rounded-full"></span>
+                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full ${isScrolled ? "bg-primary" : "bg-white"}`}></span>
                   )}
                 </Link>
               )
@@ -66,15 +69,20 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <Link href="/publish" className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${pathname.startsWith("/publish")
-                ? "text-primary bg-primary/5"
-                : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                ? isScrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
+                : isScrolled
+                  ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                  : "text-white/90 hover:text-white hover:bg-white/10"
                 }`}>
                 Publicar
               </Link>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="px-5 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg"
+                className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${isScrolled
+                  ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
+                  : "text-white/90 hover:text-white hover:bg-white/10"
+                  }`}
               >
                 Publicar
               </button>
@@ -83,16 +91,16 @@ export function Navbar() {
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
-                  <span className="text-xs font-bold text-slate-900 dark:text-white leading-none capitalize">{user.displayName?.split(' ')[0]}</span>
-                  <button onClick={logout} className="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors uppercase tracking-wider">Salir</button>
+                  <span className={`text-xs font-bold leading-none capitalize ${isScrolled ? "text-slate-900 dark:text-white" : "text-white underline underline-offset-4 decoration-primary/50"}`}>{user.displayName?.split(' ')[0]}</span>
+                  <button onClick={logout} className={`text-[10px] font-bold transition-colors uppercase tracking-wider ${isScrolled ? "text-slate-400 hover:text-primary" : "text-white/60 hover:text-white"}`}>Salir</button>
                 </div>
-                <div className="w-10 h-10 rounded-full border-2 border-primary/20 overflow-hidden bg-slate-100">
+                <Link href="/my-properties" className="w-10 h-10 rounded-full border-2 border-primary/20 overflow-hidden bg-slate-100 hover:border-primary transition-all">
                   {user.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
                   ) : (
                     <span className="material-icons flex items-center justify-center h-full text-slate-400">person</span>
                   )}
-                </div>
+                </Link>
               </div>
             ) : (
               <button
@@ -123,6 +131,9 @@ export function Navbar() {
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/compare">Comparar</Link>
+            {user && (
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
+            )}
             <div className="h-px bg-primary/10"></div>
             {user ? (
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary" href="/publish">Publicar Propiedad</Link>

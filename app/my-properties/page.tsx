@@ -462,9 +462,9 @@ export default function MyPropertiesPage() {
                                                     property.status === 'sold' ? 'Vendida' : 'Activo'}
                                         </div>
 
-                                        <div className="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-inner flex-shrink-0">
+                                        <Link href={`/property/${property.id}`} className="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-inner flex-shrink-0 hover:opacity-90 transition-opacity">
                                             <img className="w-full h-full object-cover" src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt={property.type} />
-                                        </div>
+                                        </Link>
 
                                         <div className="flex-grow">
                                             <div className="flex flex-col h-full justify-between">
@@ -474,7 +474,9 @@ export default function MyPropertiesPage() {
                                                         <span className="text-slate-300">•</span>
                                                         <span className="text-xs font-medium text-slate-500">{property.type}</span>
                                                     </div>
-                                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white truncate">{property.address || property.neighborhood}</h3>
+                                                    <Link href={`/property/${property.id}`}>
+                                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white truncate hover:text-primary transition-colors cursor-pointer">{property.address || property.neighborhood}</h3>
+                                                    </Link>
                                                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
                                                         <span className="material-icons text-xs">location_on</span> {property.neighborhood}, {property.city}
                                                     </p>
@@ -494,6 +496,12 @@ export default function MyPropertiesPage() {
                                         </div>
 
                                         <div className="flex md:flex-col justify-end gap-2 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800 md:pl-6">
+                                            <Link
+                                                href={`/property/${property.id}`}
+                                                className="flex-1 md:w-full h-10 px-4 rounded-lg bg-primary text-white font-bold text-sm hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-sm shadow-primary/20"
+                                            >
+                                                <span className="material-icons text-sm">rocket_launch</span> Ver Publicación
+                                            </Link>
                                             <Link
                                                 href={`/publish?edit=${property.id}`}
                                                 className="flex-1 md:w-full h-10 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
