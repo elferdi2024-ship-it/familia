@@ -10,6 +10,7 @@ import { AuthModal } from "@/components/auth/AuthModal"
 import { PublishStep1Schema } from "@/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@/lib/tracking"
+import { LocationPicker } from "@/components/publish/LocationPicker"
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
@@ -159,34 +160,19 @@ function PublishPageContent() {
                                 </div>
                                 {/* MAP SECTOR */}
                                 <div className="space-y-4">
-                                    <div className="relative w-full h-[280px] md:h-[450px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
-                                        <img
-                                            alt="Mapa de Montevideo"
-                                            className="w-full h-full object-cover grayscale-[0.2] contrast-[1.1]"
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVWYJmFOqZY-fDpV8Qcy81P3k_xMInQ3QoYDlQrM_aNn3yE24Wu6LIy9zTLPyb-gwN6amtz6_mPzAP_TXEQIjYL8q-inuTKkubdDxp7IfuIMgk8fpdLAEoLU9Pzhjowog6eTqRqAszcbA8TeFQBEud8-OFe5BxjmC2BksdSJ5BfibxpK8yqX0jVnm_R3hO4QWgW-YYlsufuLD9ffUnKma2eO5LtDN-EI2Nbzc7GBIuQIqg5_bN-apbAjis-WiSG3VMKGDeI2_glcYk"
+                                    <div className="w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
+                                        <LocationPicker
+                                            center={{
+                                                lat: data.latitude || -34.9011,
+                                                lng: data.longitude || -56.1645
+                                            }}
+                                            onLocationChange={(loc) => updateData({ latitude: loc.lat, longitude: loc.lng })}
                                         />
-                                        {/* CUSTOM MAP OVERLAYS */}
-                                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                                            <div className="relative">
-                                                <span className="material-icons text-primary text-6xl drop-shadow-lg">place</span>
-                                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-primary/20 rounded-full animate-ping"></div>
-                                            </div>
-                                        </div>
-                                        <div className="absolute top-4 right-4 flex flex-col gap-2">
-                                            <button className="w-10 h-10 bg-white dark:bg-slate-800 shadow-lg rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-                                                <span className="material-icons">add</span>
-                                            </button>
-                                            <button className="w-10 h-10 bg-white dark:bg-slate-800 shadow-lg rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-                                                <span className="material-icons">remove</span>
-                                            </button>
-                                        </div>
-                                        <div className="absolute bottom-4 left-4 right-4">
-                                            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur p-4 rounded-full shadow-xl flex items-center gap-4 border border-primary/20">
-                                                <span className="material-icons text-primary">info</span>
-                                                <p className="text-sm font-medium">Arrastra el pin para ubicar exactamente la propiedad en el mapa.</p>
-                                            </div>
-                                        </div>
                                     </div>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                                        <span className="material-icons text-primary text-base">info</span>
+                                        Arrastra el pin para ubicar exactamente la propiedad.
+                                    </p>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
                                     <div className="space-y-4">

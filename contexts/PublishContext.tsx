@@ -13,6 +13,8 @@ export interface PublishData {
     neighborhood: string
     city: string
     department: string
+    latitude?: number
+    longitude?: number
 
     // Step 2: Details & Media
     images: string[]
@@ -37,6 +39,8 @@ const initialData: PublishData = {
     neighborhood: "",
     city: "Montevideo",
     department: "Montevideo",
+    latitude: -34.9011,
+    longitude: -56.1645,
     images: [],
     bedrooms: 1,
     bathrooms: 1,
