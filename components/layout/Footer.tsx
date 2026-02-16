@@ -30,6 +30,7 @@ export function Footer() {
                         <ul className="space-y-4 text-sm text-slate-500 font-medium">
                             <li><Link className="hover:text-primary transition-colors" href="/search">Venta</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="/search">Alquiler</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/servicios">Servicios</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Proyectos</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Inmobiliarias</Link></li>
                         </ul>

@@ -23,6 +23,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/search", label: "Propiedades" },
+    { href: "/servicios", label: "Servicios" },
     { href: "/vender", label: "Vender" },
     { href: "/compare", label: "Comparar" },
     { href: "/favorites", label: "Favoritos" },
@@ -131,6 +132,7 @@ export function Navbar() {
         <div id="mobile-menu" role="navigation" aria-label="Menú móvil" className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background-dark border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider">
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/servicios">Servicios</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/compare">Comparar</Link>
             {user && (
