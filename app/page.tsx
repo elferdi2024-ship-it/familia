@@ -48,7 +48,7 @@ export default function HomePage() {
   if (searchQuery) searchParams.set("q", searchQuery)
 
   return (
-    <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-20 md:pb-0">
+    <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-32 md:pb-0">
 
       {/* Hero Section v4 - AUTHORITY & DATA */}
       <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-center overflow-hidden">
@@ -79,32 +79,16 @@ export default function HomePage() {
             La forma más rápida y segura de comprar o alquilar tu propiedad.
           </p>
 
-          {/* Dominant Tabs */}
-          <div className="mx-auto mb-[-1px] flex w-fit gap-1 bg-black/20 backdrop-blur-xl p-1.5 rounded-t-2xl border-x border-t border-white/10">
-            {["Comprar", "Alquilar", "Vender"].map((tab) => (
-              <Link
-                key={tab}
-                href={tab === "Vender" ? "/vender" : `/search?operation=${tab}`}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${tab === "Comprar"
-                  ? "bg-primary text-white shadow-lg"
-                  : "text-white/70 hover:bg-white/10"
-                  }`}
-              >
-                {tab}
-              </Link>
-            ))}
-          </div>
-
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-2 md:p-3 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-1">
+          <div className="w-full max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-2 md:p-3 rounded-2xl md:rounded-full shadow-2xl border border-white/20">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-1">
 
               {/* Selector de Operación (Venta/Alquiler) */}
-              <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl md:rounded-full md:ml-1">
+              <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl md:rounded-full md:ml-1 shrink-0">
                 {OPERATIONS.map((op) => (
                   <button
                     key={op}
                     onClick={() => setOperation(op)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${operation === op
+                    className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all ${operation === op
                       ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
                       : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                       }`}
@@ -115,10 +99,10 @@ export default function HomePage() {
               </div>
 
               {/* Input de búsqueda */}
-              <div className="flex-1 flex items-center px-4 py-2 md:py-0">
-                <Search className="h-5 w-5 text-slate-400 mr-3" />
+              <div className="flex-1 flex items-center px-4 py-3 md:py-0 border-y md:border-y-0 md:border-l border-slate-100 dark:border-slate-800 md:pl-6">
+                <Search className="h-5 w-5 text-slate-400 mr-3 shrink-0" />
                 <input
-                  className="w-full bg-transparent border-none focus:outline-none text-sm md:text-base font-medium placeholder-slate-400 text-slate-900 dark:text-white"
+                  className="w-full bg-transparent border-none focus:outline-none text-sm md:text-base font-medium placeholder-slate-400 text-slate-900 dark:text-white truncate"
                   placeholder="¿Dónde quieres vivir? (Barrio, calle...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -128,7 +112,7 @@ export default function HomePage() {
               {/* Botón de acción principal */}
               <Link
                 href={`/search?${searchParams.toString()}`}
-                className="bg-primary hover:bg-primary/90 text-white px-6 h-12 md:h-12 rounded-xl md:rounded-full flex items-center justify-center gap-2 font-bold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 md:py-3 rounded-xl md:rounded-full flex items-center justify-center gap-2 font-bold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95 shrink-0"
               >
                 <Search className="h-4 w-4 md:hidden" />
                 <span className="uppercase tracking-widest text-xs md:text-sm">Buscar</span>
