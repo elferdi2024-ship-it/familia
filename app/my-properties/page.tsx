@@ -281,423 +281,446 @@ export default function MyPropertiesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 md:pt-28 pb-20 px-4">
-            <div className="max-w-6xl mx-auto space-y-8">
+        <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pt-24 md:pt-32 pb-24 px-4 selection:bg-primary/20">
+            <div className="max-w-6xl mx-auto space-y-12">
 
-                {/* Header & Actions */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                        <div>
-                            <h1 className="text-3xl font-black text-slate-900 dark:text-white">Panel de Agente</h1>
-                            <p className="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
-                                Bienvenido, {user.displayName || 'Usuario'}
-                                <button
-                                    onClick={() => setIsProfileOpen(true)}
-                                    className="ml-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-[10px] font-bold text-primary transition-colors flex items-center gap-1"
-                                >
-                                    <span className="material-icons text-xs">edit</span>
-                                    EDITAR MIS DATOS
-                                </button>
-                            </p>
+                {/* Header & Profiler */}
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-in fade-in slide-in-from-top-4 duration-700">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] w-fit">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                            Agent Workspace
                         </div>
+                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                            Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">Comercial</span>
+                        </h1>
+                        <p className="text-slate-500 font-medium text-lg flex items-center gap-2">
+                            Hola, {user.displayName || 'Agente'} — <span className="text-sm font-bold opacity-60">Gestionando {properties.length} propiedades activas</span>
+                        </p>
                     </div>
 
-                    <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                                <DialogTitle>Editar Mi Perfil</DialogTitle>
-                                <DialogDescription>
-                                    Actualiza tu información profesional para los leads y propiedades.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <form onSubmit={handleProfileUpdate} className="space-y-6 pt-4">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase text-slate-500">Foto (URL)</label>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setIsProfileOpen(true)}
+                            className="p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary transition-all shadow-sm group"
+                            title="Editar Perfil"
+                        >
+                            <span className="material-icons text-slate-400 group-hover:text-primary transition-colors">settings</span>
+                        </button>
+                        <Link
+                            href="/publish"
+                            className="bg-slate-900 dark:bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-2xl shadow-primary/30 hover:-translate-y-1 active:scale-95 transition-all"
+                        >
+                            <span className="material-icons text-sm">add_circle</span> Publicar Inmueble
+                        </Link>
+                    </div>
+                </header>
+
+                <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
+                    <DialogContent className="sm:max-w-[480px] rounded-[2rem] border-none shadow-2xl">
+                        <DialogHeader>
+                            <DialogTitle className="text-2xl font-black tracking-tight">Mi Perfil Profesional</DialogTitle>
+                            <DialogDescription className="font-medium text-slate-500">
+                                Estos datos se mostrarán en todas tus publicaciones y los leads que recibas.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleProfileUpdate} className="space-y-6 pt-6">
+                            <div className="flex flex-col items-center gap-4 mb-6">
+                                <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-100 flex items-center justify-center">
+                                    <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
+                                </div>
+                                <div className="w-full space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">URL de Imagen</label>
                                     <input
                                         type="url"
                                         placeholder="https://..."
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
                                         value={profilePhoto}
                                         onChange={(e) => setProfilePhoto(e.target.value)}
                                     />
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500">Nombre Público</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                                            value={profileName}
-                                            onChange={(e) => setProfileName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase text-slate-500">Empresa/Inmobiliaria</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Ej: Atlantida Real Estate"
-                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                                            value={profileAgency}
-                                            onChange={(e) => setProfileAgency(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase text-slate-500">Teléfono / WhatsApp</label>
-                                    <input
-                                        type="tel"
-                                        required
-                                        placeholder="Ej: 099 123 456"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                                        value={profilePhone}
-                                        onChange={(e) => setProfilePhone(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase text-slate-500">Horarios de Atención</label>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Nombre Público</label>
                                     <input
                                         type="text"
-                                        placeholder="Ej: Lun a Vie 9:00 - 18:00"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                                        value={profileHours}
-                                        onChange={(e) => setProfileHours(e.target.value)}
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileName}
+                                        onChange={(e) => setProfileName(e.target.value)}
                                     />
                                 </div>
-                                <div className="flex gap-3 pt-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsProfileOpen(false)}
-                                        className="flex-1 py-3 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-sm"
-                                    >
-                                        Cancelar
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={isUpdatingProfile}
-                                        className="flex-1 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 disabled:opacity-50"
-                                    >
-                                        {isUpdatingProfile ? "Guardando..." : "Guardar Cambios"}
-                                    </button>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Inmobiliaria</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Empresa"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileAgency}
+                                        onChange={(e) => setProfileAgency(e.target.value)}
+                                    />
                                 </div>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
-
-                    <Link href="/publish" className="bg-primary text-white px-6 py-3 rounded-full font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                        <span className="material-icons">add</span> Publicar Nueva
-                    </Link>
-                </div>
-
-                {/* KPI Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Propiedades Activas</CardTitle>
-                            <span className="material-icons text-slate-400">home_work</span>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-end justify-between">
-                                <div>
-                                    <div className="text-2xl font-bold">{properties.length}</div>
-                                    <p className="text-xs text-green-600 font-medium flex items-center gap-1">
-                                        <span className="material-icons text-[14px]">trending_up</span> +2 este mes
-                                    </p>
-                                </div>
-                                <Sparkline data={[10, 12, 11, 13, 15, 14, 16]} color="#0ea5e9" />
                             </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Alcance Total (Vistas)</CardTitle>
-                            <span className="material-icons text-slate-400">visibility</span>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-end justify-between">
-                                <div>
-                                    <div className="text-2xl font-bold">{totalViews.toLocaleString()}</div>
-                                    <p className="text-xs text-green-600 font-medium flex items-center gap-1">
-                                        <span className="material-icons text-[14px]">trending_up</span> +12% vs ayer
-                                    </p>
-                                </div>
-                                <Sparkline data={[120, 150, 180, 140, 210, 250, 280]} color="#10b981" />
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Tasa de Conversión</CardTitle>
-                            <span className="material-icons text-slate-400">ads_click</span>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-end justify-between">
-                                <div>
-                                    <div className="text-2xl font-bold">{(leads.length / (totalViews || 1) * 100).toFixed(1)}%</div>
-                                    <p className="text-xs text-amber-600 font-medium flex items-center gap-1">
-                                        <span className="material-icons text-[14px]">trending_flat</span> Estable
-                                    </p>
-                                </div>
-                                <Sparkline data={[2.1, 2.3, 2.2, 2.5, 2.4, 2.6, 2.5]} color="#f59e0b" />
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
 
-                {/* Leads Section */}
-                <div className="space-y-4">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <span className="material-icons text-primary">mail</span> Consultas Recibidas
-                        </h2>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
+                                <input
+                                    type="tel"
+                                    required
+                                    placeholder="Ej: 099 123 456"
+                                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
+                                    value={profilePhone}
+                                    onChange={(e) => setProfilePhone(e.target.value)}
+                                />
+                            </div>
 
-                        <div className="flex flex-wrap items-center gap-2">
-                            <div className="relative">
-                                <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Horario de Consultas</label>
                                 <input
                                     type="text"
-                                    placeholder="Buscar por nombre o propiedad..."
-                                    className="pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus-visible:ring-2 focus-visible:ring-primary/50 outline-none w-full md:w-64 transition-colors"
+                                    placeholder="Ej: Lun-Vie 9-18hs"
+                                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                    value={profileHours}
+                                    onChange={(e) => setProfileHours(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-6">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsProfileOpen(false)}
+                                    className="flex-1 py-4 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-colors"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isUpdatingProfile}
+                                    className="flex-1 py-4 bg-slate-900 dark:bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-slate-900/20 disabled:opacity-50"
+                                >
+                                    {isUpdatingProfile ? "Actualizando..." : "Guardar Cambios"}
+                                </button>
+                            </div>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+
+                {/* Performance Bento Strip */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="md:col-span-1 p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 flex flex-col justify-between group">
+                        <div className="flex justify-between items-start">
+                            <span className="material-icons text-primary/40 text-3xl">home_work</span>
+                            <Badge variant="outline" className="text-[10px] font-black border-primary/20 text-primary">LIVE</Badge>
+                        </div>
+                        <div className="mt-8">
+                            <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Inmuebles Activos</h4>
+                            <p className="text-4xl font-black tracking-tighter mt-1">{properties.length}</p>
+                            <div className="mt-4 flex items-center gap-1.5 overflow-hidden">
+                                {Array.from({ length: Math.min(properties.length, 5) }).map((_, i) => (
+                                    <div key={i} className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="md:col-span-2 p-8 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:text-white/10 transition-colors">
+                            <span className="material-icons text-[150px]">rocket_launch</span>
+                        </div>
+                        <div className="relative z-10 h-full flex flex-col justify-between">
+                            <div>
+                                <h4 className="text-[10px] font-black uppercase text-white/50 tracking-widest">Interés Mensual</h4>
+                                <p className="text-5xl font-black tracking-tighter mt-2">{totalViews.toLocaleString()}</p>
+                                <p className="text-xs font-bold text-white/60 mt-2 flex items-center gap-1">
+                                    <span className="material-icons text-emerald-400 text-sm">trending_up</span>
+                                    Crecimiento del +14% vs periodo anterior
+                                </p>
+                            </div>
+                            <div className="mt-8">
+                                <Sparkline data={[120, 180, 140, 220, 190, 260, 240, 310, 280, 340]} color="#38bdf8" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="md:col-span-1 p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col justify-between">
+                        <div className="flex justify-between items-start">
+                            <span className="material-icons text-amber-500/40 text-3xl">mail</span>
+                            <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
+                                <p className="text-amber-600 font-black text-sm">{newLeadsCount}</p>
+                            </div>
+                        </div>
+                        <div className="mt-8">
+                            <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Nuevos Leads</h4>
+                            <p className="text-4xl font-black tracking-tighter mt-1">{leads.length}</p>
+                            <p className="text-[10px] font-bold text-slate-500 mt-2">Ticket promedio: {(leads.length / (totalViews || 1) * 100).toFixed(1)}% conversión</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Pipeline & Message Center */}
+                <div className="space-y-6">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between items-center gap-6">
+                        <div className="text-center md:text-left">
+                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Pipeline de Interesados</h2>
+                            <p className="text-slate-500 font-medium">Gestiona tus contactos y solicitudes de visita desde aquí.</p>
+                        </div>
+                        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                            <div className="relative">
+                                <span className="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                                <input
+                                    type="text"
+                                    placeholder="Filtrar por nombre o inmueble..."
+                                    className="pl-10 pr-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-none rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary/20 w-full md:w-80 outline-none transition-all"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                            <select
-                                className="px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus-visible:ring-2 focus-visible:ring-primary/50 outline-none cursor-pointer transition-colors"
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                aria-label="Filtrar por estado"
-                            >
-                                <option value="all">Todos los estados</option>
-                                <option value="new">Nuevos</option>
-                                <option value="contacted">Leídos/Contactados</option>
-                            </select>
                             <button
                                 onClick={exportToCSV}
-                                className="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-primary/50"
+                                className="px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
                             >
-                                <span className="material-icons text-sm">download</span> Exportar
+                                <span className="material-icons text-xs">download</span> Exportar
                             </button>
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                    <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden relative">
                         {leads.length === 0 ? (
-                            <div className="p-8 text-center text-slate-500">
-                                No has recibido consultas todavía.
+                            <div className="py-24 flex flex-col items-center text-center px-6">
+                                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
+                                    <span className="material-icons text-slate-300 text-4xl">inbox_customize</span>
+                                </div>
+                                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Aún no hay leads</h3>
+                                <p className="text-slate-500 max-w-sm font-medium leading-relaxed">Las consultas de los interesados aparecerán aquí automáticamente en tiempo real.</p>
                             </div>
                         ) : (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Estado</TableHead>
-                                        <TableHead>Tipo</TableHead>
-                                        <TableHead>Fecha</TableHead>
-                                        <TableHead>Interesado</TableHead>
-                                        <TableHead>Propiedad</TableHead>
-                                        <TableHead className="text-right">Acciones</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredLeads.length === 0 ? (
-                                        <TableRow>
-                                            <TableCell colSpan={5} className="h-24 text-center text-slate-500">
-                                                No se encontraron consultas que coincidan con la búsqueda.
-                                            </TableCell>
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader className="bg-slate-50/50 dark:bg-slate-800/50">
+                                        <TableRow className="border-none">
+                                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-widest text-slate-400">Estado</TableHead>
+                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Interesado</TableHead>
+                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Inmueble</TableHead>
+                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Tipo de Lead</TableHead>
+                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400 text-right pr-8">Acción</TableHead>
                                         </TableRow>
-                                    ) : (
-                                        filteredLeads.map((lead) => (
-                                            <TableRow key={lead.id} className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800">
-                                                <TableCell>
-                                                    <Badge variant={lead.status === 'new' ? 'destructive' : 'secondary'} className="uppercase text-[10px]">
-                                                        {lead.status === 'new' ? 'Nuevo' : 'Leído'}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge variant="outline" className={`uppercase text-[10px] ${lead.contactType === 'visit' ? 'border-primary text-primary' : ''}`}>
-                                                        {lead.contactType === 'visit' ? 'Visita' : 'Consulta'}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell className="text-xs text-slate-500">
-                                                    {lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy'}
-                                                </TableCell>
-                                                <TableCell className="font-medium">
-                                                    {lead.leadName}
-                                                    <div className="text-xs text-slate-400 font-normal">{lead.leadEmail}</div>
-                                                </TableCell>
-                                                <TableCell className="text-xs text-slate-500 truncate max-w-[150px]">
-                                                    {lead.propertyTitle}
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <Dialog>
-                                                        <DialogTrigger asChild>
-                                                            <button
-                                                                className="text-primary hover:text-primary/80 font-bold text-xs"
-                                                                onClick={() => setSelectedLead(lead)}
-                                                            >
-                                                                Ver Mensaje
-                                                            </button>
-                                                        </DialogTrigger>
-                                                        <DialogContent>
-                                                            <DialogHeader>
-                                                                <DialogTitle>Consulta de {selectedLead?.leadName}</DialogTitle>
-                                                                <DialogDescription>
-                                                                    Propiedad: <span className="font-semibold text-slate-900">{selectedLead?.propertyTitle}</span>
-                                                                </DialogDescription>
-                                                            </DialogHeader>
-                                                            <div className="py-4 space-y-4">
-                                                                <div className="bg-slate-50 p-4 rounded-lg text-sm text-slate-700 italic">
-                                                                    "{selectedLead?.leadMessage}"
-                                                                </div>
-                                                                <div className="flex flex-col gap-1 text-sm text-slate-600">
-                                                                    <div className="flex items-center gap-2">
-                                                                        <span className="material-icons text-sm text-slate-400">email</span>
-                                                                        <span className="font-bold">{selectedLead?.leadEmail}</span>
+                                    </TableHeader>
+                                    <TableBody>
+                                        <AnimatePresence mode="popLayout">
+                                            {filteredLeads.map((lead, i) => (
+                                                <TableRow
+                                                    key={lead.id}
+                                                    className="group border-b border-slate-50 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                                                >
+                                                    <TableCell className="pl-8 py-6">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className={`w-2 h-2 rounded-full ${lead.status === 'new' ? 'bg-red-500 animate-pulse' : 'bg-slate-300'}`}></div>
+                                                            <span className={`text-[10px] font-black uppercase tracking-widest ${lead.status === 'new' ? 'text-red-600' : 'text-slate-400'}`}>
+                                                                {lead.status === 'new' ? 'Sin Leer' : 'Gestionado'}
+                                                            </span>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-6">
+                                                        <div>
+                                                            <p className="font-bold text-slate-900 dark:text-white">{lead.leadName}</p>
+                                                            <p className="text-xs text-slate-400 font-medium">{lead.leadEmail}</p>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-6">
+                                                        <div className="max-w-[200px]">
+                                                            <p className="text-xs font-bold text-slate-600 dark:text-slate-400 truncate">{lead.propertyTitle}</p>
+                                                            <p className="text-[10px] font-medium text-slate-400 italic">Recibido: {lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy'}</p>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-6">
+                                                        <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-2 ${lead.contactType === 'visit' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-slate-100 text-slate-600'}`}>
+                                                            <span className="material-icons text-xs">{lead.contactType === 'visit' ? 'calendar_month' : 'chat_bubble'}</span>
+                                                            {lead.contactType === 'visit' ? 'Solicitó Visita' : 'Consulta Gral.'}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-6 text-right pr-8">
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <button
+                                                                    className="bg-primary text-white p-2.5 rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center ml-auto"
+                                                                    onClick={() => setSelectedLead(lead)}
+                                                                >
+                                                                    <span className="material-icons text-lg">forum</span>
+                                                                </button>
+                                                            </DialogTrigger>
+                                                            <DialogContent className="rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
+                                                                <div className="p-8 pb-0 flex items-center justify-between">
+                                                                    <div>
+                                                                        <h3 className="text-2xl font-black tracking-tight">{selectedLead?.leadName}</h3>
+                                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{selectedLead?.leadEmail}</p>
                                                                     </div>
+                                                                    <div className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest ${selectedLead?.contactType === 'visit' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
+                                                                        {selectedLead?.contactType === 'visit' ? 'SOLICITA VISITA' : 'CONSULTA GENERAL'}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="p-8 space-y-8">
+                                                                    <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 italic text-slate-700 dark:text-slate-300 relative">
+                                                                        <span className="material-icons absolute -top-3 -left-1 text-primary/20 text-4xl">format_quote</span>
+                                                                        {selectedLead?.leadMessage}
+                                                                    </div>
+
                                                                     {selectedLead?.contactType === 'visit' && (
-                                                                        <div className="mt-2 p-3 bg-primary/5 rounded-xl border border-primary/10 flex items-center justify-between">
-                                                                            <div className="flex items-center gap-2 text-primary font-bold">
-                                                                                <span className="material-icons text-sm">calendar_today</span>
-                                                                                <span>Visita: {selectedLead?.visitDate}</span>
+                                                                        <div className="grid grid-cols-2 gap-4">
+                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
+                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                                                                    <span className="material-icons text-lg">event</span>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Fecha Sugerida</p>
+                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitDate}</p>
+                                                                                </div>
                                                                             </div>
-                                                                            <div className="flex items-center gap-2 text-primary font-bold">
-                                                                                <span className="material-icons text-sm">schedule</span>
-                                                                                <span>{selectedLead?.visitTime}</span>
+                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
+                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                                                                    <span className="material-icons text-lg">schedule</span>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Hora Sugerida</p>
+                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitTime}</p>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     )}
-                                                                    <span className="text-slate-400 text-[10px] mt-2 uppercase tracking-widest">
-                                                                        Recibido el {selectedLead?.createdAt?.seconds ? new Date(selectedLead.createdAt.seconds * 1000).toLocaleString() : ''}
-                                                                    </span>
+
+                                                                    <div className="bg-slate-900 dark:bg-slate-800 p-6 rounded-3xl text-white flex items-center justify-between">
+                                                                        <div className="flex items-center gap-4">
+                                                                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                                                                                <span className="material-icons text-primary underline-offset-4">apartment</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-[10px] font-black uppercase text-white/50 tracking-widest">En respuesta a:</p>
+                                                                                <p className="font-bold truncate max-w-[180px]">{selectedLead?.propertyTitle}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <Link
+                                                                            href={`/property/${selectedLead?.propertyId}`}
+                                                                            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                                                                        >
+                                                                            VER PROPIEDAD <span className="material-icons text-sm">arrow_outward</span>
+                                                                        </Link>
+                                                                    </div>
+
+                                                                    <div className="flex gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                const body = `Hola ${selectedLead?.leadName}, recibimos tu consulta sobre ${selectedLead?.propertyTitle}. Soy ${user.displayName} de ${profileAgency || 'Atlantida Group'}...`
+                                                                                window.location.href = `mailto:${selectedLead?.leadEmail}?subject=Re: ${selectedLead?.propertyTitle}&body=${encodeURIComponent(body)}`
+                                                                            }}
+                                                                            className="flex-1 py-4 bg-primary text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
+                                                                        >
+                                                                            <span className="material-icons text-sm">send</span> Responder Email
+                                                                        </button>
+                                                                        {selectedLead?.status === 'new' && (
+                                                                            <button
+                                                                                onClick={() => selectedLead && handleMarkAsContacted(selectedLead.id)}
+                                                                                className="px-6 border border-slate-200 dark:border-slate-800 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-colors"
+                                                                            >
+                                                                                Cerrar Ticket
+                                                                            </button>
+                                                                        )}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="flex justify-end gap-2">
-                                                                {selectedLead?.status === 'new' && (
-                                                                    <button
-                                                                        onClick={() => selectedLead && handleMarkAsContacted(selectedLead.id)}
-                                                                        className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-700"
-                                                                    >
-                                                                        Marcar como Leído
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                    )}
-                                </TableBody>
-                            </Table>
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </AnimatePresence>
+                                    </TableBody>
+                                </Table>
+                            </div>
                         )}
                     </div>
                 </div>
 
-                {/* Properties List */}
-                <div className="space-y-4">
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="material-icons text-primary">holiday_village</span> Mis Publicaciones
-                    </h2>
+                {/* Properties Showcase */}
+                <div className="space-y-8 pt-12">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Inventario de Propiedades</h2>
+                            <p className="text-slate-500 font-medium">Gestiona tus publicaciones directamente.</p>
+                        </div>
+                    </div>
 
                     {properties.length === 0 ? (
-                        <div className="bg-white dark:bg-slate-900 rounded-3xl p-12 text-center border border-slate-200 dark:border-slate-800 shadow-sm">
-                            <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="material-icons text-slate-400 text-4xl">inventory_2</span>
+                        <div className="p-16 bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center text-center">
+                            <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-8">
+                                <span className="material-icons text-slate-300 text-5xl">inventory_2</span>
                             </div>
-                            <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-2">No tienes publicaciones activas</h2>
-                            <p className="text-slate-500 mb-8 max-w-sm mx-auto">Crea tu primer aviso y llega a miles de personas interesadas.</p>
-                            <Link href="/publish" className="inline-block bg-primary text-white px-10 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">
-                                Empezar ahora
-                            </Link>
+                            <h3 className="text-xl font-bold mb-2">Comienza tu viaje comercial</h3>
+                            <p className="text-slate-500 mb-8 max-w-sm">Publica tu primera propiedad y activa el generador de leads de Atlantida Group.</p>
+                            <Link href="/publish" className="bg-primary text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary/30">Publicar Mi Primer Inmueble</Link>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <AnimatePresence>
                                 {properties.map(property => (
                                     <motion.div
-                                        layout
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
                                         key={property.id}
-                                        className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 md:p-6 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row gap-6 relative overflow-hidden group"
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-6 flex flex-col sm:flex-row gap-6 hover:shadow-2xl hover:shadow-slate-200/50 transition-all group"
                                     >
-                                        {/* Status Ribbon */}
-                                        <div className={`absolute top-0 right-0 px-4 py-1 text-[10px] font-black uppercase tracking-widest ${property.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                                            property.status === 'paused' ? 'bg-slate-100 text-slate-700' :
-                                                property.status === 'sold' ? 'bg-red-100 text-red-700' :
-                                                    'bg-green-100 text-green-700'
-                                            }`}>
-                                            {property.status === 'pending' ? 'En Revisión' :
-                                                property.status === 'paused' ? 'Pausada' :
-                                                    property.status === 'sold' ? 'Vendida' : 'Activo'}
-                                        </div>
-
-                                        <Link href={`/property/${property.id}`} className="w-full md:w-48 h-32 rounded-xl overflow-hidden shadow-inner flex-shrink-0 hover:opacity-90 transition-opacity">
-                                            <img className="w-full h-full object-cover" src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt={property.type} />
-                                        </Link>
-
-                                        <div className="flex-grow">
-                                            <div className="flex flex-col h-full justify-between">
-                                                <div>
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <span className="text-xs font-bold text-primary uppercase tracking-tight">{property.operation}</span>
-                                                        <span className="text-slate-300">•</span>
-                                                        <span className="text-xs font-medium text-slate-500">{property.type}</span>
-                                                    </div>
-                                                    <Link href={`/property/${property.id}`}>
-                                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white truncate hover:text-primary transition-colors cursor-pointer">{property.address || property.neighborhood}</h3>
-                                                    </Link>
-                                                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
-                                                        <span className="material-icons text-xs">location_on</span> {property.neighborhood}, {property.city}
-                                                    </p>
-                                                </div>
-
-                                                <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
-                                                    <div className="text-xl font-black text-primary">
-                                                        {formatPrice(property.price, property.currency)}
-                                                    </div>
-                                                    <div className="flex items-center gap-4 text-xs font-semibold text-slate-400">
-                                                        <span className="flex items-center gap-1.5"><span className="material-icons text-sm">bed</span> {property.bedrooms}</span>
-                                                        <span className="flex items-center gap-1.5"><span className="material-icons text-sm">shower</span> {property.bathrooms}</span>
-                                                        <span className="flex items-center gap-1.5"><span className="material-icons text-sm">square_foot</span> {property.area}m²</span>
-                                                    </div>
-                                                </div>
+                                        <div className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0">
+                                            <img src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Home" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                            <div className="absolute bottom-4 left-4">
+                                                <Badge className={`uppercase text-[9px] font-black border-none px-3 py-1 ${property.status === 'active' ? 'bg-emerald-500 text-white' : 'bg-slate-500 text-white'
+                                                    }`}>
+                                                    {property.status === 'active' ? 'ONLINE' : 'PAUSADA'}
+                                                </Badge>
                                             </div>
                                         </div>
 
-                                        <div className="flex md:flex-col justify-end gap-2 shrink-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800 md:pl-6">
-                                            <Link
-                                                href={`/property/${property.id}`}
-                                                className="flex-1 md:w-full h-10 px-4 rounded-lg bg-primary text-white font-bold text-sm hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-sm shadow-primary/20"
-                                            >
-                                                <span className="material-icons text-sm">rocket_launch</span> Ver Publicación
-                                            </Link>
-                                            <Link
-                                                href={`/publish?edit=${property.id}`}
-                                                className="flex-1 md:w-full h-10 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                <span className="material-icons text-sm">edit</span> Editar
-                                            </Link>
-                                            <button
-                                                onClick={async () => {
-                                                    const newStatus = property.status === 'active' ? 'paused' : 'active'
-                                                    setProperties(properties.map(p => p.id === property.id ? { ...p, status: newStatus } : p))
-                                                    if (db) {
-                                                        await updateDoc(doc(db, "properties", property.id), { status: newStatus })
-                                                    }
-                                                }}
-                                                className="flex-1 md:w-full h-10 px-4 rounded-lg bg-blue-50 text-blue-600 font-bold text-sm hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                <span className="material-icons text-sm">{property.status === 'active' ? 'pause' : 'play_arrow'}</span>
-                                                {property.status === 'active' ? 'Pausar' : 'Activar'}
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(property.id)}
-                                                className="flex-1 md:w-full h-10 px-4 rounded-lg bg-red-50 text-red-500 font-bold text-sm hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                <span className="material-icons text-sm">delete</span> Borrar
-                                            </button>
+                                        <div className="flex-grow flex flex-col justify-between py-1">
+                                            <div>
+                                                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors truncate">{property.neighborhood}</h3>
+                                                <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">{property.type} • {property.operation}</p>
+                                                <div className="mt-4 flex items-center gap-4 text-slate-500">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="material-icons text-sm text-primary/40">bed</span>
+                                                        <span className="text-xs font-black">{property.bedrooms}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="material-icons text-sm text-primary/40">square_foot</span>
+                                                        <span className="text-xs font-black">{property.area}m²</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="material-icons text-sm text-primary/40">visibility</span>
+                                                        <span className="text-xs font-black">{property.views || 0}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-6 flex items-center justify-between">
+                                                <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
+                                                    {formatPrice(property.price, property.currency)}
+                                                </p>
+                                                <div className="flex items-center gap-2">
+                                                    <Link
+                                                        href={`/publish?edit=${property.id}`}
+                                                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
+                                                        title="Editar"
+                                                    >
+                                                        <span className="material-icons text-lg">edit</span>
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleDelete(property.id)}
+                                                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                                                        title="Borrar"
+                                                    >
+                                                        <span className="material-icons text-lg">delete_outline</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </motion.div>
                                 ))}
