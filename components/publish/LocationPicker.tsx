@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api"
 import { MapPin } from "lucide-react"
 
 const containerStyle = {
@@ -24,7 +24,8 @@ interface LocationPickerProps {
 export function LocationPicker({ center, onLocationChange }: LocationPickerProps) {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+        libraries: ['marker']
     })
 
     const [map, setMap] = React.useState<google.maps.Map | null>(null)
@@ -84,6 +85,41 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
         )
     }
 
+    React.useEffect(() => {
+        if (!map) return
+
+        // Create the Advanced Marker
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+            map,
+            position: markerPosition,
+            gmpDraggable: true,
+            title: "Ubicación seleccionada"
+        })
+
+        // Handle Drag End
+        const listener = marker.addListener("dragend", (event: any) => {
+            // AdvancedMarkerElement updates position automatically
+            const pos = marker.position as any
+            if (pos) {
+                // Handle both LatLng object and LatLngLiteral safely
+                const lat = typeof pos.lat === 'function' ? pos.lat() : pos.lat
+                const lng = typeof pos.lng === 'function' ? pos.lng() : pos.lng
+
+                // Ensure we have numbers
+                if (typeof lat === 'number' && typeof lng === 'number') {
+                    const newPos = { lat, lng }
+                    setMarkerPosition(newPos)
+                    onLocationChange(newPos)
+                }
+            }
+        })
+
+        return () => {
+            marker.map = null
+            google.maps.event.removeListener(listener)
+        }
+    }, [map, markerPosition]) // Note: In a real app we'd optimize to avoid re-creating on position update if caused by drag
+
     return (
         <GoogleMap
             mapContainerStyle={containerStyle}
@@ -98,14 +134,10 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
                 streetViewControl: false,
                 mapTypeControl: false,
                 fullscreenControl: true,
+                mapId: "DEMO_MAP_ID", // Required for AdvancedMarkerElement
             }}
         >
-            <MarkerF
-                position={markerPosition}
-                draggable={true}
-                onDragEnd={handleMarkerDragEnd}
-                animation={google.maps.Animation.DROP}
-            />
+            {/* Marker is managed by useEffect now */}
         </GoogleMap>
     )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader, InfoWindowF } from "@react-google-maps/api"
 import { MapPin, GraduationCap, Utensils, Trees, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -37,7 +37,11 @@ const CATEGORY_COLORS = {
 }
 
 export function NeighborhoodMap({ location, coordinates }: { location: string, coordinates?: { lat: number, lng: number } }) {
-    const { isLoaded, loadError } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "" })
+    const { isLoaded, loadError } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+        libraries: ['marker']
+    })
 
     const [map, setMap] = React.useState<google.maps.Map | null>(null)
     const [activeCategory, setActiveCategory] = React.useState<string | null>(null)
@@ -129,19 +133,17 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
                         streetViewControl: true,
                         mapTypeControl: false,
                         fullscreenControl: true,
+                        mapId: "DEMO_MAP_ID"
                     }}
                 >
-                    {/* Main Property Marker */}
-                    <MarkerF
-                        position={center}
-                        title={location}
-                    // animation={google.maps.Animation.DROP} // Removed to avoid typing issues if types not fully loaded
-                    />
+                    {/* Markers managed via pure component helper or SideEffect */}
+                    <AdvancedMarker map={map} position={center} title={location} />
 
                     {/* POI Markers */}
                     {filteredPois.map((poi) => (
-                        <MarkerF
+                        <AdvancedMarker
                             key={poi.id}
+                            map={map}
                             position={{ lat: poi.lat, lng: poi.lng }}
                             title={poi.label}
                             icon={CATEGORY_COLORS[poi.category]}
@@ -168,4 +170,40 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
             </div>
         </div>
     )
+}
+
+function AdvancedMarker({ map, position, title, icon, onClick }: {
+    map: google.maps.Map | null,
+    position: google.maps.LatLngLiteral | google.maps.LatLng,
+    title?: string,
+    icon?: string,
+    onClick?: () => void
+}) {
+    React.useEffect(() => {
+        if (!map) return
+
+        const markerContent = icon ? document.createElement("img") : null
+        if (markerContent && icon) {
+            markerContent.src = icon
+            markerContent.style.width = "32px"
+            markerContent.style.height = "32px"
+        }
+
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+            map,
+            position,
+            title,
+            content: markerContent
+        })
+
+        if (onClick) {
+            marker.addListener("click", onClick)
+        }
+
+        return () => {
+            marker.map = null
+        }
+    }, [map, position, title, icon, onClick])
+
+    return null
 }

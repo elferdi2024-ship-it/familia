@@ -222,7 +222,7 @@ function ContactModal({
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "100%", opacity: 0 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-t-[2.5rem] rounded-b-none sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-t-[2.5rem] rounded-b-none sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-auto max-h-[85dvh]"
                     >
                         {/* Mobile Handle */}
                         <div className="sm:hidden absolute top-0 left-0 right-0 h-6 flex items-center justify-center z-20 pointer-events-none">
@@ -447,7 +447,7 @@ export default function ServicesPage() {
             </section>
 
             {/* 2. SERVICIOS PARA PROPIETARIOS */}
-            <section ref={ownersRef} className="py-32 px-4 relative">
+            <section ref={ownersRef} className="py-32 px-4 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 -z-10" />
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">

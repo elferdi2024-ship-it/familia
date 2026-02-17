@@ -94,6 +94,6 @@ export const config = {
          * - icons (PWA icons)
          * - manifest.json
          */
-        '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|.*\\.png|.*\\.webp|.*\\.svg).*)',
+        '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|.*\\.(?:svg|png|jpg|jpeg|webp|avif)$).*)',
     ],
 }
