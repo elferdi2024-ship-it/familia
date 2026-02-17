@@ -104,8 +104,8 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ y: -8 }}
-            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all duration-500 overflow-hidden flex flex-col h-full ring-1 ring-transparent hover:ring-primary/10"
+            whileHover={{ y: -12, scale: 1.02 }}
+            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col h-full ring-1 ring-transparent hover:ring-primary/10"
         >
             {/* Animated Background Gradient */}
             <div
@@ -121,7 +121,7 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
 
             <div className="relative z-10 mb-8">
                 <div
-                    className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
+                    className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 ease-out"
                     style={{ backgroundColor: service.color, boxShadow: `0 15px 35px -5px ${service.color}55` }}
                 >
                     <service.icon className="w-9 h-9 text-white/90" />
