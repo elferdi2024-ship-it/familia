@@ -97,7 +97,7 @@ export default function PropertyClient({ initialProperty, initialAgentInfo }: Pr
             }
 
             // 3. Track Metric
-            trackEvent.leadSubmitted(property.id, contactType)
+            trackEvent.leadSubmitted({ propertyId: property.id, type: contactType })
 
             setLeadSuccess(true)
             toast.success(contactType === "visit" ? "¡Solicitud de visita enviada!" : "¡Consulta enviada!")

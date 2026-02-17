@@ -9,12 +9,11 @@ import { FavoriteButton } from "@/components/FavoriteButton"
 import { useSavedSearches } from "@/contexts/SavedSearchesContext"
 import { PropertyGridSkeleton } from "@/components/Skeletons"
 import { useComparison } from "@/contexts/ComparisonContext"
-import { db } from "@/lib/firebase"
-import { collection, query, getDocs, limit } from "firebase/firestore"
+import { searchClient } from "@/lib/algolia-client"
 import { Property, formatPrice } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
-import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from "@react-google-maps/api"
-import { Search } from "lucide-react"
+import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api"
+import { Search, Map as MapIcon, List, Filter, X } from "lucide-react"
 
 const mapContainerStyle = {
     width: '100%',
@@ -46,96 +45,71 @@ export function SearchContent({
     const [showMap, setShowMap] = useState(false)
 
     const [filters, setFilters] = useState({
-        mode: initialOperation === 'Alquiler' ? 'alquilar' : 'comprar',
         operation: initialOperation || searchParams.get('operation') || "Venta",
         propertyTypes: (initialType ? [initialType] : searchParams.get('type')?.split(',').filter(Boolean)) || [] as string[],
         query: searchParams.get('q') || "",
         priceMin: "",
         priceMax: "",
         bedrooms: "",
-        department: initialNeighborhood ? "Montevideo" : "", // Default to Montevideo for known neighborhoods
+        department: initialNeighborhood ? "Montevideo" : "",
         city: initialNeighborhood ? "Montevideo" : "",
         neighborhood: initialNeighborhood || "",
         amenities: [] as string[]
     })
 
-    // Real data state
     const [properties, setProperties] = useState<Property[]>([])
-    const [savedToast, setSavedToast] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
-    const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
-    const [hoveredPropertyId, setHoveredPropertyId] = useState<string | null>(null)
     const [marketStats, setMarketStats] = useState<Record<string, MarketData>>({})
-    const { saveSearch } = useSavedSearches()
-    const { isInCompare, addToCompare, removeFromCompare } = useComparison()
-
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
     })
 
-    const fetchProperties = async () => {
+    const performSearch = async () => {
         setIsLoading(true)
-        if (!db) {
-            setProperties([])
-            setIsLoading(false)
-            return
-        }
         try {
-            const propertiesRef = collection(db, "properties")
-            const q = query(propertiesRef, limit(200))
+            const facetFilters: string[] = []
+            if (filters.operation) facetFilters.push(`operation:${filters.operation}`)
+            if (filters.department) facetFilters.push(`department:${filters.department}`)
+            if (filters.city) facetFilters.push(`city:${filters.city}`)
+            if (filters.neighborhood) facetFilters.push(`neighborhood:${filters.neighborhood}`)
 
-            const querySnapshot = await getDocs(q)
-            let docs = querySnapshot.docs.map(doc => {
-                const data = doc.data()
-                return {
-                    id: doc.id,
-                    ...data,
-                    publishedAt: data.publishedAt?.toDate?.()?.toISOString() || data.publishedAt || new Date().toISOString()
-                } as Property
-            })
+            if (filters.propertyTypes.length > 0) {
+                const typeFilters = filters.propertyTypes.map(t => `type:${t}`)
+                facetFilters.push(`(${typeFilters.join(' OR ')})`)
+            }
 
-            // Client-side filtering
-            if (filters.operation) docs = docs.filter(p => p.operation === filters.operation)
-            if (filters.propertyTypes.length > 0) docs = docs.filter(p => filters.propertyTypes.includes(p.type))
-            if (filters.department) docs = docs.filter(p => p.department === filters.department)
-            if (filters.city) docs = docs.filter(p => p.city === filters.city)
-            if (filters.neighborhood) docs = docs.filter(p => p.neighborhood === filters.neighborhood)
             if (filters.bedrooms) {
                 const bed = filters.bedrooms === "Mono" ? 0 : filters.bedrooms === "3+" ? 3 : parseInt(filters.bedrooms)
-                docs = docs.filter(p => filters.bedrooms === "3+" ? p.bedrooms >= bed : p.bedrooms === bed)
-            }
-            if (filters.priceMin) docs = docs.filter(p => p.price >= parseInt(filters.priceMin))
-            if (filters.priceMax) docs = docs.filter(p => p.price <= parseInt(filters.priceMax))
-            if (filters.amenities.length > 0) docs = docs.filter(p => filters.amenities.every(a => p.amenities?.includes(a)))
-
-            // Special Filters for Category Discovery
-            const searchText = searchParams.get('q')?.toLowerCase()
-            if (searchText) {
-                docs = docs.filter(p =>
-                    p.title.toLowerCase().includes(searchText) ||
-                    p.description.toLowerCase().includes(searchText) ||
-                    p.neighborhood.toLowerCase().includes(searchText)
-                )
+                facetFilters.push(filters.bedrooms === "3+" ? `bedrooms >= ${bed}` : `bedrooms:${bed}`)
             }
 
-            if (searchParams.get('viviendaPromovida') === 'true') {
-                docs = docs.filter(p => p.viviendaPromovida === true)
-            }
+            const numericFilters: string[] = []
+            if (filters.priceMin) numericFilters.push(`price >= ${filters.priceMin}`)
+            if (filters.priceMax) numericFilters.push(`price <= ${filters.priceMax}`)
 
-            if (searchParams.get('badge')) {
-                const badgeParam = searchParams.get('badge')
-                docs = docs.filter(p => p.badge?.toLowerCase() === badgeParam?.toLowerCase())
-            }
+            // Algolia Search Call
+            const { results } = await searchClient.search({
+                requests: [{
+                    indexName: 'properties',
+                    query: filters.query,
+                    filters: facetFilters.join(' AND '),
+                    numericFilters: numericFilters.join(' AND '),
+                    hitsPerPage: 100
+                }]
+            })
 
-            if (searchParams.get('featured') === 'true') {
-                docs = docs.filter(p => p.featured === true)
-            }
+            const hits = (results[0] as any).hits as any[]
+            const formattedProperties = hits.map(hit => ({
+                ...hit,
+                id: hit.objectID,
+                publishedAt: hit.publishedAt ? new Date(hit.publishedAt).toISOString() : new Date().toISOString()
+            })) as Property[]
 
-            docs.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-            setProperties(docs)
+            setProperties(formattedProperties)
 
-            const statsToFetch = docs.slice(0, 20)
+            // Fetch Market Intelligence for top results
+            const statsToFetch = formattedProperties.slice(0, 10)
             const statsMap: Record<string, MarketData> = {}
             await Promise.all(statsToFetch.map(async (p) => {
                 try {
@@ -145,48 +119,16 @@ export function SearchContent({
             }))
             setMarketStats(statsMap)
         } catch (error) {
-            console.error(error)
+            console.error("Search Error:", error)
             setProperties([])
         } finally {
             setIsLoading(false)
         }
     }
 
-    useEffect(() => { fetchProperties() }, [filters])
-
     useEffect(() => {
-        if (searchParams.get('view') === 'map') setShowMap(true)
-    }, [searchParams])
-
-    const clearFilters = () => {
-        setFilters({
-            mode: filters.mode,
-            operation: filters.operation,
-            propertyTypes: filters.propertyTypes,
-            query: filters.query,
-            priceMin: "",
-            priceMax: "",
-            bedrooms: "",
-            department: "",
-            city: "",
-            neighborhood: "",
-            amenities: []
-        })
-    }
-
-    const removeFilter = (key: string, value: string | null = null) => {
-        if (key === 'amenities') {
-            setFilters(prev => ({ ...prev, amenities: prev.amenities.filter(a => a !== value) }))
-        } else if (key === 'department') {
-            setFilters(prev => ({ ...prev, department: "", city: "", neighborhood: "" }))
-        } else if (key === 'city') {
-            setFilters(prev => ({ ...prev, city: "", neighborhood: "" }))
-        } else {
-            setFilters(prev => ({ ...prev, [key]: "" }))
-        }
-    }
-
-    const hasFilters = filters.priceMin || filters.priceMax || filters.bedrooms || filters.department || filters.city || filters.neighborhood || filters.amenities.length > 0
+        performSearch()
+    }, [filters])
 
     const cities = useMemo(() => {
         if (!filters.department) return []
@@ -197,59 +139,80 @@ export function SearchContent({
     const neighborhoods = useMemo(() => {
         if (!filters.department || !filters.city) return []
         const typedGeoData = geoData as Record<string, Record<string, string[]>>
-        const rawNeighborhoods = typedGeoData[filters.department]?.[filters.city] || []
-        return Array.from(new Set(rawNeighborhoods))
+        return typedGeoData[filters.department]?.[filters.city] || []
     }, [filters.department, filters.city])
-
-    const pricePercentMin = Math.max(0, Math.min(100, (parseInt(filters.priceMin || "0") / 1000000) * 100))
-    const pricePercentMax = Math.max(0, Math.min(100, (parseInt(filters.priceMax || "1000000") / 1000000) * 100))
 
     const FilterContent = () => (
         <div className="space-y-8">
-            {/* Price range, locations, bedrooms, amenities - Identical to search page but cleaned up */}
-            <div>
-                <label className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 block">Rango de Precio (USD)</label>
-                <div className="flex gap-3 mb-2">
-                    <div className="w-1/2">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase">Mín</span>
-                        <input value={filters.priceMin} onChange={(e) => setFilters(prev => ({ ...prev, priceMin: e.target.value }))} className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded p-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary" type="text" placeholder="0" />
-                    </div>
-                    <div className="w-1/2">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase">Máx</span>
-                        <input value={filters.priceMax} onChange={(e) => setFilters(prev => ({ ...prev, priceMax: e.target.value }))} className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded p-2.5 text-sm font-semibold focus:ring-2 focus:ring-primary" type="text" placeholder="Cualquiera" />
-                    </div>
-                </div>
-            </div>
-
-            <div className="space-y-4">
-                <div>
-                    <label htmlFor="filter-department" className="sr-only">Departamento</label>
-                    <select id="filter-department" value={filters.department} onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                        <option value="">Departamento</option>
-                        {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="filter-city" className="sr-only">Ciudad</label>
-                    <select id="filter-city" disabled={!filters.department} value={filters.city} onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                        <option value="">Ciudad</option>
-                        {cities.map(city => <option key={city} value={city}>{city}</option>)}
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="filter-neighborhood" className="sr-only">Barrio</label>
-                    <select id="filter-neighborhood" disabled={!filters.city} value={filters.neighborhood} onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))} className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm font-semibold focus:ring-2 focus:ring-primary">
-                        <option value="">Barrio</option>
-                        {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
-                    </select>
-                </div>
+            <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                    type="text"
+                    placeholder="Buscar barrio, título..."
+                    value={filters.query}
+                    onChange={(e) => setFilters(prev => ({ ...prev, query: e.target.value }))}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary transition-all"
+                />
             </div>
 
             <div>
-                <label className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 block">Dormitorios</label>
-                <div className="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Rango de Precio (USD)</label>
+                <div className="flex gap-3">
+                    <input
+                        value={filters.priceMin}
+                        onChange={(e) => setFilters(prev => ({ ...prev, priceMin: e.target.value }))}
+                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                        placeholder="Mín"
+                    />
+                    <input
+                        value={filters.priceMax}
+                        onChange={(e) => setFilters(prev => ({ ...prev, priceMax: e.target.value }))}
+                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                        placeholder="Máx"
+                    />
+                </div>
+            </div>
+
+            <div className="space-y-3">
+                <select
+                    value={filters.department}
+                    onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                >
+                    <option value="">Todo el País</option>
+                    {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                </select>
+
+                <select
+                    disabled={!filters.department}
+                    value={filters.city}
+                    onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50"
+                >
+                    <option value="">Ciudad</option>
+                    {cities.map(city => <option key={city} value={city}>{city}</option>)}
+                </select>
+
+                <select
+                    disabled={!filters.city}
+                    value={filters.neighborhood}
+                    onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50"
+                >
+                    <option value="">Barrio</option>
+                    {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
+                </select>
+            </div>
+
+            <div>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Dormitorios</label>
+                <div className="flex bg-slate-50 dark:bg-slate-800 rounded-xl p-1 gap-1">
                     {["Mono", "1", "2", "3+"].map((num) => (
-                        <button key={num} onClick={() => setFilters(prev => ({ ...prev, bedrooms: num }))} className={`flex-1 py-3 text-sm font-semibold border-l first:border-l-0 border-slate-200 dark:border-slate-700 transition-colors ${filters.bedrooms === num ? "bg-primary text-white" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}>
+                        <button
+                            key={num}
+                            onClick={() => setFilters(prev => ({ ...prev, bedrooms: num }))}
+                            className={`flex-1 py-2 text-xs font-black rounded-lg transition-all ${filters.bedrooms === num ? "bg-primary text-white shadow-md shadow-primary/20" : "hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-500"}`}
+                        >
                             {num}
                         </button>
                     ))}
@@ -259,56 +222,69 @@ export function SearchContent({
     )
 
     return (
-        <div className="min-h-screen bg-white dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col pt-24 md:pt-28">
-            {/* SEO Header - Only shown on SEO routes */}
-            {(seoTitle || seoDescription) && (
-                <div className="bg-slate-50 dark:bg-slate-900 px-6 py-6 border-b border-slate-200 dark:border-slate-800">
-                    <div className="max-w-7xl mx-auto">
-                        <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">{seoTitle}</h1>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base max-w-3xl leading-relaxed">{seoDescription}</p>
+        <div className="min-h-screen bg-white dark:bg-slate-950 font-display text-slate-900 dark:text-slate-100 overflow-hidden h-[100dvh] flex flex-col pt-24 md:pt-28">
+            <div className="flex flex-1 overflow-hidden relative">
+                {/* Desktop Filter Sidebar */}
+                <aside className="hidden lg:block w-[320px] xl:w-[380px] flex-shrink-0 border-r border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-y-auto p-8">
+                    <div className="flex items-center justify-between mb-8">
+                        <h2 className="font-black text-2xl tracking-tighter">Búsqueda</h2>
+                        <button onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", department: "", city: "", neighborhood: "" })} className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Limpiar</button>
                     </div>
-                </div>
-            )}
-
-            <div className="flex flex-1 overflow-hidden">
-                <aside className="hidden md:block w-[300px] xl:w-[340px] flex-shrink-0 border-r border-primary/10 bg-white dark:bg-background-dark overflow-y-auto hide-scrollbar p-6">
-                    <h2 className="font-bold text-lg mb-6">Filtros</h2>
                     <FilterContent />
-                    <button onClick={fetchProperties} className="w-full mt-8 bg-primary text-white py-4 rounded-lg font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-                        Aplicar Filtros
-                    </button>
                 </aside>
 
-                <div className="flex-1 flex flex-col overflow-hidden relative">
-                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-background-dark">
-                        <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-                            {properties.length} Resultados
-                        </span>
+                <div className="flex-1 flex flex-col overflow-hidden">
+                    {/* Toolbar */}
+                    <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-950 sticky top-0 z-30">
+                        <div className="flex items-center gap-3">
+                            <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-widest animate-pulse">
+                                {properties.length} Propiedades
+                            </span>
+                        </div>
                         <div className="flex gap-2">
-                            <button onClick={() => setShowMap(!showMap)} className="md:hidden bg-primary text-white px-4 py-2 rounded-full text-xs font-bold">{showMap ? 'Ver Lista' : 'Ver Mapa'}</button>
-                            <button onClick={() => setShowFilters(true)} className="md:hidden border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-full text-xs font-bold">Filtros</button>
+                            <button
+                                onClick={() => setShowMap(!showMap)}
+                                className="lg:flex hidden items-center gap-2 bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold hover:scale-105 transition-all active:scale-95"
+                            >
+                                {showMap ? <List className="w-4 h-4" /> : <MapIcon className="w-4 h-4" />}
+                                {showMap ? 'Ver Lista' : 'Ver Mapa'}
+                            </button>
+                            <button onClick={() => setShowFilters(true)} className="lg:hidden flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs font-bold">
+                                <Filter className="w-4 h-4" />
+                                Filtros
+                            </button>
                         </div>
                     </div>
 
                     <div className="flex-1 flex overflow-hidden">
-                        <section className={`${showMap ? 'hidden md:block' : 'w-full'} md:w-1/2 overflow-y-auto p-4 md:p-6 bg-slate-50/50 dark:bg-slate-900/50`}>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {isLoading ? <PropertyGridSkeleton count={4} /> : properties.map(p => (
-                                    <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all">
+                        {/* Results Grid */}
+                        <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-6 md:p-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
+                            <div className={`grid grid-cols-1 ${!showMap ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'} gap-6`}>
+                                {isLoading ? <PropertyGridSkeleton count={6} /> : properties.map(p => (
+                                    <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
                                         <div className="aspect-[4/3] relative overflow-hidden">
-                                            <Image fill src={p.images[0]} alt={p.title} className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                                            <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                                                {p.badge && <span className="bg-primary px-2 py-1 rounded text-[10px] font-bold text-white uppercase">{p.badge}</span>}
+                                            <Image fill src={p.images[0]} alt={p.title} className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                                            <div className="absolute top-4 left-4">
+                                                {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
+                                            </div>
+                                            <div className="absolute bottom-4 right-4 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                                                <FavoriteButton propertyId={p.id} className="text-white" />
                                             </div>
                                         </div>
-                                        <div className="p-4">
-                                            <h3 className="text-xl font-black text-primary mb-1">{formatPrice(p.price, p.currency)}</h3>
-                                            <p className="text-sm font-bold text-slate-800 dark:text-white truncate">{p.title}</p>
-                                            <p className="text-xs text-slate-500 mb-3">{p.neighborhood}, {p.city}</p>
-                                            <div className="flex gap-3 text-slate-400 text-[11px] font-bold border-t pt-3 border-slate-100 dark:border-slate-800">
-                                                <span>{p.bedrooms} Dorm.</span>
-                                                <span>{p.bathrooms} Baños</span>
-                                                <span>{p.area}m²</span>
+                                        <div className="p-6">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{formatPrice(p.price, p.currency)}</h3>
+                                                {marketStats[p.id] && (
+                                                    <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${marketStats[p.id].differencePercentage < -5 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                                                        {marketStats[p.id].status === 'Very Competitive' || marketStats[p.id].status === 'Competitive' ? 'Oportunidad' : 'Precio Mercado'}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
+                                            <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
+                                            <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
+                                                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms} Dorm.</span>
+                                                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area}m²</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -316,22 +292,21 @@ export function SearchContent({
                             </div>
                         </section>
 
-                        <section className={`${showMap ? 'block' : 'hidden'} md:block md:w-1/2 w-full relative`}>
-                            {loadError && (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-slate-50 dark:bg-slate-900">
-                                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-                                        <span className="material-icons text-slate-400 text-3xl">map</span>
-                                    </div>
-                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Error cargando el Mapa</h3>
-                                    <p className="text-sm text-slate-500 max-w-sm">
-                                        No se pudo cargar Google Maps. Esto suele deberse a que la clave API no está configurada correctamente o le falta facturación habilitada.
-                                    </p>
-                                </div>
-                            )}
+                        {/* Map View */}
+                        <section className={`${showMap ? 'block' : 'hidden'} lg:block lg:w-1/2 w-full relative h-full grayscale-[20%] hover:grayscale-0 transition-all duration-700`}>
                             {!loadError && isLoaded && (
                                 <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13}>
                                     {properties.map(p => p.geolocation && (
-                                        <MarkerF key={p.id} position={p.geolocation} label={{ text: `$${(p.price / 1000).toFixed(0)}k`, className: "bg-white text-primary px-2 py-1 rounded border-2 border-primary font-bold text-[10px]" }} icon={{ path: 0, scale: 0 }} />
+                                        <MarkerF
+                                            key={p.id}
+                                            position={p.geolocation}
+                                            onClick={() => window.location.href = `/property/${p.id}`}
+                                            label={{
+                                                text: `${formatPrice(p.price, p.currency)}`,
+                                                className: "bg-slate-900 text-white px-3 py-1.5 rounded-full font-black text-[10px] shadow-2xl border-2 border-white"
+                                            }}
+                                            icon={{ path: 0, scale: 0 }}
+                                        />
                                     ))}
                                 </GoogleMap>
                             )}
@@ -340,17 +315,24 @@ export function SearchContent({
                 </div>
             </div>
 
-            {/* Mobile Overlays (Filters) */}
+            {/* Mobile Filters Overlay */}
             {showFilters && (
-                <div className="fixed inset-0 z-[200] bg-white dark:bg-background-dark p-6 flex flex-col">
-                    <div className="flex justify-between mb-8">
-                        <h2 className="text-xl font-bold">Filtros</h2>
-                        <button onClick={() => setShowFilters(false)} className="material-icons">close</button>
+                <div className="fixed inset-0 z-[500] bg-white dark:bg-slate-950 animate-in slide-in-from-bottom duration-500 flex flex-col p-8">
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="text-3xl font-black tracking-tighter">Filtros</h2>
+                        <button onClick={() => setShowFilters(false)} className="h-12 w-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
+                            <X className="w-6 h-6" />
+                        </button>
                     </div>
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <FilterContent />
                     </div>
-                    <button onClick={() => setShowFilters(false)} className="w-full bg-primary text-white py-4 rounded-xl font-bold mt-6">Ver Resultados</button>
+                    <button
+                        onClick={() => setShowFilters(false)}
+                        className="w-full bg-primary text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-primary/30 mt-8"
+                    >
+                        Ver Propiedades
+                    </button>
                 </div>
             )}
         </div>

@@ -72,13 +72,35 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                         prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
                         prose-blockquote:border-l-primary prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800/50 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:italic
                     ">
-                        {/* 
-                            In a real production app with MDX, we would render the content here.
-                            For now, we simulate basic formatting from our mock strings.
-                            We use whitespace-pre-line to preserve line breaks from our data.
-                        */}
-                        <div className="whitespace-pre-line text-lg leading-relaxed">
-                            {post.content}
+                        <div className="space-y-8 text-lg leading-relaxed content-renderer">
+                            {post.content.split('\n\n').map((paragraph, i) => {
+                                if (paragraph.trim().startsWith('##')) {
+                                    return (
+                                        <h2 key={i} className="text-3xl font-black text-slate-900 dark:text-white pt-8 pb-2 border-b border-primary/10">
+                                            {paragraph.replace('##', '').trim()}
+                                        </h2>
+                                    )
+                                }
+                                if (paragraph.trim().startsWith('-')) {
+                                    return (
+                                        <ul key={i} className="space-y-4 my-6">
+                                            {paragraph.split('\n').map((li, j) => (
+                                                <li key={j} className="flex gap-4 text-slate-600 dark:text-slate-400">
+                                                    <span className="text-primary font-black">•</span>
+                                                    {li.replace('-', '').trim()}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )
+                                }
+                                return (
+                                    <p key={i} className="text-slate-600 dark:text-slate-400">
+                                        {paragraph.split('**').map((part, idx) =>
+                                            idx % 2 === 1 ? <strong key={idx} className="text-slate-900 dark:text-white font-black">{part}</strong> : part
+                                        )}
+                                    </p>
+                                )
+                            })}
                         </div>
                     </div>
 
