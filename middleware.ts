@@ -27,7 +27,7 @@ function isRateLimited(key: string, maxRequests: number): boolean {
     return entry.count > maxRequests
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
 
     // 0. Exclude static assets from ALL middleware logic (including rate limiting)
