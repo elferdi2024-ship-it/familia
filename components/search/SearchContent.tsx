@@ -12,9 +12,9 @@ import { useSavedSearches } from "@/contexts/SavedSearchesContext"
 import { PropertyGridSkeleton } from "@/components/Skeletons"
 import { useComparison } from "@/contexts/ComparisonContext"
 import { searchClient } from "@/lib/algolia-client"
-import { Property, formatPrice } from "@/lib/data"
+import { Property, formatPrice, PROPERTIES } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
-import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader, OverlayView, InfoWindowF } from "@react-google-maps/api"
 import { Search, Map as MapIcon, List, Filter, X, MapPin } from "lucide-react"
 
 const mapContainerStyle = {
@@ -74,61 +74,70 @@ export function SearchContent({
     const performSearch = async () => {
         setIsLoading(true)
         try {
-            const facetFilters: string[] = []
-            if (filters.operation) facetFilters.push(`operation:${filters.operation}`)
-            if (filters.department) facetFilters.push(`department:${filters.department}`)
-            if (filters.city) facetFilters.push(`city:${filters.city}`)
-            if (filters.neighborhood) facetFilters.push(`neighborhood:${filters.neighborhood}`)
+            await new Promise(resolve => setTimeout(resolve, 600)) // Simulate network delay
+
+            let results = [...PROPERTIES]
+
+            if (filters.query) {
+                const q = filters.query.toLowerCase()
+                results = results.filter(p =>
+                    p.title.toLowerCase().includes(q) ||
+                    p.description.toLowerCase().includes(q) ||
+                    p.neighborhood.toLowerCase().includes(q)
+                )
+            }
+
+            if (filters.operation) {
+                results = results.filter(p => p.operation === filters.operation)
+            }
 
             if (filters.propertyTypes.length > 0) {
-                const typeFilters = filters.propertyTypes.map(t => `type:${t}`)
-                facetFilters.push(`(${typeFilters.join(' OR ')})`)
+                results = results.filter(p => filters.propertyTypes.includes(p.type))
+            }
+
+            if (filters.priceMin) {
+                results = results.filter(p => p.price >= parseInt(filters.priceMin))
+            }
+            if (filters.priceMax) {
+                results = results.filter(p => p.price <= parseInt(filters.priceMax))
             }
 
             if (filters.bedrooms) {
-                const bed = filters.bedrooms === "Mono" ? 0 : filters.bedrooms === "3+" ? 3 : parseInt(filters.bedrooms)
-                facetFilters.push(filters.bedrooms === "3+" ? `bedrooms >= ${bed}` : `bedrooms:${bed}`)
+                const bed = filters.bedrooms === "Mono" ? 0 : parseInt(filters.bedrooms)
+                if (filters.bedrooms === "3+") {
+                    results = results.filter(p => p.bedrooms >= 3)
+                } else {
+                    results = results.filter(p => p.bedrooms === bed)
+                }
             }
 
-            const numericFilters: string[] = []
-            if (filters.priceMin) numericFilters.push(`price >= ${filters.priceMin}`)
-            if (filters.priceMax) numericFilters.push(`price <= ${filters.priceMax}`)
+            if (filters.department) {
+                results = results.filter(p => p.department === filters.department)
+            }
+            if (filters.city) {
+                results = results.filter(p => p.city === filters.city)
+            }
+            if (filters.neighborhood) {
+                results = results.filter(p => p.neighborhood === filters.neighborhood)
+            }
 
-            // Algolia Search Call
-            const { results } = await searchClient.search({
-                requests: [{
-                    indexName: 'properties',
-                    query: filters.query,
-                    filters: facetFilters.join(' AND '),
-                    numericFilters: numericFilters.join(' AND '),
-                    hitsPerPage: 100
-                }]
-            })
+            setProperties(results)
 
-            const hits = (results[0] as any).hits as any[]
-            const formattedProperties = hits.map(hit => ({
-                ...hit,
-                id: hit.objectID,
-                publishedAt: hit.publishedAt ? new Date(hit.publishedAt).toISOString() : new Date().toISOString()
-            })) as Property[]
-
-            setProperties(formattedProperties)
-
-            // Fetch Market Intelligence for top results
-            const statsToFetch = formattedProperties.slice(0, 10)
             const statsMap: Record<string, MarketData> = {}
-            if (formattedProperties.length > 0) {
-                await Promise.all(statsToFetch.map(async (p) => {
-                    try {
-                        const stats = await getMarketIntelligence(p)
-                        if (stats) statsMap[p.id] = stats
-                    } catch (e) { console.error(e) }
-                }))
-                setMarketStats(statsMap)
-            }
+            results.forEach(p => {
+                statsMap[p.id] = {
+                    averagePriceInZone: p.price * 1.05,
+                    differencePercentage: -5,
+                    status: 'Competitive',
+                    demandLevel: 'High',
+                    pricePerM2: p.pricePerM2,
+                    averagePricePerM2InZone: p.pricePerM2 * 1.1
+                }
+            })
+            setMarketStats(statsMap)
+
         } catch (error) {
             console.error("Search Error:", error)
-            setProperties([])
         } finally {
             setIsLoading(false)
         }
@@ -325,7 +334,7 @@ export function SearchContent({
                         </section>
 
                         {/* Map View */}
-                        <section className={`${showMap ? 'block' : 'hidden'} lg:block lg:w-1/2 w-full relative h-full grayscale-[20%] hover:grayscale-0 transition-all duration-700`}>
+                        <section className={`${showMap ? 'block' : 'hidden'} lg:block lg:w-1/2 w-full relative h-full bg-slate-100 dark:bg-slate-900`}>
                             {loadError ? (
                                 <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-8 text-center">
                                     <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center mb-4">
@@ -336,55 +345,97 @@ export function SearchContent({
                                     <p className="text-xs font-mono mt-4 text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">{loadError.message}</p>
                                 </div>
                             ) : isLoaded ? (
-                                <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13} onClick={() => setSelectedProperty(null)}>
+                                <GoogleMap
+                                    mapContainerStyle={mapContainerStyle}
+                                    center={properties[0]?.geolocation || defaultCenter}
+                                    zoom={13}
+                                    onClick={() => setSelectedProperty(null)}
+                                    options={{
+                                        disableDefaultUI: false,
+                                        zoomControl: true,
+                                        mapTypeControl: false,
+                                        streetViewControl: false,
+                                        styles: [
+                                            { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "saturation": 36 }, { "color": "#333333" }, { "lightness": 40 }] },
+                                            { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "visibility": "on" }, { "color": "#ffffff" }, { "lightness": 16 }] },
+                                            { "featureType": "all", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+                                            { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [{ "color": "#fefefe" }, { "lightness": 20 }] },
+                                            { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [{ "color": "#fefefe" }, { "lightness": 17 }, { "weight": 1.2 }] },
+                                            { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 20 }] },
+                                            { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 21 }] },
+                                            { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#dedede" }, { "lightness": 21 }] },
+                                            { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#ffffff" }, { "lightness": 17 }] },
+                                            { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#ffffff" }, { "lightness": 29 }, { "weight": 0.2 }] },
+                                            { "featureType": "road.arterial", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 18 }] },
+                                            { "featureType": "road.local", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 16 }] },
+                                            { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#f2f2f2" }, { "lightness": 19 }] },
+                                            { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#e9e9e9" }, { "lightness": 17 }] }
+                                        ]
+                                    }}
+                                >
                                     {properties.map(p => p.geolocation && (
-                                        <MarkerF
+                                        <OverlayView
                                             key={p.id}
                                             position={p.geolocation}
-                                            onClick={() => setSelectedProperty(p)}
-                                            label={{
-                                                text: `${formatPrice(p.price, p.currency)}`,
-                                                className: "bg-slate-900 text-white px-3 py-1.5 rounded-full font-black text-[10px] shadow-2xl border-2 border-white"
-                                            }}
-                                            icon={{ path: 0, scale: 0 }}
-                                        />
+                                            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                                        >
+                                            <div
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedProperty(p);
+                                                }}
+                                                className={`cursor-pointer transform transition-all duration-300 hover:scale-110 hover:z-50 ${selectedProperty?.id === p.id ? 'z-40 scale-110' : 'z-10'}`}
+                                            >
+                                                <div className={`px-3 py-1.5 rounded-full shadow-lg border-2 border-white flex items-center gap-1.5 ${selectedProperty?.id === p.id ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
+                                                    <span className="text-[10px] font-black whitespace-nowrap">
+                                                        {formatPrice(p.price, p.currency)}
+                                                    </span>
+                                                </div>
+                                                <div className={`w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] mx-auto -mt-0.5 ${selectedProperty?.id === p.id ? 'border-t-slate-900' : 'border-t-white'}`}></div>
+                                            </div>
+                                        </OverlayView>
                                     ))}
 
                                     {selectedProperty && selectedProperty.geolocation && (
                                         <InfoWindowF
                                             position={selectedProperty.geolocation}
                                             onCloseClick={() => setSelectedProperty(null)}
-                                            options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
+                                            options={{ pixelOffset: new window.google.maps.Size(0, -45) }}
                                         >
-                                            <div className="w-[260px] p-0 font-sans overflow-hidden">
-                                                <div className="relative h-32 w-full bg-slate-100 rounded-t-xl overflow-hidden group">
+                                            <div className="w-[280px] p-0 font-sans overflow-hidden">
+                                                <div className="relative h-40 w-full bg-slate-100 rounded-t-xl overflow-hidden group">
                                                     <Image
                                                         src={selectedProperty.images[0] || '/placeholder.jpg'}
                                                         alt={selectedProperty.title}
                                                         fill
                                                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                                                     />
-                                                    <div className="absolute top-2 right-2">
-                                                        <div className="bg-white/20 backdrop-blur-md rounded-full p-1.5 hover:bg-white/40 transition-colors">
+                                                    <div className="absolute top-0 right-0 p-3 bg-gradient-to-b from-black/50 to-transparent w-full flex justify-end">
+                                                        <div className="bg-white/20 backdrop-blur-md rounded-full p-1.5 hover:bg-white/40 transition-colors cursor-pointer">
                                                             <FavoriteButton propertyId={selectedProperty.id} className="text-white w-4 h-4" />
                                                         </div>
                                                     </div>
+                                                    <div className="absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent">
+                                                        <span className="text-white text-xs font-bold px-2 py-1 bg-primary rounded-md shadow-sm">
+                                                            {selectedProperty.operation}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <div className="bg-white p-3 rounded-b-xl shadow-sm">
-                                                    <h3 className="font-black text-lg text-slate-900 mb-1 tracking-tight">
+                                                <div className="bg-white p-4 rounded-b-xl shadow-lg border border-slate-100">
+                                                    <h3 className="font-black text-xl text-slate-900 mb-1 tracking-tight">
                                                         {formatPrice(selectedProperty.price, selectedProperty.currency)}
                                                     </h3>
                                                     <p className="text-xs font-bold text-slate-700 truncate mb-1">{selectedProperty.title}</p>
-                                                    <p className="text-[10px] text-slate-500 flex items-center gap-1 mb-3 font-medium">
-                                                        <MapPin className="w-3 h-3" />
+                                                    <p className="text-[10px] text-slate-500 flex items-center gap-1 mb-4 font-medium uppercase tracking-wider">
+                                                        <MapPin className="w-3 h-3 text-primary" />
                                                         {selectedProperty.neighborhood}, {selectedProperty.city}
                                                     </p>
 
                                                     <Link
                                                         href={`/property/${selectedProperty.id}`}
-                                                        className="block w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg text-center hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10"
+                                                        className="block w-full bg-slate-900 text-white text-xs font-bold py-3 rounded-xl text-center hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95"
                                                     >
-                                                        Ver Propiedad
+                                                        Ver Detalles
                                                     </Link>
                                                 </div>
                                             </div>
