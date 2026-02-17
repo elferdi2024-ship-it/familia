@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next'
 import { db } from '@/lib/firebase'
 import { collection, getDocs, limit, query } from 'firebase/firestore'
+import { POSTS } from '@/data/posts'
 
-const baseUrl = 'https://Atlantida Group.vercel.app'
+const baseUrl = 'https://familia-theta.vercel.app'
 
 const BARRIOS_MONTEVIDEO = [
     'Pocitos', 'Punta-Carretas', 'Carrasco', 'Buceo', 'Cordon',
@@ -52,6 +53,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'monthly',
             priority: 0.5,
         },
+        {
+            url: `${baseUrl}/blog`,
+            lastModified: now,
+            changeFrequency: 'daily',
+            priority: 0.8,
+        },
     ]
 
     // SEO neighborhood pages
@@ -71,6 +78,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 priority: 0.7,
             }
         )
+    }
+
+    // Dynamic blog posts
+    for (const post of POSTS) {
+        entries.push({
+            url: `${baseUrl}/blog/${post.slug}`,
+            lastModified: post.date,
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        })
     }
 
     // Dynamic property pages from Firestore

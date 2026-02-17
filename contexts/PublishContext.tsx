@@ -128,6 +128,8 @@ export function PublishProvider({ children }: { children: ReactNode }) {
                     neighborhood: property.neighborhood,
                     city: property.city,
                     department: property.department,
+                    latitude: property.latitude || (property as any).geolocation?.lat,
+                    longitude: property.longitude || (property as any).geolocation?.lng,
                     images: property.images,
                     bedrooms: property.bedrooms,
                     bathrooms: property.bathrooms,

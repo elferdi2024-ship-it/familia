@@ -14,11 +14,14 @@ export const trackEvent = {
     track('property_shared', { propertyId }),
 
   // Lead events
-  leadSubmitted: (data: { propertyId: string; propertyPrice?: number; propertyType?: string }) =>
-    track('lead_submitted', data),
+  leadSubmitted: (propertyId: string, type: 'contact' | 'visit') =>
+    track('lead_submitted', { propertyId, type }),
 
   leadWhatsApp: (propertyId: string) =>
     track('lead_whatsapp', { propertyId }),
+
+  phoneRevealed: (propertyId: string) =>
+    track('phone_revealed', { propertyId }),
 
   // Favorite events
   favoriteAdded: (propertyId: string) =>

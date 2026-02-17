@@ -41,7 +41,12 @@ export function Footer() {
                         <ul className="space-y-4 text-sm text-slate-500 font-medium">
                             <li><Link className="hover:text-primary transition-colors" href="#">Sobre Nosotros</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Contacto</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Blog de Noticias</Link></li>
+                            <li>
+                                <Link className="hover:text-primary transition-colors flex items-center gap-2" href="/blog">
+                                    Blog Inmobiliario
+                                    <span className="px-1.5 py-0.5 bg-primary text-white text-[8px] font-black rounded-md animate-pulse">NUEVO</span>
+                                </Link>
+                            </li>
                             <li><Link className="hover:text-primary transition-colors" href="#">Invertir</Link></li>
                         </ul>
                     </div>

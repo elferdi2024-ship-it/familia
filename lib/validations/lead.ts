@@ -12,6 +12,9 @@ export const LeadSchema = z.object({
     leadEmail: z.string().email("Email inválido"),
     leadPhone: z.string().optional(),
     leadMessage: z.string().min(10, "El mensaje debe tener al menos 10 caracteres").max(2000),
+    type: z.enum(["contact", "visit"]).default("contact"),
+    visitDate: z.string().nullable().optional(),
+    visitTime: z.string().nullable().optional(),
 })
 
 export type LeadInput = z.infer<typeof LeadSchema>

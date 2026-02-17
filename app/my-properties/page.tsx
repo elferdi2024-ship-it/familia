@@ -42,6 +42,9 @@ interface Lead {
     leadMessage: string;
     createdAt: any;
     status: "new" | "contacted" | "closed";
+    contactType?: "contact" | "visit";
+    visitDate?: string;
+    visitTime?: string;
 }
 
 const Sparkline = ({ data, color = "#2563eb" }: { data: number[], color?: string }) => {
@@ -85,15 +88,22 @@ export default function MyPropertiesPage() {
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const [profileName, setProfileName] = useState(user?.displayName || "")
     const [profilePhone, setProfilePhone] = useState("")
+    const [profileAgency, setProfileAgency] = useState("")
+    const [profileHours, setProfileHours] = useState("")
+    const [profilePhoto, setProfilePhoto] = useState(user?.photoURL || "")
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
 
     useEffect(() => {
         if (user) {
             setProfileName(user.displayName || "")
+            setProfilePhoto(user.photoURL || "")
             const fetchProfile = async () => {
                 const docSnap = await getDoc(doc(db, "users", user.uid))
                 if (docSnap.exists()) {
-                    setProfilePhone(docSnap.data().phone || "")
+                    const data = docSnap.data()
+                    setProfilePhone(data.phone || "")
+                    setProfileAgency(data.agencyName || "")
+                    setProfileHours(data.workingHours || "")
                 }
             }
             fetchProfile()
@@ -104,11 +114,17 @@ export default function MyPropertiesPage() {
         e.preventDefault()
         setIsUpdatingProfile(true)
         try {
-            await updateUserProfile({ displayName: profileName })
+            await updateUserProfile({
+                displayName: profileName,
+                photoURL: profilePhoto
+            })
             if (db) {
                 await setDoc(doc(db, "users", user!.uid), {
                     displayName: profileName,
+                    photoURL: profilePhoto,
                     phone: profilePhone,
+                    agencyName: profileAgency,
+                    workingHours: profileHours,
                     updatedAt: new Date().toISOString()
                 }, { merge: true })
             }
@@ -296,14 +312,36 @@ export default function MyPropertiesPage() {
                             </DialogHeader>
                             <form onSubmit={handleProfileUpdate} className="space-y-6 pt-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase text-slate-500">Nombre Público</label>
+                                    <label className="text-xs font-bold uppercase text-slate-500">Foto (URL)</label>
                                     <input
-                                        type="text"
-                                        required
+                                        type="url"
+                                        placeholder="https://..."
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                                        value={profileName}
-                                        onChange={(e) => setProfileName(e.target.value)}
+                                        value={profilePhoto}
+                                        onChange={(e) => setProfilePhoto(e.target.value)}
                                     />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase text-slate-500">Nombre Público</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                            value={profileName}
+                                            onChange={(e) => setProfileName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase text-slate-500">Empresa/Inmobiliaria</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Ej: Atlantida Real Estate"
+                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                            value={profileAgency}
+                                            onChange={(e) => setProfileAgency(e.target.value)}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase text-slate-500">Teléfono / WhatsApp</label>
@@ -314,6 +352,16 @@ export default function MyPropertiesPage() {
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                                         value={profilePhone}
                                         onChange={(e) => setProfilePhone(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase text-slate-500">Horarios de Atención</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Lun a Vie 9:00 - 18:00"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                                        value={profileHours}
+                                        onChange={(e) => setProfileHours(e.target.value)}
                                     />
                                 </div>
                                 <div className="flex gap-3 pt-4">
@@ -443,6 +491,7 @@ export default function MyPropertiesPage() {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Estado</TableHead>
+                                        <TableHead>Tipo</TableHead>
                                         <TableHead>Fecha</TableHead>
                                         <TableHead>Interesado</TableHead>
                                         <TableHead>Propiedad</TableHead>
@@ -462,6 +511,11 @@ export default function MyPropertiesPage() {
                                                 <TableCell>
                                                     <Badge variant={lead.status === 'new' ? 'destructive' : 'secondary'} className="uppercase text-[10px]">
                                                         {lead.status === 'new' ? 'Nuevo' : 'Leído'}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className={`uppercase text-[10px] ${lead.contactType === 'visit' ? 'border-primary text-primary' : ''}`}>
+                                                        {lead.contactType === 'visit' ? 'Visita' : 'Consulta'}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-xs text-slate-500">
@@ -495,12 +549,24 @@ export default function MyPropertiesPage() {
                                                                 <div className="bg-slate-50 p-4 rounded-lg text-sm text-slate-700 italic">
                                                                     "{selectedLead?.leadMessage}"
                                                                 </div>
-                                                                <div className="flex flex-col gap-1 text-sm">
-                                                                    <span className="font-bold flex items-center gap-2">
+                                                                <div className="flex flex-col gap-1 text-sm text-slate-600">
+                                                                    <div className="flex items-center gap-2">
                                                                         <span className="material-icons text-sm text-slate-400">email</span>
-                                                                        {selectedLead?.leadEmail}
-                                                                    </span>
-                                                                    <span className="text-slate-400 text-xs">
+                                                                        <span className="font-bold">{selectedLead?.leadEmail}</span>
+                                                                    </div>
+                                                                    {selectedLead?.contactType === 'visit' && (
+                                                                        <div className="mt-2 p-3 bg-primary/5 rounded-xl border border-primary/10 flex items-center justify-between">
+                                                                            <div className="flex items-center gap-2 text-primary font-bold">
+                                                                                <span className="material-icons text-sm">calendar_today</span>
+                                                                                <span>Visita: {selectedLead?.visitDate}</span>
+                                                                            </div>
+                                                                            <div className="flex items-center gap-2 text-primary font-bold">
+                                                                                <span className="material-icons text-sm">schedule</span>
+                                                                                <span>{selectedLead?.visitTime}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                    <span className="text-slate-400 text-[10px] mt-2 uppercase tracking-widest">
                                                                         Recibido el {selectedLead?.createdAt?.seconds ? new Date(selectedLead.createdAt.seconds * 1000).toLocaleString() : ''}
                                                                     </span>
                                                                 </div>

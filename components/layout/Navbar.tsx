@@ -27,6 +27,7 @@ export function Navbar() {
     { href: "/vender", label: "Vender" },
     { href: "/compare", label: "Comparar" },
     { href: "/favorites", label: "Favoritos" },
+    { href: "/blog", label: "Blog" },
     ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
   ]
 
@@ -50,7 +51,7 @@ export function Navbar() {
               return (
                 <Link
                   key={link.href}
-                  className={`relative px-4 py-2 rounded-lg transition-all ${isActive
+                  className={`relative px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 ${isActive
                     ? isScrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
                     : isScrolled
                       ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
@@ -59,6 +60,9 @@ export function Navbar() {
                   href={link.href}
                 >
                   {link.label}
+                  {link.href === "/blog" && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                  )}
                   {isActive && (
                     <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full ${isScrolled ? "bg-primary" : "bg-white"}`}></span>
                   )}
@@ -138,6 +142,10 @@ export function Navbar() {
             {user && (
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
             )}
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/blog">
+              Blog Inmobiliario
+              <span className="px-2 py-0.5 bg-primary text-white text-[10px] font-black rounded-full">NUEVO</span>
+            </Link>
             <div className="h-px bg-primary/10"></div>
             {user ? (
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary" href="/publish">Publicar Propiedad</Link>

@@ -105,6 +105,8 @@ export interface Property {
     neighborhood: string            // Cordón, Pocitos, Centro, etc.
     address?: string
     geolocation: GeoLocation        // 🇺🇾 Coordenadas exactas anti-lead-baiting
+    latitude?: number
+    longitude?: number
 
     // ── Uruguay-Specific ──
     viviendaPromovida: boolean      // 🇺🇾 Ley 18.795 — exoneración ITP, IRPF/IRAE 10 años

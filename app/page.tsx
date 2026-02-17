@@ -3,10 +3,11 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight } from "lucide-react"
+import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight, BookOpen } from "lucide-react"
 import { CompareBar } from "@/components/CompareBar"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
+import { POSTS } from "@/data/posts"
 
 // ───── Page Component ─────
 
@@ -342,6 +343,71 @@ export default function HomePage() {
               <div className="w-4 h-4 bg-primary rounded-full animate-ping"></div>
               <div className="w-4 h-4 bg-primary rounded-full absolute"></div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Blog Section */}
+      <section className="bg-slate-900 py-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary rounded-full blur-[120px] -translate-x-1/2"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
+                <BookOpen className="w-3 h-3" /> Conocimiento Inmobiliario
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-4 italic">
+                Mercado, Tendencias & <span className="text-primary">Noticias</span>
+              </h2>
+              <p className="text-slate-400 text-lg leading-relaxed">
+                Nuestros expertos analizan el mercado para que tomes la mejor decisión al comprar o invertir en Uruguay.
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="px-8 py-4 bg-white text-slate-900 font-bold rounded-2xl hover:bg-primary hover:text-white transition-all shadow-xl shadow-black/20 flex items-center gap-2 group"
+            >
+              Ir al Blog Completo
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {POSTS.slice(0, 3).map((post, i) => (
+              <Link
+                key={i}
+                href={`/blog/${post.slug}`}
+                className="group flex flex-col bg-white/5 backdrop-blur-sm rounded-[2rem] border border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500 hover:-translate-y-2"
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                  <div className="absolute bottom-4 left-6">
+                    <span className="px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full">{post.category}</span>
+                  </div>
+                </div>
+                <div className="p-8 flex-1 flex flex-col">
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-widest mb-3">{post.date}</span>
+                  <h3 className="text-xl font-bold text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  <div className="mt-auto flex items-center gap-2 text-primary font-bold text-sm">
+                    Leer más <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
