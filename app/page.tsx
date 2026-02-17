@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight, BookOpen } from "lucide-react"
+import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight, BookOpen, TrendingUp } from "lucide-react"
 import { CompareBar } from "@/components/CompareBar"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
@@ -173,6 +173,52 @@ export default function HomePage() {
               <span className="text-sm font-black uppercase tracking-widest text-slate-700 dark:text-slate-200">{cat.label}</span>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Services CTA Section */}
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
+        <div className="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden text-white shadow-2xl">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] font-black uppercase tracking-widest mb-6 backdrop-blur-md">
+                Servicios Integrales
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight">
+                Mucho más que <br />
+                <span className="text-primary">vender propiedades</span>
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-md font-medium">
+                Ofrecemos soluciones completas para propietarios e inversores. Desde mantenimiento legal hasta gestión de reformas.
+              </p>
+
+              <Link href="/servicios" className="inline-flex items-center justify-center px-8 py-4 bg-white text-slate-900 font-black rounded-xl hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-white/10 gap-2">
+                Ver Todos los Servicios
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Small feature cards */}
+              <Link href="/servicios" className="bg-white/5 backdrop-blur-sm p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors group">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 group-hover:scale-110 transition-transform">
+                  <Heart className="w-6 h-6" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Propietarios</h3>
+                <p className="text-sm text-slate-400 font-medium leading-relaxed">Gestión, mantenimiento y tranquilidad total para tu inmueble.</p>
+              </Link>
+              <Link href="/servicios" className="bg-white/5 backdrop-blur-sm p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors group">
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-4 text-blue-400 group-hover:scale-110 transition-transform">
+                  <TrendingUp className="w-6 h-6" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Inversores</h3>
+                <p className="text-sm text-slate-400 font-medium leading-relaxed">Análisis de rentabilidad y oportunidades off-market.</p>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 

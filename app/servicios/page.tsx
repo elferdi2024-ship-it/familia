@@ -29,70 +29,70 @@ import { toast } from "sonner"
 const OWNER_SERVICES = [
     {
         id: "mantenimiento",
-        title: "Gestión de Mantenimiento y Reformas",
-        text: "Nos encargamos de que tu propiedad brille y mantenga su valor. Coordinamos equipos especializados en plomería, electricidad, pintura y diseño de interiores. Preparamos cada ambiente para maximizar su atractivo antes de una visita clave.",
+        title: "Mantenimiento y Reformas",
+        text: "Cuidamos tu propiedad como si fuera nuestra. Resolvemos arreglos, pintura y limpieza para que siempre esté impecable para las visitas.",
         icon: Key,
         color: "#1E3A5F",
-        features: ["Equipos verificados", "Presupuestos cerrados", "Supervisión de obra"]
+        features: ["Arreglos rápidos", "Pintura y limpieza", "Supervisión total"]
     },
     {
         id: "revision",
-        title: "Revisión Técnica y Diagnóstico",
-        text: "Evita sorpresas desagradables en medio de una negociación. Realizamos inspecciones profundas de instalaciones y estructuras, entregando un reporte de estado que garantiza transparencia y acelera el cierre de la operación.",
+        title: "Revisión Técnica",
+        text: "Revisamos todo antes de vender. Chequeamos instalaciones y estructura para que la venta sea rápida y sin problemas ocultos.",
         icon: Zap,
         color: "#1F4F46",
-        features: ["Certificación técnica", "Detección de humedades", "Eficiencia energética"]
+        features: ["Chequeo general", "Sin sorpresas", "Informe simple"]
     },
     {
         id: "legal",
-        title: "Blindaje Legal y Notarial",
-        text: "Seguridad jurídica total en cada contrato. Nuestros expertos redactan y revisan documentos de compraventa y alquiler, asegurando el cumplimiento de todas las normativas locales y protegiendo tu patrimonio ante cualquier contingencia.",
+        title: "Gestión Legal",
+        text: "Tranquilidad legal absoluta. Preparamos todos los papeles y contratos para que firmes seguro y sin letra chica.",
         icon: Scale,
         color: "#2F2F2F",
-        features: ["Contratos a medida", "Sucesiones y títulos", "Gestión de garantías"]
+        features: ["Contratos claros", "Papeles en regla", "Firma segura"]
     },
     {
         id: "tasacion",
-        title: "Tasación de Alto Impacto",
-        text: "No solo damos un precio; entregamos una estrategia. Analizamos el contexto real del mercado, la demanda por zona y el potencial de tu inmueble para definir un valor competitivo que atraiga ofertas serias en tiempo récord.",
+        title: "Tasación Real",
+        text: "Te decimos cuánto vale tu propiedad hoy, con números reales, para que la vendas al mejor precio posible sin perder tiempo.",
         icon: TrendingUp,
         color: "#5B2C2C",
-        features: ["Análisis comparativo", "Tendencias de mercado", "Reporte profesional"]
+        features: ["Precio de mercado", "Venta rápida", "Datos reales"]
     }
 ]
 
 const INVESTOR_SERVICES = [
     {
         id: "busqueda",
-        title: "Hunting Estratégico de Activos",
-        text: "Identificamos oportunidades 'off-market' con alto potencial de plusvalía. Buscamos propiedades con estructuras sólidas en zonas de crecimiento proyectado, garantizando una entrada segura y con margen de rentabilidad.",
+        title: "Oportunidades Únicas",
+        text: "Encontramos las mejores oportunidades para vos. Buscamos propiedades con gran potencial antes de que salgan al mercado masivo.",
         icon: Search,
         color: "#0F2C4C",
-        features: ["Zonas emergentes", "Oportunidades únicas", "Visión a largo plazo"]
+        features: ["Antes que nadie", "Potencial real", "Buenas zonas"]
     },
     {
         id: "rentabilidad",
-        title: "Ingeniería de Rentabilidad",
-        text: "Calculamos el ROI real antes de que pongas un peso. Realizamos proyecciones de flujo de caja, análisis de costos operativos y estimaciones de renta para que inviertas con datos sólidos, no con corazonadas.",
+        title: "Rentabilidad Real",
+        text: "Números claros. Calculamos cuánto vas a ganar realmente con tu inversión, con datos reales y sin promesas vacías.",
         icon: PieChart,
         color: "#204B3A",
-        features: ["Cálculo de ROI", "Cashflow proyectado", "Análisis impositivo"]
+        features: ["Ganancia real", "Cuentas claras", "Proyección seria"]
     },
     {
         id: "estructuracion",
-        title: "Estructuración Legal de Negocios",
-        text: "Acompañamos la creación de fideicomisos, sociedades y acuerdos de inversión. Aseguramos que la arquitectura legal de tu inversión sea eficiente impositivamente y completamente segura para todos los intervinientes.",
+        title: "Armado de Negocio",
+        text: "Te ayudamos a estructurar tu inversión de la forma más eficiente y segura para que tu plata rinda más.",
         icon: FileText,
         color: "#3A3A3A",
-        features: ["Vehículos de inversión", "Protección de socios", "Compliance legal"]
+        features: ["Optimización fiscal", "Estructura segura", "Asesoría total"]
     },
     {
         id: "gestion",
-        title: "Project Management Inmobiliario",
-        text: "Transformamos activos obsoletos en máquinas de generar renta. Coordinamos desde el reciclaje total hasta el 'flipping' inmobiliario, gestionando proveedores y tiempos para que tu inversión se valorice día tras día.",
+        title: "Mejora de Valor",
+        text: "Transformamos propiedades. Gestionamos reformas y mejoras para aumentar el valor y la renta de tu inversión.",
         icon: Building2,
         color: "#2C3E50",
-        features: ["Supervisión de reciclaje", "Optimización de costos", "Puesta en valor"]
+        features: ["Reformas que suman", "Más valor", "Gestión de obra"]
     }
 ]
 
