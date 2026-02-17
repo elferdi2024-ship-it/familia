@@ -15,11 +15,12 @@ import { searchClient } from "@/lib/algolia-client"
 import { Property, formatPrice } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
 import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api"
-import { Search, Map as MapIcon, List, Filter, X } from "lucide-react"
+import { Search, Map as MapIcon, List, Filter, X, MapPin } from "lucide-react"
 
 const mapContainerStyle = {
     width: '100%',
     height: '100%',
+    borderRadius: '1rem',
 }
 
 const defaultCenter = {
@@ -62,6 +63,8 @@ export function SearchContent({
     const [properties, setProperties] = useState<Property[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [marketStats, setMarketStats] = useState<Record<string, MarketData>>({})
+
+    // Add loadError to destructuring to handle map API failures
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
@@ -113,13 +116,15 @@ export function SearchContent({
             // Fetch Market Intelligence for top results
             const statsToFetch = formattedProperties.slice(0, 10)
             const statsMap: Record<string, MarketData> = {}
-            await Promise.all(statsToFetch.map(async (p) => {
-                try {
-                    const stats = await getMarketIntelligence(p)
-                    if (stats) statsMap[p.id] = stats
-                } catch (e) { console.error(e) }
-            }))
-            setMarketStats(statsMap)
+            if (formattedProperties.length > 0) {
+                await Promise.all(statsToFetch.map(async (p) => {
+                    try {
+                        const stats = await getMarketIntelligence(p)
+                        if (stats) statsMap[p.id] = stats
+                    } catch (e) { console.error(e) }
+                }))
+                setMarketStats(statsMap)
+            }
         } catch (error) {
             console.error("Search Error:", error)
             setProperties([])
@@ -153,7 +158,7 @@ export function SearchContent({
                     placeholder="Buscar barrio, título..."
                     value={filters.query}
                     onChange={(e) => setFilters(prev => ({ ...prev, query: e.target.value }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary transition-all"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl pl-10 pr-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary transition-all text-slate-900 dark:text-white"
                 />
             </div>
 
@@ -161,15 +166,17 @@ export function SearchContent({
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Rango de Precio (USD)</label>
                 <div className="flex gap-3">
                     <input
+                        type="number"
                         value={filters.priceMin}
                         onChange={(e) => setFilters(prev => ({ ...prev, priceMin: e.target.value }))}
-                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary text-slate-900 dark:text-white"
                         placeholder="Mín"
                     />
                     <input
+                        type="number"
                         value={filters.priceMax}
                         onChange={(e) => setFilters(prev => ({ ...prev, priceMax: e.target.value }))}
-                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                        className="w-1/2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary text-slate-900 dark:text-white"
                         placeholder="Máx"
                     />
                 </div>
@@ -179,7 +186,7 @@ export function SearchContent({
                 <select
                     value={filters.department}
                     onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary text-slate-900 dark:text-white"
                 >
                     <option value="">Todo el País</option>
                     {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
@@ -189,7 +196,7 @@ export function SearchContent({
                     disabled={!filters.department}
                     value={filters.city}
                     onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
                 >
                     <option value="">Ciudad</option>
                     {cities.map(city => <option key={city} value={city}>{city}</option>)}
@@ -199,7 +206,7 @@ export function SearchContent({
                     disabled={!filters.city}
                     value={filters.neighborhood}
                     onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
                 >
                     <option value="">Barrio</option>
                     {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
@@ -286,7 +293,7 @@ export function SearchContent({
                                     properties.map(p => (
                                         <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
                                             <div className="aspect-[4/3] relative overflow-hidden">
-                                                <Image fill src={p.images[0]} alt={p.title} className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                                                <Image fill src={p.images[0] || '/placeholder.jpg'} alt={p.title || 'Propiedad'} className="object-cover group-hover:scale-110 transition-transform duration-700" />
                                                 <div className="absolute top-4 left-4">
                                                     {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
                                                 </div>
@@ -306,8 +313,8 @@ export function SearchContent({
                                                 <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
                                                 <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
                                                 <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
-                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms} Dorm.</span>
-                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area}m²</span>
+                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms || 0} Dorm.</span>
+                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area || 0}m²</span>
                                                 </div>
                                             </div>
                                         </Link>
@@ -318,7 +325,16 @@ export function SearchContent({
 
                         {/* Map View */}
                         <section className={`${showMap ? 'block' : 'hidden'} lg:block lg:w-1/2 w-full relative h-full grayscale-[20%] hover:grayscale-0 transition-all duration-700`}>
-                            {!loadError && isLoaded && (
+                            {loadError ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-8 text-center">
+                                    <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center mb-4">
+                                        <MapPin className="h-8 w-8 text-slate-400" />
+                                    </div>
+                                    <h3 className="font-bold text-slate-900 dark:text-white mb-2">Mapa no disponible</h3>
+                                    <p className="text-sm text-slate-500 max-w-xs">Hubo un problema al cargar el mapa. Verificá tu conexión o la configuración de API.</p>
+                                    <p className="text-xs font-mono mt-4 text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">{loadError.message}</p>
+                                </div>
+                            ) : isLoaded ? (
                                 <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13}>
                                     {properties.map(p => p.geolocation && (
                                         <MarkerF
@@ -333,6 +349,13 @@ export function SearchContent({
                                         />
                                     ))}
                                 </GoogleMap>
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 animate-pulse">
+                                    <span className="text-slate-400 font-medium text-sm flex items-center gap-2">
+                                        <MapIcon className="w-4 h-4 animate-bounce" />
+                                        Cargando mapa...
+                                    </span>
+                                </div>
                             )}
                         </section>
                     </div>
