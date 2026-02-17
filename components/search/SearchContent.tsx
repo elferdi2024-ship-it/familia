@@ -109,6 +109,29 @@ export function SearchContent({
             if (filters.priceMax) docs = docs.filter(p => p.price <= parseInt(filters.priceMax))
             if (filters.amenities.length > 0) docs = docs.filter(p => filters.amenities.every(a => p.amenities?.includes(a)))
 
+            // Special Filters for Category Discovery
+            const searchText = searchParams.get('q')?.toLowerCase()
+            if (searchText) {
+                docs = docs.filter(p =>
+                    p.title.toLowerCase().includes(searchText) ||
+                    p.description.toLowerCase().includes(searchText) ||
+                    p.neighborhood.toLowerCase().includes(searchText)
+                )
+            }
+
+            if (searchParams.get('viviendaPromovida') === 'true') {
+                docs = docs.filter(p => p.viviendaPromovida === true)
+            }
+
+            if (searchParams.get('badge')) {
+                const badgeParam = searchParams.get('badge')
+                docs = docs.filter(p => p.badge?.toLowerCase() === badgeParam?.toLowerCase())
+            }
+
+            if (searchParams.get('featured') === 'true') {
+                docs = docs.filter(p => p.featured === true)
+            }
+
             docs.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
             setProperties(docs)
 

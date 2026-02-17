@@ -154,19 +154,23 @@ export default function HomePage() {
         </div>
         <div className="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
           {[
-            { icon: "apartment", label: "Apartamentos", color: "text-blue-500", bg: "bg-blue-50" },
-            { icon: "home", label: "Casas", color: "text-emerald-500", bg: "bg-emerald-50" },
-            { icon: "waves", label: "Frente al mar", color: "text-cyan-500", bg: "bg-cyan-50" },
-            { icon: "trending_up", label: "Inversión", color: "text-orange-500", bg: "bg-orange-50" },
-            { icon: "landscape", label: "Chacras y Campos", color: "text-amber-600", bg: "bg-amber-50" },
-            { icon: "location_city", label: "Proyectos", color: "text-indigo-500", bg: "bg-indigo-50" }
+            { icon: "apartment", label: "Apartamentos", color: "text-blue-500", bg: "bg-blue-50", href: "/search?type=Apartamento" },
+            { icon: "home", label: "Casas", color: "text-emerald-500", bg: "bg-emerald-50", href: "/search?type=Casa" },
+            { icon: "waves", label: "Frente al mar", color: "text-cyan-500", bg: "bg-cyan-50", href: "/search?badge=Frente+al+Mar" },
+            { icon: "trending_up", label: "Inversión", color: "text-orange-500", bg: "bg-orange-50", href: "/search?viviendaPromovida=true" },
+            { icon: "landscape", label: "Chacras y Campos", color: "text-amber-600", bg: "bg-amber-50", href: "/search?type=Terreno" },
+            { icon: "location_city", label: "Proyectos", color: "text-indigo-500", bg: "bg-indigo-50", href: "/search?badge=Premium" }
           ].map((cat, i) => (
-            <button key={i} className="group relative flex-none flex flex-col items-center gap-3 px-8 py-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+            <Link
+              key={i}
+              href={cat.href}
+              className="group relative flex-none flex flex-col items-center gap-3 px-8 py-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-primary/50 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1"
+            >
               <div className={`w-14 h-14 rounded-full ${cat.bg} dark:bg-slate-800 flex items-center justify-center transition-transform group-hover:scale-110 duration-300`}>
                 <span className={`material-icons text-2xl ${cat.color}`}>{cat.icon}</span>
               </div>
               <span className="text-sm font-black uppercase tracking-widest text-slate-700 dark:text-slate-200">{cat.label}</span>
-            </button>
+            </Link>
           ))}
         </div>
       </section>
