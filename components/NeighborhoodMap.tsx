@@ -36,11 +36,13 @@ const CATEGORY_COLORS = {
     shopping: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
 }
 
+const MAP_LIBRARIES: ("marker" | "places")[] = ['marker']
+
 export function NeighborhoodMap({ location, coordinates }: { location: string, coordinates?: { lat: number, lng: number } }) {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['marker']
+        libraries: MAP_LIBRARIES
     })
 
     const [map, setMap] = React.useState<google.maps.Map | null>(null)

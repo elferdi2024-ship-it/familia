@@ -16,6 +16,8 @@ const defaultCenter = {
     lng: -56.1645
 }
 
+const MAP_LIBRARIES: ("marker" | "places")[] = ['marker']
+
 interface LocationPickerProps {
     center?: { lat: number; lng: number }
     onLocationChange: (location: { lat: number; lng: number }) => void
@@ -25,7 +27,7 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['marker']
+        libraries: MAP_LIBRARIES
     })
 
     const [map, setMap] = React.useState<google.maps.Map | null>(null)

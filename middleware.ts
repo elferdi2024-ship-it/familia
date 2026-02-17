@@ -34,6 +34,8 @@ export function middleware(request: NextRequest) {
     if (
         pathname.startsWith('/_next') ||
         pathname.startsWith('/api/auth') ||
+        pathname === '/manifest.json' ||
+        pathname.startsWith('/icons/') ||
         pathname.endsWith('.json') ||
         pathname.endsWith('.png') ||
         pathname.endsWith('.ico') ||
