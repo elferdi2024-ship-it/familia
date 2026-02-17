@@ -126,12 +126,11 @@ export function SearchContent({
             const statsMap: Record<string, MarketData> = {}
             results.forEach(p => {
                 statsMap[p.id] = {
-                    averagePriceInZone: p.price * 1.05,
+                    averagePricePerM2: p.pricePerM2 * 1.1,
+                    propertyPricePerM2: p.pricePerM2,
                     differencePercentage: -5,
                     status: 'Competitive',
-                    demandLevel: 'High',
-                    pricePerM2: p.pricePerM2,
-                    averagePricePerM2InZone: p.pricePerM2 * 1.1
+                    totalPropertiesInNeighborhood: 15
                 }
             })
             setMarketStats(statsMap)
