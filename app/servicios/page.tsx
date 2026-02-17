@@ -104,52 +104,54 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ y: -12 }}
-            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 transition-all duration-500 overflow-hidden flex flex-col h-full"
+            whileHover={{ y: -8 }}
+            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all duration-500 overflow-hidden flex flex-col h-full ring-1 ring-transparent hover:ring-primary/10"
         >
             {/* Animated Background Gradient */}
             <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-white via-transparent to-black"
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-white via-transparent to-black"
                 style={{ backgroundColor: service.color }}
             />
 
             {/* Decorative Corner Light */}
             <div
-                className="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[80px] opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
+                className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none"
                 style={{ backgroundColor: service.color }}
             />
 
-            <div
-                className="w-20 h-20 rounded-3xl flex items-center justify-center mb-10 shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 relative z-10"
-                style={{ backgroundColor: service.color, boxShadow: `0 15px 35px ${service.color}44` }}
-            >
-                <service.icon className="w-10 h-10 text-white" />
+            <div className="relative z-10 mb-8">
+                <div
+                    className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
+                    style={{ backgroundColor: service.color, boxShadow: `0 15px 35px -5px ${service.color}55` }}
+                >
+                    <service.icon className="w-9 h-9 text-white/90" />
+                </div>
             </div>
 
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-5 leading-tight group-hover:text-primary transition-colors relative z-10">
+            <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:to-slate-600 dark:group-hover:from-white dark:group-hover:to-slate-400 transition-all relative z-10 w-fit">
                 {service.title}
             </h3>
 
-            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-8 flex-grow relative z-10">
+            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-8 flex-grow relative z-10 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
                 {service.text}
             </p>
 
             {/* Feature Tags */}
             <div className="flex flex-wrap gap-2 mb-10 relative z-10">
                 {service.features?.map((f: string, i: number) => (
-                    <span key={i} className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700 group-hover:border-primary/20 group-hover:text-primary transition-colors">
+                    <span key={i} className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-primary group-hover:shadow-sm transition-all duration-300">
                         {f}
                     </span>
                 ))}
             </div>
 
-            <div className="pt-8 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/20 relative z-10">
+            <div className="pt-6 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/10 relative z-10">
                 <button
                     onClick={onClick}
-                    className="w-full flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-primary transition-all"
+                    className="w-full flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-primary transition-all group-active:scale-[0.98]"
                 >
-                    <span>Comenzar ahora</span>
-                    <div className="w-10 h-10 rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:shadow-lg group-hover:shadow-primary/20">
+                    <span>Comenzar solicitud</span>
+                    <div className="w-10 h-10 rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:shadow-lg group-hover:shadow-primary/30">
                         <ChevronRight className="w-5 h-5" />
                     </div>
                 </button>
@@ -175,7 +177,6 @@ function ContactModal({
         setIsSubmitting(true)
 
         const formData = new FormData(e.currentTarget)
-        // Hardcoded key as per user request to ensure it works, while also allowing env var
         const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "522bee8c-a34d-4451-b57c-927ec9c97016"
         formData.append("access_key", accessKey)
         formData.append("subject", `Solicitud Servicio — ${formData.get("service_type")}`)
@@ -208,20 +209,26 @@ function ContactModal({
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+                <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-6 shadow-xl">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
                     />
                     <motion.div
-                        initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                        initial={{ y: "100%", opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: "100%", opacity: 0 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-t-[2.5rem] rounded-b-none sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]"
                     >
+                        {/* Mobile Handle */}
+                        <div className="sm:hidden absolute top-0 left-0 right-0 h-6 flex items-center justify-center z-20 pointer-events-none">
+                            <div className="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-2"></div>
+                        </div>
+
                         {success ? (
                             <div className="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
                                 <motion.div
@@ -236,14 +243,14 @@ function ContactModal({
                             </div>
                         ) : (
                             <>
-                                <div className="shrink-0 p-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
-                                    <h3 className="text-xl font-black uppercase tracking-tight">Solicitud de Servicio</h3>
-                                    <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                                        <X className="w-5 h-5 text-slate-400" />
+                                <div className="shrink-0 p-6 pt-10 sm:pt-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
+                                    <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Solicitud de Servicio</h3>
+                                    <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-30">
+                                        <X className="w-6 h-6 text-slate-400" />
                                     </button>
                                 </div>
-                                <div className="overflow-y-auto flex-1 custom-scrollbar">
-                                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 pb-24 md:pb-8">
+                                <div className="overflow-y-auto flex-1 custom-scrollbar overscroll-contain">
+                                    <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 pb-12 sm:pb-8">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
                                                 <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Nombre y Apellido</label>
@@ -295,12 +302,12 @@ function ContactModal({
                                             </div>
                                         </div>
 
-                                        <div className="space-y-2 text-white">
+                                        <div className="space-y-2">
                                             <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Mensaje / Detalle</label>
                                             <textarea name="message" rows={4} className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium resize-none" placeholder="Cuéntanos un poco más sobre tu necesidad..."></textarea>
                                         </div>
 
-                                        <div className="md:pt-4">
+                                        <div className="pt-2 sm:pt-4">
                                             <button
                                                 disabled={isSubmitting}
                                                 type="submit"
