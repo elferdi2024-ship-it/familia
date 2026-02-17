@@ -28,7 +28,7 @@ service cloud.firestore {
                       request.resource.data.images.size() >= 1 &&
                       request.resource.data.images.size() <= 20;
 
-      allow update: if isOwner(resource.data.userId) || isAdmin() || 
+      allow update: if (request.auth != null && (request.auth.uid == resource.data.userId || isAdmin())) || 
                       (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']));
 
       allow delete: if isOwner(resource.data.userId) || isAdmin();
