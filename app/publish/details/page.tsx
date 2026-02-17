@@ -67,12 +67,12 @@ export default function PublishDetailsPage() {
                             <h2 className="text-lg font-semibold">Especificaciones de la Propiedad</h2>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Dormitorios</label>
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Dormitorios</label>
                                 <select
                                     value={data.bedrooms}
                                     onChange={(e) => updateData({ bedrooms: Number(e.target.value) })}
-                                    className="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary"
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
                                 >
                                     <option value={1}>1</option>
                                     <option value={2}>2</option>
@@ -80,12 +80,12 @@ export default function PublishDetailsPage() {
                                     <option value={4}>4+</option>
                                 </select>
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Baños</label>
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Baños</label>
                                 <select
                                     value={data.bathrooms}
                                     onChange={(e) => updateData({ bathrooms: Number(e.target.value) })}
-                                    className="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary"
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
                                 >
                                     <option value={1}>1</option>
                                     <option value={2}>2</option>
@@ -93,32 +93,32 @@ export default function PublishDetailsPage() {
                                     <option value={4}>4+</option>
                                 </select>
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Metros Cuadrados (m²)</label>
-                                <div className="relative">
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Metros Cuadrados (m²)</label>
+                                <div className="relative group">
                                     <input
-                                        className="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary pr-12"
+                                        className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium pr-12"
                                         placeholder="Ej: 85"
                                         type="number"
                                         value={data.area || ""}
                                         onChange={(e) => updateData({ area: Number(e.target.value) })}
                                     />
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">m²</span>
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">m²</span>
                                 </div>
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Precio</label>
-                                <div className="flex">
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Precio</label>
+                                <div className="flex gap-2">
                                     <select
                                         value={data.currency}
                                         onChange={(e) => updateData({ currency: e.target.value as "USD" | "UYU" })}
-                                        className="rounded-l-lg border-r-0 border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary text-sm w-16"
+                                        className="w-24 px-3 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-bold text-sm"
                                     >
                                         <option value="USD">USD</option>
                                         <option value="UYU">UYU</option>
                                     </select>
                                     <input
-                                        className="w-full rounded-r-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary"
+                                        className="flex-1 px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
                                         placeholder="Importe"
                                         type="number"
                                         value={data.price || ""}
@@ -163,14 +163,14 @@ export default function PublishDetailsPage() {
                         </div>
                         <div className="relative">
                             <textarea
-                                className="w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary p-4"
+                                className="w-full px-4 py-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium resize-none"
                                 placeholder="Escriba aquí los puntos fuertes de la propiedad..."
                                 rows={6}
                                 value={data.description}
                                 onChange={(e) => updateData({ description: e.target.value })}
                             ></textarea>
-                            <div className="absolute bottom-3 right-4 text-xs text-slate-400">
-                                {data.description.length} / 2000 caracteres
+                            <div className="absolute bottom-4 right-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-white/80 dark:bg-slate-900/80 px-2 py-1 rounded-md">
+                                {data.description.length} / 2000
                             </div>
                         </div>
                     </section>
@@ -181,48 +181,48 @@ export default function PublishDetailsPage() {
                             <span className="material-icons text-primary">plumbing</span>
                             <h2 className="text-lg font-semibold">Servicios del Inmueble</h2>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 outline-none">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold uppercase text-slate-500">Saneamiento</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Saneamiento</label>
                                 <select
                                     value={data.utilityStatus.saneamiento}
                                     onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, saneamiento: e.target.value as any } })}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                    className="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium focus:border-primary outline-none transition-all"
                                 >
                                     <option value="conectado">Conectado</option>
                                     <option value="pozo">Pozo Séptico</option>
                                     <option value="pendiente">Pendiente</option>
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold uppercase text-slate-500">Gas</label>
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Gas</label>
                                 <select
                                     value={data.utilityStatus.gas}
                                     onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, gas: e.target.value as any } })}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                    className="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium focus:border-primary outline-none transition-all"
                                 >
                                     <option value="cañería">Cañería</option>
                                     <option value="supergas">Supergas</option>
                                     <option value="sin servicio">Sin servicio</option>
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold uppercase text-slate-500">Agua</label>
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Agua</label>
                                 <select
                                     value={data.utilityStatus.agua}
                                     onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, agua: e.target.value as any } })}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                    className="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium focus:border-primary outline-none transition-all"
                                 >
                                     <option value="OSE">OSE</option>
                                     <option value="pozo">Pozo</option>
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold uppercase text-slate-500">Electricidad</label>
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Electricidad</label>
                                 <select
                                     value={data.utilityStatus.electricidad}
                                     onChange={(e) => updateData({ utilityStatus: { ...data.utilityStatus, electricidad: e.target.value as any } })}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm"
+                                    className="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-xl text-sm font-medium focus:border-primary outline-none transition-all"
                                 >
                                     <option value="UTE">UTE</option>
                                     <option value="solar">Solar</option>
@@ -240,7 +240,7 @@ export default function PublishDetailsPage() {
                         </div>
                         <div className="relative">
                             <input
-                                className="w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary p-4 pl-12"
+                                className="w-full px-4 py-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium pl-12"
                                 placeholder="URL de la imagen del plano (PNG, JPG)..."
                                 type="url"
                                 value={data.floorplanUrl || ""}
@@ -248,7 +248,7 @@ export default function PublishDetailsPage() {
                             />
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-icons text-slate-400">link</span>
                         </div>
-                        <p className="mt-2 text-xs text-slate-500">Cargue el plano para que los interesados tengan una mejor idea de la distribución.</p>
+                        <p className="mt-2 text-xs text-slate-500 italic font-medium">Cargue el plano para que los interesados tengan una mejor idea de la distribución.</p>
                     </section>
 
                     {/* Section: Uruguay Specifics */}

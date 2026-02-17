@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import { storage } from "@/lib/firebase"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useAuth } from "@/contexts/AuthContext"
+import { toast } from "sonner"
 
 interface ImageUploaderProps {
     images: string[]
@@ -14,10 +15,10 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
     const { user } = useAuth()
     const [uploading, setUploading] = useState(false)
     const [progress, setProgress] = useState(0)
+    const [isDragging, setIsDragging] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files
+    const uploadFiles = async (files: FileList | null) => {
         if (!files || files.length === 0 || !user) return
 
         setUploading(true)
@@ -28,6 +29,7 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
             // Limit to 10MB
             if (file.size > 10 * 1024 * 1024) {
                 console.warn(`El archivo ${file.name} supera los 10MB`)
+                toast.error(`El archivo ${file.name} supera los 10MB`)
                 return null
             }
 
@@ -64,6 +66,28 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
         setProgress(0)
     }
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        uploadFiles(e.target.files)
+    }
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault()
+        if (!uploading) setIsDragging(true)
+    }
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragging(false)
+    }
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragging(false)
+        if (!uploading) {
+            uploadFiles(e.dataTransfer.files)
+        }
+    }
+
     const removeImage = (index: number) => {
         const newUrls = images.filter((_, i) => i !== index)
         onImagesChange(newUrls)
@@ -72,9 +96,14 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
     return (
         <div className="space-y-6">
             <div
-                onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-xl p-8 text-center bg-white/50 dark:bg-slate-900/50 transition-all cursor-pointer group ${uploading ? "border-primary bg-primary/5" : "border-slate-300 dark:border-slate-700 hover:border-primary"
-                    }`}
+                onClick={() => !uploading && fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`border-2 border-dashed rounded-xl p-8 text-center bg-white/50 dark:bg-slate-900/50 transition-all cursor-pointer group 
+                    ${isDragging ? "border-primary bg-primary/10 scale-[1.02]" : ""}
+                    ${uploading ? "border-primary bg-primary/5 cursor-not-allowed" : "border-slate-300 dark:border-slate-700 hover:border-primary"}
+                `}
             >
                 <input
                     type="file"
