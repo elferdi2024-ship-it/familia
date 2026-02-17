@@ -254,22 +254,22 @@ export function SearchContent({
 
                 <div className="flex-1 flex flex-col overflow-hidden">
                     {/* Toolbar */}
-                    <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-950 sticky top-0 z-30">
-                        <div className="flex items-center gap-3">
-                            <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-widest animate-pulse">
+                    <div className="px-4 md:px-6 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-950 sticky top-0 z-30">
+                        <div className="flex items-center gap-2">
+                            <span className="px-3 py-1 bg-primary/10 text-primary text-[9px] font-black rounded-full uppercase tracking-widest animate-pulse whitespace-nowrap">
                                 {properties.length} Propiedades
                             </span>
                         </div>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setShowMap(!showMap)}
-                                className="lg:flex hidden items-center gap-2 bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-5 py-2.5 rounded-full text-xs font-bold hover:scale-105 transition-all active:scale-95"
+                                className="flex items-center gap-2 bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold hover:scale-105 transition-all active:scale-95"
                             >
-                                {showMap ? <List className="w-4 h-4" /> : <MapIcon className="w-4 h-4" />}
-                                {showMap ? 'Ver Lista' : 'Ver Mapa'}
+                                {showMap ? <List className="w-3 h-3 md:w-4 md:h-4" /> : <MapIcon className="w-3 h-3 md:w-4 md:h-4" />}
+                                <span className="whitespace-nowrap">{showMap ? 'Ver Lista' : 'Ver Mapa'}</span>
                             </button>
-                            <button onClick={() => setShowFilters(true)} className="lg:hidden flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs font-bold">
-                                <Filter className="w-4 h-4" />
+                            <button onClick={() => setShowFilters(true)} className="lg:hidden flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-2 rounded-full text-[10px] font-bold">
+                                <Filter className="w-3 h-3" />
                                 Filtros
                             </button>
                         </div>
@@ -277,7 +277,7 @@ export function SearchContent({
 
                     <div className="flex-1 flex overflow-hidden">
                         {/* Results Grid */}
-                        <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-6 md:p-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
+                        <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-4 md:p-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
                             <div className={`grid grid-cols-1 ${!showMap ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'} gap-6`}>
                                 {isLoading ? (
                                     <PropertyGridSkeleton count={6} />
@@ -334,7 +334,7 @@ export function SearchContent({
                         </section>
 
                         {/* Map View */}
-                        <section className={`${showMap ? 'block' : 'hidden'} lg:block lg:w-1/2 w-full relative h-full bg-slate-100 dark:bg-slate-900`}>
+                        <section className={`${showMap ? 'fixed inset-0 top-24 z-40 lg:relative lg:inset-auto lg:top-0 lg:block lg:w-1/2' : 'hidden'} w-full h-full bg-slate-100 dark:bg-slate-900`}>
                             {loadError ? (
                                 <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 p-8 text-center">
                                     <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center mb-4">
