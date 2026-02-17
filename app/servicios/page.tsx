@@ -243,7 +243,7 @@ function ContactModal({
                             </div>
                         ) : (
                             <>
-                                <div className="shrink-0 p-6 pt-10 sm:pt-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
+                                <div className="shrink-0 p-6 pt-16 sm:pt-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
                                     <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Solicitud de Servicio</h3>
                                     <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-30">
                                         <X className="w-6 h-6 text-slate-400" />
