@@ -191,14 +191,24 @@ export default function PropertyClient({ initialProperty, initialAgentInfo }: Pr
                             </div>
                         </div>
 
-                        {/* Price Card Mobile */}
-                        <div className="lg:hidden bg-slate-900 rounded-3xl p-8 text-white shadow-2xl">
-                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">Precio de {property.operation}</p>
-                            <div className="flex items-baseline gap-3">
-                                <h2 className="text-5xl font-black">{formatPrice(property.price, property.currency)}</h2>
+                        {/* Price Card Mobile - Redesigned to be subtle and premium */}
+                        <div className="lg:hidden bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-[2rem] p-6 shadow-sm flex items-center justify-between">
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">{property.operation}</p>
+                                </div>
+                                <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                                    {formatPrice(property.price, property.currency)}
+                                </h2>
                             </div>
                             {property.gastosComunes && (
-                                <p className="mt-3 text-slate-400 font-medium">Gastos Comunes: ${property.gastosComunes.toLocaleString()} UYU</p>
+                                <div className="text-right border-l border-slate-100 dark:border-slate-800 pl-6">
+                                    <p className="text-[9px] text-slate-400 font-black uppercase tracking-wider mb-0.5">G. Comunes</p>
+                                    <p className="text-sm font-extrabold text-slate-600 dark:text-slate-400">
+                                        ${property.gastosComunes.toLocaleString()} <span className="text-[9px]">UYU</span>
+                                    </p>
+                                </div>
                             )}
                         </div>
 
