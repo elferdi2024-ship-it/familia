@@ -14,7 +14,7 @@ import { useComparison } from "@/contexts/ComparisonContext"
 import { searchClient } from "@/lib/algolia-client"
 import { Property, formatPrice } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
-import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from "@react-google-maps/api"
 import { Search, Map as MapIcon, List, Filter, X, MapPin } from "lucide-react"
 
 const mapContainerStyle = {
@@ -63,6 +63,7 @@ export function SearchContent({
     const [properties, setProperties] = useState<Property[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [marketStats, setMarketStats] = useState<Record<string, MarketData>>({})
+    const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
     // Add loadError to destructuring to handle map API failures
     const { isLoaded, loadError } = useJsApiLoader({
@@ -335,12 +336,12 @@ export function SearchContent({
                                     <p className="text-xs font-mono mt-4 text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">{loadError.message}</p>
                                 </div>
                             ) : isLoaded ? (
-                                <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13}>
+                                <GoogleMap mapContainerStyle={mapContainerStyle} center={properties[0]?.geolocation || defaultCenter} zoom={13} onClick={() => setSelectedProperty(null)}>
                                     {properties.map(p => p.geolocation && (
                                         <MarkerF
                                             key={p.id}
                                             position={p.geolocation}
-                                            onClick={() => window.location.href = `/property/${p.id}`}
+                                            onClick={() => setSelectedProperty(p)}
                                             label={{
                                                 text: `${formatPrice(p.price, p.currency)}`,
                                                 className: "bg-slate-900 text-white px-3 py-1.5 rounded-full font-black text-[10px] shadow-2xl border-2 border-white"
@@ -348,6 +349,47 @@ export function SearchContent({
                                             icon={{ path: 0, scale: 0 }}
                                         />
                                     ))}
+
+                                    {selectedProperty && selectedProperty.geolocation && (
+                                        <InfoWindowF
+                                            position={selectedProperty.geolocation}
+                                            onCloseClick={() => setSelectedProperty(null)}
+                                            options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
+                                        >
+                                            <div className="w-[260px] p-0 font-sans overflow-hidden">
+                                                <div className="relative h-32 w-full bg-slate-100 rounded-t-xl overflow-hidden group">
+                                                    <Image
+                                                        src={selectedProperty.images[0] || '/placeholder.jpg'}
+                                                        alt={selectedProperty.title}
+                                                        fill
+                                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    />
+                                                    <div className="absolute top-2 right-2">
+                                                        <div className="bg-white/20 backdrop-blur-md rounded-full p-1.5 hover:bg-white/40 transition-colors">
+                                                            <FavoriteButton propertyId={selectedProperty.id} className="text-white w-4 h-4" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="bg-white p-3 rounded-b-xl shadow-sm">
+                                                    <h3 className="font-black text-lg text-slate-900 mb-1 tracking-tight">
+                                                        {formatPrice(selectedProperty.price, selectedProperty.currency)}
+                                                    </h3>
+                                                    <p className="text-xs font-bold text-slate-700 truncate mb-1">{selectedProperty.title}</p>
+                                                    <p className="text-[10px] text-slate-500 flex items-center gap-1 mb-3 font-medium">
+                                                        <MapPin className="w-3 h-3" />
+                                                        {selectedProperty.neighborhood}, {selectedProperty.city}
+                                                    </p>
+
+                                                    <Link
+                                                        href={`/property/${selectedProperty.id}`}
+                                                        className="block w-full bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg text-center hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10"
+                                                    >
+                                                        Ver Propiedad
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </InfoWindowF>
+                                    )}
                                 </GoogleMap>
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 animate-pulse">
