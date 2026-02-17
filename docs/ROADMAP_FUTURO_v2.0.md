@@ -282,152 +282,23 @@ Semana 4:
 
 ### Mes 2: Performance + SEO
 
-#### 1. Algolia Instant Search (2 semanas)
+#### ✅ YA IMPLEMENTADOS (No tocar)
 
-**Problema actual:**
+**1. Algolia Instant Search** ✅ COMPLETO
 ```
-Firestore limitations:
-- Max 200 docs per query
-- Client-side filtering slow
-- No typo tolerance
-- No faceted search
-- No geosearch avanzado
+Status: ✅ Implementado (v5)
+Ubicación: /components/search/SearchContent.tsx
+Dashboard: Algolia Crawler activo
+Búsqueda: <50ms, Typo-tolerant
 ```
 
-**Solución: Algolia**
+**2. Blog SEO** ✅ COMPLETO
 ```
-Beneficios:
-✅ <50ms búsqueda
-✅ Typo correction ("Pocitos" → "Poctos")
-✅ Facets automáticos
-✅ Highlighting resultados
-✅ Geosearch avanzado (radio, polígonos)
-✅ Personalization por usuario
-
-Costo: $0-50/mes (10K requests free tier)
+Status: ✅ Implementado
+Ubicación: /app/blog/
+Contenido: 3 Artículos optimizados (Guía 2026, Vivienda Promovida, Barrios)
+Next: Publicar 2 artículos adicionales por mes.
 ```
-
-**Implementación:**
-```typescript
-// Week 1: Setup
-
-1. Crear cuenta Algolia (gratis)
-2. npm install algoliasearch react-instantsearch
-3. Cloud Function: Firestore → Algolia sync
-   - onCreate: index property
-   - onUpdate: update index
-   - onDelete: remove from index
-
-// Week 2: Frontend
-
-4. Reemplazar SearchContent con InstantSearch
-5. Widgets:
-   - SearchBox con autocomplete
-   - RefinementList para filtros
-   - Hits para resultados
-   - Pagination
-   - ClearRefinements
-6. Custom styling con Tailwind
-7. Testing + tuning
-```
-
-**Features nuevas:**
-```
-✅ "casas en Pocitos con piscina" (typo-tolerant)
-✅ Búsqueda instantánea (<50ms)
-✅ Facets dinámicos (operationType, tipo, precio)
-✅ Geo-búsqueda: "propiedades a 1km del WTC"
-✅ Personalización: historial de búsqueda
-```
-
-**Resultado:**
-- Performance: 8.5 → 9.2
-- UX: 9.5 → 9.8
-- Conversión: +15%
-
-#### 2. Blog SEO (4 semanas, paralelo)
-
-**Objetivo:** Capturar long-tail keywords
-
-**Stack:**
-```
-- Next.js App Router: /app/blog/[slug]
-- MDX: Markdown + React components
-- Contentlayer: Type-safe content management
-- Gray-matter: Frontmatter parsing
-```
-
-**10 Artículos Prioritarios:**
-
-1. **"Cómo comprar tu primera vivienda en Uruguay [Guía 2026]"**
-   ```
-   Keywords: comprar primera vivienda uruguay, requisitos comprar casa uruguay
-   Length: 2,500 palabras
-   CTA: Calculadora hipoteca
-   ```
-
-2. **"Vivienda Promovida: Todo lo que necesitas saber"**
-   ```
-   Keywords: vivienda promovida uruguay, ley 18795, subsidio compra vivienda
-   Length: 2,000 palabras
-   CTA: Filtro Vivienda Promovida
-   ```
-
-3. **"Los 10 mejores barrios de Montevideo para familias"**
-   ```
-   Keywords: mejores barrios montevideo familias, donde vivir montevideo niños
-   Length: 2,200 palabras
-   CTA: Búsqueda por barrio
-   ```
-
-4. **"Guía de garantías de alquiler: ANDA vs CGN vs Porto Seguro"**
-   ```
-   Keywords: garantia alquiler uruguay, anda cgn porto seguro comparacion
-   Length: 1,800 palabras
-   CTA: Filtro por garantía
-   ```
-
-5. **"¿Cuánto necesito ahorrar para comprar casa en Montevideo?"**
-   ```
-   Keywords: cuanto cuesta comprar casa montevideo, ahorrar para casa uruguay
-   Length: 1,500 palabras
-   CTA: Calculadora hipoteca
-   ```
-
-6. **"Trámites para vender una propiedad en Uruguay"**
-   ```
-   Keywords: tramites vender propiedad uruguay, documentos venta casa
-   Length: 2,000 palabras
-   CTA: Publicar propiedad
-   ```
-
-7. **"Invertir en real estate uruguayo: rentabilidad 2026"**
-   ```
-   Keywords: invertir inmuebles uruguay, rentabilidad inversion inmobiliaria
-   Length: 2,300 palabras
-   CTA: Propiedades para inversión
-   ```
-
-8. **"Crédito hipotecario en Uruguay: comparativa bancos"**
-   ```
-   Keywords: credito hipotecario uruguay, mejores bancos prestamos vivienda
-   Length: 2,000 palabras
-   CTA: Calculadora hipoteca
-   ```
-
-9. **"Mudarse a Montevideo: todo lo que necesitas saber"**
-   ```
-   Keywords: mudarse montevideo, vivir en montevideo extranjero
-   Length: 2,500 palabras
-   CTA: Buscar propiedades
-   ```
-
-10. **"Precios de alquiler por barrio: análisis 2026"**
-    ```
-    Keywords: precio alquiler montevideo barrio, cuanto cuesta alquilar montevideo
-    Length: 1,800 palabras
-    CTA: Alquilar por barrio
-    ```
 
 **Formato estándar:**
 ```markdown

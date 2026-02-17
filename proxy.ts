@@ -27,7 +27,7 @@ function isRateLimited(key: string, maxRequests: number): boolean {
     return entry.count > maxRequests
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl
 
     // 1. Redirect /properties/[id] to /property/[id] (SEO Clean URLs)
