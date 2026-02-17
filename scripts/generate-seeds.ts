@@ -288,7 +288,7 @@ canelones.forEach(p => {
     })
 })
 
-// ── BATCH 6: 8x Costa de Oro (temporal + residencial) ──
+// ── BATCH 6: 12x Costa de Oro (temporal + residencial) ──
 const costaOro = [
     { t: "Casa frente al mar Atlántida", n: "Atlántida", op: "Venta", p: 195000, c: "USD", bed: 3, bath: 2, area: 150, gar: 1, gc: null, vp: false, el: "C", am: "premium", addr: "Rambla Dr. P. Williman 1250", type: "Casa", badge: "Frente al Mar", badgeColor: "bg-cyan-500" },
     { t: "2 dorm céntrico Atlántida", n: "Atlántida", op: "Alquiler", p: 20000, c: "UYU", bed: 2, bath: 1, area: 58, gar: 0, gc: 4000, vp: false, el: "D", am: "mid", addr: "Calle 3 y Av. Argentina", g: ["ANDA", "CGN"] },
@@ -298,6 +298,10 @@ const costaOro = [
     { t: "1 dorm temporal Atlántida playa", n: "Atlántida", op: "Alquiler Temporal", p: 400, c: "USD", bed: 1, bath: 1, area: 35, gar: 0, gc: null, vp: false, el: "D", am: "basic", addr: "Calle 1 y Rambla" },
     { t: "Local comercial Atlántida centro", n: "Atlántida", op: "Alquiler", p: 22000, c: "UYU", bed: 0, bath: 1, area: 50, gar: 0, gc: null, vp: false, el: null, am: "basic", addr: "Calle 2 y Av. Argentina", type: "Local Comercial", g: ["Depósito"] },
     { t: "Casa con jardín Parque del Plata", n: "Parque del Plata", op: "Venta", p: 125000, c: "USD", bed: 2, bath: 1, area: 90, gar: 1, gc: null, vp: false, el: "D", am: "house", addr: "Calle del Arroyo 220", type: "Casa" },
+    { t: "Terreno 600m² Salinas Norte", n: "Salinas", op: "Venta", p: 35000, c: "USD", bed: 0, bath: 0, area: 600, gar: 0, gc: null, vp: false, el: null, am: "basic", addr: "Calle Nube 4, Salinas Norte", type: "Terreno" },
+    { t: "Apartamento 1 dorm La Floresta", n: "La Floresta", op: "Alquiler", p: 18000, c: "UYU", bed: 1, bath: 1, area: 42, gar: 0, gc: 2500, vp: false, el: "C", am: "basic", addr: "Ruta 35 km 2", g: ["ANDA", "CGN"] },
+    { t: "Casa alpina Parque del Plata", n: "Parque del Plata", op: "Venta", p: 98000, c: "USD", bed: 2, bath: 1, area: 75, gar: 1, gc: null, vp: false, el: "D", am: "house", addr: "Calle 24 y la playa", type: "Casa" },
+    { t: "Local frente a plaza Atlántida", n: "Atlántida", op: "Alquiler", p: 35000, c: "UYU", bed: 0, bath: 1, area: 80, gar: 0, gc: null, vp: false, el: null, am: "basic", addr: "Calle 11 y Av. Rivera", type: "Local Comercial" },
 ]
 
 costaOro.forEach(p => {
@@ -319,7 +323,7 @@ costaOro.forEach(p => {
     })
 })
 
-// ── BATCH 7: 12x Maldonado / Punta del Este (turismo + inversión) ──
+// ── BATCH 7: 13x Maldonado / Punta del Este (turismo + inversión) ──
 const maldonado = [
     { t: "Penthouse Punta del Este frente al mar", n: "Punta del Este", op: "Venta", p: 450000, c: "USD", bed: 3, bath: 3, area: 160, gar: 2, gc: 22000, vp: false, el: "A", am: "premium", addr: "Rambla Gral. Artigas Parada 5", badge: "Premium", badgeColor: "bg-amber-500" },
     { t: "2 dorm Punta del Este Península", n: "Punta del Este", op: "Venta", p: 285000, c: "USD", bed: 2, bath: 2, area: 85, gar: 1, gc: 14000, vp: false, el: "B", am: "full", addr: "Calle 20 y Gorlero" },
@@ -333,6 +337,7 @@ const maldonado = [
     { t: "3 dorm familiar Maldonado ciudad", n: "Maldonado ciudad", op: "Venta", p: 145000, c: "USD", bed: 3, bath: 2, area: 95, gar: 1, gc: 7000, vp: false, el: "C", am: "full", addr: "Av. Roosevelt 3280" },
     { t: "Local gastronómico Punta del Este", n: "Punta del Este", op: "Alquiler", p: 85000, c: "UYU", bed: 0, bath: 2, area: 100, gar: 0, gc: null, vp: false, el: null, am: "basic", addr: "Av. Gorlero 650", type: "Local Comercial", g: ["Depósito"] },
     { t: "Studio Punta del Este inversión", n: "Punta del Este", op: "Venta", p: 175000, c: "USD", bed: 0, bath: 1, area: 40, gar: 0, gc: 8000, vp: false, el: "B", am: "mid", addr: "Calle 28 y Gorlero" },
+    { t: "Apartamento 3 dorm Beverly Hills", n: "Punta del Este", op: "Alquiler", p: 3500, c: "USD", bed: 3, bath: 3, area: 140, gar: 2, gc: 25000, vp: false, el: "A", am: "premium", addr: "Av. Laureano Alonsopérez", g: ["Depósito", "Sura"] },
 ]
 
 maldonado.forEach(p => {
@@ -366,6 +371,6 @@ console.log(`   • La Blanqueada/Tres Cruces: 15`)
 console.log(`   • Malvín/Pocitos/Premium: 15`)
 console.log(`   • Ciudad de la Costa: 15`)
 console.log(`   • Canelones Interior: 10`)
-console.log(`   • Costa de Oro: 8`)
-console.log(`   • Maldonado/Punta del Este: 12\n`)
+console.log(`   • Costa de Oro: 12`)
+console.log(`   • Maldonado/Punta del Este: 13\n`)
 
