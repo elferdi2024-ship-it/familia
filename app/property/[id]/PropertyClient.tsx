@@ -243,6 +243,25 @@ export default function PropertyClient({ initialProperty, initialAgentInfo }: Pr
                             </div>
                         </div>
 
+                        {/* Rental Guarantees Section */}
+                        {(property.operation === "Alquiler" || property.operation === "Alquiler Temporal") && (
+                            <div className="p-8 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800">
+                                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">Garantías Aceptadas</h3>
+                                {property.acceptedGuarantees && property.acceptedGuarantees.length > 0 ? (
+                                    <div className="flex flex-wrap justify-center gap-3">
+                                        {property.acceptedGuarantees.map((guarantee, i) => (
+                                            <div key={i} className="px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-bold shadow-sm flex items-center gap-2">
+                                                <span className="material-icons text-emerald-500 text-sm">verified_user</span>
+                                                {guarantee}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-center text-slate-500 font-medium">Consultar garantías aceptadas con el agente.</p>
+                                )}
+                            </div>
+                        )}
+
                         {/* Market Intelligence Teaser */}
                         <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl text-white shadow-xl">
                             <div className="flex flex-col md:flex-row gap-8 items-center">
