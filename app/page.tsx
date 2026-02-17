@@ -145,7 +145,7 @@ export default function HomePage() {
       </section>
 
       {/* Trust + Activity Strip */}
-      <CompareBar />
+      {/* <CompareBar /> */}
 
       {/* Category Discovery Chips v4 */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 border-b border-slate-100 dark:border-slate-800">

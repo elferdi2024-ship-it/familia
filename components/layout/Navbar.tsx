@@ -31,7 +31,7 @@ export function Navbar() {
     { href: "/search", label: "Propiedades" },
     { href: "/servicios", label: "Servicios" },
     { href: "/vender", label: "Vender" },
-    { href: "/compare", label: "Comparar" },
+
     { href: "/favorites", label: "Favoritos" },
     { href: "/blog", label: "Blog" },
     ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
@@ -144,7 +144,7 @@ export function Navbar() {
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/servicios">Servicios</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/compare">Comparar</Link>
+
             {user && (
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
             )}
