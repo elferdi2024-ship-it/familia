@@ -7,19 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.vercel-storage.com',
+        hostname: '**',
       },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -66,6 +54,10 @@ const nextConfig: NextConfig = {
             value: 'same-origin-allow-popups',
           },
           {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
+          },
+          {
             key: 'X-DNS-Prefetch-Control',
             value: 'on',
           },
@@ -77,11 +69,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com https://vercel.live https://apis.google.com https://accounts.google.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com https://vercel.live https://apis.google.com https://accounts.google.com https://browser.sentry-cdn.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com",
               "img-src 'self' data: https: blob: https://maps.gstatic.com https://maps.googleapis.com https://lh3.googleusercontent.com https://lh4.googleusercontent.com https://lh5.googleusercontent.com https://lh6.googleusercontent.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://maps.googleapis.com https://maps.gstatic.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://firebasestorage.googleapis.com https://vercel.live https://accounts.google.com https://www.googleapis.com https://*.firebaseapp.com",
+              "connect-src 'self' https://*.algolia.net https://*.algolianet.com https://*.sentry.io https://maps.googleapis.com https://maps.gstatic.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://firebasestorage.googleapis.com https://vercel.live https://accounts.google.com https://www.googleapis.com https://*.firebaseapp.com",
               "frame-src 'self' https://vercel.live https://accounts.google.com https://content.googleapis.com https://*.firebaseapp.com",
               "object-src 'none'",
               "base-uri 'self'",

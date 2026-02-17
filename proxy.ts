@@ -30,6 +30,19 @@ function isRateLimited(key: string, maxRequests: number): boolean {
 export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl
 
+    // 0. Exclude static assets from ALL middleware logic (including rate limiting)
+    if (
+        pathname.startsWith('/_next') ||
+        pathname.startsWith('/api/auth') ||
+        pathname.endsWith('.json') ||
+        pathname.endsWith('.png') ||
+        pathname.endsWith('.ico') ||
+        pathname.endsWith('.svg') ||
+        pathname.endsWith('.webp')
+    ) {
+        return NextResponse.next()
+    }
+
     // 1. Redirect /properties/[id] to /property/[id] (SEO Clean URLs)
     if (pathname.startsWith('/properties/')) {
         const id = pathname.split('/')[2]
@@ -79,7 +92,8 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          * - icons (PWA icons)
+         * - manifest.json
          */
-        '/((?!_next/static|_next/image|favicon.ico|icons).*)',
+        '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|.*\\.png|.*\\.webp|.*\\.svg).*)',
     ],
 }

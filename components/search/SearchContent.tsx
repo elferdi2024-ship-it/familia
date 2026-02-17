@@ -5,6 +5,8 @@ import Image from "next/image"
 import { useState, useEffect, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 import geoData from "@/data/uruguay-geo.json"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { useSavedSearches } from "@/contexts/SavedSearchesContext"
 import { PropertyGridSkeleton } from "@/components/Skeletons"
@@ -260,35 +262,57 @@ export function SearchContent({
                         {/* Results Grid */}
                         <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-6 md:p-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
                             <div className={`grid grid-cols-1 ${!showMap ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'} gap-6`}>
-                                {isLoading ? <PropertyGridSkeleton count={6} /> : properties.map(p => (
-                                    <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
-                                        <div className="aspect-[4/3] relative overflow-hidden">
-                                            <Image fill src={p.images[0]} alt={p.title} className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                                            <div className="absolute top-4 left-4">
-                                                {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
-                                            </div>
-                                            <div className="absolute bottom-4 right-4 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
-                                                <FavoriteButton propertyId={p.id} className="text-white" />
-                                            </div>
+                                {isLoading ? (
+                                    <PropertyGridSkeleton count={6} />
+                                ) : properties.length === 0 ? (
+                                    <div className="col-span-full py-20 text-center bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
+                                        <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <Search className="h-10 w-10 text-slate-300" />
                                         </div>
-                                        <div className="p-6">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{formatPrice(p.price, p.currency)}</h3>
-                                                {marketStats[p.id] && (
-                                                    <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${marketStats[p.id].differencePercentage < -5 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
-                                                        {marketStats[p.id].status === 'Very Competitive' || marketStats[p.id].status === 'Competitive' ? 'Oportunidad' : 'Precio Mercado'}
-                                                    </span>
-                                                )}
+                                        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
+                                            No encontramos resultados
+                                        </h3>
+                                        <p className="text-slate-500 max-w-sm mx-auto font-medium mb-8">
+                                            Probá ajustando los filtros o buscando términos más generales.
+                                        </p>
+                                        <Button
+                                            onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", department: "", city: "", neighborhood: "" })}
+                                            className="bg-primary text-white font-bold rounded-full px-8 py-6 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+                                        >
+                                            Limpiar todos los filtros
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    properties.map(p => (
+                                        <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+                                            <div className="aspect-[4/3] relative overflow-hidden">
+                                                <Image fill src={p.images[0]} alt={p.title} className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                                                <div className="absolute top-4 left-4">
+                                                    {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
+                                                </div>
+                                                <div className="absolute bottom-4 right-4 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
+                                                    <FavoriteButton propertyId={p.id} className="text-white" />
+                                                </div>
                                             </div>
-                                            <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
-                                            <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
-                                            <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
-                                                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms} Dorm.</span>
-                                                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area}m²</span>
+                                            <div className="p-6">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{formatPrice(p.price, p.currency)}</h3>
+                                                    {marketStats[p.id] && (
+                                                        <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${marketStats[p.id].differencePercentage < -5 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                                                            {marketStats[p.id].status === 'Very Competitive' || marketStats[p.id].status === 'Competitive' ? 'Oportunidad' : 'Precio Mercado'}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
+                                                <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
+                                                <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
+                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms} Dorm.</span>
+                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area}m²</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                ))}
+                                        </Link>
+                                    ))
+                                )}
                             </div>
                         </section>
 

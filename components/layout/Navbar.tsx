@@ -7,19 +7,25 @@ import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+  const [isScrolled, setIsScrolled] = useState(!isHomePage)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const pathname = usePathname()
   const { user, logout } = useAuth()
 
   useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true)
+      return
+    }
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [isHomePage])
 
   const navLinks = [
     { href: "/search", label: "Propiedades" },

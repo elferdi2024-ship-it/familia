@@ -10,6 +10,7 @@
     "seed:generate": "tsx scripts/generate-seeds.ts",
     "seed:push": "tsx scripts/seed.ts",
     "seed:fresh": "tsx scripts/seed.ts --clear",
+    "algolia:sync": "tsx scripts/sync-algolia.ts",
     "deploy:firestore": "npx firebase-tools deploy --only firestore:rules,firestore:indexes"
   },
   "dependencies": {

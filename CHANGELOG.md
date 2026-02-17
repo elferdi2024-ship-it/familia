@@ -2,6 +2,29 @@
 
 Todos los cambios notables de DominioTotal.
 
+## [5.0.0] - 2026-02-17
+
+### Performance & Search (Algolia)
+- **Nuevo:** Integración de Algolia Search v5 con búsqueda instantánea (<50ms).
+- **Nuevo:** Script de sincronización Firestore -> Algolia (`scripts/sync-algolia.ts`).
+- **Mejorado:** Búsqueda tolerante a errores ortográficos y con resaltado de términos.
+
+### Gestión de Agentes (Lead Pipeline)
+- **Nuevo:** Pipeline comercial en `/my-properties/leads` (Interesado -> Contactado -> Visita -> Vendido).
+- **Nuevo:** Beta Tester Guide con onboarding para primeros agentes.
+- **Mejorado:** Dashboards con estética premium, bento-grid stats y acciones rápidas de WhatsApp.
+
+### Monitoring & Estabilidad
+- **Nuevo:** Sentry SDK v10 configurado para monitoreo de errores en tiempo real.
+- **Corregido:** Rename `middleware.ts` a `proxy.ts` para cumplir con convenciones de Next.js 16.
+- **Corregido:** Fix de tipos en `useLeadSubmission` que bloqueaban el build.
+
+### SEO & Contenido
+- **Nuevo:** Blog con 3 artículos iniciales optimizados para keywords de alta intención.
+- **Mejorado:** Metadata dinámica en páginas de Propiedad e ISR (Incremental Static Regeneration) cada 1 hora.
+
+---
+
 ## [3.2.0] - 2026-02-16
 
 ### Features
