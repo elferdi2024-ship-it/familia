@@ -179,8 +179,19 @@ export default function HomePage() {
       {/* Services CTA Section */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
         <div className="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden text-white shadow-2xl">
-          {/* Decorative background elements */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          {/* Video Background */}
+          <div className="absolute inset-0 z-0 overflow-hidden rounded-[2.5rem]">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
+            >
+              <source src="/flotantes-atlantida.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40 z-10 pointer-events-none"></div>
+          </div>
 
           <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
             <div>
