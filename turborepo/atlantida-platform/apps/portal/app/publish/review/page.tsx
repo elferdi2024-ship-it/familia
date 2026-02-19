@@ -3,12 +3,12 @@
 import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useAuth } from "@/contexts/AuthContext"
-import { db } from "@repo/lib/firebase"
-import { collection, addDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import { collection, addDoc, updateDoc, doc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { formatPrice } from "@/lib/data"
-import { trackEvent } from "@repo/lib/tracking"
+import { trackEvent } from "@/lib/tracking"
 import { toast } from "sonner"
 
 export default function PublishReviewPage() {
@@ -16,6 +16,88 @@ export default function PublishReviewPage() {
     const { user } = useAuth()
     const router = useRouter()
     const [isPublishing, setIsPublishing] = useState(false)
+    const [isEditingPrice, setIsEditingPrice] = useState(false)
+    const [marketAnalysis, setMarketAnalysis] = useState<any>(null)
+    const [analyzing, setAnalyzing] = useState(false)
+
+    // Real Market Analysis Logic
+    useEffect(() => {
+        const fetchMarketData = async () => {
+            if (!data.neighborhood || !data.type || !data.operation || !db) return
+
+            setAnalyzing(true)
+            try {
+                // Query properties with same neighborhood, type, and operation
+                const q = query(
+                    collection(db, "properties"),
+                    where("neighborhood", "==", data.neighborhood),
+                    where("type", "==", data.type),
+                    where("operation", "==", data.operation),
+                    where("status", "==", "active"),
+                    where("currency", "==", data.currency) // Compare same currency
+                )
+
+                const querySnapshot = await getDocs(q)
+                const properties = querySnapshot.docs.map(doc => doc.data())
+
+                // Filter out outliers if efficient, or just take simple average for now
+                const validPrices = properties
+                    .map((p: any) => Number(p.price))
+                    .filter((p: number) => p > 0)
+
+                if (validPrices.length === 0) {
+                    setMarketAnalysis(null) // No enough data
+                    return
+                }
+
+                const total = validPrices.reduce((acc: number, curr: number) => acc + curr, 0)
+                const averagePrice = total / validPrices.length
+                const currentPrice = Number(data.price)
+
+                if (!currentPrice) return
+
+                let analysis = {
+                    label: "Precio de Mercado",
+                    color: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800",
+                    icon: "insights",
+                    description: `Tu precio está alineado con el promedio de la zona (${formatPrice(averagePrice, data.currency)}).`,
+                    count: validPrices.length
+                }
+
+                if (currentPrice < averagePrice * 0.8) {
+                    analysis = {
+                        label: "Oportunidad",
+                        color: "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800",
+                        icon: "trending_down",
+                        description: `Tu precio es muy competitivo, un ${((1 - currentPrice / averagePrice) * 100).toFixed(0)}% más bajo que el promedio (${formatPrice(averagePrice, data.currency)}).`,
+                        count: validPrices.length
+                    }
+                } else if (currentPrice > averagePrice * 1.2) {
+                    analysis = {
+                        label: "Premium / Alto",
+                        color: "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-800",
+                        icon: "trending_up",
+                        description: `Tu precio está un ${((currentPrice / averagePrice - 1) * 100).toFixed(0)}% por encima del promedio de la zona (${formatPrice(averagePrice, data.currency)}).`,
+                        count: validPrices.length
+                    }
+                }
+
+                setMarketAnalysis(analysis)
+
+            } catch (error) {
+                console.error("Error analyzing market:", error)
+                // Fallback to null or simple message
+            } finally {
+                setAnalyzing(false)
+            }
+        }
+
+        const timer = setTimeout(() => {
+            fetchMarketData()
+        }, 500) // Debounce
+
+        return () => clearTimeout(timer)
+    }, [data.neighborhood, data.type, data.operation, data.currency, data.price])
 
     const handlePublish = async () => {
         if (!user || !db) {
@@ -46,7 +128,7 @@ export default function PublishReviewPage() {
                     ...data,
                     title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
                     userId: user.uid,
-                    agentName: user.displayName || "Usuario de Barrio.uy",
+                    agentName: user.displayName || "Usuario de Atlantida Group",
                     agentPhone: data.agentPhone,
                     publishedAt: serverTimestamp(),
                     updatedAt: serverTimestamp(),
@@ -108,23 +190,53 @@ export default function PublishReviewPage() {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-500 mb-2 uppercase tracking-wide">Precio Final</label>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <label className="block text-sm font-medium text-slate-500 uppercase tracking-wide">Precio Final</label>
+                                            <button
+                                                onClick={() => setIsEditingPrice(!isEditingPrice)}
+                                                className="text-sm font-bold text-primary hover:underline flex items-center gap-1"
+                                            >
+                                                <span className="material-icons text-sm">{isEditingPrice ? 'check' : 'edit'}</span>
+                                                {isEditingPrice ? 'Listo' : 'Editar Precio'}
+                                            </button>
+                                        </div>
                                         <div className="relative">
-                                            <div className="w-full px-6 py-4 text-3xl font-bold bg-white dark:bg-slate-900 border-2 border-primary rounded-xl text-primary">
-                                                {formatPrice(data.price, data.currency)}
+                                            {isEditingPrice ? (
+                                                <div className="relative">
+                                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xl">$</span>
+                                                    <input
+                                                        type="number"
+                                                        value={data.price}
+                                                        onChange={(e) => updateData({ price: Number(e.target.value) })}
+                                                        className="w-full pl-10 pr-4 py-4 text-3xl font-bold bg-white dark:bg-slate-900 border-2 border-primary rounded-xl text-primary focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
+                                                        placeholder="0"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="w-full px-6 py-4 text-3xl font-bold bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-xl text-primary flex items-center justify-between group cursor-pointer hover:border-primary transition-colors" onClick={() => setIsEditingPrice(true)}>
+                                                    {formatPrice(data.price, data.currency)}
+                                                    <span className="material-icons text-slate-300 group-hover:text-primary transition-colors">edit</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Pricing Insights Widget - Dynamic */}
+                                    {marketAnalysis && (
+                                        <div className={`border rounded-xl p-4 flex items-start gap-4 transition-colors ${marketAnalysis.color}`}>
+                                            <span className="material-icons mt-0.5">{marketAnalysis.icon}</span>
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h4 className="text-sm font-bold">{marketAnalysis.label}</h4>
+                                                    <span className="text-[10px] uppercase font-black tracking-wider opacity-70 px-2 py-0.5 border border-current rounded-full">Beta</span>
+                                                </div>
+                                                <p className="text-sm opacity-90 leading-relaxed">
+                                                    {marketAnalysis.description}
+                                                    <span className="block mt-1 text-xs opacity-70">Basado en datos simulados del mercado.</span>
+                                                </p>
                                             </div>
                                         </div>
-                                    </div>
-                                    {/* Pricing Insights Widget */}
-                                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-4">
-                                        <span className="material-icons text-primary mt-0.5">insights</span>
-                                        <div>
-                                            <h4 className="text-sm font-bold text-primary mb-1">Análisis de Mercado: {data.neighborhood || data.city}</h4>
-                                            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                                                Propiedades similares en <span className="font-bold">{data.neighborhood || data.city}</span> tienen un precio promedio de <span className="font-bold">{formatPrice(data.price * 1.05, data.currency)}</span>. Tu precio es competitivo.
-                                            </p>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             </section>
 
@@ -184,14 +296,20 @@ export default function PublishReviewPage() {
                                     </div>
                                 </div>
                                 <div className="p-5">
-                                    <div className="flex flex-col mb-4">
-                                        <h3 className="text-xl font-bold text-slate-800 dark:text-white line-clamp-1">{data.type} en {data.neighborhood}</h3>
+                                    <div className="flex flex-col mb-4 relative group">
+                                        <Link href="/publish/location" className="absolute top-0 right-0 p-1 text-slate-300 hover:text-primary transition-colors" title="Editar Ubicación">
+                                            <span className="material-icons text-sm">edit</span>
+                                        </Link>
+                                        <h3 className="text-xl font-bold text-slate-800 dark:text-white line-clamp-1 pr-6">{data.type} en {data.neighborhood}</h3>
                                         <div className="text-2xl font-black text-primary mt-1">{formatPrice(data.price, data.currency)}</div>
                                     </div>
                                     <p className="text-slate-500 text-sm mb-4 flex items-center gap-1">
                                         <span className="material-icons text-sm">location_on</span> {data.address}, {data.city}
                                     </p>
-                                    <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400 text-sm font-medium border-y border-slate-100 dark:border-slate-800 py-3 mb-6">
+                                    <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400 text-sm font-medium border-y border-slate-100 dark:border-slate-800 py-3 mb-6 relative group">
+                                        <Link href="/publish/details" className="absolute top-1/2 -translate-y-1/2 right-0 p-1 text-slate-300 hover:text-primary transition-colors" title="Editar Características">
+                                            <span className="material-icons text-sm">edit</span>
+                                        </Link>
                                         <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">bed</span> {data.bedrooms} Dorm.</span>
                                         <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">shower</span> {data.bathrooms} Baño</span>
                                         <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">square_foot</span> {data.area}m²</span>

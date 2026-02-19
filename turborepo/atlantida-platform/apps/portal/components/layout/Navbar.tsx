@@ -29,13 +29,14 @@ export function Navbar() {
   }, [isHomePage])
 
   const navLinks = [
-    { href: "/search", label: "Propiedades" },
+    { href: "/search", label: "Comprar" },
+    { href: "/search?operation=alquiler", label: "Alquilar" },
     { href: "/servicios", label: "Servicios" },
-    { href: "/vender", label: "Vender" },
+    { href: "/vender", label: "Vender", className: "animate-pulse font-black text-primary" },
 
     { href: "/favorites", label: "Favoritos" },
     { href: "/blog", label: "Blog" },
-    ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
+    ...(user ? [{ href: "/my-properties", label: "Administración" }] : []),
   ]
 
   return (
@@ -71,13 +72,15 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 group">
             <img
               src="/atlantida-isotype.png"
-              alt="Barrio.uy"
+              alt="Atlantida Group"
               className={`h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-110 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : ""}`}
             />
           </Link>
           <div className="hidden md:flex items-center gap-1 text-sm font-bold uppercase tracking-wider">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== "#" && pathname.startsWith(link.href))
+              // @ts-ignore
+              const customClass = link.className || ""
               return (
                 <Link
                   key={link.href}
@@ -86,7 +89,7 @@ export function Navbar() {
                     : isScrolled
                       ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
                       : "text-white/90 hover:text-white hover:bg-white/10"
-                    }`}
+                    } ${customClass}`}
                   href={link.href}
                 >
                   {link.label}
@@ -165,13 +168,17 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div id="mobile-menu" role="navigation" aria-label="Menú móvil" className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background-dark border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider">
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Comprar</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search?operation=alquiler">Alquilar</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/servicios">Servicios</Link>
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary animate-pulse text-primary" href="/vender">Vender mi Propiedad</Link>
 
             {user && (
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Administración</Link>
             )}
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/favorites">
+              Favoritos
+            </Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/blog">
               Blog Inmobiliario
               <span className="px-2 py-0.5 bg-primary text-white text-[10px] font-black rounded-full">NUEVO</span>
