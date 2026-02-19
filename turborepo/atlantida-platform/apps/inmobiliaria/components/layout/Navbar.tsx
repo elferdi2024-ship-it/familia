@@ -29,13 +29,14 @@ export function Navbar() {
   }, [isHomePage])
 
   const navLinks = [
-    { href: "/search", label: "Propiedades" },
+    { href: "/search", label: "Comprar" },
+    { href: "/search?operation=alquiler", label: "Alquilar" },
     { href: "/servicios", label: "Servicios" },
-    { href: "/vender", label: "Vender" },
+    { href: "/vender", label: "Vender", className: "animate-pulse font-black text-primary" },
 
     { href: "/favorites", label: "Favoritos" },
     { href: "/blog", label: "Blog" },
-    ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
+    ...(user ? [{ href: "/my-properties", label: "Administración" }] : []),
   ]
 
   return (

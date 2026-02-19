@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/contexts/AuthContext"
+import { db } from "@/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Firestore } from "firebase/firestore"
 import Link from "next/link"
-import { formatPrice } from "@/lib/data"
+import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -13,8 +15,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@repo/ui"
-import { Badge } from "@repo/ui"
+} from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
 import {
     Dialog,
     DialogContent,
@@ -22,74 +24,199 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@repo/ui"
-import { useAgentDashboard } from "@/hooks/useAgentDashboard"
-import { Lead } from "@/types"
-import { Sparkline } from "@/components/dashboard/Sparkline"
+} from "@/components/ui/dialog"
 
+interface Lead {
+    id: string;
+    propertyId: string;
+    propertyTitle: string;
+    agentId: string;
+    leadName: string;
+    leadEmail: string;
+    leadMessage: string;
+    createdAt: any;
+    status: "new" | "contacted" | "closed";
+    contactType?: "contact" | "visit";
+    visitDate?: string;
+    visitTime?: string;
+}
+
+const Sparkline = ({ data, color = "#2563eb" }: { data: number[], color?: string }) => {
+    const min = Math.min(...data)
+    const max = Math.max(...data)
+    const range = max - min || 1
+    const width = 100
+    const height = 30
+
+    const points = data.map((val, i) => {
+        const x = (i / (data.length - 1)) * width
+        const y = height - ((val - min) / range) * height
+        return `${x},${y}`
+    }).join(" ")
+
+    return (
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
+            <polyline
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                points={points}
+            />
+        </svg>
+    )
+}
 
 export default function MyPropertiesPage() {
     const { user, loading: authLoading } = useAuth()
-    const {
-        properties,
-        leads,
-        loading: dashboardLoading,
-        profile,
-        updateProfile,
-        isUpdatingProfile,
-        deleteProperty,
-        markLeadAsContacted
-    } = useAgentDashboard()
-
+    const [properties, setProperties] = useState<Property[]>([])
+    const [leads, setLeads] = useState<Lead[]>([])
+    const [loading, setLoading] = useState(true)
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
     const [searchTerm, setSearchTerm] = useState("")
     const [statusFilter, setStatusFilter] = useState("all")
+    const { updateUserProfile } = useAuth()
 
-    // Profile Edit States (local form state)
+    // Profile Edit States
     const [isProfileOpen, setIsProfileOpen] = useState(false)
-    const [localProfileName, setLocalProfileName] = useState("")
-    const [localProfilePhone, setLocalProfilePhone] = useState("")
-    const [localProfileAgency, setLocalProfileAgency] = useState("")
-    const [localProfileHours, setLocalProfileHours] = useState("")
-    const [localProfilePhoto, setLocalProfilePhoto] = useState("")
+    const [profileName, setProfileName] = useState(user?.displayName || "")
+    const [profilePhone, setProfilePhone] = useState("")
+    const [profileAgency, setProfileAgency] = useState("")
+    const [profileHours, setProfileHours] = useState("")
+    const [profilePhoto, setProfilePhoto] = useState(user?.photoURL || "")
+    const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
 
-
-    // Sync local form state with fetched profile when modal opens or profile loads
     useEffect(() => {
-        if (profile) {
-            setLocalProfileName(profile.name)
-            setLocalProfilePhone(profile.phone)
-            setLocalProfileAgency(profile.agency)
-            setLocalProfileHours(profile.hours)
-            setLocalProfilePhoto(profile.photo)
+        if (user) {
+            setProfileName(user.displayName || "")
+            setProfilePhoto(user.photoURL || "")
+            const fetchProfile = async () => {
+                if (!db) return
+                const docSnap = await getDoc(doc(db, "users", user.uid))
+                if (docSnap.exists()) {
+                    const data = docSnap.data()
+                    setProfilePhone(data.phone || "")
+                    setProfileAgency(data.agencyName || "")
+                    setProfileHours(data.workingHours || "")
+                }
+            }
+            fetchProfile()
         }
-    }, [profile, isProfileOpen])
+    }, [user])
 
     const handleProfileUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
-        const success = await updateProfile({
-            name: localProfileName,
-            phone: localProfilePhone,
-            agency: localProfileAgency,
-            hours: localProfileHours,
-            photo: localProfilePhoto
-        })
-        if (success) setIsProfileOpen(false)
-    }
-
-    const handleDelete = async (id: string) => {
-        if (!window.confirm("¿Seguro que quieres eliminar esta publicación?")) return
-        await deleteProperty(id)
-    }
-
-    const handleMarkAsContacted = async (leadId: string) => {
-        await markLeadAsContacted(leadId)
-        if (selectedLead?.id === leadId) {
-            setSelectedLead(prev => prev ? { ...prev, status: "contacted" } : null)
+        setIsUpdatingProfile(true)
+        try {
+            await updateUserProfile({
+                displayName: profileName,
+                photoURL: profilePhoto
+            })
+            if (db) {
+                await setDoc(doc(db, "users", user!.uid), {
+                    displayName: profileName,
+                    photoURL: profilePhoto,
+                    phone: profilePhone,
+                    agencyName: profileAgency,
+                    workingHours: profileHours,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true })
+            }
+            toast.success("Perfil actualizado con éxito")
+            setIsProfileOpen(false)
+        } catch (error) {
+            console.error(error)
+            toast.error("Error al actualizar perfil")
+        } finally {
+            setIsUpdatingProfile(false)
         }
     }
 
-    if (authLoading || (dashboardLoading && user)) {
+    const fetchData = async () => {
+        if (!user || !db) return
+
+        try {
+            // 1. Fetch Properties
+            const qProps = query(
+                collection(db, "properties"),
+                where("userId", "==", user.uid)
+            )
+            const propsSnap = await getDocs(qProps)
+            const props = propsSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            } as Property))
+
+            // Sort properties client-side
+            props.sort((a, b) => {
+                const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+                const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+                return dateB - dateA;
+            })
+            setProperties(props)
+
+            // 2. Fetch Leads
+            const qLeads = query(
+                collection(db, "leads"),
+                where("agentId", "==", user.uid)
+            )
+            const leadsSnap = await getDocs(qLeads)
+            const leadsData = leadsSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            } as Lead))
+
+            // Sort leads client-side
+            leadsData.sort((a, b) => {
+                const dateA = a.createdAt?.seconds || 0
+                const dateB = b.createdAt?.seconds || 0
+                return dateB - dateA
+            })
+            setLeads(leadsData)
+
+        } catch (error) {
+            console.error("Error fetching data:", error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (!authLoading) {
+            if (user) {
+                fetchData()
+            } else {
+                setLoading(false)
+            }
+        }
+    }, [user, authLoading])
+
+    const handleDelete = async (id: string) => {
+        if (!window.confirm("¿Seguro que quieres eliminar esta publicación?")) return
+        if (!db) return
+
+        try {
+            await deleteDoc(doc(db, "properties", id))
+            setProperties(properties.filter(p => p.id !== id))
+        } catch (error) {
+            console.error("Error deleting property:", error)
+        }
+    }
+
+    const handleMarkAsContacted = async (leadId: string) => {
+        if (!db) return
+        try {
+            const leadRef = doc(db, "leads", leadId)
+            await updateDoc(leadRef, { status: "contacted" })
+            setLeads(leads.map(l => l.id === leadId ? { ...l, status: "contacted" } : l))
+            setSelectedLead(null) // Close modal if open
+        } catch (error) {
+            console.error("Error updating lead:", error)
+        }
+    }
+
+    if (authLoading || (loading && user)) {
         return (
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 px-4 flex flex-col items-center">
                 <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
@@ -124,7 +251,6 @@ export default function MyPropertiesPage() {
         return matchesSearch && matchesStatus
     })
 
-
     const exportToCSV = () => {
         const headers = ["Fecha", "Estado", "Nombre", "Email", "Propiedad", "Mensaje"]
         const rows = leads.map(lead => [
@@ -143,7 +269,7 @@ export default function MyPropertiesPage() {
         const encodedUri = encodeURI(csvContent)
         const link = document.createElement("a")
         link.setAttribute("href", encodedUri)
-        link.setAttribute("download", `leads_mibarrio_${new Date().toISOString().split('T')[0]}.csv`)
+        link.setAttribute("download", `leads_atlantida_group_${new Date().toISOString().split('T')[0]}.csv`)
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
@@ -164,7 +290,7 @@ export default function MyPropertiesPage() {
                             Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">Comercial</span>
                         </h1>
                         <p className="text-slate-500 font-medium text-lg flex items-center gap-2">
-                            Hola, {profile.name || user.displayName || 'Agente'} — <span className="text-sm font-bold opacity-60">Gestionando {properties.length} propiedades activas</span>
+                            Hola, {user.displayName || 'Agente'} — <span className="text-sm font-bold opacity-60">Gestionando {properties.length} propiedades activas</span>
                         </p>
                     </div>
 
@@ -196,7 +322,7 @@ export default function MyPropertiesPage() {
                         <form onSubmit={handleProfileUpdate} className="space-y-6 pt-6">
                             <div className="flex flex-col items-center gap-4 mb-6">
                                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-100 flex items-center justify-center">
-                                    <img src={localProfilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
+                                    <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="w-full space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">URL de Imagen</label>
@@ -204,8 +330,8 @@ export default function MyPropertiesPage() {
                                         type="url"
                                         placeholder="https://..."
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={localProfilePhoto}
-                                        onChange={(e) => setLocalProfilePhoto(e.target.value)}
+                                        value={profilePhoto}
+                                        onChange={(e) => setProfilePhoto(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -217,8 +343,8 @@ export default function MyPropertiesPage() {
                                         type="text"
                                         required
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={localProfileName}
-                                        onChange={(e) => setLocalProfileName(e.target.value)}
+                                        value={profileName}
+                                        onChange={(e) => setProfileName(e.target.value)}
                                     />
                                 </div>
                                 <div className="space-y-1">
@@ -227,8 +353,8 @@ export default function MyPropertiesPage() {
                                         type="text"
                                         placeholder="Empresa"
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={localProfileAgency}
-                                        onChange={(e) => setLocalProfileAgency(e.target.value)}
+                                        value={profileAgency}
+                                        onChange={(e) => setProfileAgency(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -240,8 +366,8 @@ export default function MyPropertiesPage() {
                                     required
                                     placeholder="Ej: 099 123 456"
                                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
-                                    value={localProfilePhone}
-                                    onChange={(e) => setLocalProfilePhone(e.target.value)}
+                                    value={profilePhone}
+                                    onChange={(e) => setProfilePhone(e.target.value)}
                                 />
                             </div>
 
@@ -251,8 +377,8 @@ export default function MyPropertiesPage() {
                                     type="text"
                                     placeholder="Ej: Lun-Vie 9-18hs"
                                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                    value={localProfileHours}
-                                    onChange={(e) => setLocalProfileHours(e.target.value)}
+                                    value={profileHours}
+                                    onChange={(e) => setProfileHours(e.target.value)}
                                 />
                             </div>
 
@@ -479,7 +605,7 @@ export default function MyPropertiesPage() {
                                                                     <div className="flex gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
                                                                         <button
                                                                             onClick={() => {
-                                                                                const body = `Hola ${selectedLead?.leadName}, recibimos tu consulta sobre ${selectedLead?.propertyTitle}. Soy ${user.displayName} de ${profile.agency || 'MiBarrio.uy'}...`
+                                                                                const body = `Hola ${selectedLead?.leadName}, recibimos tu consulta sobre ${selectedLead?.propertyTitle}. Soy ${user.displayName} de ${profileAgency || 'Atlantida Group'}...`
                                                                                 window.location.href = `mailto:${selectedLead?.leadEmail}?subject=Re: ${selectedLead?.propertyTitle}&body=${encodeURIComponent(body)}`
                                                                             }}
                                                                             className="flex-1 py-4 bg-primary text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
@@ -524,7 +650,7 @@ export default function MyPropertiesPage() {
                                 <span className="material-icons text-slate-300 text-5xl">inventory_2</span>
                             </div>
                             <h3 className="text-xl font-bold mb-2">Comienza tu viaje comercial</h3>
-                            <p className="text-slate-500 mb-8 max-w-sm">Publica tu primera propiedad y activa el generador de leads de MiBarrio.uy.</p>
+                            <p className="text-slate-500 mb-8 max-w-sm">Publica tu primera propiedad y activa el generador de leads de Atlantida Group.</p>
                             <Link href="/publish" className="bg-primary text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary/30">Publicar Mi Primer Inmueble</Link>
                         </div>
                     ) : (
@@ -538,7 +664,7 @@ export default function MyPropertiesPage() {
                                         animate={{ opacity: 1, scale: 1 }}
                                         className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-6 flex flex-col sm:flex-row gap-6 hover:shadow-2xl hover:shadow-slate-200/50 transition-all group"
                                     >
-                                        <div className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0">
+                                        <Link href={`/property/${property.id}`} className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0 cursor-pointer block">
                                             <img src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Home" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                             <div className="absolute bottom-4 left-4">
@@ -547,10 +673,10 @@ export default function MyPropertiesPage() {
                                                     {property.status === 'active' ? 'ONLINE' : 'PAUSADA'}
                                                 </Badge>
                                             </div>
-                                        </div>
+                                        </Link>
 
                                         <div className="flex-grow flex flex-col justify-between py-1">
-                                            <div>
+                                            <Link href={`/property/${property.id}`} className="block cursor-pointer">
                                                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors truncate">{property.neighborhood}</h3>
                                                 <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">{property.type} • {property.operation}</p>
                                                 <div className="mt-4 flex items-center gap-4 text-slate-500">
@@ -567,7 +693,7 @@ export default function MyPropertiesPage() {
                                                         <span className="text-xs font-black">{property.views || 0}</span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </Link>
 
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
