@@ -1,0 +1,31 @@
+{
+  "name": "@repo/lib",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./firebase": "./src/firebase.ts",
+    "./algolia": "./src/algolia.ts",
+    "./tracking": "./src/tracking.ts",
+    "./mail": "./src/mail.ts",
+    "./utils": "./src/utils.ts",
+    "./validations": "./src/validations/index.ts",
+    "./seo": "./src/seo.ts"
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "firebase": "^12.9.0",
+    "algoliasearch": "^5.48.1",
+    "resend": "^6.9.2",
+    "zod": "^4.3.6",
+    "date-fns": "^4.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

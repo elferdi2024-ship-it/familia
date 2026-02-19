@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Publicar Propiedad - Paso 2 | Hybrid Premium Real Estate</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a4ecd",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+<!-- Header Master -->
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons text-white text-xl">domain</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white uppercase">Hybrid<span class="text-primary">Market</span></span>
+</div>
+<nav class="hidden md:flex gap-6 text-sm font-medium">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Venta</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Alquiler</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Proyectos</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-icons">notifications_none</span>
+</button>
+<div class="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-4">
+<img alt="Avatar" class="w-8 h-8 rounded-full" data-alt="User profile avatar photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-YGDsp4KPuVsyVVuLb0d2rgfx48xKkv5TfFKbwSvTv3JTohWrJBL34WbvUc1O7SXpO7OvkNvE6j84M0jCHsJgXLtDjb5MFJ9xKpzfOszu4qBFwmHIhjJa_BVZ0CRh2mZOeQVZLns742kAPBbXtGUMIPW87pYAWVqdc-0LDBfQp9IXchQeDcu1YHbHd_jpWRkuJr5PRh0a98eBDUdZC7D-CJ3XBacsXRQcdx8KDyF5ZWWqfgGJLLrUIg4KYvt6QqjkmqupgifCy5yz"/>
+<span class="text-sm font-medium hidden sm:block">Mi Cuenta</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Progress Tracker -->
+<div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto px-4 py-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-primary">Paso 2 de 3</span>
+<span class="text-xs font-medium text-slate-500">66% Completado</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-2/3 transition-all duration-500"></div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-grow max-w-4xl mx-auto w-full px-4 py-10">
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Detalles &amp; Multimedia</h1>
+<p class="text-slate-500 dark:text-slate-400 mb-8">Agregue las mejores fotos de su propiedad y complete la información técnica para atraer más compradores.</p>
+<form class="space-y-10">
+<!-- Section: Multimedia -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-icons text-primary">photo_library</span>
+<h2 class="text-lg font-semibold">Fotos y Videos</h2>
+</div>
+<div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 text-center bg-white/50 dark:bg-slate-900/50 hover:border-primary transition-colors cursor-pointer group">
+<span class="material-icons text-slate-400 dark:text-slate-600 text-5xl mb-3 group-hover:text-primary transition-colors">cloud_upload</span>
+<p class="text-slate-700 dark:text-slate-300 font-medium">Arrastre las imágenes aquí o haga clic para subir</p>
+<p class="text-xs text-slate-500 mt-2">Mínimo 5 fotos. Formato JPG o PNG. Máximo 10MB por archivo.</p>
+</div>
+<!-- Image Grid Preview -->
+<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-6">
+<div class="relative aspect-square rounded-lg overflow-hidden border border-primary ring-2 ring-primary ring-offset-2 dark:ring-offset-background-dark group">
+<img alt="Vista Principal" class="w-full h-full object-cover" data-alt="Modern high-end living room interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPTbdEq5insX2QXIMCWwKs25cFvp7C-E8_2HFHKRf1uywePF9EL_68T1AOXMxEWa6Vtntef67rNuewk_CqZwJdPcKauhHItwczm_EXF7jL-Zjzgev2DI0YXiUYExLDHth2OwNNFOZbbGm2MjXFmxlT4gJoWZvS71NqEvDMy5w5KbFJ3lgrniO3Pr39hNIkvglaxAiEhjIaU2R3_CWQ_Whs0AOAWEWTfmI6pKOjcqoo6YuAVfuQcaHR4qhfUOt32YlYjqRmqLPFToov"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+<button class="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600" type="button"><span class="material-icons text-sm">delete</span></button>
+</div>
+<span class="absolute top-2 left-2 bg-primary text-[10px] font-bold text-white px-2 py-0.5 rounded uppercase">Principal</span>
+</div>
+<div class="relative aspect-square rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 group">
+<img alt="Cocina" class="w-full h-full object-cover" data-alt="Modern luxury kitchen with marble island" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH8sw8XmForSWNplERdGytPsRsyUYQm90vcD6TKjE-tU01Rn3aX4bWxZH_kU3rJCdEddV2A1EYf9E2B1qVAbm-_hQPwC45dwMVCLpE5GE9GuuvpR-WuMamg0GTxP5O6fznhuzGZq4U38BsRpXfx9ywWsqw5ZONV153Si4CPvXbimZGl0exyoXPLOZG0g0nG0UYUmUGNDD4gKXGO18vCGgsPRKxj5b1bwuOlBxBN3L3SYvhTvb40p-BZs3R3bTW2Afwe01H6ftTwPmo"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600" type="button"><span class="material-icons text-sm">delete</span></button>
+</div>
+</div>
+<div class="relative aspect-square rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 group">
+<img alt="Dormitorio" class="w-full h-full object-cover" data-alt="Spacious primary bedroom with large windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9KZQEE0E5B3aYMMTM5jVBfEiFIK-OGZTAk4ZhuZNzaRPhKJukmFP9BpJjBJt_aIsWOtysnmFj-XjMqwuuJpHyw63ntgTLrdqAxCWwU1icIDPc2agA-tPloi-6i3nSpQ2lXmtOVwc3k9w2iZS3ACFVawNaZXq4dD6OAzuSkFJNYk4aUO7e0DudDOwIBtRYtcELUh_dw7U-d32Q-Vj_mbUuXDmx2MAj2gyuSaqwicDlVxC-0Zc3CuDyY6JpOZjzrxbh4yy6jpKyjlAf"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600" type="button"><span class="material-icons text-sm">delete</span></button>
+</div>
+</div>
+<div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700">
+<span class="material-icons text-slate-400">add_photo_alternate</span>
+</div>
+<div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700">
+<span class="material-icons text-slate-400">add_photo_alternate</span>
+</div>
+</div>
+</section>
+<!-- Section: Especificaciones -->
+<section>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-icons text-primary">analytics</span>
+<h2 class="text-lg font-semibold">Especificaciones de la Propiedad</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Dormitorios</label>
+<select class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary">
+<option>1</option>
+<option>2</option>
+<option selected="">3</option>
+<option>4+</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Baños</label>
+<select class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary">
+<option>1</option>
+<option selected="">2</option>
+<option>3</option>
+<option>4+</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Metros Cuadrados (m²)</label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary pr-12" placeholder="Ej: 85" type="number"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">m²</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Gastos Comunes</label>
+<div class="flex">
+<select class="rounded-l-lg border-r-0 border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary text-sm w-16">
+<option>UYU</option>
+<option>USD</option>
+</select>
+<input class="w-full rounded-r-lg border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary" placeholder="Importe" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Amenities -->
+<section>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-icons text-primary">checklist</span>
+<h2 class="text-lg font-semibold">Comodidades y Amenities</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Garage / Cochera</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Seguridad 24hs</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Piscina</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Parrillero</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Gimnasio</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Aire Acondicionado</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Losa Radiante</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Acepta Mascotas</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/>
+<span class="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Terraza / Balcón</span>
+</label>
+</div>
+</section>
+<!-- Section: Descripcion -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-icons text-primary">description</span>
+<h2 class="text-lg font-semibold">Descripción Detallada</h2>
+</div>
+<div class="relative">
+<textarea class="w-full rounded-xl border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:ring-primary focus:border-primary p-4" placeholder="Escriba aquí los puntos fuertes de la propiedad, el entorno y cualquier detalle relevante..." rows="6"></textarea>
+<div class="absolute bottom-3 right-4 text-xs text-slate-400">
+                        0 / 2000 caracteres
+                    </div>
+</div>
+</section>
+<!-- Navigation Actions -->
+<div class="flex items-center justify-between pt-8 border-t border-slate-200 dark:border-slate-800">
+<button class="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-700 font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" type="button">
+                    Volver
+                </button>
+<button class="px-10 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 shadow-lg shadow-primary/25 transition-all flex items-center gap-2" type="submit">
+                    Siguiente <span class="material-icons text-sm">arrow_forward</span>
+</button>
+</div>
+</form>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 py-12">
+<div class="max-w-7xl mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons text-white text-xl">domain</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-white uppercase">Hybrid<span class="text-primary">Market</span></span>
+</div>
+<p class="text-sm leading-relaxed">La plataforma líder en Real Estate premium de Uruguay. Conectando sueños con hogares excepcionales.</p>
+</div>
+<div>
+<h4 class="text-white font-semibold mb-4 uppercase text-xs tracking-widest">Plataforma</h4>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Cómo publicar</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Planes Premium</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Inmobiliarias</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tasaciones</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-semibold mb-4 uppercase text-xs tracking-widest">Soporte</h4>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Centro de Ayuda</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Términos y Condiciones</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacidad</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contacto</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-semibold mb-4 uppercase text-xs tracking-widest">Síguenos</h4>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-icons text-lg text-white">facebook</span></a>
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors" href="#"><svg class="w-5 h-5 fill-current text-white" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a>
+</div>
+</div>
+</div>
+<div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium">
+<p>© 2024 Hybrid Market Uruguay. Todos los derechos reservados.</p>
+<p>Montevideo, Uruguay</p>
+</div>
+</div>
+</footer>
+</body></html>

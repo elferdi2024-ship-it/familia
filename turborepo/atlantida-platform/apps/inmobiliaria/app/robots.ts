@@ -1,0 +1,21 @@
+import { MetadataRoute } from 'next'
+
+export default function robots(): MetadataRoute.Robots {
+    const baseUrl = 'https://MiBarrio.uy.vercel.app'
+
+    return {
+        rules: [
+            {
+                userAgent: '*',
+                allow: '/',
+                disallow: ['/api/', '/admin/', '/publish/', '/my-properties/', '/profile/', '/saved-searches/'],
+            },
+            {
+                userAgent: 'Googlebot',
+                allow: '/',
+                disallow: ['/api/', '/admin/'],
+            },
+        ],
+        sitemap: `${baseUrl}/sitemap.xml`,
+    }
+}

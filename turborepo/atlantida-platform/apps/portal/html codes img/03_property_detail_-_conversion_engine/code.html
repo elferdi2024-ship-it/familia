@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a4ecd",
+                        "background-light": "#FFFFFF",
+                        "summary-grey": "#F7F8FA",
+                        "success-green": "#25D366"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .hero-gradient {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 50%);
+        }
+        .sticky-sidebar {
+            top: 6rem;
+            height: fit-content;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 font-display">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100">
+<div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+<div class="flex items-center gap-10">
+<div class="text-2xl font-bold text-primary flex items-center gap-2">
+<span class="material-icons text-3xl">domain</span>
+<span class="tracking-tight">URUGUAY<span class="font-light">PROPS</span></span>
+</div>
+<nav class="hidden md:flex items-center gap-8 text-[15px] font-semibold text-slate-600">
+<a class="hover:text-primary transition-colors" href="#">Comprar</a>
+<a class="hover:text-primary transition-colors" href="#">Alquilar</a>
+<a class="hover:text-primary transition-colors" href="#">Temporario</a>
+<a class="hover:text-primary transition-colors" href="#">Proyectos</a>
+<a class="hover:text-primary transition-colors" href="#">Tasaciones</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block px-5 py-2.5 text-sm font-bold text-slate-700 hover:text-primary transition-colors">Publicar Propiedad</button>
+<div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-bold border border-slate-200 rounded-full hover:border-primary hover:text-primary transition-all">
+<span class="material-icons text-lg">menu</span>
+<span class="material-icons text-2xl text-slate-400">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="relative">
+<section class="relative w-full h-[70vh] overflow-hidden grid grid-cols-4 grid-rows-2 gap-2 p-2 bg-slate-50">
+<div class="col-span-2 row-span-2 relative group cursor-pointer overflow-hidden rounded-l-xl">
+<img alt="Main View" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7hQnvEG_vRWhJe96ACmJkpBMzMP9yi7KmyB8K3lwvvqPWZzCI1Ko9dnRUxIdgacqQfJp52kF5bv8PTAIhQOnNI9tdaLB9RZFJAJlLuYyUdDRavFAf2L1398VrVnbiegGIY0rZ1v2iixqmX5cEoU1_1UPfbcn8ok01pFfcS6u1e0LVwVtVcxdNfRGe84f7aSVdZefFfcKD9Y4hhi89rBMyr-xQhd_o6rz4ziEHhKxeXV9FaLejpC_SYvw60yTVPr9d7RiqixOGDXvp"/>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative group cursor-pointer overflow-hidden">
+<img alt="Bedroom" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTEZGajYd0KstMRzYh4hbOcpwnF8t5daIjy_8lZm9q2H4ZM8FpeDfjvaCicRp7bI352mi6xloPiRSxMNssqIoLb-Wx0DXa1AjA2AqxIKcln9NnNVk8D-C1EcNXiC_FUVMrnpYQ8a0wGgyo2puHjyf5s9jZGwuMHq9dUxKdfeb9HjyIFtj6Ra8PTlbvLLTMlrv5ZvS9AL63TTxQXmIzZgmA5h9zopdO8ABCu-sDcEr6wtU_914w6YvUJ4N-46NyDqHIouLqLUCE71q4"/>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-tr-xl">
+<img alt="Kitchen" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhMayCTOQq0K-GkuKZUKMwlFbLz8a1j41hbQyjFIqImhVgOP0uPOl1ZAlac3DltFF9a5p469jHxgtMX93TW9ogtBV4jL6KJ0Nl2KyuDlViQWahVcbPX8KmEqeo9bAb5_wVld9bDv1NtFj7t2psJSE-ykjWB0qq0yxeoKwITQH5N9oYUy2LyAILCazdsTlvZVCJPIaaUu9J59VAbiTUIyGn27nfvb9vxe0j7jDaEigLemrTJpbjgM295a6GavSNH4IISKPrW0kOE16s"/>
+</div>
+<div class="relative group cursor-pointer overflow-hidden">
+<img alt="Terrace" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChZAvkxy9oPOS51-rElgD_dow4PjRidSejpZtERg-FVl4SuAjlwXPZwAkzlV4UsVwGiMU0bDlHpYi2qhXgvU1N7nJX-5GAM_OPm7CUIW0iA81zkSD-_zkoqYRz9kauR62TbTGAQxKyKPaZ2v-pKJA8IPGJHRGERanOVQL0bV1KGAnsJsfYC5Vp-NXOQ8kO8wJkrmWoRMl7IMghazRfHVNGodr1tkLzJrjgZ6zsOaRZ3Ib9SVBXLISrazWtb2KOnPs9vVyZBaM6ixc5"/>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-br-xl">
+<img alt="Building" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7WfcEG3e0TMWF5mJfcVglfKpnI7kwksH7mHVBanNcRgkNsjm1taN3Cu69f82nv86TN5hmcL2Lq5wRC2nEyh_lgmkLaM78cF97PFw1J90msco8yu3N0ESk8Z6jtZTvG5RoPh5HOWumXttck0XT7eqmBxa1-HzR05vcb90KBP3ArexR8ToLNEKlpWOXBbp_R3UcHcMNaqNBPhm54k39Xv3nXuzq1zci9aABT6_qGw_ZTyyRbrGsQ3LZO2-mkxUgafoU0e6F4oJLEcAg"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center backdrop-blur-[1px]">
+<button class="px-6 py-3 bg-white text-slate-900 font-bold rounded-lg flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-lg">
+<span class="material-icons">grid_view</span>
+                    Ver todas las fotos
+                </button>
+</div>
+</div>
+</section>
+<div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
+<div class="lg:col-span-2 space-y-10">
+<div>
+<div class="flex items-center gap-3 mb-6">
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded uppercase tracking-widest">Exclusivo</span>
+<span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded flex items-center gap-1 uppercase tracking-widest">
+<span class="material-icons text-xs">trending_down</span>
+                        4% DEBAJO PROMEDIO ZONA
+                    </span>
+</div>
+<h1 class="text-4xl font-bold text-slate-900 mb-3 tracking-tight">Penthouse Vista Brava - Rambla Gandhi</h1>
+<div class="flex items-center text-slate-500 gap-4">
+<div class="flex items-center gap-1">
+<span class="material-icons text-primary text-xl">location_on</span>
+<span class="font-medium">Punta Carretas, Montevideo, Uruguay</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+<span class="flex items-center gap-1 font-medium text-blue-600"><span class="material-icons text-sm">verified</span> Ubicación Verificada</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6 p-8 bg-summary-grey rounded-2xl border border-slate-100">
+<div class="space-y-1">
+<p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest">Precio / m²</p>
+<p class="text-2xl font-bold text-primary">USD 3.125</p>
+<p class="text-xs text-green-600 font-medium flex items-center gap-1">
+<span class="material-icons text-[14px]">arrow_downward</span> Muy Competitivo
+                    </p>
+</div>
+<div class="space-y-1 px-6 border-x border-slate-200">
+<p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest">Tiempo en Mercado</p>
+<p class="text-2xl font-bold text-slate-900">12 Días</p>
+<p class="text-xs text-slate-500 font-medium">Recién publicado</p>
+</div>
+<div class="space-y-1 pl-6">
+<p class="text-[11px] text-slate-500 uppercase font-bold tracking-widest">Rentabilidad Est.</p>
+<p class="text-2xl font-bold text-green-600">5.8% anual</p>
+<p class="text-xs text-slate-500 font-medium">Alto potencial inversor</p>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-5 rounded-xl border border-slate-100 bg-white shadow-sm flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">straighten</span>
+<div>
+<p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Área Total</p>
+<p class="font-bold text-slate-900">145 m²</p>
+</div>
+</div>
+<div class="p-5 rounded-xl border border-slate-100 bg-white shadow-sm flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">bed</span>
+<div>
+<p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Dormitorios</p>
+<p class="font-bold text-slate-900">3 Hab.</p>
+</div>
+</div>
+<div class="p-5 rounded-xl border border-slate-100 bg-white shadow-sm flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">shower</span>
+<div>
+<p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Baños</p>
+<p class="font-bold text-slate-900">2 Baños</p>
+</div>
+</div>
+<div class="p-5 rounded-xl border border-slate-100 bg-white shadow-sm flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+<div>
+<p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Garaje</p>
+<p class="font-bold text-slate-900">2 Cocheras</p>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<h3 class="text-2xl font-bold text-slate-900">Descripción de la propiedad</h3>
+<div class="prose prose-slate max-w-none text-slate-600 space-y-4">
+<p class="leading-relaxed">
+                        Exclusivo penthouse ubicado en una de las zonas más privilegiadas de Punta Carretas. Con una vista ininterrumpida al Río de la Plata, esta propiedad combina diseño moderno con materiales de alta gama. Cuenta con una amplia terraza con parrillero propio, living comedor integrado y domótica instalada.
+                    </p>
+<p class="leading-relaxed">
+                        El edificio ofrece servicios premium: seguridad 24 horas, piscina climatizada, gimnasio de última generación y salón de usos múltiples totalmente equipado. Ideal tanto para residencia permanente como para inversión de renta temporaria.
+                    </p>
+</div>
+<button class="text-primary font-bold hover:text-blue-700 flex items-center gap-2 transition-colors">
+                    Leer descripción completa <span class="material-icons">expand_more</span>
+</button>
+</div>
+<div class="space-y-6">
+<h3 class="text-2xl font-bold text-slate-900">Amenities y Destacados</h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">balcony</span>
+<span class="text-sm font-semibold text-slate-700">Terraza Amplia</span>
+</div>
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">security</span>
+<span class="text-sm font-semibold text-slate-700">Seguridad 24/7</span>
+</div>
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">pool</span>
+<span class="text-sm font-semibold text-slate-700">Piscina Climatizada</span>
+</div>
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">outdoor_grill</span>
+<span class="text-sm font-semibold text-slate-700">Parrillero</span>
+</div>
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">ac_unit</span>
+<span class="text-sm font-semibold text-slate-700">Loza Radiante</span>
+</div>
+<div class="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-slate-400">fitness_center</span>
+<span class="text-sm font-semibold text-slate-700">Gimnasio</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex justify-between items-end">
+<h3 class="text-2xl font-bold text-slate-900">Ubicación exacta</h3>
+<button class="text-sm font-bold text-primary hover:underline">Ver puntos de interés</button>
+</div>
+<div class="h-80 rounded-2xl overflow-hidden border border-slate-100 relative shadow-inner">
+<img alt="Map View" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-YkBQns-p1uMksdpIjDLQKIgFkCHbkjd2Bcqzzr2RToyfZN-alhRbKx5M_nnnA_mFV8zen_57wGCI5Shpg1c8fgfo5UryGoNGxyJeOR_GU2YSMZ9L0ppnCQy44zeJFhAofXZAwphv_Vbx5UPdqsIt_ACcxiYxxEOKL3IETaQByUu81UfkPIpc6HWwXs9vQgHETc64VE59fvvai0u6JnmE4HoqugPx3VcHnvLip01BDtQGejG2ZgI8ISzXxCPiG_pPKWfDMpvZlKbO"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center text-primary shadow-2xl backdrop-blur-sm border-2 border-primary">
+<span class="material-icons text-3xl">location_on</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<aside class="sticky-sidebar space-y-6">
+<div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl">
+<div class="mb-8 pb-8 border-b border-slate-100">
+<p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-2">Precio de Venta</p>
+<h2 class="text-[40px] leading-tight font-[700] text-slate-900 mb-2">USD 425.000</h2>
+<p class="text-sm text-slate-600">Gastos Comunes: <span class="font-bold text-slate-900">UYU 18.500</span></p>
+</div>
+<div class="space-y-4">
+<button class="w-full py-4 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-primary/20">
+<span class="material-icons">calendar_today</span>
+                            Solicitar Visita
+                        </button>
+<button class="w-full py-4 bg-success-green hover:bg-[#1ebd5b] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-green-500/20">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.634 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+                            WhatsApp Inmobiliaria
+                        </button>
+<button class="w-full py-4 bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-700 font-bold rounded-xl transition-all flex items-center justify-center gap-3">
+<span class="material-icons">phone</span>
+                            Llamar Directo
+                        </button>
+</div>
+<div class="my-8 flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+<img alt="Agent" class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvyNhoTCRM-sjGddCkfo3CZ4336KdDCk_p39rvb-eS24cSC1GX8wJtMWHfOYMqiFFn7CpWd9r7VfkTEp7jKwboGlPXXE8xzVm7bS3EGoWP64kqZ_r4CPL_LN4XyLN9Po4devGga_tJS47HsKEZsWi3alogsDppwbEiVAdgIatJB4ckkx-kjoV1-tgqpWKq-mC-PwSRWCeaM9WvCJx8cvrXmZZRItFU22WIvDNg9Rp7_i4Q-QGPGxiMq74RDmFRMFzvWDNyWs-VpyjX"/>
+<div>
+<p class="font-bold text-slate-900">Sebastian Varela</p>
+<p class="text-xs text-slate-500 font-medium">Agente Elite • +48 ventas</p>
+</div>
+</div>
+<form class="space-y-3">
+<input class="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Tu Nombre Completo" type="text"/>
+<input class="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Email de contacto" type="email"/>
+<textarea class="w-full bg-white border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Hola, estoy interesado en recibir más información sobre esta propiedad..." rows="3"></textarea>
+<button class="w-full bg-slate-900 text-white py-4 font-bold rounded-xl hover:bg-slate-800 transition-colors" type="submit">Enviar Consulta</button>
+</form>
+</div>
+<div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+<div class="flex items-start gap-4">
+<span class="material-icons text-primary">insights</span>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-widest">Oportunidad de Mercado</p>
+<p class="text-sm text-slate-600 leading-snug">Este inmueble tiene un precio por m² un <span class="font-bold text-slate-900">12% menor</span> a propiedades similares en la zona.</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<footer class="bg-[#0b0e14] pt-24 pb-12 mt-24 text-white">
+<div class="max-w-7xl mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+<div class="col-span-1 md:col-span-1">
+<div class="text-2xl font-bold text-primary mb-8 flex items-center gap-2">
+<span class="material-icons text-4xl">domain</span>
+<span class="tracking-tight">URUGUAY<span class="font-light">PROPS</span></span>
+</div>
+<p class="text-sm text-slate-400 leading-relaxed mb-8 pr-4">
+                    La plataforma líder en Real Estate Premium de Uruguay. Tecnología aplicada al servicio de inversores y familias exigentes.
+                </p>
+<div class="flex gap-4">
+<a class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all group" href="#">
+<span class="material-icons text-xl group-hover:scale-110 transition-transform">facebook</span>
+</a>
+<a class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all group" href="#">
+<span class="material-icons text-xl group-hover:scale-110 transition-transform">camera_alt</span>
+</a>
+<a class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">crossword</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-bold mb-8">Búsquedas Frecuentes</h4>
+<ul class="space-y-4 text-sm text-slate-400 font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Apartamentos en Pocitos</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Casas en Carrasco</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Alquileres en Punta Carretas</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Inversiones en pozo</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Chacras en Maldonado</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-bold mb-8">Institucional</h4>
+<ul class="space-y-4 text-sm text-slate-400 font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Sobre Uruguay Props</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Nuestro Equipo</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">PropTech Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contacto Directo</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Trabajá con nosotros</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-bold mb-8">Newsletter Especializado</h4>
+<p class="text-sm text-slate-400 mb-6 font-medium">Recibí oportunidades exclusivas antes que nadie.</p>
+<div class="flex flex-col gap-3">
+<input class="bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Tu email" type="email"/>
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 rounded-xl transition-all">Suscribirme</button>
+</div>
+</div>
+</div>
+<div class="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col gap-2">
+<p class="text-xs text-slate-500 font-medium">© 2024 Uruguay Props - Premium Real Estate Marketplace v3.5. Montevideo, Uruguay.</p>
+<div class="flex gap-4 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
+<a class="hover:text-white" href="#">Términos</a>
+<a class="hover:text-white" href="#">Privacidad</a>
+<a class="hover:text-white" href="#">Cookies</a>
+</div>
+</div>
+<div class="flex gap-8 items-center opacity-40 hover:opacity-100 transition-opacity">
+<img alt="Partner Logo 1" class="h-6 grayscale brightness-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5ce1z8g9y8ZXXCrP6T3_Jlf3FWrJuSedc0SFw93ivbO7hTCvT3JGwKxQonAtspqMCgW2uXY0qkcDw7YnwZdR-wt1oft-jSE4mvTwqgW_oYhcB880Ygto-oFC1dsDIlC2UQ572-uXRatPzOkAWkHqYCV6W574MZSMhqcr6fwLK0p7SIqef6mjFmrHlvgaJbo0r_VX17ZfxswLSBMf_7ub3y_8q4ktHWDKHDRoKHcpSJhUN4E4cKSV_n3yVSPUlJwwVGjpAMEpj1Y2Y"/>
+<img alt="Partner Logo 2" class="h-6 grayscale brightness-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqs5p_OqYiQdZ_nwEOiK3WIzEv-D80OhD9--boRBYh5BX7UuIvE3ScpkzaOEAA9Mi0Qi-Ty4AEwRwGoGcBNDaUQKQdnW-agubejIfqyiDyWkyaS22xXTx-JC2lYKoy76CeJaMlO4UQSCvywutkuO4vyRPbP-4A8N6wBtQUfUdN2wyEJa5zpSy5ho5NqCm3Z4AEhgyoF4Mt2CelWjZKuPeyiXPEyFa9eRpCcjwZIqBeDbgcf2YvkEUW8T71N1cjpE4AVRT-2ucNuIgx"/>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>

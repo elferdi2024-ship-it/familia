@@ -1,0 +1,29 @@
+{
+  "name": "atlantida-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:portal": "turbo run dev --filter=portal",
+    "dev:inmobiliaria": "turbo run dev --filter=inmobiliaria",
+    "build": "turbo run build",
+    "build:portal": "turbo run build --filter=portal",
+    "build:inmobiliaria": "turbo run build --filter=inmobiliaria",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "prettier": "^3.5.5"
+  },
+  "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": ">=20"
+  }
+}

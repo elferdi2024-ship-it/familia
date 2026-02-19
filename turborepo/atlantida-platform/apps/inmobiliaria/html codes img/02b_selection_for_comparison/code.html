@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>02b Selection for Comparison - Uruguay Market Leader</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0a4ecd",
+              "background-light": "#f5f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .property-card-selected { border-color: #0a4ecd; box-shadow: 0 0 0 2px rgba(10, 78, 205, 0.2); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200 antialiased">
+<!-- Unified Header -->
+<header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+<!-- Logo -->
+<div class="flex items-center gap-2">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-icons text-white">domain</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">Uruguay<span class="text-primary font-black">Market</span></span>
+</div>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-1 max-w-xl mx-8">
+<div class="relative w-full">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm transition-all" placeholder="Busca en Punta del Este, Montevideo, Colonia..." type="text"/>
+</div>
+</div>
+<!-- Navigation Actions -->
+<nav class="flex items-center gap-4">
+<button class="hidden lg:flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors">
+<span class="material-icons text-sm">publish</span> Publicar Propiedad
+                </button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2 hidden lg:block"></div>
+<button class="material-icons text-slate-500 hover:text-primary">favorite_border</button>
+<div class="flex items-center gap-2 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-1 rounded-full transition-all">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs border border-primary/20">
+                        JD
+                    </div>
+<span class="material-icons text-slate-400">keyboard_arrow_down</span>
+</div>
+</nav>
+</div>
+</header>
+<!-- Filter Bar -->
+<section class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-3 shadow-sm sticky top-16 z-40">
+<div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-icons text-sm">tune</span> Filtros Avanzados
+            </button>
+<div class="h-6 w-[1px] bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-md font-semibold">Comprar</span>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs px-2 py-1 rounded-md font-medium">Apartamentos</span>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs px-2 py-1 rounded-md font-medium">USD 200k - 500k</span>
+<div class="ml-auto text-sm text-slate-500 font-medium">
+                1,248 resultados encontrados
+            </div>
+</div>
+</section>
+<!-- Main Content Area: Grid View -->
+<main class="max-w-7xl mx-auto px-4 py-8 pb-40">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Property Card 1 (Selected) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border-2 border-primary shadow-lg relative group transition-all">
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-green-500 text-white text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider">Premium</span>
+</div>
+<div class="absolute top-3 right-3 z-10">
+<label class="flex items-center gap-2 bg-primary text-white px-2 py-1.5 rounded-lg cursor-pointer shadow-md">
+<span class="material-icons text-base">check_box</span>
+<span class="text-xs font-bold uppercase tracking-tighter">Comparar</span>
+</label>
+</div>
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Luxury apartment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern luxury penthouse overlooking Punta del Este" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADDJGhg_t5pNLfga3E7YAdaWcmYpfyjBoYsQh-X7Hki1bEqu5JgXpuVnKEnXIPQA88njmsqI1C-9inV4KaaJcVuB4Km1waLZRmwjkp2zuitJ8f84hSB-XRVKnSVJJi0wQWpBrOK50MBl5VEoxM4b8Do3qFZ285FqTmrL0X0Y_Jv271AoRFvNKyeE1WpueGgdW5txuzvmchx6yWEjyXE1XRnoDG2t5GsLc0jAvoie2GahknZ0gYIEZT_D9za5eYtubkAqPt9xYkGScZ"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 450.000</h3>
+<p class="text-slate-900 dark:text-white font-semibold text-sm truncate">Penthouse View Tower I</p>
+<p class="text-slate-500 text-xs mb-3 flex items-center gap-1">
+<span class="material-icons text-xs">location_on</span> Parada 8, Playa Mansa
+                    </p>
+<div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bed</span> 3</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bathtub</span> 2</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">square_foot</span> 120m²</div>
+</div>
+</div>
+</div>
+<!-- Property Card 2 (Selected) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border-2 border-primary shadow-lg relative group transition-all">
+<div class="absolute top-3 right-3 z-10">
+<label class="flex items-center gap-2 bg-primary text-white px-2 py-1.5 rounded-lg cursor-pointer shadow-md">
+<span class="material-icons text-base">check_box</span>
+<span class="text-xs font-bold uppercase tracking-tighter">Comparar</span>
+</label>
+</div>
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Modern house" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Contemporary house in Beverly Hills Uruguay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-xEBOsoq9Jk0Z0fnhNgVKTp8w628eqfKPR3WZnmvvoYx-7BNAZ4E81ibmtMoRw1jwY7TAQYaGjheV16WWR6IC8DQ93XhZKgnEjRjjManK9X0i3ssCjIfcbHDIMItDX-tQnwdF-BHb8UoKG2wtvHMvq3TLMuhRjUFYPRdMCCARnDpfnX81q6skYp59B820vLswOZImXHv_HD4097DuYrqQhdqzzQfvU1lrxoTmvHacyepRbiVcUmHbmX2uJyIGaNbgulSihTN3xNgY"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 385.000</h3>
+<p class="text-slate-900 dark:text-white font-semibold text-sm truncate">Residencia Modern Art</p>
+<p class="text-slate-500 text-xs mb-3 flex items-center gap-1">
+<span class="material-icons text-xs">location_on</span> Beverly Hills, Punta del Este
+                    </p>
+<div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bed</span> 4</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bathtub</span> 3</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">square_foot</span> 210m²</div>
+</div>
+</div>
+</div>
+<!-- Property Card 3 (Selected) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border-2 border-primary shadow-lg relative group transition-all">
+<div class="absolute top-3 right-3 z-10">
+<label class="flex items-center gap-2 bg-primary text-white px-2 py-1.5 rounded-lg cursor-pointer shadow-md">
+<span class="material-icons text-base">check_box</span>
+<span class="text-xs font-bold uppercase tracking-tighter">Comparar</span>
+</label>
+</div>
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Apartment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-end apartment in Montevideo Puerto Buceo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy7KHTw7Sq0uvd4E_Y-6PThsRIp_FUJvWbPpbxkvj1gpKwQh59HI_VC4fiw78uJ04M5VXCKADoeBZXVPb_n1dStimK3s08lUfx0rsLqEQjb2uWhO6AZRsjqEDbN4gM9TRGhSi2D07PgqV8l1VssCE_Fec1l6tBst6fbBd_e-T_qAb7nyO5DrP3lSQPyVm05LiSNYpIH5rTczjlY81YHnI579nwAKwLU5QeV1kCENDFR8o1Kf4wwCmlPcwNEQQwvBarQRxo7Jqp5U5E"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 295.000</h3>
+<p class="text-slate-900 dark:text-white font-semibold text-sm truncate">Forum Puerto del Buceo 2BR</p>
+<p class="text-slate-500 text-xs mb-3 flex items-center gap-1">
+<span class="material-icons text-xs">location_on</span> Puerto Buceo, Montevideo
+                    </p>
+<div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bed</span> 2</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bathtub</span> 2</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">square_foot</span> 95m²</div>
+</div>
+</div>
+</div>
+<!-- Property Card 4 (Not Selected) -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative group hover:shadow-md transition-all">
+<div class="absolute top-3 right-3 z-10 opacity-70 hover:opacity-100 transition-opacity">
+<label class="flex items-center gap-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1.5 rounded-lg cursor-pointer shadow-sm border border-slate-200 dark:border-slate-700">
+<span class="material-icons text-base">check_box_outline_blank</span>
+<span class="text-xs font-bold uppercase tracking-tighter">Comparar</span>
+</label>
+</div>
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Interior" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist studio apartment interior design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtQKcgvarJKz8QNEPj9M9XbiaWn1cC9db6PV42xedcdYeL68K1f-ry9mvvxPVGeiclCqiLMe6XCjo2v6acGh0V2N-daQaOy_GDINg9yIAvOsPO1GUzK5n4BduXaZ9b0HbQEnd2Ro_RtyTt0DUrfXXd7kXRs-Hk-JpbAdNF-zg2ixaDn-881a7s3Lj0AExw2uY8uDo45OVs_umTGYnBwmf7zFbPyisoytPrLFrsDsP57e0gdeQO6qInWMGnzVZ5Aanpo76ydDc_YFe-"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 210.000</h3>
+<p class="text-slate-900 dark:text-white font-semibold text-sm truncate">Edificio Bilu Riviera</p>
+<p class="text-slate-500 text-xs mb-3 flex items-center gap-1">
+<span class="material-icons text-xs">location_on</span> Carrasco, Montevideo
+                    </p>
+<div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bed</span> 1</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">bathtub</span> 1</div>
+<div class="flex items-center gap-1"><span class="material-icons text-sm">square_foot</span> 55m²</div>
+</div>
+</div>
+</div>
+<!-- Repeat Cards for Grid Context -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative group opacity-60">
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="House" class="w-full h-full object-cover" data-alt="Modern waterfront villa architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVgWoos_b25Bdj7Mro-wASj1TGngCNdEETvnLnc_VbDHkiOvrUj_319JsKw85DyDi3WPeCKXGQahQrvXNMfZcTskIXJpVC4eQGLTjQDKz9FHRPXS1YctYkjPPSjhwbiBKqWoZzFJxMxZLu4ps9qIRM5O_OsH95rl06vHDOoHpJ_p1Zm5d507waqIZnj5HuQqYduiG4aHMUdhpo5XRYCibTdlxlz_M3bMb2BoihvxdFvrZUMP9fg1rXoYNOSjfiole1cE9jhJOB_q4t"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 1.250.000</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative group opacity-60">
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Apartment" class="w-full h-full object-cover" data-alt="Cozy urban apartment in Montevideo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkCRdIDLmMfOSAyS1Aqhoyq0tNWtuCcLyyWSYfHzHolc4gMrtx1MbluZYYytL6PapYHkBgA3Pl1IRw7TPvutUSYcrPbZoDrsq_1348gUrvyhEU5mGNu2N1TAllCSfwHd96UsMQgEY_9QnbTExKENBxT1mX1iMWa8aLIyzEVA7Jiq0rlMMCHSQuqiGanNN0LA5y5Xwv_NM8ODjpv6bv3EdgJJRCXU9bzUjyZDgyfZdVcjQFPs0ghnkZ9crR2JMHSQ6GHl_KDkVjFDhg"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 185.000</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative group opacity-60">
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Building" class="w-full h-full object-cover" data-alt="Glass building exterior at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBx4vBynC5Ik_YKIbz1AqmCpkeegxcTFoCkIHGs_5gVUjecDL-qfjjUe8a9lbWl965eHglsNeGsOxf_iL8goQC-HjuBadINz-50Z8Yyt-LRiTpuA8EAuRb-GXK51wECcqPRX9oeTqTdccbOn6Rbm43tullrMqiiwA8Qy_TKNXeO17848jubO3UeOcB0OcCAWCe6V2O6ZydtLl8YLFis9ZuyMKYipx3V6pmU9S67_2pHqrIJG04eCYuJxcf8Lj77n_LpSCj8bI0suDq"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 520.000</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative group opacity-60">
+<div class="aspect-[4/3] overflow-hidden">
+<img alt="Interior" class="w-full h-full object-cover" data-alt="Luxury interior dining room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ISDi4VhW7_uELAcs3tVj2I5V1QQgLK8hAs6Fobt6ZKwAeZoJOge9jkiPto9bkYLfQsFvHAWHWOuokqIeStzM7jwweRFJgL7tuh0CIoXnE6OpmnXbsO0hE9ZFWc41EDHg-mqUBox8CUPnQOgybc1V6PBgm4d3807Z6FxSBkEhELDS_WjBx2Wo2Uw5BUdtrywoP3xC2BT1kGhxW6fEU2aHex13ormUxyjbpnfRFfHh0OXDlnX4vOduUY4nEjKzEY8ayujj9ORxTVia"/>
+</div>
+<div class="p-4">
+<h3 class="text-primary font-bold text-xl mb-1">USD 340.000</h3>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Comparison Bar (Dock) -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-4xl px-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 flex items-center justify-between gap-6 overflow-hidden ring-1 ring-black/5">
+<!-- Comparison Previews -->
+<div class="flex items-center gap-4 flex-1">
+<div class="flex -space-x-3 overflow-hidden">
+<div class="relative group">
+<img alt="Prop 1" class="inline-block h-14 w-14 rounded-lg object-cover border-2 border-white dark:border-slate-900 shadow-md ring-2 ring-primary" data-alt="Thumbnail of first selected luxury property" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsk_wc9e9_nm5EEy0bFu6tiilgeVylSB3Ah-U4zf1A2fqDvYAhzXTM7RI7RvtXxnZZxnoncmJ8fNlyQuGEhh5InzQMhoRjMQZdwYW73aGywQ_uoW9PG3mlLZIRTuJrhg5mMz6cKFFRUfIrVPCTRBtfk4d4FxkMjxT6dUwdrpPUawT5BsZWYHH09WWMxXoRn_Pu4Sx3SE08ljBrmFB4hz02uOTcmfz6o-CphrsMlyxPczj3QGGSU_sp8P8HKCNvjciC-rJ7QLRzO_hM"/>
+<button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-md">
+<span class="material-icons text-[10px] block">close</span>
+</button>
+</div>
+<div class="relative group">
+<img alt="Prop 2" class="inline-block h-14 w-14 rounded-lg object-cover border-2 border-white dark:border-slate-900 shadow-md ring-2 ring-primary" data-alt="Thumbnail of second selected luxury house" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8Kyaiu-BNoYVZiJAIb8mb12hgPlin_ujQtToq8cpz-YHObZ09cosBNdgpp_ueu7sudA2y2oQW6c0q63ADi6IaM6YYVFXWva2ZJXocKa4VGK7PvaFm0czXsxF-wvd7DbHJueF7zvac9jhobTR9aavmV31iFXoztPUCx2YM4gVECri8RpiWhEDhfEH0Sxt6CGrhN4t42vXAmRX1UrTzAUXhQblQrJlBRa5TDjTXaTZF9yRQTVNzx74YtjEhFmCn5DDcrnnrIg_c9Ev8"/>
+<button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-md">
+<span class="material-icons text-[10px] block">close</span>
+</button>
+</div>
+<div class="relative group">
+<img alt="Prop 3" class="inline-block h-14 w-14 rounded-lg object-cover border-2 border-white dark:border-slate-900 shadow-md ring-2 ring-primary" data-alt="Thumbnail of third selected luxury apartment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOkGvFK1nNPxAYcNDL_soPSed-joRPSp9Skpee0qUcg9i4lCFKi3b2FqKXyWw6YtMPUeqKvaXCVt8tY_x2Mr2F8puCwM9k22_gF-ok1-f3Oa7hV785cWk5nkP2njwySWWYRgPSySRg8VKIgIB8yBK_WdzNdkROigMco1ilnr5AFeOfoRT_rCbSr4p6uLQPAkTmCmqIWEsIKlqs_yI807KesMtRPeSuNCi-i8boRJ1BLuJhaa2v2WomVS2WCvbwob0qDjNh8YlMiO4M"/>
+<button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-md">
+<span class="material-icons text-[10px] block">close</span>
+</button>
+</div>
+<div class="h-14 w-14 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-slate-400">
+<span class="material-icons text-xl">add</span>
+</div>
+</div>
+<div class="hidden sm:block">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">3 Propiedades Seleccionadas</h4>
+<button class="text-[11px] font-semibold text-slate-500 hover:text-red-500 transition-colors uppercase tracking-wide">Limpiar Selección</button>
+</div>
+</div>
+<!-- Action Button -->
+<div class="flex items-center gap-3">
+<p class="text-[10px] text-slate-400 font-medium uppercase text-right leading-none hidden md:block">
+                    Analiza precios,<br/>m² y ubicación
+                </p>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/30 transition-all active:scale-95">
+                    Comparar Ahora <span class="bg-white/20 px-2 py-0.5 rounded text-sm">(3)</span>
+<span class="material-icons">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 py-12">
+<div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-icons text-white">domain</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-white uppercase">Uruguay<span class="text-primary">Market</span></span>
+</div>
+<p class="text-sm leading-relaxed">Líder en el mercado inmobiliario uruguayo, conectando inversores con las mejores oportunidades en Punta del Este, Montevideo y todo el país.</p>
+</div>
+<div>
+<h5 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Zonas Populares</h5>
+<ul class="text-sm space-y-2">
+<li><a class="hover:text-primary transition-colors" href="#">Punta del Este</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Carrasco, Montevideo</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">La Barra &amp; Jose Ignacio</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Carmelo &amp; Colonia</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Soporte</h5>
+<ul class="text-sm space-y-2">
+<li><a class="hover:text-primary transition-colors" href="#">Centro de Ayuda</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Guía del Comprador</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Políticas de Privacidad</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contacto</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Suscribirse</h5>
+<div class="flex gap-2">
+<input class="bg-slate-800 border-none rounded-lg text-sm w-full focus:ring-1 focus:ring-primary" placeholder="Email" type="email"/>
+<button class="bg-slate-700 hover:bg-primary px-3 rounded-lg transition-colors">
+<span class="material-icons text-white">send</span>
+</button>
+</div>
+<div class="mt-6 flex gap-4">
+<span class="material-icons hover:text-primary cursor-pointer">facebook</span>
+<span class="material-icons hover:text-primary cursor-pointer">camera_alt</span>
+<span class="material-icons hover:text-primary cursor-pointer">public</span>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-slate-800 text-center text-xs">
+            © 2024 Uruguay Market Leader Edition. Todos los derechos reservados.
+        </div>
+</footer>
+</body></html>

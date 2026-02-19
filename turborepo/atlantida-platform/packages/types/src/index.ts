@@ -1,0 +1,183 @@
+// ──────────────────────────────────────────────────────────────────────
+// @repo/types — Schema Definitivo Atlantida Platform
+// ──────────────────────────────────────────────────────────────────────
+
+export type OperationType = "Venta" | "Alquiler" | "Alquiler Temporal"
+export const OPERATIONS: OperationType[] = ["Venta", "Alquiler", "Alquiler Temporal"]
+
+export type PropertyType =
+  | "Casa"
+  | "Apartamento"
+  | "Terreno"
+  | "Local Comercial"
+  | "Oficina"
+  | "Chacra o Campo"
+  | "Garaje o Cochera"
+
+export const PROPERTY_TYPES: PropertyType[] = [
+  "Casa",
+  "Apartamento",
+  "Terreno",
+  "Local Comercial",
+  "Oficina",
+  "Chacra o Campo",
+  "Garaje o Cochera",
+]
+
+export type EnergyLabel = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+
+export type GuaranteeType =
+  | "ANDA"
+  | "CGN"
+  | "Porto Seguro"
+  | "Sura"
+  | "Depósito"
+  | "Mapfre"
+  | "Santander"
+
+export const GUARANTEES: GuaranteeType[] = ["ANDA", "CGN", "Porto Seguro", "Sura", "Depósito", "Mapfre", "Santander"]
+
+export const AMENITIES_BY_CATEGORY = {
+  "Comodidades": [
+    { name: "Aire Acondicionado", icon: "ac_unit" },
+    { name: "Calefacción", icon: "wb_sunny" },
+    { name: "Detectores de Humo", icon: "detector_smoke" },
+    { name: "Lavadero", icon: "local_laundry_service" },
+    { name: "Losa Radiante", icon: "solar_power" },
+    { name: "Acepta Mascotas", icon: "pets" },
+    { name: "Amoblado", icon: "chair" }
+  ],
+  "Entretenimiento": [
+    { name: "Gimnasio", icon: "fitness_center" },
+    { name: "Parque infantil", icon: "child_care" },
+    { name: "Piscina exterior", icon: "pool" },
+    { name: "Piscina interior", icon: "pool" },
+    { name: "Sauna", icon: "spa" },
+    { name: "Parrillero", icon: "outdoor_grill" },
+    { name: "Sala de Cine", icon: "movie" },
+    { name: "Jacuzzi", icon: "hot_tub" }
+  ],
+  "Instalaciones": [
+    { name: "Ascensor", icon: "elevator" },
+    { name: "Wifi", icon: "wifi" },
+    { name: "Seguridad 24hs", icon: "security" },
+    { name: "Garage / Cochera", icon: "directions_car" },
+    { name: "Bicicletero", icon: "pedal_bike" },
+    { name: "Portería", icon: "engineering" }
+  ],
+  "Otras": [
+    { name: "TV", icon: "tv" },
+    { name: "Terraza / Balcón", icon: "balcony" },
+    { name: "Jardín", icon: "yard" },
+    { name: "Vigilancia", icon: "visibility" },
+    { name: "Alarma", icon: "notifications_active" },
+    { name: "Vidriera", icon: "window" },
+    { name: "Hogar a Leña", icon: "fireplace" }
+  ]
+}
+
+export const AMENITIES = Object.values(AMENITIES_BY_CATEGORY).flat().map(a => a.name)
+
+export type UtilityStatus = {
+  saneamiento: "conectado" | "pozo" | "pendiente"
+  gas: "cañería" | "supergas" | "sin servicio"
+  agua: "OSE" | "pozo"
+  electricidad: "UTE" | "solar" | "mixto"
+}
+
+export interface GeoLocation {
+  lat: number
+  lng: number
+}
+
+export interface Property {
+  id: string
+  slug: string
+  title: string
+  description: string
+  type: PropertyType
+  operation: OperationType
+  badge?: string
+  badgeColor?: string
+  price: number
+  currency: "USD" | "UYU"
+  pricePerM2: number
+  gastosComunes: number | null
+  bedrooms: number
+  bathrooms: number
+  area: number
+  builtArea?: number
+  garages: number
+  floors?: number
+  yearBuilt?: number
+  department: string
+  city: string
+  neighborhood: string
+  address?: string
+  geolocation: GeoLocation
+  latitude?: number
+  longitude?: number
+  viviendaPromovida: boolean
+  acceptedGuarantees: GuaranteeType[]
+  utilityStatus: UtilityStatus
+  energyLabel: EnergyLabel | null
+  images: string[]
+  floorplanUrl?: string
+  virtualTourUrl?: string
+  amenities: string[]
+  userId?: string
+  status?: "active" | "pending" | "paused" | "sold"
+  views: number
+  publishedAt: string
+  updatedAt: string
+  featured: boolean
+  agentName?: string
+  agentPhone?: string
+  agentId?: string // Added from migrate.sh version
+}
+
+export interface Agent {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  whatsapp?: string
+  avatar?: string
+  company?: string
+}
+
+export interface Lead {
+  id: string
+  propertyId: string
+  agentId: string
+  name: string
+  email: string
+  phone?: string
+  message?: string
+  type: 'contact' | 'visit' | 'whatsapp'
+  status: 'new' | 'contacted' | 'closed'
+  createdAt: string | Date
+}
+
+export interface BrandConfig {
+  name: string
+  slug: string
+  logo: string
+  primaryColor: string
+  secondaryColor: string
+  domain: string
+  contact: {
+    email: string
+    phone: string
+    whatsapp: string
+    address: string
+  }
+  social?: {
+    facebook?: string
+    instagram?: string
+    linkedin?: string
+    twitter?: string
+    youtube?: string
+    github?: string
+  }
+}

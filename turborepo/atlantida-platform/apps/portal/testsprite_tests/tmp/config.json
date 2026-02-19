@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "INMOBILIARIA",
+    "projectPath": "D:/INMOBILIARIA",
+    "testIds": [],
+    "additionalInstruction": "The app is a Next.js 16 real estate platform running on port 3000. The homepage has property cards, search filters, and a hero section. The search page at /search fetches from Firestore. The property detail page at /property/[id] has a contact form. Test the main user flows: homepage rendering, search navigation, property detail viewing, and favorites toggling. No login is needed for basic browsing tests.",
+    "envs": {
+      "API_KEY": "sk-user-L6Ggpn_4rYlElwPuXR361N7nvpL20SDkpKGj4VLnRm5dPf2-1w_Ue10FQw-9qCDJ_7yDV6H-jJyBSSXZnwQ26pCLOaBigvGAit7R0E6uyf53aQ7WDG7iRudIHSHCdbVkoaE"
+    }
+  },
+  "serverPort": 63743,
+  "proxy": "http://239c4a5f-a38b-4e72-91de-be7ce757bc26:4qRYlk8ZH56GRpeOMenYyJ6YqqKREye2@tun.testsprite.com:8080"
+}

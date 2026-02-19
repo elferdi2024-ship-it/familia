@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dominio Total Uruguay - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0a4ecd",
+              "background-light": "#f5f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="text-2xl font-extrabold tracking-tighter text-primary">
+                    DOMINIO<span class="text-slate-400 font-light">TOTAL</span>
+</div>
+<div class="hidden md:flex items-center gap-6 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Propiedades</a>
+<a class="hover:text-primary transition-colors" href="#">Desarrollos</a>
+<a class="hover:text-primary transition-colors" href="#">Servicios</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 text-sm font-semibold hover:bg-primary/5 rounded-full transition-all">Publicar</button>
+<button class="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">Ingresar</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-[75vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0">
+<img alt="Montevideo Rambla" class="w-full h-full object-cover" data-alt="Aerial view of Montevideo Rambla coastline at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfMvv_cucSUX8J5YIBk8CNdN5fwhks2Wz-19l-yVR41J3stvX6VKPim3D-D0wU0Q2DhyzYt5CdbR5xmft3ey8k8Ve3kOgLI0mCSsBQ8KZpH4Fwf2pEjsNoJ13p5sGPsiI7q6GTS5nfUR1t2ZUFNj0TfsYWFEZrSxIeTkeSKCYU5i9mVE3ErMJjVtPcvvYnM-RaD6RVL7ULsqdhhY-LL55GwxE8GbYF0UI4H-71Ohgq824SjzrDA_J3Y0fZM-td_bKUSyWjBURm-9XF"/>
+<div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/60"></div>
+</div>
+<div class="relative z-10 w-full max-w-4xl px-6 text-center text-white">
+<h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
+                Encontrá tu próximo hogar.
+            </h1>
+<p class="text-xl md:text-2xl font-medium opacity-90 mb-10">
+                12.842 propiedades activas en Uruguay
+            </p>
+<!-- Search Capsule -->
+<div class="bg-white dark:bg-background-dark p-2 rounded-full shadow-2xl flex items-center max-w-3xl mx-auto h-[64px]">
+<div class="flex h-full bg-primary/10 dark:bg-primary/20 rounded-full p-1 mr-2">
+<button class="px-6 h-full bg-primary text-white rounded-full text-sm font-bold transition-all">Comprar</button>
+<button class="px-6 h-full text-primary dark:text-primary rounded-full text-sm font-bold transition-all hover:bg-primary/10">Alquilar</button>
+</div>
+<div class="flex-grow flex items-center px-4">
+<span class="material-icons text-slate-400 mr-2">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white placeholder-slate-400 text-base font-medium" placeholder="Barrio, ciudad o calle..." type="text"/>
+</div>
+<button class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-icons">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Trust + Activity Strip -->
+<div class="bg-white dark:bg-background-dark border-b border-primary/10">
+<div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-8 md:gap-16">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-sm font-bold text-slate-900 dark:text-white"><span class="text-primary">12.842</span> activas</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-bold text-slate-900 dark:text-white"><span class="text-green-500">324</span> nuevas hoy</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+<span class="text-sm font-bold text-slate-900 dark:text-white"><span class="text-orange-500">2.104</span> buscando ahora</span>
+</div>
+</div>
+</div>
+<!-- Category Discovery Chips -->
+<section class="max-w-7xl mx-auto px-6 py-8">
+<div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">apartment</span>
+<span class="text-sm font-bold">Apartamentos</span>
+</button>
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">home</span>
+<span class="text-sm font-bold">Casas</span>
+</button>
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">waves</span>
+<span class="text-sm font-bold">Frente al mar</span>
+</button>
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">trending_up</span>
+<span class="text-sm font-bold">Inversión</span>
+</button>
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">landscape</span>
+<span class="text-sm font-bold">Chacras y Campos</span>
+</button>
+<button class="flex-none flex items-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-background-dark border border-primary/20 hover:border-primary transition-all shadow-sm">
+<span class="material-icons text-primary text-lg">location_city</span>
+<span class="text-sm font-bold">Proyectos</span>
+</button>
+</div>
+</section>
+<!-- Tendencias Section -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+<div class="flex items-end justify-between mb-8">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight">Tendencias</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1 font-medium">Las oportunidades más destacadas de la semana</p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-1 hover:underline" href="#">
+                Ver todas <span class="material-icons text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Card 1 -->
+<div class="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
+<div class="relative h-48">
+<img alt="Property 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Luxury modern apartment interior with sea view" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEJL59RDkUIGnT_zx8qvtK149oNbqK-iGLf-hD98LcRBkKWlWomv_W8zISMZFidif7IRaPeTsuBL6LsESki71K0EilOmQzzRCDlcbw_JTLPhaFdUZHaunqJWURtlX8jhzKpCGYhrnwUEAZjBuV1v85D_5XFIOvPDhO9_HSxWmPY49j7vBkgSkZpx7junf5SAvdenu7SZgWgAmtRJlmf9QuhLwlV5QtaYbnjbc3NWUNPyRs92psFkg3uNLFx5SYCGqFwux7XocDHArR"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Bajó de Precio</span>
+</div>
+<button class="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-5">
+<div class="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 245.000</div>
+<h3 class="font-bold text-lg leading-tight mb-2 line-clamp-1">Penthouse en Pocitos Nuevo</h3>
+<div class="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
+<span class="flex items-center gap-1"><span class="material-icons text-xs">bed</span> 2</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">shower</span> 2</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">square_foot</span> 85m²</span>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
+<span class="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
+<span class="material-icons text-xs">place</span> Montevideo
+                        </span>
+<span class="text-[10px] font-bold text-slate-400 italic">Hoy 14:20</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
+<div class="relative h-48">
+<img alt="Property 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern house architecture in Punta del Este" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhNgn4o9KHFe6kCK3VPbGgmCNk_y9ReURtDqsHiNql-LJjibPWWhU8bhazbwM6feV965D2d4iDY8LF3Hqc3NdaP4mFryfu0X1mJeMysodlsi6jqJJKPsU-rs_-9srHS23FR-bV2oSwxA6_hVtg-RwzASCNc9XDVzc0sV1pfwZXyWslZf4uslSuFUyxmvxHYdeMj-bfrL_MwC7gjU1nYCcZO2EJEQaHlxYX8LV5bnPHjweEn6JyOvRuBK-Uvbf0iwJfPJI3vn1RSeTh"/>
+<div class="absolute top-4 left-4">
+<span class="bg-orange-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Oportunidad</span>
+</div>
+<button class="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-5">
+<div class="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 580.000</div>
+<h3 class="font-bold text-lg leading-tight mb-2 line-clamp-1">Casa Minimalista La Barra</h3>
+<div class="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
+<span class="flex items-center gap-1"><span class="material-icons text-xs">bed</span> 4</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">shower</span> 3</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">square_foot</span> 210m²</span>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
+<span class="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
+<span class="material-icons text-xs">place</span> Punta del Este
+                        </span>
+<span class="text-[10px] font-bold text-slate-400 italic">Hoy 11:05</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
+<div class="relative h-48">
+<img alt="Property 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Bright living room of a contemporary city apartment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC67YJs7ZtyNE-aVoI_g6d-pFIVB7iEcoQwUGCuZDnckFYqGia63pNcIgoF42QruuhmdL9N2LhxoexeCOYwoyLR2_to3mPFzqszIOnNeippVJAfKObPkULgJBxCsii96Ft81Qffu5yjqu3hWa-KGm9tNESWcf4bSZvUaG6QrWM6VJSmioaU7SkWXANKh4k9BRXNgFpn7Isxz4s8PHRQ9gGoHJNgW3co8lY6Rw5VHq3rZen_pBMRz-XH3VSFfAYrSMoEeGyMMT8PDTKp"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Bajó de Precio</span>
+</div>
+<button class="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-5">
+<div class="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 168.000</div>
+<h3 class="font-bold text-lg leading-tight mb-2 line-clamp-1">Apartamento Cordón Sur</h3>
+<div class="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
+<span class="flex items-center gap-1"><span class="material-icons text-xs">bed</span> 1</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">shower</span> 1</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">square_foot</span> 45m²</span>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
+<span class="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
+<span class="material-icons text-xs">place</span> Montevideo
+                        </span>
+<span class="text-[10px] font-bold text-slate-400 italic">Ayer</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
+<div class="relative h-48">
+<img alt="Property 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern kitchen in a high-end Uruguayan villa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZNRkuH34MD4uYE56vWNPE8LTxrq4Mze_JxKxRp-wRiC29veMX3Qju4BpQNga_XL-Sm93009bpOyxtmvkDGN0cI3A4JPRniG0BpJwj3cVNbnd_S2sYTCgofXvwD5_689UEGiNLij4c5sRwLP5Ipf9YpW3gy42WbIqWzrkzuPAzSPHc4Tf2Dws99TlwBo35H-z4jxmnAlOk_GtEFJzjkxnk_l7zltr0VTFuLCyFQrbiemdmNvtV78g_XmMX6-qXD4JX1ghviIUDot41"/>
+<div class="absolute top-4 left-4">
+<span class="bg-green-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Recién Ingresado</span>
+</div>
+<button class="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-5">
+<div class="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 315.000</div>
+<h3 class="font-bold text-lg leading-tight mb-2 line-clamp-1">Loft de Diseño en Ciudad Vieja</h3>
+<div class="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
+<span class="flex items-center gap-1"><span class="material-icons text-xs">bed</span> 1</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">shower</span> 1</span>
+<span class="flex items-center gap-1"><span class="material-icons text-xs">square_foot</span> 120m²</span>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
+<span class="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
+<span class="material-icons text-xs">place</span> Montevideo
+                        </span>
+<span class="text-[10px] font-bold text-slate-400 italic">Hace 2 horas</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Map/Region Section (Simplified for Home Context) -->
+<section class="max-w-7xl mx-auto px-6 py-12 mb-20">
+<div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-12 border border-primary/10">
+<div class="flex-1">
+<h2 class="text-3xl font-extrabold tracking-tight mb-4">¿Buscás por zona?</h2>
+<p class="text-lg text-slate-600 dark:text-slate-300 mb-8 font-medium">
+                    Explorá el mercado uruguayo con nuestro mapa interactivo. Encontrá las mejores zonas para vivir o invertir en Montevideo, Maldonado, Canelones y más.
+                </p>
+<button class="bg-primary text-white px-8 py-4 rounded-full font-bold shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center gap-2">
+<span class="material-icons">map</span>
+                    Abrir Mapa de Uruguay
+                </button>
+</div>
+<div class="flex-1 w-full aspect-video md:aspect-auto md:h-[300px] bg-slate-200 dark:bg-slate-800 rounded-lg overflow-hidden relative shadow-inner">
+<img alt="Map view" class="w-full h-full object-cover opacity-50 grayscale" data-alt="Stylized map of Uruguay region" data-location="Uruguay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5OgF16dr7RxAptUPvW5ivyrNiH34TAXd-bEAIchYWUzfaYR2GykCeLwwhsc9ikzFWm20CwG4_xTvYJVzYGyhJlCH5VIUCnEdF2sazDDI8K6qX-HpRwi_dAZ_YwaMSIL_E8poiBa0SqgFeSMUjt1zhlUHuA3mdWlCNcM0QUvTorxk85L5M8AoRm1e46h78GQvEUssvHeOb1CJqYAlwCOAmnl8Zmn869pjwkhsstq_JiukKl2WeJsvoZvARbKvoi0esc_Dt8h_phZqC"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-4 h-4 bg-primary rounded-full animate-ping"></div>
+<div class="w-4 h-4 bg-primary rounded-full absolute"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-primary/10 py-12">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-2 md:col-span-1">
+<div class="text-xl font-extrabold tracking-tighter text-primary mb-6">
+                        DOMINIO<span class="text-slate-400 font-light">TOTAL</span>
+</div>
+<p class="text-sm text-slate-500 font-medium leading-relaxed">
+                        Líderes en el mercado inmobiliario uruguayo. Conectando personas con su lugar ideal desde 2010.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-6">Explorar</h4>
+<ul class="space-y-3 text-sm text-slate-500 font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Venta</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Alquiler</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Proyectos</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Inmobiliarias</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Empresa</h4>
+<ul class="space-y-3 text-sm text-slate-500 font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Sobre Nosotros</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contacto</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacidad</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Seguinos</h4>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-icons text-xl">facebook</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-icons text-xl">camera_alt</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-icons text-xl">alternate_email</span>
+</a>
+</div>
+</div>
+</div>
+<div class="pt-8 border-t border-primary/5 text-center">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    © 2024 DOMINIO TOTAL URUGUAY - TODOS LOS DERECHOS RESERVADOS
+                </p>
+</div>
+</div>
+</footer>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        input:focus {
+            outline: none;
+        }
+    </style>
+</body></html>
