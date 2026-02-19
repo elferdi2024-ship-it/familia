@@ -43,9 +43,10 @@ export default function LeadsDashboard() {
     const [filterStatus, setFilterStatus] = useState<string>("all")
 
     useEffect(() => {
-        if (!user || !db) return
+        if (!user) return
 
         const fetchLeads = async () => {
+            if (!db) return
             setIsLoading(true)
             try {
                 const leadsRef = collection(db, "leads")

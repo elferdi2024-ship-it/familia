@@ -17,7 +17,7 @@ export function CompareBar() {
 
     useEffect(() => {
         const fetchProperties = async () => {
-            if (selectedIds.length === 0) {
+            if (selectedIds.length === 0 || !db) {
                 setProperties([])
                 return
             }

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useRouter } from "next/navigation"
 import { ImageUploader } from "@/components/publish/ImageUploader"
-import { GUARANTEES, AMENITIES } from "@/lib/data"
+import { GUARANTEES, AMENITIES, AMENITIES_BY_CATEGORY } from "@/lib/data"
 import { PublishStep2Schema } from "@/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@/lib/tracking"
@@ -135,22 +135,32 @@ export default function PublishDetailsPage() {
                             <span className="material-icons text-primary">checklist</span>
                             <h2 className="text-lg font-semibold">Comodidades y Amenities</h2>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                            {AMENITIES.map(amenity => (
-                                <label key={amenity} className="flex items-center gap-3 cursor-pointer group">
-                                    <input
-                                        type="checkbox"
-                                        checked={data.amenities.includes(amenity)}
-                                        onChange={(e) => {
-                                            const newAmenities = e.target.checked
-                                                ? [...data.amenities, amenity]
-                                                : data.amenities.filter(a => a !== amenity)
-                                            updateData({ amenities: newAmenities })
-                                        }}
-                                        className="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800"
-                                    />
-                                    <span className="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">{amenity}</span>
-                                </label>
+                        <div className="space-y-8">
+                            {Object.entries(AMENITIES_BY_CATEGORY).map(([category, items]) => (
+                                <div key={category} className="space-y-4">
+                                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest px-1">{category}</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                        {items.map(amenity => (
+                                            <label key={amenity.name} className="flex items-center gap-3 cursor-pointer group">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={data.amenities.includes(amenity.name)}
+                                                    onChange={(e) => {
+                                                        const newAmenities = e.target.checked
+                                                            ? [...data.amenities, amenity.name]
+                                                            : data.amenities.filter(a => a !== amenity.name)
+                                                        updateData({ amenities: newAmenities })
+                                                    }}
+                                                    className="w-5 h-5 rounded text-primary focus:ring-primary border-slate-300 dark:border-slate-700 dark:bg-slate-800"
+                                                />
+                                                <div className="flex items-center gap-2">
+                                                    <span className="material-icons text-slate-400 group-hover:text-primary text-lg transition-colors">{amenity.icon}</span>
+                                                    <span className="text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-sm">{amenity.name}</span>
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </section>

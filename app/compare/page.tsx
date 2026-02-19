@@ -16,7 +16,7 @@ export default function ComparePage() {
 
     useEffect(() => {
         const fetchProperties = async () => {
-            if (selectedIds.length === 0) {
+            if (selectedIds.length === 0 || !db) {
                 setProperties([])
                 setLoading(false)
                 return
@@ -269,7 +269,7 @@ export default function ComparePage() {
                 <span className="material-icons text-primary">info</span>
                 <div>
                     <h4 className="font-bold text-slate-900 dark:text-blue-100">Consejo del experto</h4>
-                    <p className="text-slate-600 dark:text-blue-200/70 text-sm mt-1 leading-relaxed">Al comparar apartamentos en Montevideo, ten en cuenta que los "Gastos Comunes" pueden variar significativamente según los servicios centrales y el tipo de calefacción. No olvides consultar si la propiedad cuenta con tributos domiciliarios incluidos.</p>
+                    <p className="text-slate-600 dark:text-blue-200/70 text-sm mt-1 leading-relaxed">Al comparar apartamentos en Montevideo, ten en cuenta que los &quot;Gastos Comunes&quot; pueden variar significativamente según los servicios centrales y el tipo de calefacción. No olvides consultar si la propiedad cuenta con tributos domiciliarios incluidos.</p>
                 </div>
             </div>
         </div>

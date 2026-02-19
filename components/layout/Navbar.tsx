@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
+import { Instagram, Phone, MessageCircle } from "lucide-react"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -28,21 +29,45 @@ export function Navbar() {
   }, [isHomePage])
 
   const navLinks = [
-    { href: "/search", label: "Propiedades" },
+    { href: "/search", label: "Comprar" },
+    { href: "/search?operation=alquiler", label: "Alquilar" },
     { href: "/servicios", label: "Servicios" },
-    { href: "/vender", label: "Vender" },
+    { href: "/vender", label: "Vender", className: "animate-pulse font-black text-primary" },
 
     { href: "/favorites", label: "Favoritos" },
     { href: "/blog", label: "Blog" },
-    ...(user ? [{ href: "/my-properties", label: "Mis Publicaciones" }] : []),
+    ...(user ? [{ href: "/my-properties", label: "Administración" }] : []),
   ]
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
       ? "bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 py-3 shadow-sm"
-      : "bg-transparent py-5"
+      : "bg-transparent py-0"
       }`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
+      {/* Top Contact Bar */}
+      <div className={`transition-all duration-500 overflow-hidden ${isScrolled ? "h-0 opacity-0" : "h-10 opacity-100 bg-slate-900/40 backdrop-blur-sm border-b border-white/10"}`}>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between text-white/80">
+          <div className="flex items-center gap-6">
+            <a href="tel:+59899123456" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+              <Phone className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
+              <span>+598 99 123 456</span>
+            </a>
+          </div>
+          <div className="flex items-center gap-5">
+            <a href="https://wa.me/59899123456" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+              <MessageCircle className="w-3.5 h-3.5 text-[#25D366] group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">WHATSAPP</span>
+            </a>
+            <div className="w-px h-3 bg-white/10"></div>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+              <Instagram className="w-3.5 h-3.5 text-[#E4405F] group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">INSTAGRAM</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className={`max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-300 ${isScrolled ? "" : "py-5"}`}>
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-2 group">
             <img
@@ -54,6 +79,8 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-1 text-sm font-bold uppercase tracking-wider">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== "#" && pathname.startsWith(link.href))
+              // @ts-ignore
+              const customClass = link.className || ""
               return (
                 <Link
                   key={link.href}
@@ -62,7 +89,7 @@ export function Navbar() {
                     : isScrolled
                       ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
                       : "text-white/90 hover:text-white hover:bg-white/10"
-                    }`}
+                    } ${customClass}`}
                   href={link.href}
                 >
                   {link.label}
@@ -141,13 +168,17 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div id="mobile-menu" role="navigation" aria-label="Menú móvil" className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background-dark border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
           <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider">
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Propiedades</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Comprar</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search?operation=alquiler">Alquilar</Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/servicios">Servicios</Link>
-            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender mi Propiedad</Link>
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary animate-pulse text-primary" href="/vender">Vender mi Propiedad</Link>
 
             {user && (
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Administración</Link>
             )}
+            <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/favorites">
+              Favoritos
+            </Link>
             <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/blog">
               Blog Inmobiliario
               <span className="px-2 py-0.5 bg-primary text-white text-[10px] font-black rounded-full">NUEVO</span>

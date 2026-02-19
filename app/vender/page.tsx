@@ -85,7 +85,7 @@ export default function SellPropertyPage() {
 
                                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 mb-8 text-left border border-slate-100 dark:border-slate-800">
                                         <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mb-4 italic">
-                                            "Entendemos que vender una propiedad es una decisión importante. Quédate tranquilo, estás en las mejores manos."
+                                            &quot;Entendemos que vender una propiedad es una decisión importante. Quédate tranquilo, estás en las mejores manos.&quot;
                                         </p>
                                         <ul className="space-y-3">
                                             {[

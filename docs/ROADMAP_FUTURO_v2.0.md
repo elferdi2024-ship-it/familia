@@ -1,4 +1,4 @@
-# Roadmap Futuro - DominioTotal v2.0
+# Roadmap Futuro - Barrio.uy v2.0
 ## Plan Estratégico Actualizado (3, 6 y 12 Meses)
 ## Fecha: 17 de Febrero 2026
 
@@ -306,7 +306,7 @@ Next: Publicar 2 artículos adicionales por mes.
 title: "Título del artículo"
 description: "Meta description 150-160 chars"
 date: "2026-02-20"
-author: "Equipo DominioTotal"
+author: "Equipo Barrio.uy"
 image: "/blog/article-slug.jpg"
 keywords: ["keyword1", "keyword2", "keyword3"]
 ---
@@ -541,7 +541,7 @@ Mes 3:
 ```
 Todo Premium +
 ✅ Agencia branding
-  - Custom domain (tuagencia.dominiototal.com)
+  - Custom domain (tuagencia.Barrio.uy.com)
   - Logo en propiedades
   - Colores personalizados
 
@@ -877,7 +877,7 @@ export const onLeadCreated = functions.firestore
 ```
 Sources:
 1. Catastro (propiedades vendidas)
-2. DominioTotal properties
+2. Barrio.uy properties
 3. Web scraping (InfoCasas, Mercado Libre)
 
 Features:

@@ -6,8 +6,6 @@ import {
     User,
     signOut,
     signInWithPopup,
-    signInWithRedirect,
-    getRedirectResult,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
@@ -15,6 +13,7 @@ import {
     sendEmailVerification
 } from "firebase/auth"
 import { auth } from "@/lib/firebase"
+import { Auth } from "firebase/auth"
 
 interface AuthContextType {
     user: User | null
@@ -43,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!auth || !auth.onAuthStateChanged) {
+        if (!auth) {
             setLoading(false)
             return
         }
@@ -70,12 +69,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         const provider = new GoogleAuthProvider()
         try {
-            // Reverting to popup as redirect is losing session state in this environment
-            // COOP headers in next.config.ts should now allow this to work without 'popup-closed-by-user' error
             await signInWithPopup(auth, provider)
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error signing in with Google:", error)
-            if (error.code === 'auth/unauthorized-domain') {
+            if ((error as { code?: string }).code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
             }
             throw error
@@ -83,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const loginWithEmail = async (email: string, password: string) => {
+        if (!auth) throw new Error("El servicio de autenticación no está disponible.")
         try {
             await signInWithEmailAndPassword(auth, email, password)
         } catch (error) {
@@ -92,8 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const registerWithEmail = async (email: string, password: string, name: string) => {
+        if (!auth) throw new Error("El servicio de autenticación no está disponible.")
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password)
             if (auth.currentUser) {
                 await updateProfile(auth.currentUser, {
                     displayName: name
@@ -106,11 +105,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }
     const updateUserProfile = async (profileData: { displayName?: string; photoURL?: string }) => {
-        if (!auth.currentUser) throw new Error("No hay usuario autenticado")
+        if (!auth?.currentUser) throw new Error("No hay usuario autenticado")
         try {
             await updateProfile(auth.currentUser, profileData)
-            // Trigger a refresh of the user state
-            setUser({ ...auth.currentUser })
+            if (auth.currentUser) {
+                setUser({ ...auth.currentUser } as User)
+            }
         } catch (error) {
             console.error("Error updating profile:", error)
             throw error
@@ -118,6 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const logout = async () => {
+        if (!auth) throw new Error("El servicio de autenticación no está disponible.")
         try {
             await signOut(auth)
         } catch (error) {

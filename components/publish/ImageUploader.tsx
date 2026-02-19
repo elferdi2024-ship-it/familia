@@ -19,13 +19,15 @@ export function ImageUploader({ images, onImagesChange }: ImageUploaderProps) {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const uploadFiles = async (files: FileList | null) => {
-        if (!files || files.length === 0 || !user) return
+        if (!files || files.length === 0 || !user || !storage) return
 
         setUploading(true)
         const fileList = Array.from(files)
         const progressMap: { [key: string]: number } = {}
 
         const uploadPromises = fileList.map(async (file) => {
+            if (!storage) return null
+            
             // Limit to 10MB
             if (file.size > 10 * 1024 * 1024) {
                 console.warn(`El archivo ${file.name} supera los 10MB`)

@@ -43,21 +43,47 @@ export type GuaranteeType =
 
 export const GUARANTEES: GuaranteeType[] = ["ANDA", "CGN", "Porto Seguro", "Sura", "Depósito", "Mapfre", "Santander"]
 
-export const AMENITIES = [
-    "Garage / Cochera",
-    "Seguridad 24hs",
-    "Piscina",
-    "Parrillero",
-    "Gimnasio",
-    "Aire Acondicionado",
-    "Losa Radiante",
-    "Acepta Mascotas",
-    "Terraza / Balcón",
-    "Jardín",
-    "Ascensor",
-    "Calefacción",
-    "Lavadero"
-]
+export const AMENITIES_BY_CATEGORY = {
+    "Comodidades": [
+        { name: "Aire Acondicionado", icon: "ac_unit" },
+        { name: "Calefacción", icon: "wb_sunny" },
+        { name: "Detectores de Humo", icon: "detector_smoke" },
+        { name: "Lavadero", icon: "local_laundry_service" },
+        { name: "Losa Radiante", icon: "solar_power" },
+        { name: "Acepta Mascotas", icon: "pets" },
+        { name: "Amoblado", icon: "chair" }
+    ],
+    "Entretenimiento": [
+        { name: "Gimnasio", icon: "fitness_center" },
+        { name: "Parque infantil", icon: "child_care" },
+        { name: "Piscina exterior", icon: "pool" },
+        { name: "Piscina interior", icon: "pool" },
+        { name: "Sauna", icon: "spa" },
+        { name: "Parrillero", icon: "outdoor_grill" },
+        { name: "Sala de Cine", icon: "movie" },
+        { name: "Jacuzzi", icon: "hot_tub" }
+    ],
+    "Instalaciones": [
+        { name: "Ascensor", icon: "elevator" },
+        { name: "Wifi", icon: "wifi" },
+        { name: "Seguridad 24hs", icon: "security" },
+        { name: "Garage / Cochera", icon: "directions_car" },
+        { name: "Bicicletero", icon: "pedal_bike" },
+        { name: "Portería", icon: "engineering" }
+    ],
+    "Otras": [
+        { name: "TV", icon: "tv" },
+        { name: "Terraza / Balcón", icon: "balcony" },
+        { name: "Jardín", icon: "yard" },
+        { name: "Vigilancia", icon: "visibility" },
+        { name: "Alarma", icon: "notifications_active" },
+        { name: "Vidriera", icon: "window" },
+        { name: "Hogar a Leña", icon: "fireplace" }
+    ]
+}
+
+export const AMENITIES = Object.values(AMENITIES_BY_CATEGORY).flat().map(a => a.name)
+
 
 export type UtilityStatus = {
     saneamiento: "conectado" | "pozo" | "pendiente"
@@ -177,7 +203,7 @@ export const PROPERTIES: Property[] = [
             "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1600566752355-35792bedcfe1?q=80&w=2000&auto=format&fit=crop"
         ],
-        amenities: ["Portería 24hs", "Losa Radiante", "Ascensor", "Garage / Cochera", "Terraza / Balcón", "Jacuzzi", "Vigilancia"],
+        amenities: ["Portería", "Losa Radiante", "Ascensor", "Garage / Cochera", "Terraza / Balcón", "Vigilancia", "Detectores de Humo", "Wifi", "Aire Acondicionado"],
         views: 342,
         publishedAt: "2026-02-15T09:00:00Z",
         updatedAt: "2026-02-17T10:30:00Z",
@@ -410,7 +436,7 @@ export const PROPERTIES: Property[] = [
             "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?q=80&w=2000&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2000&auto=format&fit=crop"
         ],
-        amenities: ["Piscina", "Gimnasio", "Seguridad 24hs", "Garage / Cochera", "Terraza / Balcón", "Aire Acondicionado", "Servicio de Playa", "Sauna"],
+        amenities: ["Piscina exterior", "Piscina interior", "Gimnasio", "Seguridad 24hs", "Garage / Cochera", "Terraza / Balcón", "Aire Acondicionado", "Sauna", "Wifi", "TV", "Detectores de Humo"],
         views: 410,
         publishedAt: "2026-01-15T12:00:00Z",
         updatedAt: "2026-02-17T12:00:00Z",

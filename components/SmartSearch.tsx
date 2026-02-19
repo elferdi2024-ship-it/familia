@@ -167,7 +167,7 @@ export function SmartSearch() {
 
                             {suggestions.length === 0 && query.length > 1 && !loading && (
                                 <div className="p-4 text-center text-sm text-slate-400">
-                                    No se encontraron resultados para "{query}"
+                                    No se encontraron resultados para &quot;{query}&quot;
                                 </div>
                             )}
 

@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { db } from "@/lib/firebase"
 import { doc, getDoc, addDoc, collection, serverTimestamp, updateDoc, increment } from "firebase/firestore"
-import { Property, formatPrice } from "@/lib/data"
+import { Property, formatPrice, AMENITIES_BY_CATEGORY } from "@/lib/data"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { FloorplanViewer } from "@/components/FloorplanViewer"
 import { NeighborhoodMap } from "@/components/NeighborhoodMap"
@@ -240,16 +240,33 @@ export default function PropertyClient({ initialProperty, initialAgentInfo }: Pr
 
                         {/* Amenities */}
                         <div className="p-8 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800">
-                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-8 text-center">Comodidades y Servicios</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
-                                {property.amenities.map((amenity, i) => (
-                                    <div key={i} className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                                            <span className="material-icons text-primary text-sm">check</span>
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-10 text-center">Amenidades y Servicios</h3>
+                            <div className="space-y-12">
+                                {Object.entries(AMENITIES_BY_CATEGORY).map(([category, items]) => {
+                                    // Filter category items to show only those present in the property
+                                    const propertyAmenities = items.filter(item => property.amenities.includes(item.name));
+                                    if (propertyAmenities.length === 0) return null;
+
+                                    return (
+                                        <div key={category} className="space-y-6">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                                                <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 whitespace-nowrap">{category}</h4>
+                                                <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                                            </div>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                {propertyAmenities.map((amenity, i) => (
+                                                    <div key={i} className="flex items-center gap-4 group">
+                                                        <div className="w-10 h-10 rounded-[12px] bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
+                                                            <span className="material-icons text-primary/80 group-hover:text-primary transition-colors text-lg">{amenity.icon}</span>
+                                                        </div>
+                                                        <span className="text-slate-700 dark:text-slate-300 font-bold text-sm group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{amenity.name}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                        <span className="text-slate-700 dark:text-slate-300 font-medium text-sm">{amenity}</span>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
 

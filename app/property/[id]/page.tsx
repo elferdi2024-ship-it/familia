@@ -84,7 +84,7 @@ export default async function PropertyPage({ params }: { params: any }) {
                 <div className="p-6 bg-slate-50 border border-slate-100 rounded-3xl text-left max-w-md w-full mb-8">
                     <h3 className="text-xs font-black uppercase text-slate-400 mb-3 tracking-widest">Debug Console (Live)</h3>
                     <ul className="text-[10px] font-mono space-y-1 text-slate-600">
-                        <li>• Params ID: "{id}"</li>
+                        <li>• Params ID: &quot;{id}&quot;</li>
                         <li>• Error Code: {errorReason || 'UNKNOWN'}</li>
                         <li>• DB Connector: {db ? 'ONLINE' : 'OFFLINE'}</li>
                         {isGhostRecord && <li className="text-red-500 font-bold">• GHOST RECORD DETECTED</li>}

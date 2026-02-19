@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { db, auth } from "@/lib/firebase"
-import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Firestore } from "firebase/firestore"
 import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
@@ -17,12 +17,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
 import {
     Dialog,
     DialogContent,
@@ -98,6 +92,7 @@ export default function MyPropertiesPage() {
             setProfileName(user.displayName || "")
             setProfilePhoto(user.photoURL || "")
             const fetchProfile = async () => {
+                if (!db) return
                 const docSnap = await getDoc(doc(db, "users", user.uid))
                 if (docSnap.exists()) {
                     const data = docSnap.data()
@@ -669,7 +664,7 @@ export default function MyPropertiesPage() {
                                         animate={{ opacity: 1, scale: 1 }}
                                         className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-6 flex flex-col sm:flex-row gap-6 hover:shadow-2xl hover:shadow-slate-200/50 transition-all group"
                                     >
-                                        <div className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0">
+                                        <Link href={`/property/${property.id}`} className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0 cursor-pointer block">
                                             <img src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Home" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                             <div className="absolute bottom-4 left-4">
@@ -678,10 +673,10 @@ export default function MyPropertiesPage() {
                                                     {property.status === 'active' ? 'ONLINE' : 'PAUSADA'}
                                                 </Badge>
                                             </div>
-                                        </div>
+                                        </Link>
 
                                         <div className="flex-grow flex flex-col justify-between py-1">
-                                            <div>
+                                            <Link href={`/property/${property.id}`} className="block cursor-pointer">
                                                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors truncate">{property.neighborhood}</h3>
                                                 <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">{property.type} • {property.operation}</p>
                                                 <div className="mt-4 flex items-center gap-4 text-slate-500">
@@ -698,7 +693,7 @@ export default function MyPropertiesPage() {
                                                         <span className="text-xs font-black">{property.views || 0}</span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </Link>
 
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">

@@ -53,7 +53,7 @@ export function BetaTesterGuide() {
                                 <div className="mt-0.5 bg-blue-100 text-blue-600 p-1 rounded-md">
                                     <CheckCircle2 className="h-4 w-4" />
                                 </div>
-                                <span>**Pipeline de Gestión**: Cambia el estado de tus interesados desde "Interesado" hasta "Vendido".</span>
+                                <span>**Pipeline de Gestión**: Cambia el estado de tus interesados desde &quot;Interesado&quot; hasta &quot;Vendido&quot;.</span>
                             </li>
                             <li className="flex items-start gap-3 text-sm font-medium">
                                 <div className="mt-0.5 bg-blue-100 text-blue-600 p-1 rounded-md">
