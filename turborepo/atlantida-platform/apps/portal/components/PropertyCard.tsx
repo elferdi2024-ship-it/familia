@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Button } from "@repo/ui"
+import { Button, ThumbnailCarousel } from "@repo/ui"
 import { Badge } from "@repo/ui"
 import { MapPin, Bed, Ruler, Heart, Camera, ArrowRight } from "lucide-react"
 import Link from "next/link"
@@ -17,6 +17,7 @@ interface PropertyCardProps {
     bedrooms: number
     area: number
     imageUrl?: string
+    images?: string[]
     type: "Venta" | "Alquiler"
     featured?: boolean
 }
@@ -30,6 +31,7 @@ export function PropertyCard({
     bedrooms,
     area,
     imageUrl,
+    images,
     type,
     featured
 }: PropertyCardProps) {
@@ -44,18 +46,20 @@ export function PropertyCard({
     const favorited = isFavorite(String(id))
     const comparing = isInCompare(String(id))
 
+    // Fallback/Mock for multi-images to demonstrate the carousel if the API only sends one
+    const allImages = images?.length ? images : imageUrl ? [
+        imageUrl,
+        `https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop`,
+        `https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop`
+    ] : []
+
     return (
         <div className="group overflow-hidden rounded-2xl border bg-white dark:bg-slate-900 shadow-sm transition-all hover:shadow-2xl hover:-translate-y-1">
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
-                {imageUrl ? (
-                    <Image
-                        src={imageUrl}
-                        alt={title}
-                        fill
-                        className={`object-cover transition-all duration-700 group-hover:scale-110 ${imageLoading ? 'blur-lg grayscale' : 'blur-0 grayscale-0'}`}
-                        onLoadingComplete={() => setImageLoading(false)}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+                {allImages.length > 0 ? (
+                    <div className="absolute inset-0 w-full h-full">
+                        <ThumbnailCarousel images={allImages} altText={title} />
+                    </div>
                 ) : (
                     <div className="flex h-full items-center justify-center">
                         <Camera className="h-8 w-8 text-muted-foreground/40" />

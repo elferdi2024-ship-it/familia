@@ -7,19 +7,19 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-1">
                         <div className="mb-6">
-                            <img src="/barrio-logo.png" alt="Barrio.uy" className="h-10 w-auto object-contain" />
+                            <img src="/logo-barrio-alpha.png" alt="Barrio.uy" className="h-10 w-auto object-contain mix-blend-multiply" />
                         </div>
                         <p className="text-sm text-slate-500 font-medium leading-relaxed">
                             Barrio.uy Soluciones Inmobiliarias. Líderes en el mercado inmobiliario uruguayo. Conectando personas con su lugar ideal.
                         </p>
                         <div className="flex gap-4 mt-8">
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="#">
+                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
                                 <span className="material-icons text-xl">facebook</span>
                             </Link>
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="#">
+                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
                                 <span className="material-icons text-xl">camera_alt</span>
                             </Link>
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="#">
+                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
                                 <span className="material-icons text-xl">alternate_email</span>
                             </Link>
                         </div>
@@ -31,23 +31,23 @@ export function Footer() {
                             <li><Link className="hover:text-primary transition-colors" href="/search">Venta</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="/search">Alquiler</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="/servicios">Servicios</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Proyectos</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Inmobiliarias</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/proyectos">Proyectos</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/inmobiliarias">Inmobiliarias</Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-xs">Empresa</h4>
                         <ul className="space-y-4 text-sm text-slate-500 font-medium">
-                            <li><Link className="hover:text-primary transition-colors" href="#">Sobre Nosotros</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Contacto</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/nosotros">Sobre Nosotros</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/#contacto">Contacto</Link></li>
                             <li>
                                 <Link className="hover:text-primary transition-colors flex items-center gap-2" href="/blog">
                                     Blog Inmobiliario
                                     <span className="px-1.5 py-0.5 bg-primary text-white text-[8px] font-black rounded-md animate-pulse">NUEVO</span>
                                 </Link>
                             </li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Invertir</Link></li>
+                            <li><Link className="hover:text-primary transition-colors" href="/invertir">Invertir</Link></li>
                         </ul>
                     </div>
 
@@ -73,9 +73,9 @@ export function Footer() {
                         </p>
                     </div>
                     <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        <Link className="hover:text-primary" href="#">Privacidad</Link>
-                        <Link className="hover:text-primary" href="#">Términos</Link>
-                        <Link className="hover:text-primary" href="#">Cookies</Link>
+                        <Link className="hover:text-primary" href="/privacidad">Privacidad</Link>
+                        <Link className="hover:text-primary" href="/terminos">Términos</Link>
+                        <Link className="hover:text-primary" href="/cookies">Cookies</Link>
                     </div>
                 </div>
             </div>

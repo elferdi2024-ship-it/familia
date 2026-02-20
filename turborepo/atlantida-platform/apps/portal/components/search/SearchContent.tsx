@@ -5,13 +5,13 @@ import Image from "next/image"
 import { useState, useEffect, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 import geoData from "@/data/uruguay-geo.json"
-import { Badge } from "@repo/ui"
-import { Button } from "@repo/ui"
+import { Badge, Button, ThumbnailCarousel } from "@repo/ui"
 import { FavoriteButton } from "@/components/FavoriteButton"
 import { useSavedSearches } from "@/contexts/SavedSearchesContext"
 import { PropertyGridSkeleton } from "@/components/Skeletons"
 import { useComparison } from "@/contexts/ComparisonContext"
 import { searchClient } from "@repo/lib/algolia"
+import { motion, AnimatePresence } from "framer-motion"
 import { Property, formatPrice, PROPERTIES } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
 import { GoogleMap, useJsApiLoader, OverlayView, InfoWindowF } from "@react-google-maps/api"
@@ -91,7 +91,7 @@ export function SearchContent({
             }
 
             if (filters.operation) {
-                results = results.filter(p => p.operation === filters.operation)
+                results = results.filter(p => p.operation.toLowerCase() === filters.operation.toLowerCase())
             }
 
             if (filters.propertyTypes.length > 0) {
@@ -279,12 +279,12 @@ export function SearchContent({
 
                     <div className="flex-1 flex overflow-hidden">
                         {/* Results Grid */}
-                        <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-4 md:p-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
+                        <section className={`${showMap ? 'hidden lg:block lg:w-1/2' : 'w-full'} overflow-y-auto p-4 md:p-8 pb-24 lg:pb-8 bg-slate-50/30 dark:bg-slate-900/10 custom-scrollbar`}>
                             <div className={`grid grid-cols-1 ${!showMap ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2'} gap-6`}>
                                 {isLoading ? (
                                     <PropertyGridSkeleton count={6} />
                                 ) : properties.length === 0 ? (
-                                    <div className="col-span-full py-20 text-center bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
+                                    <motion.div layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="col-span-full py-20 text-center bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
                                         <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
                                             <Search className="h-10 w-10 text-slate-300" />
                                         </div>
@@ -300,37 +300,48 @@ export function SearchContent({
                                         >
                                             Limpiar todos los filtros
                                         </Button>
-                                    </div>
+                                    </motion.div>
                                 ) : (
-                                    properties.map(p => (
-                                        <Link key={p.id} href={`/property/${p.id}`} className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
-                                            <div className="aspect-[4/3] relative overflow-hidden">
-                                                <Image fill src={p.images[0] || '/placeholder.jpg'} alt={p.title || 'Propiedad'} className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                                                <div className="absolute top-4 left-4">
-                                                    {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
-                                                </div>
-                                                <div className="absolute bottom-4 right-4 h-10 w-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
-                                                    <FavoriteButton propertyId={p.id} className="text-white" />
-                                                </div>
-                                            </div>
-                                            <div className="p-6">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{formatPrice(p.price, p.currency)}</h3>
-                                                    {marketStats[p.id] && (
-                                                        <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${marketStats[p.id].differencePercentage < -5 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
-                                                            {marketStats[p.id].status === 'Very Competitive' || marketStats[p.id].status === 'Competitive' ? 'Oportunidad' : 'Precio Mercado'}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
-                                                <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
-                                                <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
-                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms || 0} Dorm.</span>
-                                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area || 0}m²</span>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    ))
+                                    <AnimatePresence mode="popLayout">
+                                        {properties.map(p => (
+                                            <motion.div
+                                                layout
+                                                key={p.id}
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.9 }}
+                                                transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
+                                            >
+                                                <Link href={`/property/${p.id}`} className="group block h-full bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+                                                    <div className="aspect-[4/3] relative overflow-hidden">
+                                                        <ThumbnailCarousel images={p.images && p.images.length > 0 ? p.images : ['/placeholder.jpg']} altText={p.title || 'Propiedad'} />
+                                                        <div className="absolute top-4 left-4 z-20 pointer-events-none">
+                                                            {p.badge && <span className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-slate-900 uppercase shadow-xl">{p.badge}</span>}
+                                                        </div>
+                                                        <div className="absolute bottom-4 right-4 h-10 w-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 z-20 transition-colors">
+                                                            <FavoriteButton propertyId={p.id} className="text-white w-5 h-5" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="p-6">
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">{formatPrice(p.price, p.currency)}</h3>
+                                                            {marketStats[p.id] && (
+                                                                <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${marketStats[p.id].differencePercentage < -5 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                                                                    {marketStats[p.id].status === 'Very Competitive' || marketStats[p.id].status === 'Competitive' ? 'Oportunidad' : 'Precio Mercado'}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <p className="text-sm font-bold text-slate-600 dark:text-slate-400 truncate mb-1">{p.title}</p>
+                                                        <p className="text-xs text-slate-400 mb-6">{p.neighborhood}, {p.city}</p>
+                                                        <div className="flex gap-4 text-slate-500 text-[10px] font-black uppercase tracking-widest border-t pt-5 border-slate-50 dark:border-slate-800">
+                                                            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.bedrooms || 0} Dorm.</span>
+                                                            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary/40"></span>{p.area || 0}m²</span>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
                                 )}
                             </div>
                         </section>

@@ -43,3 +43,13 @@ matcher: [
 2. Dominio no permitido en `next.config.js`.
 3. URL mal formada pasada al componente.
 **Solución:** Verificar que el dominio de la imagen esté en `images.remotePatterns` en `next.config.ts`. Usar imágenes de fallback si la URL falla.
+## 6. Error de Hidratación / Build con `useSearchParams`
+**Síntoma:** Error `useSearchParams() should be wrapped in a suspense boundary` durante el build o error de hidratación en consola.
+**Causa:** El uso de `useSearchParams` en componentes del layout (como la Navbar) o páginas estáticas sin un wrapper de `Suspense` causa que Next.js falle al intentar pre-renderizar la página.
+**Solución:** Envolver el componente que usa el hook (o la Navbar entera en el layout) en un bloque `<Suspense>`.
+```tsx
+<Suspense fallback={<div className="h-16" />}>
+  <Navbar />
+</Suspense>
+```
+También es necesario usar `suppressHydrationWarning` en la etiqueta `<html>` si se usa `next-themes`.

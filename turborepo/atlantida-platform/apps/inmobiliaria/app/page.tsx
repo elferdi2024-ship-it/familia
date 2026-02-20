@@ -6,8 +6,10 @@ import Image from "next/image"
 import { Search, Camera, Heart, Bed, Ruler, MapPin, ArrowRight, BookOpen, TrendingUp } from "lucide-react"
 import { CompareBar } from "@/components/CompareBar"
 import { FavoriteButton } from "@/components/FavoriteButton"
+import { MagneticWrapper, RevealText, TiltCard } from "@repo/ui"
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data"
 import { POSTS } from "@/data/posts"
+import { Typewriter } from "@/components/ui/typewriter"
 
 // ───── Page Component ─────
 
@@ -51,34 +53,46 @@ export default function HomePage() {
   return (
     <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-32 md:pb-0">
 
-      {/* Hero Section v4 - AUTHORITY & DATA */}
-      <section className="relative h-[75vh] min-h-[600px] md:h-[85vh] md:min-h-[700px] flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            alt="Montevideo Hub"
-            fill
-            priority
-            className="object-cover"
-            src="/portada.webp"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background-light dark:to-background-dark"></div>
+      {/* Hero Section v5 - WOW FACTOR */}
+      <section className="relative h-screen min-h-[800px] flex flex-col items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover scale-105"
+          >
+            <source src="/flotantes-mibarrio.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/90"></div>
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl px-4 md:px-6 text-center text-white">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-md border border-white/20">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Más de 12.800 propiedades activas en Uruguay
+        <div className="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center text-white mt-12 md:mt-24 flex flex-col items-center">
+          <div className="mb-6 md:mb-8 inline-flex items-center gap-3 rounded-full bg-white/5 px-4 py-2 md:px-5 md:py-2.5 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-white backdrop-blur-md border border-white/10 shadow-2xl skew-y-1 hover:skew-y-0 transition-transform">
+            <span className="flex h-2 w-2 md:h-2.5 md:w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            El Nuevo Estándar en Bienes Raíces
           </div>
 
-          <h1 className="mb-6 text-4xl font-serif font-black tracking-tight text-white md:text-7xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-            Tu Inmobiliaria de <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-emerald-300">Confianza en Uruguay</span>
+          <h1 className="mb-6 md:mb-10 text-4xl sm:text-5xl font-display font-black tracking-tight text-white md:text-[5rem] lg:text-[7rem] leading-[1.1] md:leading-[1.1] drop-shadow-2xl flex flex-col items-center min-h-[120px] md:min-h-[220px]">
+            <span className="text-center px-4">¿Qué estás buscando hoy? 🏠</span>
+            <span className="mt-3 md:mt-6 inline-block px-8 md:px-12 py-2 md:py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-emerald-400 shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
+              <Typewriter
+                text={["Alquilar", "Comprar", "Vender"]}
+                speed={70}
+                deleteSpeed={40}
+                waitTime={2000}
+              />
+            </span>
           </h1>
 
-          <p className="mb-10 text-lg font-medium text-slate-200 md:text-xl">
-            Asesoramiento personalizado para comprar, vender o alquilar propiedades de alto nivel.
-          </p>
+          <RevealText
+            text="Comprar, vender o alquilar propiedades de alto nivel nunca fue tan inmersivo."
+            as="p"
+            className="mb-8 md:mb-12 text-base md:text-lg font-medium text-slate-300 max-w-2xl mx-auto px-4"
+            duration={0.6}
+            delay={0.6}
+          />
 
           <div className="w-full max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-2 md:p-3 rounded-2xl md:rounded-full shadow-2xl border border-white/20">
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-1">
@@ -90,7 +104,7 @@ export default function HomePage() {
                     key={op}
                     onClick={() => setOperation(op)}
                     className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all ${operation === op
-                      ? "bg-white dark:bg-slate-700 shadow-sm text-primary"
+                      ? "bg-white dark:bg-slate-700 shadow-sm text-primary dark:text-white"
                       : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                       }`}
                   >
@@ -111,19 +125,21 @@ export default function HomePage() {
               </div>
 
               {/* Botón de acción principal */}
-              <Link
-                href={`/search?${searchParams.toString()}`}
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 md:py-3 rounded-xl md:rounded-full flex items-center justify-center gap-2 font-bold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95 shrink-0"
-              >
-                <Search className="h-4 w-4 md:hidden" />
-                <span className="uppercase tracking-widest text-xs md:text-sm">Buscar</span>
-                <ArrowRight className="h-4 w-4 hidden md:block" />
-              </Link>
+              <MagneticWrapper>
+                <Link
+                  href={`/search?${searchParams.toString()}`}
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 md:py-3 rounded-xl md:rounded-full flex items-center justify-center gap-2 font-bold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95 shrink-0"
+                >
+                  <Search className="h-4 w-4 md:hidden" />
+                  <span className="uppercase tracking-widest text-xs md:text-sm">Buscar</span>
+                  <ArrowRight className="h-4 w-4 hidden md:block" />
+                </Link>
+              </MagneticWrapper>
             </div>
           </div>
 
           {/* Social Proof / System Live Status Mini UX */}
-          <div className="mt-10 flex flex-wrap justify-center items-center gap-6 md:gap-12 animate-in fade-in duration-1000 delay-300">
+          {/* <div className="mt-10 flex flex-wrap justify-center items-center gap-6 md:gap-12 animate-in fade-in duration-1000 delay-300">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
               <span className="text-sm font-black uppercase tracking-widest opacity-70">Exclusividad MiBarrio.uy</span>
@@ -140,7 +156,7 @@ export default function HomePage() {
               <span className="text-2xl font-black text-emerald-500">15+</span>
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Años de Trayectoria</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -233,145 +249,130 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tendencias Section */}
-      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 md:mb-8 gap-2">
+      {/* Tendencias Section - BENTO GRID */}
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-b border-primary/5">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 md:mb-16 gap-4">
           <div>
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">Tendencias</h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium text-sm md:text-base">Las oportunidades más destacadas de la semana</p>
+            <RevealText as="h2" text="Tendencias" className="text-4xl md:text-5xl lg:text-6xl font-serif font-black tracking-tighter" />
+            <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium text-lg">Espacios únicos seleccionados esta semana</p>
           </div>
-          <Link className="text-primary font-bold text-sm flex items-center gap-1 hover:underline flex-shrink-0" href="/search">
-            Ver todas <span className="material-icons text-sm">arrow_forward</span>
-          </Link>
+          <MagneticWrapper>
+            <Link className="px-6 py-3 rounded-full border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex-shrink-0" href="/search">
+              Explorar Portfolio <span className="material-icons text-sm">arrow_forward</span>
+            </Link>
+          </MagneticWrapper>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          {/* Card 1 */}
-          <Link href="/property/1" className="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
-            <div className="relative h-48 lg:h-56 overflow-hidden">
-              <Image
-                alt="Property 1"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEJL59RDkUIGnT_zx8qvtK149oNbqK-iGLf-hD98LcRBkKWlWomv_W8zISMZFidif7IRaPeTsuBL6LsESki71K0EilOmQzzRCDlcbw_JTLPhaFdUZHaunqJWURtlX8jhzKpCGYhrnwUEAZjBuV1v85D_5XFIOvPDhO9_HSxWmPY49j7vBkgSkZpx7junf5SAvdenu7SZgWgAmtRJlmf9QuhLwlV5QtaYbnjbc3NWUNPyRs92psFkg3uNLFx5SYCGqFwux7XocDHArR"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-primary text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Bajó de Precio</span>
-              </div>
-              <FavoriteButton propertyId="1" className="absolute top-4 right-4" />
-            </div>
-            <div className="p-5">
-              <div className="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 245.000</div>
-              <h3 className="font-bold text-lg leading-tight mb-2 line-clamp-1">Penthouse en Pocitos Nuevo</h3>
-              <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">bed</span> 2</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">shower</span> 2</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">square_foot</span> 85m²</span>
-              </div>
-              <div className="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
-                  <span className="material-icons text-xs">place</span> Montevideo
-                </span>
-                <span className="text-[10px] font-bold text-slate-400 italic">Hoy 14:20</span>
-              </div>
-            </div>
-          </Link>
 
-          {/* Card 2 */}
-          <Link href="/property/2" className="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
-            <div className="relative h-48 overflow-hidden">
-              <Image
-                alt="Property 2"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhNgn4o9KHFe6kCK3VPbGgmCNk_y9ReURtDqsHiNql-LJjibPWWhU8bhazbwM6feV965D2d4iDY8LF3Hqc3NdaP4mFryfu0X1mJeMysodlsi6jqJJKPsU-rs_-9srHS23FR-bV2oSwxA6_hVtg-RwzASCNc9XDVzc0sV1pfwZXyWslZf4uslSuFUyxmvxHYdeMj-bfrL_MwC7gjU1nYCcZO2EJEQaHlxYX8LV5bnPHjweEn6JyOvRuBK-Uvbf0iwJfPJI3vn1RSeTh"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-orange-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Oportunidad</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[340px] md:auto-rows-[380px] gap-4 md:gap-6">
+          {/* Card 1 - Highlight (Col 2, Row 2) */}
+          <TiltCard className="md:col-span-2 lg:col-span-2 md:row-span-2 group bg-slate-100 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all border border-slate-200/50 dark:border-slate-800/50">
+            <Link href="/property/1" className="block w-full h-full relative">
+              <div className="absolute inset-0">
+                <Image
+                  alt="Property 1"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEJL59RDkUIGnT_zx8qvtK149oNbqK-iGLf-hD98LcRBkKWlWomv_W8zISMZFidif7IRaPeTsuBL6LsESki71K0EilOmQzzRCDlcbw_JTLPhaFdUZHaunqJWURtlX8jhzKpCGYhrnwUEAZjBuV1v85D_5XFIOvPDhO9_HSxWmPY49j7vBkgSkZpx7junf5SAvdenu7SZgWgAmtRJlmf9QuhLwlV5QtaYbnjbc3NWUNPyRs92psFkg3uNLFx5SYCGqFwux7XocDHArR"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent"></div>
               </div>
-              <FavoriteButton propertyId="2" className="absolute top-4 right-4" />
-            </div>
-            <div className="p-5">
-              <div className="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 580.000</div>
-              <h3 className="font-bold text-lg leading-tight mb-2 line-clamp-1">Casa Minimalista La Barra</h3>
-              <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">bed</span> 4</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">shower</span> 3</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">square_foot</span> 210m²</span>
+              <div className="absolute top-6 left-6 z-10">
+                <span className="bg-white/95 text-slate-900 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full backdrop-blur-md shadow-sm">Exclusivo</span>
               </div>
-              <div className="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
-                  <span className="material-icons text-xs">place</span> Punta del Este
-                </span>
-                <span className="text-[10px] font-bold text-slate-400 italic">Hoy 11:05</span>
+              <div className="absolute top-6 right-6 z-10 bg-white/10 backdrop-blur-md rounded-full shadow-lg">
+                <FavoriteButton propertyId="1" className="relative group-hover:scale-110 transition-transform" />
               </div>
-            </div>
-          </Link>
+              <div className="absolute bottom-0 inset-x-0 p-8 z-10 text-white">
+                <div className="text-3xl font-black mb-2 opacity-90 drop-shadow-md">USD 245.000</div>
+                <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-4 drop-shadow-lg group-hover:text-primary transition-colors">Penthouse en Pocitos Nuevo</h3>
+                <div className="flex items-center gap-6 text-sm font-bold opacity-80 backdrop-blur-sm bg-black/20 px-4 py-2 rounded-2xl w-max">
+                  <span className="flex items-center gap-1.5"><span className="material-icons text-[18px]">bed</span> 2</span>
+                  <span className="flex items-center gap-1.5"><span className="material-icons text-[18px]">shower</span> 2</span>
+                  <span className="flex items-center gap-1.5"><span className="material-icons text-[18px]">square_foot</span> 85m²</span>
+                </div>
+              </div>
+            </Link>
+          </TiltCard>
 
-          {/* Card 3 */}
-          <Link href="/property/3" className="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
-            <div className="relative h-48 overflow-hidden">
-              <Image
-                alt="Property 3"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC67YJs7ZtyNE-aVoI_g6d-pFIVB7iEcoQwUGCuZDnckFYqGia63pNcIgoF42QruuhmdL9N2LhxoexeCOYwoyLR2_to3mPFzqszIOnNeippVJAfKObPkULgJBxCsii96Ft81Qffu5yjqu3hWa-KGm9tNESWcf4bSZvUaG6QrWM6VJSmioaU7SkWXANKh4k9BRXNgFpn7Isxz4s8PHRQ9gGoHJNgW3co8lY6Rw5VHq3rZen_pBMRz-XH3VSFfAYrSMoEeGyMMT8PDTKp"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-primary text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Bajó de Precio</span>
+          {/* Card 2 - Normal (Col 1, Row 1) */}
+          <TiltCard className="md:col-span-1 lg:col-span-1 md:row-span-1 group bg-slate-100 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all border border-slate-200/50 dark:border-slate-800/50">
+            <Link href="/property/2" className="block w-full h-full relative">
+              <div className="absolute inset-0">
+                <Image
+                  alt="Property 2"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhNgn4o9KHFe6kCK3VPbGgmCNk_y9ReURtDqsHiNql-LJjibPWWhU8bhazbwM6feV965D2d4iDY8LF3Hqc3NdaP4mFryfu0X1mJeMysodlsi6jqJJKPsU-rs_-9srHS23FR-bV2oSwxA6_hVtg-RwzASCNc9XDVzc0sV1pfwZXyWslZf4uslSuFUyxmvxHYdeMj-bfrL_MwC7gjU1nYCcZO2EJEQaHlxYX8LV5bnPHjweEn6JyOvRuBK-Uvbf0iwJfPJI3vn1RSeTh"
+                  sizes="25vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
               </div>
-              <FavoriteButton propertyId="3" className="absolute top-4 right-4" />
-            </div>
-            <div className="p-5">
-              <div className="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 168.000</div>
-              <h3 className="font-bold text-lg leading-tight mb-2 line-clamp-1">Apartamento Cordón Sur</h3>
-              <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">bed</span> 1</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">shower</span> 1</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">square_foot</span> 45m²</span>
+              <div className="absolute top-6 left-6 z-10">
+                <span className="bg-orange-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">Oportunidad</span>
               </div>
-              <div className="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
-                  <span className="material-icons text-xs">place</span> Montevideo
-                </span>
-                <span className="text-[10px] font-bold text-slate-400 italic">Ayer</span>
+              <div className="absolute bottom-0 inset-x-0 p-6 z-10 text-white">
+                <div className="text-xl font-black mb-1 drop-shadow-sm">USD 580.000</div>
+                <h3 className="font-bold text-lg leading-tight mb-3 line-clamp-2">Casa Minimalista en La Barra con Piscina</h3>
+                <div className="flex items-center gap-3 text-xs font-bold opacity-80 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl w-fit">
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">bed</span> 4</span>
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">shower</span> 3</span>
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">square_foot</span> 210m²</span>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </TiltCard>
 
-          {/* Card 4 */}
-          <Link href="/property/4" className="group bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-primary/5">
-            <div className="relative h-48 overflow-hidden">
-              <Image
-                alt="Property 4"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZNRkuH34MD4uYE56vWNPE8LTxrq4Mze_JxKxRp-wRiC29veMX3Qju4BpQNga_XL-Sm93009bpOyxtmvkDGN0cI3A4JPRniG0BpJwj3cVNbnd_S2sYTCgofXvwD5_689UEGiNLij4c5sRwLP5Ipf9YpW3gy42WbIqWzrkzuPAzSPHc4Tf2Dws99TlwBo35H-z4jxmnAlOk_GtEFJzjkxnk_l7zltr0VTFuLCyFQrbiemdmNvtV78g_XmMX6-qXD4JX1ghviIUDot41"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
-              <div className="absolute top-4 left-4">
-                <span className="bg-green-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">Recién Ingresado</span>
+          {/* Card 3 - Normal (Col 1, Row 1) */}
+          <TiltCard className="md:col-span-1 lg:col-span-1 md:row-span-1 group bg-slate-100 dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all border border-slate-200/50 dark:border-slate-800/50">
+            <Link href="/property/3" className="block w-full h-full relative">
+              <div className="absolute inset-0">
+                <Image
+                  alt="Property 3"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out grayscale-[0.2] group-hover:grayscale-0"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC67YJs7ZtyNE-aVoI_g6d-pFIVB7iEcoQwUGCuZDnckFYqGia63pNcIgoF42QruuhmdL9N2LhxoexeCOYwoyLR2_to3mPFzqszIOnNeippVJAfKObPkULgJBxCsii96Ft81Qffu5yjqu3hWa-KGm9tNESWcf4bSZvUaG6QrWM6VJSmioaU7SkWXANKh4k9BRXNgFpn7Isxz4s8PHRQ9gGoHJNgW3co8lY6Rw5VHq3rZen_pBMRz-XH3VSFfAYrSMoEeGyMMT8PDTKp"
+                  sizes="25vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
               </div>
-              <FavoriteButton propertyId="4" className="absolute top-4 right-4" />
-            </div>
-            <div className="p-5">
-              <div className="text-[22px] font-extrabold text-primary mb-1 tracking-tight">USD 315.000</div>
-              <h3 className="font-bold text-lg leading-tight mb-2 line-clamp-1">Loft de Diseño en Ciudad Vieja</h3>
-              <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">bed</span> 1</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">shower</span> 1</span>
-                <span className="flex items-center gap-1"><span className="material-icons text-xs">square_foot</span> 120m²</span>
+              <div className="absolute bottom-0 inset-x-0 p-6 z-10 text-white">
+                <div className="text-xl font-black mb-1 drop-shadow-sm">USD 168.000</div>
+                <h3 className="font-bold text-lg leading-tight mb-3 line-clamp-1">Apartamento Cordón Sur</h3>
+                <div className="flex items-center gap-3 text-xs font-bold opacity-80 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl w-fit">
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">bed</span> 1</span>
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">shower</span> 1</span>
+                  <span className="flex items-center gap-1"><span className="material-icons text-[14px]">square_foot</span> 45m²</span>
+                </div>
               </div>
-              <div className="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between">
-                <span className="text-xs text-slate-400 font-semibold uppercase tracking-widest flex items-center gap-1">
-                  <span className="material-icons text-xs">place</span> Montevideo
-                </span>
-                <span className="text-[10px] font-bold text-slate-400 italic">Hace 2 horas</span>
+            </Link>
+          </TiltCard>
+
+          {/* Card 4 - Wide (Col 2, Row 1) */}
+          <TiltCard className="md:col-span-3 lg:col-span-2 md:row-span-1 group bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-slate-200/50 dark:border-slate-800/50">
+            <Link href="/property/4" className="block w-full h-full relative flex flex-col md:flex-row">
+              <div className="relative w-full md:w-[45%] h-56 md:h-full shrink-0 overflow-hidden">
+                <Image
+                  alt="Property 4"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZNRkuH34MD4uYE56vWNPE8LTxrq4Mze_JxKxRp-wRiC29veMX3Qju4BpQNga_XL-Sm93009bpOyxtmvkDGN0cI3A4JPRniG0BpJwj3cVNbnd_S2sYTCgofXvwD5_689UEGiNLij4c5sRwLP5Ipf9YpW3gy42WbIqWzrkzuPAzSPHc4Tf2Dws99TlwBo35H-z4jxmnAlOk_GtEFJzjkxnk_l7zltr0VTFuLCyFQrbiemdmNvtV78g_XmMX6-qXD4JX1ghviIUDot41"
+                  sizes="50vw"
+                />
               </div>
-            </div>
-          </Link>
+              <div className="p-8 flex-1 flex flex-col justify-center bg-slate-50 dark:bg-slate-900 z-10 relative">
+                <span className="inline-block px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 text-[10px] font-black uppercase tracking-wider rounded-full self-start mb-4 border border-green-500/20 shadow-sm backdrop-blur-sm">Recién Ingresado</span>
+                <div className="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">USD 315.000</div>
+                <h3 className="font-serif text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 leading-tight mb-4 group-hover:text-primary transition-colors">Loft de Diseño en C. Vieja</h3>
+                <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-bold mt-auto h-fit">
+                  <span className="flex items-center gap-1 bg-white/50 dark:bg-black/20 px-2 py-1 rounded-lg"><span className="material-icons text-[16px]">bed</span> 1</span>
+                  <span className="flex items-center gap-1 bg-white/50 dark:bg-black/20 px-2 py-1 rounded-lg"><span className="material-icons text-[16px]">shower</span> 1</span>
+                  <span className="flex items-center gap-1 bg-white/50 dark:bg-black/20 px-2 py-1 rounded-lg"><span className="material-icons text-[16px]">square_foot</span> 120m²</span>
+                  <span className="flex items-center gap-1 ml-auto text-xs text-slate-400 font-medium uppercase tracking-widest"><span className="material-icons text-[14px]">place</span> Zona Sur</span>
+                </div>
+              </div>
+            </Link>
+          </TiltCard>
         </div>
       </section>
 

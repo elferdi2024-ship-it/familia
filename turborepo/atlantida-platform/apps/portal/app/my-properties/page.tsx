@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { db } from "@/lib/firebase"
+import { db } from "@repo/lib/firebase"
 import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Firestore } from "firebase/firestore"
 import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
@@ -15,8 +15,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+} from "@repo/ui/table"
+import { Badge } from "@repo/ui/badge"
 import {
     Dialog,
     DialogContent,
@@ -24,7 +24,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@repo/ui/dialog"
 
 interface Lead {
     id: string;

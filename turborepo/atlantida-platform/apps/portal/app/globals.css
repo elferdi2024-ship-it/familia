@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@source "../../../packages/ui/src";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -35,8 +37,8 @@
   --color-secondary: #00D4AA;
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: #0066FF;
-  --color-background-light: #f5f6f8;
-  --color-background-dark: #101622;
+  --color-background-light: #FAFAFA;
+  --color-background-dark: #050505;
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -52,11 +54,11 @@
 
 :root {
   --radius: 1rem;
-  --background: oklch(1 0 0);
+  --background: #FAFAFA;
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: #FFFFFF;
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: #FFFFFF;
   --popover-foreground: oklch(0.145 0 0);
   --primary: #0066FF;
   --primary-foreground: oklch(0.985 0 0);
@@ -86,22 +88,21 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --background: #020617;
+  --card: #0f172a;
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: #0A0A0A;
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #0066FF;
+  --primary: #3b82f6;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #00D4AA;
+  --secondary: #C9A961;
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 15%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);

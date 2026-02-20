@@ -93,3 +93,5 @@ export default withSentryConfig(nextConfig, {
   org: "dominio-total",
   project: "frontend",
 });
+
+

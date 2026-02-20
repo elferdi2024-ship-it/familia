@@ -1,6 +1,6 @@
 {
   "name": "inmobiliaria",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev --port 3001",
@@ -11,10 +11,10 @@
     "clean": "rm -rf .next node_modules"
   },
   "dependencies": {
-    "@repo/ui": "*",
+    "@react-google-maps/api": "^2.20.8",
     "@repo/lib": "*",
     "@repo/types": "*",
-    "@react-google-maps/api": "^2.20.8",
+    "@repo/ui": "*",
     "@sentry/nextjs": "^10.39.0",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^1.3.1",
@@ -26,6 +26,7 @@
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
+    "next-themes": "^0.4.6",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",

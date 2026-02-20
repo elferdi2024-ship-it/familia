@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useAuth } from "@/contexts/AuthContext"
-import { db } from "@/lib/firebase"
+import { db } from "@repo/lib/firebase"
 import { collection, addDoc, updateDoc, doc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"

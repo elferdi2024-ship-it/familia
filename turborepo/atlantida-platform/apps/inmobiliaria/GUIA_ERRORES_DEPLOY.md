@@ -43,3 +43,25 @@ matcher: [
 2. Dominio no permitido en `next.config.js`.
 3. URL mal formada pasada al componente.
 **Solución:** Verificar que el dominio de la imagen esté en `images.remotePatterns` en `next.config.ts`. Usar imágenes de fallback si la URL falla.
+## 6. Error de Hidratación / Build con `useSearchParams`
+**Síntoma:** Error `useSearchParams() should be wrapped in a suspense boundary` durante el build o error de hidratación en consola.
+**Causa:** El uso de `useSearchParams` en componentes del layout (como la Navbar) o páginas estáticas sin un wrapper de `Suspense` causa que Next.js falle al intentar pre-renderizar la página.
+**Solución:** Envolver el componente que usa el hook (o la Navbar entera en el layout) en un bloque `<Suspense>`.
+```tsx
+<Suspense fallback={<div className="h-16" />}>
+  <Navbar />
+</Suspense>
+```
+También es necesario usar `suppressHydrationWarning` en la etiqueta `<html>` si se usa `next-themes`.
+
+## 6. Build Failure: Module not found (@/components/ui/...)
+**Síntoma:** Error 1 en build de Vercel (o local `turbo run build`). Logs indican `Module not found: Can't resolve '@/components/ui/badge'`, `dialog`, `table` o `@/lib/firebase`.
+**Causa:** En un monorepo con Turborepo, la aplicación intentaba importar estos archivos desde su propio directorio (`apps/inmobiliaria/components/ui`), pero estos componentes residen en los paquetes compartidos (`packages/ui` y `packages/lib`).
+**Solución:**
+1. No crear los archivos localmente.
+2. Cambiar las importaciones para usar los paquetes del repositorio:
+   - De: `import { Badge } from "@/components/ui/badge"`
+   - A: `import { Badge } from "@repo/ui/badge"`
+   - De: `import { db } from "@/lib/firebase"`
+   - A: `import { db } from "@repo/lib/firebase"`
+3. Asegurar que `@repo/ui` y `@repo/lib` estén en `dependencies` del `package.json` de la app.

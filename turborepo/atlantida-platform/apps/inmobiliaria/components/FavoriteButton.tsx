@@ -19,12 +19,11 @@ export function FavoriteButton({ propertyId, className = "" }: FavoriteButtonPro
                 toggleFavorite(propertyId)
             }}
             aria-label={active ? "Quitar de favoritos" : "Agregar a favoritos"}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${active
-                    ? "bg-red-500 text-white scale-110"
-                    : "bg-white/20 backdrop-blur-md text-white hover:bg-white hover:text-red-500"
+            className={`flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95 ${className.includes('w-') ? '' : 'w-8 h-8 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-md hover:bg-white dark:hover:bg-slate-800 shadow-sm'
                 } ${className}`}
         >
-            <span className="material-icons text-sm">
+            <span className={`material-icons transition-colors ${className.includes('text-xl') ? 'text-xl' : 'text-base'
+                } ${active ? "text-red-500 drop-shadow-sm" : "text-slate-700 dark:text-slate-300 drop-shadow-none"}`}>
                 {active ? "favorite" : "favorite_border"}
             </span>
         </button>

@@ -66,7 +66,7 @@ export function BottomTabBar() {
                                     key={tab.href}
                                     onClick={() => setShowAuthModal(true)}
                                     className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${isActive
-                                        ? "text-primary"
+                                        ? "text-primary dark:text-white"
                                         : "text-slate-400 dark:text-slate-500"
                                         }`}
                                 >
@@ -80,7 +80,7 @@ export function BottomTabBar() {
                                 key={tab.href}
                                 href={tab.href}
                                 className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${isActive
-                                    ? "text-primary"
+                                    ? "text-primary dark:text-white"
                                     : "text-slate-400 dark:text-slate-500"
                                     }`}
                             >
