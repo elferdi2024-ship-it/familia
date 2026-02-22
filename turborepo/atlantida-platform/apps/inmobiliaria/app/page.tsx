@@ -56,27 +56,29 @@ export default function HomePage() {
       {/* Hero Section v5 - WOW FACTOR */}
       <section className="relative h-screen min-h-[800px] flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover scale-105"
-          >
-            <source src="/flotantes-mibarrio.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/90"></div>
+          {/* Static Background Image with Overlay */}
+          <div className="absolute inset-0 z-0 select-none pointer-events-none">
+            <Image
+              src="/portada-inmobiliaria.webp"
+              alt="MiBarrio.uy Portada"
+              fill
+              className="object-cover"
+              priority
+              quality={90}
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/90 z-0"></div>
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center text-white mt-12 md:mt-24 flex flex-col items-center">
-          <div className="mb-6 md:mb-8 inline-flex items-center gap-3 rounded-full bg-white/5 px-4 py-2 md:px-5 md:py-2.5 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-white backdrop-blur-md border border-white/10 shadow-2xl skew-y-1 hover:skew-y-0 transition-transform">
+        <div className="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center text-white mt-6 md:mt-12 flex flex-col items-center">
+          <div className="mb-4 md:mb-6 inline-flex items-center gap-3 rounded-full bg-white/5 px-4 py-2 md:px-5 md:py-2.5 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-white backdrop-blur-md border border-white/10 shadow-2xl">
             <span className="flex h-2 w-2 md:h-2.5 md:w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
             El Nuevo Estándar en Bienes Raíces
           </div>
 
-          <h1 className="mb-6 md:mb-10 text-4xl sm:text-5xl font-display font-black tracking-tight text-white md:text-[5rem] lg:text-[7rem] leading-[1.1] md:leading-[1.1] drop-shadow-2xl flex flex-col items-center min-h-[120px] md:min-h-[220px]">
+          <h1 className="mb-4 md:mb-8 text-4xl sm:text-5xl font-display font-black tracking-tight text-white md:text-[5rem] lg:text-[7rem] leading-[1.1] md:leading-[1.1] drop-shadow-2xl flex flex-col items-center min-h-[120px] md:min-h-[180px]">
             <span className="text-center px-4">¿Qué estás buscando hoy? 🏠</span>
-            <span className="mt-3 md:mt-6 inline-block px-8 md:px-12 py-2 md:py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-emerald-400 shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
+            <span className="mt-2 md:mt-4 inline-block px-8 md:px-12 py-2 md:py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-emerald-400 shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
               <Typewriter
                 text={["Alquilar", "Comprar", "Vender"]}
                 speed={70}

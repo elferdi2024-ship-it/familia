@@ -3,7 +3,7 @@ import Image from "next/image"
 import { POSTS } from "@/data/posts"
 
 export const metadata = {
-    title: "Blog Inmobiliario | DominioTotal Uruguay",
+    title: "Blog Inmobiliario | Barrio.uy Uruguay",
     description: "Guías, consejos y análisis del mercado inmobiliario en Uruguay. Todo lo que necesitas saber para comprar, alquilar o invertir.",
 }
 
@@ -21,7 +21,7 @@ export default function BlogPage() {
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="flex flex-col items-center text-center">
                         <span className="px-4 py-2 bg-primary/10 backdrop-blur-md rounded-full text-primary text-xs font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 animate-in fade-in slide-in-from-bottom-2 duration-700">
-                            DominioTotal Insights
+                            Barrio.uy Insights
                         </span>
                         <h1 className="text-5xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
                             Mercado <span className="text-primary">&</span> <br />

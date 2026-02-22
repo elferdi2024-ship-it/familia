@@ -9,7 +9,7 @@ import { useState } from "react"
 
 const tabs = [
     { href: "/", icon: "home", label: "Inicio" },
-    { href: "/search", icon: "search", label: "Buscar" },
+    { href: "/search?filters=open", icon: "search", label: "Buscar" },
     { href: "/favorites", icon: "favorite", label: "Favoritos" },
     { href: "/publish", icon: "add_circle", label: "Publicar" },
 ]

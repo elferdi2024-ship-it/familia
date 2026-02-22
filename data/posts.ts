@@ -40,10 +40,10 @@ export const POSTS: Post[] = [
         - **Exoneración de IVA** en el precio de venta (ya incluido en el precio final, que suele ser más bajo).
         - **Exoneración de Impuesto al Patrimonio** por 10 años.
 
-        ## 5. El Rol de DominioTotal
+        ## 5. El Rol de Barrio.uy
         Nuestra plataforma te permite filtrar específicamente por "Vivienda Promovida" y calcular el costo de tu hipoteca en tiempo real. No pierdas tiempo en portales lentos; la velocidad de respuesta es clave cuando aparece una oportunidad única en barrios de alta demanda como Pocitos o Centro.`,
         date: "2026-02-17",
-        author: "Equipo DominioTotal",
+        author: "Equipo Barrio.uy",
         image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2000&auto=format&fit=crop",
         category: "Guías",
         readTime: "8 min"
@@ -70,7 +70,7 @@ export const POSTS: Post[] = [
         ## Zonas con Mayor Potencial
         Históricamente, el Centro y Cordón han sido los reyes de la Vivienda Promovida. Sin embargo, en 2026 vemos un crecimiento masivo en **La Blanqueada, Prado y el barrio Sur**, donde la calidad de vida y la conectividad están atrayendo a una nueva ola de residentes tech-savvy.
 
-        En la sección de búsqueda de DominioTotal, busca el badge dorado para identificar estas propiedades premium con beneficios fiscales.`,
+        En la sección de búsqueda de Barrio.uy, busca el badge dorado para identificar estas propiedades premium con beneficios fiscales.`,
         date: "2026-02-15",
         author: "Inversiones Inmobiliarias",
         image: "https://images.unsplash.com/photo-1460317442991-0ec239f33649?q=80&w=2000&auto=format&fit=crop",
@@ -98,7 +98,7 @@ export const POSTS: Post[] = [
         ## 5. El Pinar / Ciudad de la Costa: El "Escape" diario
         Aunque técnicamente fuera de Montevideo, en 2026 la conectividad ha mejorado tanto que muchas familias eligen vivir cerca de la playa y el bosque, trabajando de forma híbrida. Es la opción número uno para quienes buscan desconexión total después de las 6 PM.
 
-        En DominioTotal te permitimos explorar estas zonas en nuestro mapa interactivo, viendo qué servicios y puntos de interés hay alrededor de cada propiedad para que tu decisión familiar sea basada en datos reales.`,
+        En Barrio.uy te permitimos explorar estas zonas en nuestro mapa interactivo, viendo qué servicios y puntos de interés hay alrededor de cada propiedad para que tu decisión familiar sea basada en datos reales.`,
         date: "2026-02-10",
         author: "Urbanismo UY",
         image: "https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=2000&auto=format&fit=crop",

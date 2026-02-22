@@ -1,6 +1,6 @@
 /**
  * 🌱 Property Seed Generator
- * Generates 50 curated properties for DominioTotal and writes to seeds/properties.json
+ * Generates 50 curated properties for Barrio.uy and writes to seeds/properties.json
  * Usage: npx tsx scripts/generate-seeds.ts
  */
 import { writeFileSync, mkdirSync } from "fs"

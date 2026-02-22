@@ -80,15 +80,15 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/60 to-slate-950/90"></div>
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center text-white mt-12 md:mt-24 flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center text-white mt-6 md:mt-12 flex flex-col items-center">
           {/* <div className="mb-8 inline-flex items-center gap-3 rounded-full bg-white/5 px-5 py-2.5 text-xs font-black uppercase tracking-[0.2em] text-white backdrop-blur-md border border-white/10 shadow-2xl skew-y-1 hover:skew-y-0 transition-transform cursor-default">
             <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Más de 12.800 propiedades activas
           </div> */}
 
-          <h1 className="mb-8 md:mb-10 text-4xl sm:text-5xl font-display font-black tracking-tight text-white md:text-[5rem] lg:text-[7rem] leading-[1.1] md:leading-[1.1] drop-shadow-2xl flex flex-col items-center min-h-[120px] md:min-h-[220px]">
+          <h1 className="mb-4 md:mb-8 text-4xl sm:text-5xl font-display font-black tracking-tight text-white md:text-[5rem] lg:text-[7rem] leading-[1.1] md:leading-[1.1] drop-shadow-2xl flex flex-col items-center min-h-[120px] md:min-h-[180px]">
             <span className="text-center px-4">¿Qué estás buscando hoy? 🏠</span>
-            <span className="mt-4 md:mt-6 inline-block px-8 md:px-12 py-2 md:py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-emerald-400 shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
+            <span className="mt-2 md:mt-4 inline-block px-8 md:px-12 py-2 md:py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-emerald-400 shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
               <Typewriter
                 text={["Alquilar", "Comprar", "Vender"]}
                 speed={70}

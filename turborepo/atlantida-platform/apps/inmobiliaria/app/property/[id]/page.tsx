@@ -3,9 +3,11 @@ import PropertyClient from "./PropertyClient"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProperty } from "@/lib/properties"
+import { PropertyBreadcrumb } from "@/components/BreadcrumbSchema"
 
-// Force dynamic rendering to debug cache issues
-export const dynamic = "force-dynamic"
+// ISR: Regenerate property pages every 1 hour
+// Cached on Vercel CDN for fast loads (~200ms vs ~2-3s)
+export const revalidate = 3600
 
 export default async function PropertyPage({ params }: { params: any }) {
     const resolvedParams = await params
@@ -61,10 +63,17 @@ export default async function PropertyPage({ params }: { params: any }) {
     }
 
     return (
-        <PropertyClient
-            initialProperty={property}
-            initialAgentInfo={agentInfo}
-        />
+        <>
+            <PropertyBreadcrumb
+                title={property.title}
+                id={id}
+                neighborhood={property.neighborhood}
+            />
+            <PropertyClient
+                initialProperty={property}
+                initialAgentInfo={agentInfo}
+            />
+        </>
     )
 }
 

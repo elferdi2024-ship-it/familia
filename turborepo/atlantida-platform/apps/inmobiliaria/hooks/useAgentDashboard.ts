@@ -136,6 +136,7 @@ export function useAgentDashboard() {
             await import("firebase/firestore").then(m => m.deleteDoc(doc(db!, "properties", id)))
             setProperties(prev => prev.filter(p => p.id !== id))
             toast.success("Propiedad eliminada")
+            toast.info("Los cambios pueden demorar hasta 1 hora en reflejarse públicamente.", { duration: 5000 })
         } catch (error) {
             console.error("Error deleting property:", error)
             toast.error("Error al eliminar propiedad")

@@ -43,7 +43,7 @@ export function Navbar() {
     { href: "/search?operation=alquiler", label: "Alquilar", className: "font-bold" },
     { href: "/servicios", label: "Servicios", className: "font-extrabold text-primary" },
     { href: "/vender", label: "Vender", className: "font-black text-white bg-primary hover:bg-primary/90 hover:text-white px-4 py-1.5 rounded-full shadow-lg shadow-primary/20 transition-all hover:scale-105" },
-    { href: "#contacto", label: "Contacto" },
+    { href: "/sobre-nosotros", label: "Sobre Nosotros" },
   ]
 
   return (
@@ -80,7 +80,7 @@ export function Navbar() {
             <img
               src="/logo-mibarrio-ok.png"
               alt="MiBarrio.uy"
-              className={`h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : "dark:brightness-0 dark:invert"}`}
+              className={`h-16 md:h-18 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : "dark:brightness-0 dark:invert"}`}
             />
           </Link>
         </div>
@@ -170,7 +170,10 @@ export function Navbar() {
           </div>
 
           <button
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-primary/5 text-primary"
+            className={`md:hidden w-10 h-10 flex items-center justify-center rounded-full transition-colors ${isScrolled
+              ? "bg-primary/5 text-primary hover:bg-primary/10"
+              : "bg-white/10 text-white hover:bg-white/20"
+              }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isMobileMenuOpen}
@@ -190,7 +193,7 @@ export function Navbar() {
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search?operation=alquiler">Alquilar</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary font-extrabold" href="/servicios">Servicios</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="#contacto">Contacto</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/sobre-nosotros">Sobre Nosotros</Link>
 
               <div className="flex items-center justify-between">
                 <span>Tema de Color</span>

@@ -82,7 +82,7 @@ export function Navbar() {
             <img
               src="/logo-barrio-ok.png"
               alt="Barrio.uy"
-              className={`h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : "dark:brightness-0 dark:invert"}`}
+              className={`h-16 md:h-18 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : "dark:brightness-0 dark:invert"}`}
             />
           </Link>
         </div>
@@ -141,7 +141,10 @@ export function Navbar() {
           </div>
 
           <button
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-primary/5 text-primary"
+            className={`md:hidden w-10 h-10 flex items-center justify-center rounded-full transition-colors ${isScrolled
+              ? "bg-primary/5 text-primary hover:bg-primary/10"
+              : "bg-white/10 text-white hover:bg-white/20"
+              }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isMobileMenuOpen}

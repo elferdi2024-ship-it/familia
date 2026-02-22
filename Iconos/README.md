@@ -1,4 +1,4 @@
-# Iconos PWA - DominioTotal
+# Iconos PWA - Barrio.uy
 
 ## ✅ Archivos Generados
 
@@ -30,8 +30,8 @@ Tu archivo `public/manifest.json` debe tener:
 
 ```json
 {
-  "name": "DominioTotal",
-  "short_name": "DominioTotal",
+  "name": "Barrio.uy",
+  "short_name": "Barrio.uy",
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -107,7 +107,7 @@ git push origin main
 
 ### Desktop:
 1. Chrome → Barra de direcciones → Icono ⊕
-2. "Instalar DominioTotal"
+2. "Instalar Barrio.uy"
 
 ---
 

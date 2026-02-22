@@ -15,6 +15,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@repo/ui/theme-provider";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -104,7 +106,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-bold">
           Saltar al contenido principal
         </a>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
           <AuthProvider>
             <FavoritesProvider>
               <SavedSearchesProvider>
@@ -169,6 +171,23 @@ export default function RootLayout({
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
+
+        {/* Analytics & Heatmaps */}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-PENDING"} />
+        {process.env.NEXT_PUBLIC_CONTENTSQUARE_ID && (
+          <Script id="contentsquare-script-portal" strategy="afterInteractive">
+            {`
+              (function() {
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://t.contentsquare.net/uxa/' + '${process.env.NEXT_PUBLIC_CONTENTSQUARE_ID}' + '.js';
+                var e = document.getElementsByTagName('script')[0];
+                e.parentNode.insertBefore(s, e);
+              })();
+            `}
+          </Script>
+        )}
       </body>
     </html>
   );

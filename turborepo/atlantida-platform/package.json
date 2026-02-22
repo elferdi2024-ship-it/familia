@@ -16,11 +16,13 @@
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "turbo": "^2.5.4",
-    "prettier": "^3.5.5"
+    "husky": "^9.1.7",
+    "prettier": "^3.5.5",
+    "turbo": "^2.5.4"
   },
   "packageManager": "npm@10.8.2",
   "engines": {

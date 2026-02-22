@@ -16,9 +16,16 @@ export default function PublishSuccessPage() {
                 </div>
 
                 <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">¡Aviso Publicado!</h1>
-                <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+                <p className="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
                     Tu propiedad ya está en proceso de revisión. En breve estará disponible para miles de compradores.
                 </p>
+
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-3 mb-8">
+                    <p className="text-xs text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                        <span className="text-base">⏱️</span>
+                        Los cambios pueden demorar hasta 1 hora en reflejarse públicamente por optimización de rendimiento.
+                    </p>
+                </div>
 
                 <div className="space-y-3">
                     <Link href="/my-properties" className="w-full block bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">

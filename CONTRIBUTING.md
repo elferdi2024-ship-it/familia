@@ -1,4 +1,4 @@
-# Guia de Contribucion - DominioTotal
+# Guia de Contribucion - Barrio.uy
 
 ## Setup de Desarrollo
 

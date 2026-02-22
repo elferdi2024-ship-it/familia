@@ -1,5 +1,5 @@
 /**
- * 🌱 DominioTotal Seed Engine
+ * 🌱 Barrio.uy Seed Engine
  * Seeds Firestore with curated real estate properties from Uruguay.
  * 
  * Usage: npx tsx scripts/seed.ts
@@ -79,7 +79,7 @@ async function seed() {
     const shouldClear = args.includes("--clear")
     const jsonPath = resolve(__dirname, "../seeds/properties.json")
 
-    console.log("\n🌱 DominioTotal Seed Engine")
+    console.log("\n🌱 Barrio.uy Seed Engine")
     console.log("═══════════════════════════════════════\n")
 
     // Read JSON

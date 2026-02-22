@@ -1,4 +1,4 @@
-# DominioTotal - Plataforma Inmobiliaria Uruguay
+# Barrio.uy - Plataforma Inmobiliaria Uruguay
 
 **La mejor experiencia mobile-first para buscar, publicar y gestionar propiedades en Uruguay.**
 
@@ -7,7 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-06B6D4)](https://tailwindcss.com/)
 
-**Live:** [dominiototal.vercel.app](https://dominiototal.vercel.app)
+**Live:** [Barrio.uy.vercel.app](https://Barrio.uy.vercel.app)
 
 ---
 
@@ -106,7 +106,7 @@ npm start
 ## Estructura del Proyecto
 
 ```
-dominiototal/
+Barrio.uy/
 ├── app/                          # Next.js App Router
 │   ├── api/                      # API Routes
 │   │   ├── properties/route.ts   # API paginada con validacion Zod

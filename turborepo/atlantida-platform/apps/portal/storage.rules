@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Properties Images (Users can read, Authenticated Agents can upload)
+    match /properties/{propertyId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null 
+                   && request.resource.size < 5 * 1024 * 1024 // Max 5MB
+                   && request.resource.contentType.matches('image/.*'); // Only images
+    }
+
+    // Agent Avatars / Logos
+    match /agents/{agentId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null 
+                   && request.auth.uid == agentId // Only the agent can upload their own avatar
+                   && request.resource.size < 2 * 1024 * 1024 // Max 2MB for avatars
+                   && request.resource.contentType.matches('image/.*'); // Only images
+    }
+  }
+}

@@ -1,59 +1,71 @@
 import { track } from '@vercel/analytics'
+import { sendGAEvent } from '@next/third-parties/google'
+
+// Helper to track in both platforms
+const dualTrack = (eventName: string, properties?: Record<string, any>) => {
+  // Vercel Analytics tracking
+  track(eventName, properties)
+
+  // Google Analytics 4 tracking
+  if (typeof window !== 'undefined') {
+    sendGAEvent({ event: eventName, ...properties })
+  }
+}
 
 // Type-safe event tracking
 export const trackEvent = {
   // Search events
   searchPerformed: (filters: Record<string, string | number | boolean | null>) =>
-    track('search_performed', filters),
+    dualTrack('search_performed', filters),
 
   // Property events
   propertyViewed: (propertyId: string, propertyType?: string) =>
-    track('property_viewed', { propertyId, propertyType }),
+    dualTrack('property_viewed', { propertyId, propertyType }),
 
   propertyShared: (propertyId: string) =>
-    track('property_shared', { propertyId }),
+    dualTrack('property_shared', { propertyId }),
 
   // Lead events
   leadSubmitted: (data: { propertyId: string, propertyPrice?: number, propertyType?: string, type?: 'contact' | 'visit' }) =>
-    track('lead_submitted', data),
+    dualTrack('lead_submitted', data),
 
   leadWhatsApp: (propertyId: string) =>
-    track('lead_whatsapp', { propertyId }),
+    dualTrack('lead_whatsapp', { propertyId }),
 
   phoneRevealed: (propertyId: string) =>
-    track('phone_revealed', { propertyId }),
+    dualTrack('phone_revealed', { propertyId }),
 
   // Favorite events
   favoriteAdded: (propertyId: string) =>
-    track('favorite_added', { propertyId }),
+    dualTrack('favorite_added', { propertyId }),
 
   favoriteRemoved: (propertyId: string) =>
-    track('favorite_removed', { propertyId }),
+    dualTrack('favorite_removed', { propertyId }),
 
   // Compare events
   compareStarted: (propertyIds: string[]) =>
-    track('compare_started', { propertyIds: propertyIds.join(','), count: propertyIds.length }),
+    dualTrack('compare_started', { propertyIds: propertyIds.join(','), count: propertyIds.length }),
 
   // Publish funnel
-  publishStep1Completed: () => track('publish_step_1_completed'),
-  publishStep2Completed: () => track('publish_step_2_completed'),
-  publishStep3Completed: () => track('publish_step_3_completed'),
+  publishStep1Completed: () => dualTrack('publish_step_1_completed'),
+  publishStep2Completed: () => dualTrack('publish_step_2_completed'),
+  publishStep3Completed: () => dualTrack('publish_step_3_completed'),
   publishSuccess: (propertyId: string) =>
-    track('publish_success', { propertyId }),
+    dualTrack('publish_success', { propertyId }),
 
   // Auth events
   loginCompleted: (method: 'google' | 'email') =>
-    track('login_completed', { method }),
+    dualTrack('login_completed', { method }),
 
   registerCompleted: (method: 'google' | 'email') =>
-    track('register_completed', { method }),
+    dualTrack('register_completed', { method }),
 
   // Search save
   searchSaved: (name: string) =>
-    track('search_saved', { name }),
+    dualTrack('search_saved', { name }),
 
   // PWA
-  pwaInstalled: () => track('pwa_installed'),
+  pwaInstalled: () => dualTrack('pwa_installed'),
 }
 
 // Performance monitoring helper

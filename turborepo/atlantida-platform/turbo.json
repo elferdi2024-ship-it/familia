@@ -32,6 +32,18 @@
       ],
       "cache": true
     },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false
+    },
+    "test:run": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": true
+    },
     "clean": {
       "cache": false
     }

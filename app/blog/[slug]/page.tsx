@@ -139,7 +139,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (!post) return { title: 'Post no encontrado' }
 
     return {
-        title: `${post.title} | Blog DominioTotal`,
+        title: `${post.title} | Blog Barrio.uy`,
         description: post.excerpt,
         openGraph: {
             title: post.title,

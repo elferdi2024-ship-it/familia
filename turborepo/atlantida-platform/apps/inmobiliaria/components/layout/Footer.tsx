@@ -74,9 +74,18 @@ export function Footer() {
                     </div>
                     <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                         <Link className="hover:text-primary" href="/privacidad">Privacidad</Link>
-                        <Link className="hover:text-primary" href="/terminos">Términos</Link>
-                        <Link className="hover:text-primary" href="/cookies">Cookies</Link>
+                        <Link className="hover:text-primary" href="/terminos-y-condiciones">Términos</Link>
+                        <Link className="hover:text-primary" href="/privacidad">Cookies</Link>
                     </div>
+                </div>
+
+                {/* LARGE BOTTOM LOGO */}
+                <div className="mt-20 flex justify-center items-center w-full select-none pointer-events-none">
+                    <img
+                        src="/mibarrio-ok-large.png"
+                        alt="MiBarrio.uy"
+                        className="w-full max-w-5xl h-auto object-contain dark:brightness-0 dark:invert opacity-20 dark:opacity-40 grayscale transition-all duration-700 hover:grayscale-0 hover:opacity-100"
+                    />
                 </div>
             </div>
         </footer>

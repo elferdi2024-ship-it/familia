@@ -12,7 +12,7 @@ import { PropertyGridSkeleton } from "@/components/Skeletons"
 import { useComparison } from "@/contexts/ComparisonContext"
 import { searchClient } from "@repo/lib/algolia"
 import { motion, AnimatePresence } from "framer-motion"
-import { Property, formatPrice, PROPERTIES } from "@/lib/data"
+import { Property, formatPrice, PROPERTIES, AMENITIES } from "@/lib/data"
 import { getMarketIntelligence, MarketData } from "@/lib/analytics"
 import { GoogleMap, useJsApiLoader, OverlayView, InfoWindowF } from "@react-google-maps/api"
 import { Search, Map as MapIcon, List, Filter, X, MapPin } from "lucide-react"
@@ -34,6 +34,7 @@ interface SearchContentProps {
     initialType?: string
     seoTitle?: string
     seoDescription?: string
+    tags?: string[]
 }
 
 const MAP_LIBRARIES: ("marker" | "places")[] = ['marker']
@@ -46,20 +47,21 @@ export function SearchContent({
     seoDescription
 }: SearchContentProps) {
     const searchParams = useSearchParams()
-    const [showFilters, setShowFilters] = useState(false)
+    const [showFilters, setShowFilters] = useState(searchParams.get('filters') === 'open')
     const [showMap, setShowMap] = useState(false)
 
     const [filters, setFilters] = useState({
-        operation: initialOperation || searchParams.get('operation') || "Venta",
+        operation: initialOperation || searchParams.get('operation') || "Alquiler",
         propertyTypes: (initialType ? [initialType] : searchParams.get('type')?.split(',').filter(Boolean)) || [] as string[],
         query: searchParams.get('q') || "",
         priceMin: "",
         priceMax: "",
         bedrooms: "",
-        department: initialNeighborhood ? "Montevideo" : "",
-        city: initialNeighborhood ? "Montevideo" : "",
-        neighborhood: initialNeighborhood || "",
-        amenities: [] as string[]
+        bathrooms: "",
+        department: initialNeighborhood ? "Montevideo" : searchParams.get('department') || "",
+        city: initialNeighborhood ? "Montevideo" : searchParams.get('city') || "",
+        neighborhood: initialNeighborhood || searchParams.get('neighborhood') || "",
+        tags: searchParams.get('tags') ? searchParams.get('tags')?.split(',') || [] : [] as string[]
     })
 
     const [properties, setProperties] = useState<Property[]>([])
@@ -91,11 +93,18 @@ export function SearchContent({
             }
 
             if (filters.operation) {
-                results = results.filter(p => p.operation.toLowerCase() === filters.operation.toLowerCase())
+                const searchOp = filters.operation === "Comprar" ? "venta" : filters.operation.toLowerCase()
+                results = results.filter(p => p.operation.toLowerCase() === searchOp)
             }
 
             if (filters.propertyTypes.length > 0) {
                 results = results.filter(p => filters.propertyTypes.includes(p.type))
+            }
+
+            if (filters.tags && filters.tags.length > 0) {
+                results = results.filter(p =>
+                    filters.tags.every(tag => p.amenities?.includes(tag) || p.badge === tag)
+                )
             }
 
             if (filters.priceMin) {
@@ -111,6 +120,15 @@ export function SearchContent({
                     results = results.filter(p => p.bedrooms >= 3)
                 } else {
                     results = results.filter(p => p.bedrooms === bed)
+                }
+            }
+
+            if (filters.bathrooms) {
+                const bath = parseInt(filters.bathrooms)
+                if (filters.bathrooms === "4+") {
+                    results = results.filter(p => p.bathrooms >= 4)
+                } else {
+                    results = results.filter(p => p.bathrooms === bath)
                 }
             }
 
@@ -161,7 +179,7 @@ export function SearchContent({
         return typedGeoData[filters.department]?.[filters.city] || []
     }, [filters.department, filters.city])
 
-    const FilterContent = () => (
+    const filterContentJsx = (
         <div className="space-y-8">
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -175,7 +193,9 @@ export function SearchContent({
             </div>
 
             <div>
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Rango de Precio (USD)</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">
+                    Rango de Precio ({filters.operation === 'Alquiler' ? '$U' : 'USD'})
+                </label>
                 <div className="flex gap-3">
                     <input
                         type="number"
@@ -194,35 +214,52 @@ export function SearchContent({
                 </div>
             </div>
 
-            <div className="space-y-3">
-                <select
-                    value={filters.department}
-                    onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary text-slate-900 dark:text-white"
-                >
-                    <option value="">Todo el País</option>
-                    {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
-                </select>
+            <div className="space-y-4">
+                <div>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3 block">Tipo de Operación</label>
+                    <div className="flex bg-slate-50 dark:bg-slate-800 rounded-xl p-1 gap-1">
+                        {["Alquiler", "Comprar"].map((op) => (
+                            <button
+                                key={op}
+                                onClick={() => setFilters(prev => ({ ...prev, operation: op }))}
+                                className={`flex-1 py-2 text-xs font-black rounded-lg transition-all ${filters.operation === op ? "bg-primary text-white shadow-md shadow-primary/20" : "hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-500"}`}
+                            >
+                                {op}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                <select
-                    disabled={!filters.department}
-                    value={filters.city}
-                    onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
-                >
-                    <option value="">Ciudad</option>
-                    {cities.map(city => <option key={city} value={city}>{city}</option>)}
-                </select>
+                <div className="space-y-3">
+                    <select
+                        value={filters.department}
+                        onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value, city: "", neighborhood: "" }))}
+                        className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary text-slate-900 dark:text-white"
+                    >
+                        <option value="">Todo el País</option>
+                        {Object.keys(geoData).map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                    </select>
 
-                <select
-                    disabled={!filters.city}
-                    value={filters.neighborhood}
-                    onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
-                >
-                    <option value="">Barrio</option>
-                    {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
-                </select>
+                    <select
+                        disabled={!filters.department}
+                        value={filters.city}
+                        onChange={(e) => setFilters(prev => ({ ...prev, city: e.target.value, neighborhood: "" }))}
+                        className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
+                    >
+                        <option value="">Ciudad</option>
+                        {cities.map(city => <option key={city} value={city}>{city}</option>)}
+                    </select>
+
+                    <select
+                        disabled={!filters.city}
+                        value={filters.neighborhood}
+                        onChange={(e) => setFilters(prev => ({ ...prev, neighborhood: e.target.value }))}
+                        className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm font-bold focus:ring-2 focus:ring-primary disabled:opacity-50 text-slate-900 dark:text-white"
+                    >
+                        <option value="">Barrio</option>
+                        {neighborhoods.map((nb: string) => <option key={nb} value={nb}>{nb}</option>)}
+                    </select>
+                </div>
             </div>
 
             <div>
@@ -239,6 +276,50 @@ export function SearchContent({
                     ))}
                 </div>
             </div>
+
+            <div>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Baños</label>
+                <div className="flex bg-slate-50 dark:bg-slate-800 rounded-xl p-1 gap-1">
+                    {["1", "2", "3", "4+"].map((num) => (
+                        <button
+                            key={num}
+                            onClick={() => setFilters(prev => ({ ...prev, bathrooms: num }))}
+                            className={`flex-1 py-2 text-xs font-black rounded-lg transition-all ${filters.bathrooms === num ? "bg-primary text-white shadow-md shadow-primary/20" : "hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-500"}`}
+                        >
+                            {num}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 block">Características (Etiquetas)</label>
+                <div className="flex flex-wrap gap-2">
+                    {AMENITIES.slice(0, 15).map((amenity) => {
+                        const isSelected = filters.tags.includes(amenity);
+                        return (
+                            <button
+                                key={amenity}
+                                onClick={() => {
+                                    setFilters(prev => {
+                                        if (isSelected) {
+                                            return { ...prev, tags: prev.tags.filter(t => t !== amenity) }
+                                        } else {
+                                            return { ...prev, tags: [...prev.tags, amenity] }
+                                        }
+                                    })
+                                }}
+                                className={`px-3 py-1.5 text-[10px] font-bold rounded-full transition-all border outline-none ${isSelected
+                                    ? "bg-primary text-white border-primary shadow-sm"
+                                    : "bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-primary/50"
+                                    }`}
+                            >
+                                {amenity}
+                            </button>
+                        )
+                    })}
+                </div>
+            </div>
         </div>
     )
 
@@ -249,9 +330,9 @@ export function SearchContent({
                 <aside className="hidden lg:block w-[320px] xl:w-[380px] flex-shrink-0 border-r border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-y-auto p-8">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="font-black text-2xl tracking-tighter">Búsqueda</h2>
-                        <button onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", department: "", city: "", neighborhood: "" })} className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Limpiar</button>
+                        <button onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", bathrooms: "", department: "", city: "", neighborhood: "", tags: [] })} className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Limpiar</button>
                     </div>
-                    <FilterContent />
+                    {filterContentJsx}
                 </aside>
 
                 <div className="flex-1 flex flex-col overflow-hidden">
@@ -295,7 +376,7 @@ export function SearchContent({
                                             Probá ajustando los filtros o buscando términos más generales.
                                         </p>
                                         <Button
-                                            onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", department: "", city: "", neighborhood: "" })}
+                                            onClick={() => setFilters({ ...filters, query: "", priceMin: "", priceMax: "", bedrooms: "", department: "", city: "", neighborhood: "", tags: [] })}
                                             className="bg-primary text-white font-bold rounded-full px-8 py-6 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
                                         >
                                             Limpiar todos los filtros
@@ -478,7 +559,7 @@ export function SearchContent({
                         </button>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        <FilterContent />
+                        {filterContentJsx}
                     </div>
                     <button
                         onClick={() => setShowFilters(false)}

@@ -1,7 +1,7 @@
-# PRD — DominioTotal v4.0
+# PRD — Barrio.uy v5.0
 ### Plataforma Inmobiliaria Premium para Uruguay
 
-**Versión:** 4.0.0 | **Fecha:** Febrero 2026 | **Estado:** Producción + Roadmap 2026
+**Versión:** 5.0.0 | **Fecha:** 22 de Febrero 2026 | **Estado:** Go-To-Market (GTM) - Lanzamiento Oficial Q1 2026
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### 1.1 Visión del Producto
 
-**DominioTotal** es la primera plataforma inmobiliaria de Uruguay que combina:
+**Barrio.uy** es la primera plataforma inmobiliaria de Uruguay que combina:
 - **Experiencia mobile-first** con estándares internacionales (benchmark: Funda.nl)
 - **Datos inteligentes** del mercado uruguayo (Vivienda Promovida Ley 18.795, garantías, analytics)
 - **Tecnología moderna** (Next.js 16, React 19, Firebase) para una experiencia ultra-rápida
@@ -102,7 +102,7 @@
 
 ### 2.3 Matriz Competitiva
 
-| Feature | DominioTotal | InfoCasas | ML | Gallito | Properati |
+| Feature | Barrio.uy | InfoCasas | ML | Gallito | Properati |
 |---------|--------------|-----------|-----|---------|-----------|
 | **Mobile-first UX** | ✅ 10/10 | ⚠️ 5/10 | ⚠️ 6/10 | ❌ 3/10 | ✅ 8/10 |
 | **Performance** | ✅ 9/10 | ⚠️ 4/10 | ⚠️ 5/10 | ❌ 3/10 | ✅ 7/10 |
@@ -285,7 +285,7 @@ CREADORES DE GANANCIA (Gain Creators)
 **Quote:**
 > "No tengo tiempo para perder en páginas lentas. Necesito info clara y rápida para decidir."
 
-**Cómo DominioTotal lo ayuda:**
+**Cómo Barrio.uy lo ayuda:**
 - Mobile ultra-rápido con dark mode
 - Badge Vivienda Promovida visible
 - Comparador para shortlist de 3 opciones
@@ -323,7 +323,7 @@ CREADORES DE GANANCIA (Gain Creators)
 **Quote:**
 > "Necesito una plataforma que me traiga clientes reales, no solo visitas. Y que sea fácil de usar."
 
-**Cómo DominioTotal la ayuda:**
+**Cómo Barrio.uy la ayuda:**
 - Publicación gratis ilimitada
 - Dashboard de leads con estados
 - Edición rápida desde mobile
@@ -362,7 +362,7 @@ CREADORES DE GANANCIA (Gain Creators)
 **Quote:**
 > "Soy primeriza alquilando. Necesito que sea fácil y transparente, sin sorpresas."
 
-**Cómo DominioTotal la ayuda:**
+**Cómo Barrio.uy la ayuda:**
 - Filtro de garantías aceptadas (CGN destacado)
 - Precio/m² para comparar
 - Fotos reales obligatorias
@@ -378,7 +378,7 @@ CREADORES DE GANANCIA (Gain Creators)
 **ETAPA 1: DESCUBRIMIENTO (Día 1)**
 - **Touchpoint:** Google Search "apartamentos Pocitos USD 200k"
 - **Emoción:** 😐 Neutral
-- **Acción:** Click en resultado orgánico DominioTotal
+- **Acción:** Click en resultado orgánico Barrio.uy
 - **Expectativa:** Encontrar opciones rápidamente
 
 **ETAPA 2: EXPLORACIÓN (Día 1-3)**
@@ -1071,7 +1071,7 @@ SEO: >95 | Current: 92 (needs improvement)
 
 Actions:
 - Optimize JS bundle (code splitting)
-- Implement ISR for property pages
+- ✅ Implement ISR for property pages (revalidate = 3600)
 - Add more semantic HTML
 - Improve internal linking
 ```
@@ -1085,16 +1085,16 @@ Actions:
 ```
 Q1 2026 (Actual + 3 meses)
 │
-├── Sprint 6 (Semanas 1-2) - ESTABILIZACIÓN
-│   ├── Service Worker + PWA completa
-│   ├── Sentry error tracking
+├── Sprint 6 (Semanas 1-2) - ESTABILIZACIÓN ✅ COMPLETADO
+│   ├── ✅ Service Worker + PWA completa
+│   ├── ✅ Sentry error tracking + 3 alertas
 │   ├── Push notifications setup
-│   └── ISR en property pages
+│   └── ✅ ISR en property pages (1h revalidation)
 │
-├── Sprint 7 (Semanas 3-4) - TESTING
-│   ├── Vitest + React Testing Library
-│   ├── Playwright E2E tests
-│   ├── 60% code coverage
+├── Sprint 7 (Semanas 3-4) - TESTING (EN PROGRESO)
+│   ├── ✅ Vitest + React Testing Library (34 tests)
+│   ├── Playwright E2E tests (pendiente)
+│   ├── 60% code coverage (actual: ~5%)
 │   └── Beta testers onboarding (5 agentes)
 │
 ├── Sprint 8 (Semanas 5-6) - OPTIMIZACIÓN
@@ -1428,13 +1428,15 @@ Durante la planificación, se evaluaron las siguientes alternativas:
 | 1.0 | Nov 2025 | PRD inicial | [Autor] |
 | 2.0 | Dic 2025 | Actualización post-beta testing | [Autor] |
 | 3.0 | Ene 2026 | Roadmap 2026 y plan de monetización | [Autor] |
-| **4.0** | **Feb 2026** | **PRD completo y detallado con mejoras del actual. Análisis de mercado expandido, User Personas, Requirements funcionales/no funcionales completos, Testing strategy, Go-to-Market detallado** | **Claude + [Tu nombre]** |
+| 4.0 | Feb 2026 | PRD completo y detallado. Análisis de mercado expandido. | Claude + [Tu nombre] |
+| 4.1 | Feb 2026 | Refinamiento de arquitectura técnica y SEO técnico. | Claude |
+| **5.0** | **22 Feb 2026** | **Cierre Auditoría Integral v11.0. Transición oficial a fase Go-To-Market. MVP al 100% (Iconos, PWA, Algolia, Blogs implementados).** | **Antigravity (AI)** |
 
 ---
 
 ## 📊 Resumen Ejecutivo Final
 
-**DominioTotal v4.0** está diseñado para capturar el **gap de mercado** en Uruguay: una plataforma inmobiliaria **mobile-first** con datos únicos y experiencia premium.
+**Barrio.uy v4.0** está diseñado para capturar el **gap de mercado** en Uruguay: una plataforma inmobiliaria **mobile-first** con datos únicos y experiencia premium.
 
 ### 🎯 Ventaja Competitiva
 Combinamos **UX de clase mundial** (Funda.nl benchmark) + **datos relevantes de Uruguay** (Ley 18.795, garantías) + **tecnología moderna** (Next.js 16, Firebase) para crear la mejor experiencia de búsqueda y publicación de propiedades en Uruguay.
@@ -1447,16 +1449,15 @@ Combinamos **UX de clase mundial** (Funda.nl benchmark) + **datos relevantes de 
 - $15,000 MRR (Monthly Recurring Revenue)
 - NPS > 60 (Net Promoter Score)
 
-### 🚀 Próximos Pasos Inmediatos
+### 🚀 Próximos Pasos Inmediatos (GTM Phase)
 
-**Sprint 6 (Próximas 2 semanas):**
-1. ✅ Implementar Service Worker + PWA completa
-2. ✅ Setup Sentry error tracking
-3. ✅ Configurar push notifications
-4. ✅ Optimizar con ISR en property pages
-5. ✅ Onboard primeros 5 beta testers
+**Q1 2026 (Marzo):**
+1. 🎯 **Onboarding B2B:** Captación de los primeros 50 agentes vía Playbook de Ventas.
+2. 📢 **Campaña de Lanzamiento:** Google Ads y Meta Ads focalizados en Montevideo.
+3. 📈 **Monitoreo de Conversion:** Ajuste de filtros basado en los primeros leads reales.
+4. 💎 **Estrategia Premium:** Lanzamiento de planes de suscripción para agentes destacados.
 
-**Meta Q1 2026:** 500 propiedades, 50 agentes, 5K MAU, score técnico 9.2/10
+**Meta Q1 2026:** 500 propiedades, 50 agentes, 5K MAU, ROI positivo en adquisición de leads.
 
 ---
 
@@ -1469,6 +1470,6 @@ Combinamos **UX de clase mundial** (Funda.nl benchmark) + **datos relevantes de 
 
 ---
 
-**🏠 DominioTotal - Encontrá tu próximo hogar.**
+**🏠 Barrio.uy - Encontrá tu próximo hogar.**
 
-*Versión 4.0.0 | Febrero 2026 | Estado: Producción + Roadmap 2026*
+*Versión 5.0.0 | 22 de Febrero 2026 | Estado: Go-To-Market Ready*

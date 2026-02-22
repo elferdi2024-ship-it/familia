@@ -104,5 +104,73 @@ export const POSTS: Post[] = [
         image: "https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=2000&auto=format&fit=crop",
         category: "Barrios",
         readTime: "10 min"
+    },
+    {
+        slug: "precio-m2-montevideo-2026-analisis-por-barrio",
+        title: "Precio del m² en Montevideo 2026: Análisis por Barrio",
+        excerpt: "Una radiografía completa de los valores inmobiliarios en la capital uruguaya para tomar decisiones de compra e inversión inteligentes.",
+        content: `Comprar una propiedad exige entender a fondo las dinámicas de precios del mercado local. A la hora de invertir en Montevideo durante 2026, el valor del metro cuadrado (m²) muestra fluctuaciones interesantes según la zona, la antigüedad del edificio y los servicios cercanos.
+
+        ## La Estrella del Mercado: Zona Costera
+        Los barrios tradicionales frente al Río de la Plata siguen liderando el tope de precios en Uruguay, siendo refugios seguros de capital:
+        - **Puerto Buceo & Punta Carretas:** Promedian entre **USD 3.200 y USD 3.800 por m²** en propiedades premium y obra nueva. La demanda internacional de corporativos impulsa esta zona.
+        - **Pocitos & Malvín:** Mantienen un valor estable rondando los **USD 2.600 a USD 2.900**. Son barrios con altísima liquidez (se alquilan y venden muy rápido).
+        - **Carrasco:** Sigue siendo altamente exclusivo, con valores muy variables dependiendo de si es "Carrasco Sur" (más de USD 3.500/m²) o norte, pero en expansión hacia proyectos de barrios privados.
+
+        ## El "Middle Market": Centro, Cordón y Tres Cruces
+        El boom de la vivienda promovida ha transformado completamente estos barrios. Aquí, los inversores apuntan menos a la revalorización de la tierra y más al *Yield* (rentabilidad mensual del alquiler):
+        - **Cordón Soho & Sur:** Se afianza como el barrio millennial por excelencia. Valores de pozo en torno a los **USD 2.200 a USD 2.500 / m²**.
+        - **Centro:** Ligeramente más económico, entre **USD 1.900 y USD 2.100**, excelente opción para estudiantes universitarios del interior.
+        - **Tres Cruces / Parque Batlle:** Debido a la cercanía a centros de salud (ideal para sector médico), el valor ronda los **USD 2.300 / m²**.
+
+        ## La "Nueva Ola" en Expansión: Este y Oeste
+        - **La Blanqueada:** Es, a nivel de rentabilidad pura, "el nuevo Cordón". Precios competitivos (aprox. **USD 2.000 / m²**) pero con alquileres sumamente demandados que elevan el retorno sobre inversión (ROI).
+        - **Ciudad de la Costa:** Empujada por el trabajo remoto, zonas como Carrasco Este o Avenida de las Américas están unificando el mercado suburbano. 
+
+        ## Conclusión: ¿Por dónde empezar?
+        Hacer el cálculo manual puede ser tedioso. En Barrio.uy utilizamos algoritmos paramétricos: cada vez que entras a ver una propiedad, te decimos si el precio que piden está "Acorde al Mercado", si está "Barato" o si está "Caro", basándonos en bases de datos actualizadas con las verdaderas operaciones de compraventa de la zona.`,
+        date: "2026-02-21",
+        author: "Data Analytics Team",
+        image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=2000&auto=format&fit=crop",
+        category: "Métricas",
+        readTime: "8 min"
+    },
+    {
+        slug: "alquilar-uruguay-garantias-cgn-anda-porto-seguro",
+        title: "Alquilar en Uruguay: Garantías CGN vs ANDA vs Aseguradoras Privadas",
+        excerpt: "Comparamos las garantías de alquiler más utilizadas en Uruguay para que sepas cuál te conviene, cuánto cuestan y cómo gestionarlas.",
+        content: `Uno de los mayores obstáculos (y primeras preguntas) al momento de buscar alquiler en Uruguay es la clásica frase: *"¿Qué garantía aceptan?"*. Tener esto resulto antes de buscar tu próximo apartamento te ahorrará muchísimos dolores de cabeza. Vamos a analizar las tres grandes familias de garantías disponibles en 2026.
+
+        ## 1. La Contaduría General de la Nación (CGN)
+        Es la garantía pública por excelencia. La CGN retiene mes a mes el monto del alquiler directamente de tu liquidación de sueldo.
+        - **Ventaja:** Muy valorada por los propietarios porque el cobro es casi automático y súper seguro. 
+        - **Costo para el inquilino:** Retención del 3% del alquiler.
+        - **Requisitos:** Tienes que ser empleado público o trabajar en una empresa privada que tenga convenio explícito con el SGA (Servicio de Garantía de Alquileres).
+        - **Límites:** El valor del alquiler líquido no puede superar aprox. el 30%-40% de tus ingresos nominales.
+
+        ## 2. ANDA (Asociación Nacional de Afiliados)
+        El monstruo del mundo privado. Al igual que CGN, retienen de tu salario para pagarle al dueño.
+        - **Ventaja para el dueño:** Absolutamente invulnerable. ANDA paga el día 10 del mes, pague o no el inquilino.
+        - **Desventaja para el inquilino:** Es comparativamente cara. Como inquilino vas a pagar un ~3% del alquiler mensual de cargo administrativo, pero **además tenés que pagar la cuota social de ANDA** todos los meses. 
+        - **Requisito:** Ser socio, tener 3 meses de antigüedad laboral y recibo de sueldo oficial.
+
+        ## 3. Aseguradoras Privadas (Porto Seguro, Sura, Mapfre, BSE)
+        El sistema más ágil y el que más ha crecido en los últimos 5 años impulsado por el público joven y extranjeros.
+        - **¿Cómo funciona?** Pagás una póliza de seguro anual (que suele costar el valor de **un mes o un mes y medio de alquiler**). Listo. 
+        - **Ventaja enorme:** Si tenés el dinero de frente y podés demostrar ingresos contables (incluso si sos empresa, extranjero residente o profesional independiente), el trámite sale en 48hs. No impacta en tu recibo de sueldo mes a mes.
+        - **Costo:** El mencionado pago anual o financiado en cuotas con tarjeta de crédito.
+
+        ## 4. El Nuevo Régimen: Alquiler Sin Garantía (LUC)
+        Implementado mediante la Ley de Urgente Consideración, permite alquilar sin presentar garantía alguna.
+        - El propietario y el inquilino pactan libremente, pero tiene reglas de desalojo **exprés** (mucho más rápidas si hay falta de pago u honorarios).
+        - Es ideal para personas sanas financieramente pero "sin papeles locales" todavía.
+
+        ## El Superpoder de Barrio.uy
+        Para evitar frustraciones, hemos diseñado la plataforma de Barrio.uy para que puedas **filtrar la grilla de resultados exclusivamente por la garantía que vos tenés**. Si tienes Porto Seguro, filtra por Porto Seguro y te mostraremos únicamente los dueños o agencias dispuestos a cerrar trato contigo hoy mismo.`,
+        date: "2026-02-22",
+        author: "Equipo MiBarrio.uy",
+        image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2000&auto=format&fit=crop",
+        category: "Guías",
+        readTime: "7 min"
     }
 ];

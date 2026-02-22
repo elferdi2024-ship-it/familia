@@ -1,6 +1,6 @@
 # Changelog
 
-Todos los cambios notables de DominioTotal.
+Todos los cambios notables de Barrio.uy.
 
 ## [5.0.0] - 2026-02-17
 
