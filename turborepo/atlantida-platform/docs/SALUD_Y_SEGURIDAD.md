@@ -21,7 +21,7 @@
 
 - **Raíz del repo:** Existe app Next.js en raíz (paralela al monorepo). Definir explícitamente si la raíz es solo legacy o se mantiene; si todo el desarrollo es en monorepo, considerar reducir duplicación (p. ej. un solo `CONTRIBUTING.md`/`CHANGELOG.md` que referencie el monorepo).
 - **Duplicación de PRD/README:** En cada app siguen existiendo `PRD_FINAL.md`, `README.md`. Está bien para onboarding por app, pero conviene que apunten a la fuente única en `docs/producto/` y `docs/README.md`.
-- **`.env.example`:** Tener en el monorepo (o por app) un `.env.example` sin valores reales ayuda a que nuevos devs no dejen variables sensibles por error. Actualmente solo se documentan en DEPLOY.md.
+- **`.env.example`:** ✅ Añadidos `apps/portal/.env.example` y raíz del monorepo `.env.example` con placeholders (sin valores reales). Ver DEPLOY.md para descripción de cada variable.
 
 ---
 
@@ -41,41 +41,29 @@
 
 ### 2.2 Riesgos y mejoras
 
-#### Crítico: Storage — propiedad de la carpeta
+#### Crítico: Storage — propiedad de la carpeta ✅ APLICADO
 
-- **Problema:** En `storage.rules`, cualquier usuario autenticado puede escribir en `properties/{propertyId}/{fileName}`. No se comprueba que `propertyId` sea de una propiedad del usuario.
-- **Riesgo:** Un usuario podría subir imágenes a rutas de propiedades ajenas (sobrescribir o abusar de almacenamiento).
-- **Recomendación:** Atar la escritura al dueño de la propiedad vía Firestore, por ejemplo:
+- **Problema:** En `storage.rules`, cualquier usuario autenticado podía escribir en `properties/{propertyId}/{fileName}`.
+- **Solución aplicada:** En `apps/portal/storage.rules` la escritura exige `firestore.get(.../properties/$(propertyId)).data.userId == request.auth.uid`. Solo el dueño de la propiedad puede subir imágenes a esa ruta.
 
-```text
-match /properties/{propertyId}/{fileName} {
-  allow read: if true;
-  allow write: if request.auth != null
-    && request.resource.size < 5 * 1024 * 1024
-    && request.resource.contentType.matches('image/.*')
-    && firestore.get(/databases/(default)/documents/properties/$(propertyId)).data.userId == request.auth.uid;
-}
-```
+#### Alto: Firestore — helper `getPostsToday` (portal e inmobiliaria) ✅ APLICADO
 
-(Usar el mismo `database` si no es default si aplica.)
-
-#### Alto: Firestore — helper `getPostsToday` (portal e inmobiliaria)
-
-- **Problema:** En ambas apps se usa `getAfter(/databases/$(database)/documents/feedPosts).where(...).size()`. En las reglas de Firestore, `getAfter()` recibe una **ruta de documento**, no de colección, y no existe un “query + count” en reglas.
-- **Riesgo:** Esa regla puede fallar en deploy o no aplicar el límite “5 posts por día” como se espera.
-- **Recomendación:**  
-  - Opción A: Quitar el límite de “5 posts/día” de las reglas y aplicar el límite en backend (Cloud Function o API que cree el post).  
-  - Opción B: Mantener un documento contador por usuario/día (p. ej. `feedPostCount/{userId}_{date}`) y en la regla de `create` hacer `get()` de ese documento y comprobar que el contador &lt; 5 (actualizando el contador vía Cloud Function al publicar).
+- **Problema:** Se usaba `getAfter(colección).where(...).size()` en reglas; en Firestore `getAfter()` es para documentos, no para queries.
+- **Solución aplicada:**  
+  - Se eliminó el helper `getPostsToday` de las reglas en portal e inmobiliaria.  
+  - En portal, `feedPosts` permite `create` si `isAuthenticated()` y `authorId == request.auth.uid`.  
+  - El límite de 5 posts/día se aplica en el cliente en `CreatePostModal`: antes de `addDoc` se consulta `feedPosts` con `authorId` y `publishedAt >= inicio del día` y si `size >= 5` se muestra toast y no se publica.  
+  - Añadido índice compuesto `feedPosts` (authorId, publishedAt) en `firestore.indexes.json`.
 
 #### Medio: CSP — `unsafe-inline` / `unsafe-eval`
 
 - **Estado:** `script-src` incluye `'unsafe-eval'` y `'unsafe-inline'` (habitual con Next.js y algunas libs).
 - **Recomendación:** A medio plazo valorar nonces o hashes para scripts (cuando Next.js y las dependencias lo permitan) para endurecer CSP sin romper la app.
 
-#### Medio: Admin API — fallback “Unsafe” en dev
+#### Medio: Admin API — fallback “Unsafe” en dev ✅ APLICADO
 
-- **Estado:** En `/api/admin/me` (y similares) existe `getEmailFromTokenUnsafe` que decodifica el JWT sin verificar firma cuando no hay Firebase Admin.
-- **Recomendación:** Comentar claramente que es solo para desarrollo y que en producción debe existir siempre Firebase Admin; opcionalmente, en producción devolver 503 si no está configurado Admin en lugar de usar el path inseguro.
+- **Estado:** En `/api/admin/me` existía fallback que decodificaba el JWT sin verificar firma cuando no hay Firebase Admin.
+- **Solución aplicada:** Comentario explícito de que `getEmailFromTokenUnsafe` es SOLO desarrollo. En producción (`NODE_ENV === 'production'`) si no hay `adminAuth`/`adminDb` se devuelve **503** (Servicio no disponible) y no se usa el fallback inseguro.
 
 #### Bajo: Lectura de usuarios (portal)
 
@@ -91,12 +79,14 @@ match /properties/{propertyId}/{fileName} {
 | Estructura / carpetas | Buena | Mantener docs unificados; opcional: un solo CHANGELOG/CONTRIBUTING y `.env.example`. |
 | Headers y CSP | Buena | Mantener; a futuro endurecer CSP (nonces/hashes). |
 | Rate limiting | Buena | Sin cambios urgentes. |
-| Firestore (reglas) | A revisar | Corregir `getPostsToday` (getAfter/query) y/o mover límite 5 posts/día a backend. |
-| Storage | A mejorar | Añadir comprobación de propiedad (Firestore) en `properties/{propertyId}/*`. |
-| Secrets y deploy | Buena | No subir JSON ni `.env`; documentación clara en DEPLOY.md. |
+| Firestore (reglas) | Aplicado | Eliminado `getPostsToday` inválido; límite 5/día en CreatePostModal + índice feedPosts. |
+| Storage | Aplicado | Escritura en `properties/*` solo si dueño (firestore.get + userId). |
+| Secrets y deploy | Aplicado | `.env.example` en portal y monorepo; no subir JSON ni `.env`; DEPLOY.md. |
 
-En conjunto, el sistema está en **buen estado de salud** y con **seguridad sólida** en red, headers y control de acceso en Firestore/API. Las dos mejoras que más impacto tienen son: **(1) atar escritura en Storage a la propiedad del documento en Firestore** y **(2) corregir o reemplazar el límite de posts por día en las reglas de Firestore**.
+En conjunto, el sistema está en **buen estado de salud** y con **seguridad sólida** en red, headers y control de acceso en Firestore/API. Las mejoras de SALUD_Y_SEGURIDAD aplicadas en código son: **(1) Storage: solo el dueño de la propiedad puede subir imágenes**, **(2) Firestore: eliminado getPostsToday inválido; límite 5 posts/día en cliente + índice**, **(3) Admin API: 503 en producción si no hay Firebase Admin**, **(4) .env.example en portal y monorepo**.
 
 ---
 
 *Documento vivo: conviene revisar tras cada cambio relevante en reglas, middleware o configuración de seguridad.*
+
+**Última aplicación de mejoras:** 24 Feb 2026 — Storage (propiedad), Firestore getPostsToday (reglas + cliente), Admin API 503 en prod, .env.example.

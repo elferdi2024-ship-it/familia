@@ -101,7 +101,25 @@ Actualizar `NEXT_PUBLIC_APP_URL` en el portal con la URL final de producción (e
 
 ---
 
-## 5. Checklist pre-deploy
+## 5. Si el deploy no muestra los últimos cambios
+
+Si en la URL de Vercel ves una versión antigua (por ejemplo sin "Inmobiliarias" en el menú):
+
+1. **Rama y commits**  
+   En Vercel → Project → Settings → Git: confirmar que **Production Branch** es `main` y que el último deploy usó el commit esperado (Deployments → último → commit hash).
+
+2. **Root Directory**  
+   Para el portal debe ser `turborepo/atlantida-platform/apps/portal` (si el repo es INMOBILIARIA). Si está en otra ruta, el build puede ser de otra app o de una estructura antigua.
+
+3. **Redeploy con caché limpia**  
+   Deployments → los tres puntos del último deploy → **Redeploy** → marcar **Clear build cache and redeploy**. Así se fuerza un build desde cero con el código actual de la rama.
+
+4. **Firebase Auth (login con Google)**  
+   Si la URL de deploy cambia (por ejemplo un nuevo preview), agregar ese dominio en Firebase Console → Authentication → Settings → **Authorized domains** (ej. `turborepo-inmob-market-portal-diexusk4q.vercel.app`).
+
+---
+
+## 6. Checklist pre-deploy
 
 - [ ] Build local OK: `npm run build` (o `build:portal` / `build:inmobiliaria`).  
 - [ ] Variables de entorno de producción configuradas (sobre todo Firebase Admin y CREATOR_EMAILS en portal).  

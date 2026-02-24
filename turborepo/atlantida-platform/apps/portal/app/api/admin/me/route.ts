@@ -12,7 +12,11 @@ function getToken(req: Request): string | null {
     return auth.slice(7);
 }
 
-/** Solo cuando Firebase Admin no está configurado (ej. dev): lee email del payload del JWT para comprobar CREATOR_EMAILS. No verifica firma. */
+/**
+ * SOLO DESARROLLO: cuando Firebase Admin no está configurado, lee el email del payload del JWT
+ * para comprobar CREATOR_EMAILS. No verifica la firma del token — NUNCA usar en producción.
+ * En producción las rutas /api/admin/* deben tener siempre Firebase Admin configurado.
+ */
 function getEmailFromTokenUnsafe(token: string): string | null {
     try {
         const parts = token.split('.');
@@ -47,7 +51,15 @@ export async function GET(req: Request) {
             return NextResponse.json({ canManage: false }, { status: 200 });
         }
 
-        // Fallback dev: sin Firebase Admin configurado, solo comprobar email del JWT (no verificado)
+        // Producción: Firebase Admin es obligatorio; no usar fallback inseguro
+        if (process.env.NODE_ENV === 'production') {
+            return NextResponse.json(
+                { error: 'Servicio de administración no disponible' },
+                { status: 503 }
+            );
+        }
+
+        // Solo desarrollo: fallback sin verificar firma del JWT (NUNCA en producción)
         const email = getEmailFromTokenUnsafe(token);
         if (email && CREATOR_EMAILS.includes(email)) {
             return NextResponse.json({ canManage: true, role: 'creator' });

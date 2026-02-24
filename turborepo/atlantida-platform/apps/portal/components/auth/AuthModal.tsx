@@ -30,7 +30,19 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             await loginWithGoogle()
             onClose()
         } catch (err: any) {
-            setError("No se pudo iniciar sesión con Google. Intentalo de nuevo.")
+            console.error("Error Google sign-in:", err?.code, err?.message, err)
+            const code = err?.code
+            if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+                setError("Cerraste la ventana de Google. Volvé a intentar si querés ingresar.")
+            } else if (code === "auth/unauthorized-domain") {
+                setError("Este sitio no está autorizado para ingresar con Google. Contactá al administrador.")
+            } else if (code === "auth/account-exists-with-different-credential") {
+                setError("Este correo ya está registrado con email y contraseña. Usá esa opción para ingresar.")
+            } else if (code === "auth/network-request-failed") {
+                setError("Error de conexión. Revisá tu internet e intentá de nuevo.")
+            } else {
+                setError(err?.message || "No se pudo iniciar sesión con Google. Intentalo de nuevo.")
+            }
         } finally {
             setLoading(false)
         }

@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Home, TrendingDown, Megaphone, Lightbulb, Image as ImageIcon, Link as LinkIcon, User2, Loader2, Send } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { db } from "@repo/lib/firebase"
-import { collection, addDoc, serverTimestamp, getDoc, doc, query, where, orderBy, limit, getDocs } from "firebase/firestore"
+import { collection, addDoc, serverTimestamp, getDoc, doc, query, where, orderBy, limit, getDocs, Timestamp } from "firebase/firestore"
 import { toast } from "sonner"
 import type { FeedPostType, AgentPlan, Property, PropertySnapshot } from "@repo/types"
 
@@ -116,6 +116,22 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
         setIsPublishing(true)
         try {
+            // Límite 5 posts por día (aplicado en cliente; las reglas no permiten query+count)
+            const startOfDay = new Date()
+            startOfDay.setHours(0, 0, 0, 0)
+            const todayQuery = query(
+                collection(db!, "feedPosts"),
+                where("authorId", "==", user.uid),
+                where("publishedAt", ">=", Timestamp.fromDate(startOfDay)),
+                limit(6)
+            )
+            const todaySnap = await getDocs(todayQuery)
+            if (todaySnap.size >= 5) {
+                toast.error("Has alcanzado el límite de 5 publicaciones por día. Intenta mañana.")
+                setIsPublishing(false)
+                return
+            }
+
             const plan: AgentPlan = profile?.plan || 'free'
             const hashtags = text.match(/#[\wñáéíóú]+/g)?.map(h => h.substring(1)) || []
 
