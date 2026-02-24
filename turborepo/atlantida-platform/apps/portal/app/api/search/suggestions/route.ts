@@ -1,15 +1,23 @@
 import { NextResponse } from 'next/server';
 import { db } from "@repo/lib/firebase";
 import { collection, query, where, getDocs, limit, orderBy, startAt, endAt } from 'firebase/firestore';
+import { z } from 'zod';
+
+const SearchQuerySchema = z.object({
+    q: z.string().min(1).max(100).trim()
+});
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const q = searchParams.get('q');
+    const qParam = searchParams.get('q');
 
-    if (!q || q.length < 3) {
+    const result = SearchQuerySchema.safeParse({ q: qParam });
+
+    if (!result.success || result.data.q.length < 3) {
         return NextResponse.json({ suggestions: [] });
     }
 
+    const q = result.data.q;
     const searchTerm = q.toLowerCase();
 
     try {

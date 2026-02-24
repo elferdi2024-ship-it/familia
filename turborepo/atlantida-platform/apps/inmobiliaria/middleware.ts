@@ -1,33 +1,38 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
+import { Redis } from '@upstash/redis'
+
+const RATE_LIMIT_WINDOW = 60 // 1 minute in seconds
 const MAX_REQUESTS_API = 30
 const MAX_REQUESTS_LEADS = 5
 
-// Use a simple Map for rate limiting in memory (resets on server restart)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
+// Initialize Redis only if url and token are available
+const redisUrl = process.env.KV_REST_API_URL
+const redisToken = process.env.KV_REST_API_TOKEN
+const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null
 
 function getRateLimitKey(request: NextRequest): string {
     const forwarded = request.headers.get('x-forwarded-for')
-    const ip = forwarded?.split(',')[0]?.trim() || 'anonymous'
-    return ip
+    return forwarded?.split(',')[0]?.trim() || 'anonymous'
 }
 
-function isRateLimited(key: string, maxRequests: number): boolean {
-    const now = Date.now()
-    const entry = rateLimitMap.get(key)
+async function isRateLimited(key: string, maxRequests: number): Promise<boolean> {
+    if (!redis) return false // Fail open if no redis configured
 
-    if (!entry || now > entry.resetTime) {
-        rateLimitMap.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW })
-        return false
+    try {
+        const current = await redis.incr(key)
+        if (current === 1) {
+            await redis.expire(key, RATE_LIMIT_WINDOW)
+        }
+        return current > maxRequests
+    } catch (error) {
+        console.error('Rate limit error:', error)
+        return false // Fail open so we don't block legitimate traffic if Redis is down
     }
-
-    entry.count++
-    return entry.count > maxRequests
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
 
     // 0. Exclude static assets from ALL middleware logic (including rate limiting)
@@ -55,8 +60,8 @@ export function middleware(request: NextRequest) {
 
     // 2. Rate limit API routes
     if (pathname.startsWith('/api/')) {
-        const key = `api:${getRateLimitKey(request)}`
-        if (isRateLimited(key, MAX_REQUESTS_API)) {
+        const key = `rate_limit:api:${getRateLimitKey(request)}`
+        if (await isRateLimited(key, MAX_REQUESTS_API)) {
             return new NextResponse(
                 JSON.stringify({ error: 'Demasiadas solicitudes. Intenta de nuevo más tarde.' }),
                 { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '60' } }
@@ -66,8 +71,8 @@ export function middleware(request: NextRequest) {
 
     // 3. Stricter rate limit on lead-related endpoints to prevent spam
     if (pathname.includes('lead') || pathname.includes('notify')) {
-        const key = `lead:${getRateLimitKey(request)}`
-        if (isRateLimited(key, MAX_REQUESTS_LEADS)) {
+        const key = `rate_limit:lead:${getRateLimitKey(request)}`
+        if (await isRateLimited(key, MAX_REQUESTS_LEADS)) {
             return new NextResponse(
                 JSON.stringify({ error: 'Límite de consultas alcanzado. Espera un momento.' }),
                 { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '120' } }

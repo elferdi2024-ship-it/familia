@@ -7,11 +7,12 @@ import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useState } from "react"
 
-const tabs = [
+const baseTabs = [
     { href: "/", icon: "home", label: "Inicio" },
     { href: "/search?filters=open", icon: "search", label: "Buscar" },
-    { href: "/favorites", icon: "favorite", label: "Favoritos" },
     { href: "/publish", icon: "add_circle", label: "Publicar" },
+    { href: "/favorites", icon: "favorite", label: "Favoritos" },
+    { href: "/my-properties", icon: "account_circle", label: "Perfil" },
 ]
 
 export function BottomTabBar() {
@@ -30,21 +31,27 @@ export function BottomTabBar() {
     return (
         <>
             <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-background-dark/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 safe-area-bottom">
-                <div className="flex items-center justify-around h-16 px-2">
-                    {tabs.map(tab => {
+                <div className="flex items-center justify-around h-16 px-1">
+                    {baseTabs.map(tab => {
                         const isActive = tab.href === "/"
                             ? pathname === "/"
                             : pathname.startsWith(tab.href)
 
-                        const isPublish = tab.href === "/publish"
+                        const requiresAuth = tab.href === "/publish" || tab.href === "/my-properties"
 
                         const content = (
                             <>
-                                <span className={`material-icons transition-all ${isActive ? "text-[26px]" : "text-[22px]"
-                                    }`}>
-                                    {tab.icon === "favorite" && isActive ? "favorite" :
-                                        tab.icon === "favorite" ? "favorite_border" : tab.icon}
-                                </span>
+                                {tab.icon === "account_circle" && user?.photoURL ? (
+                                    <div className={`w-6 h-6 rounded-full overflow-hidden border-2 transition-all ${isActive ? "border-primary" : "border-slate-300 dark:border-slate-600"}`}>
+                                        <img src={user.photoURL} alt="Perfil" className="w-full h-full object-cover" />
+                                    </div>
+                                ) : (
+                                    <span className={`material-icons transition-all ${isActive ? "text-[26px]" : "text-[22px]"
+                                        }`}>
+                                        {tab.icon === "favorite" && isActive ? "favorite" :
+                                            tab.icon === "favorite" ? "favorite_border" : tab.icon}
+                                    </span>
+                                )}
 
                                 {/* Badge for favorites count */}
                                 {tab.icon === "favorite" && favorites.length > 0 && (
@@ -53,19 +60,19 @@ export function BottomTabBar() {
                                     </span>
                                 )}
 
-                                <span className={`text-[10px] font-semibold leading-none ${isActive ? "font-bold" : ""
+                                <span className={`text-[9px] font-semibold leading-none mt-1 ${isActive ? "font-bold" : ""
                                     }`}>
                                     {tab.label}
                                 </span>
                             </>
                         )
 
-                        if (isPublish && !user) {
+                        if (requiresAuth && !user) {
                             return (
                                 <button
                                     key={tab.href}
                                     onClick={() => setShowAuthModal(true)}
-                                    className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${isActive
+                                    className={`relative flex flex-col items-center justify-center min-w-[64px] rounded-xl transition-all ${isActive
                                         ? "text-primary dark:text-white"
                                         : "text-slate-400 dark:text-slate-500"
                                         }`}
@@ -79,7 +86,7 @@ export function BottomTabBar() {
                             <Link
                                 key={tab.href}
                                 href={tab.href}
-                                className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${isActive
+                                className={`relative flex flex-col items-center justify-center min-w-[64px] rounded-xl transition-all ${isActive
                                     ? "text-primary dark:text-white"
                                     : "text-slate-400 dark:text-slate-500"
                                     }`}

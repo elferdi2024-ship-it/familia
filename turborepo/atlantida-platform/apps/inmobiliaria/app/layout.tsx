@@ -89,10 +89,16 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://firestore.googleapis.com" />
+        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://*.algolia.net" />
+        <link rel="preload" href="/portada-inmobiliaria.webp" as="image" />
         <link rel="icon" type="image/png" href="/icon-redondel.png" />
         <link rel="apple-touch-icon" href="/icon-redondel.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1e3a5f" />
@@ -117,7 +123,7 @@ export default function RootLayout({
                       <script
                         type="application/ld+json"
                         dangerouslySetInnerHTML={{
-                          __html: JSON.stringify({
+                          __html: JSON.stringify([{
                             "@context": "https://schema.org",
                             "@type": "RealEstateAgent",
                             "name": "MiBarrio.uy Soluciones Inmobiliarias",
@@ -144,7 +150,18 @@ export default function RootLayout({
                               "https://www.instagram.com/MiBarrio.uy",
                               "https://www.facebook.com/MiBarrio.uy"
                             ]
-                          })
+                          },
+                          {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [{
+                              "@type": "ListItem",
+                              "position": 1,
+                              "name": "Inicio",
+                              "item": "https://mibarrio.uy"
+                            }]
+                          }
+                          ])
                         }}
                       />
                     </div>
@@ -177,7 +194,7 @@ export default function RootLayout({
         {/* Analytics & Heatmaps */}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-PENDING"} />
         {process.env.NEXT_PUBLIC_CONTENTSQUARE_ID && (
-          <Script id="contentsquare-script" strategy="afterInteractive">
+          <Script id="contentsquare-script" strategy="lazyOnload">
             {`
               (function() {
                 var s = document.createElement('script');

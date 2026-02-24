@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { db } from "@repo/lib/firebase"
-import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Firestore } from "firebase/firestore"
+import { auth, db, storage } from "@repo/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "firebase/firestore"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
@@ -79,13 +80,41 @@ export default function MyPropertiesPage() {
     const { updateUserProfile } = useAuth()
 
     // Profile Edit States
-    const [isProfileOpen, setIsProfileOpen] = useState(false)
     const [profileName, setProfileName] = useState(user?.displayName || "")
     const [profilePhone, setProfilePhone] = useState("")
     const [profileAgency, setProfileAgency] = useState("")
     const [profileHours, setProfileHours] = useState("")
+    const [profileBio, setProfileBio] = useState("")
     const [profilePhoto, setProfilePhoto] = useState(user?.photoURL || "")
+    const [profileCoverPhoto, setProfileCoverPhoto] = useState("")
+    const [profileOfficeAddress, setProfileOfficeAddress] = useState("")
+    const [profileContactEmail, setProfileContactEmail] = useState("")
+    const [profileWebsite, setProfileWebsite] = useState("")
+    const [profileSocialFacebook, setProfileSocialFacebook] = useState("")
+    const [profileSocialInstagram, setProfileSocialInstagram] = useState("")
+    const [profileSocialTwitter, setProfileSocialTwitter] = useState("")
+    const [profileSocialLinkedIn, setProfileSocialLinkedIn] = useState("")
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
+    const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+    const [isUploadingCover, setIsUploadingCover] = useState(false)
+    const [userPlan, setUserPlan] = useState<'free' | 'pro' | 'premium' | 'elite'>('free')
+    const [canManageCreator, setCanManageCreator] = useState(false)
+
+    const isProOrPremium = userPlan === 'pro' || userPlan === 'premium' || userPlan === 'elite'
+
+    useEffect(() => {
+        if (user && auth) {
+            auth.currentUser?.getIdToken().then((token) => {
+                if (!token) return
+                fetch('/api/admin/me', { headers: { Authorization: `Bearer ${token}` } })
+                    .then((r) => r.json())
+                    .then((data) => setCanManageCreator(!!data.canManage))
+                    .catch(() => setCanManageCreator(false))
+            })
+        } else {
+            setCanManageCreator(false)
+        }
+    }, [user])
 
     useEffect(() => {
         if (user) {
@@ -96,9 +125,20 @@ export default function MyPropertiesPage() {
                 const docSnap = await getDoc(doc(db, "users", user.uid))
                 if (docSnap.exists()) {
                     const data = docSnap.data()
+                    const plan = (data.plan as 'free' | 'pro' | 'premium' | 'elite') || 'free'
+                    setUserPlan(plan)
                     setProfilePhone(data.phone || "")
                     setProfileAgency(data.agencyName || "")
                     setProfileHours(data.workingHours || "")
+                    setProfileBio(data.bio || "")
+                    setProfileCoverPhoto(data.coverPhotoURL || "")
+                    setProfileOfficeAddress(data.officeAddress || "")
+                    setProfileContactEmail(data.contactEmail || "")
+                    setProfileWebsite(data.website || "")
+                    setProfileSocialFacebook(data.socialFacebook || "")
+                    setProfileSocialInstagram(data.socialInstagram || "")
+                    setProfileSocialTwitter(data.socialTwitter || "")
+                    setProfileSocialLinkedIn(data.socialLinkedIn || "")
                 }
             }
             fetchProfile()
@@ -109,27 +149,72 @@ export default function MyPropertiesPage() {
         e.preventDefault()
         setIsUpdatingProfile(true)
         try {
-            await updateUserProfile({
-                displayName: profileName,
-                photoURL: profilePhoto
-            })
+            await updateUserProfile(
+                isProOrPremium
+                    ? { displayName: profileName, photoURL: profilePhoto }
+                    : { displayName: profileName }
+            )
             if (db) {
-                await setDoc(doc(db, "users", user!.uid), {
-                    displayName: profileName,
-                    photoURL: profilePhoto,
-                    phone: profilePhone,
-                    agencyName: profileAgency,
-                    workingHours: profileHours,
-                    updatedAt: new Date().toISOString()
-                }, { merge: true })
+                if (isProOrPremium) {
+                    await setDoc(doc(db, "users", user!.uid), {
+                        displayName: profileName,
+                        photoURL: profilePhoto,
+                        phone: profilePhone,
+                        agencyName: profileAgency,
+                        workingHours: profileHours,
+                        bio: profileBio,
+                        coverPhotoURL: profileCoverPhoto,
+                        officeAddress: profileOfficeAddress,
+                        contactEmail: profileContactEmail,
+                        website: profileWebsite,
+                        socialFacebook: profileSocialFacebook,
+                        socialInstagram: profileSocialInstagram,
+                        socialTwitter: profileSocialTwitter,
+                        socialLinkedIn: profileSocialLinkedIn,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true })
+                } else {
+                    await setDoc(doc(db, "users", user!.uid), {
+                        displayName: profileName,
+                        phone: profilePhone,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true })
+                }
             }
             toast.success("Perfil actualizado con éxito")
-            setIsProfileOpen(false)
         } catch (error) {
             console.error(error)
             toast.error("Error al actualizar perfil")
         } finally {
             setIsUpdatingProfile(false)
+        }
+    }
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'avatar' | 'cover') => {
+        const file = e.target.files?.[0]
+        if (!file || !user || !storage) return
+
+        const isAvatar = type === 'avatar'
+        if (isAvatar) setIsUploadingAvatar(true)
+        else setIsUploadingCover(true)
+
+        try {
+            const fileExt = file.name.split('.').pop()
+            const fileName = `${user.uid}_${type}_${Date.now()}.${fileExt}`
+            const storageRef = ref(storage, `users/${user.uid}/${fileName}`)
+            await uploadBytes(storageRef, file)
+            const url = await getDownloadURL(storageRef)
+
+            if (isAvatar) setProfilePhoto(url)
+            else setProfileCoverPhoto(url)
+
+            toast.success("Imagen subida con éxito")
+        } catch (error) {
+            console.error("Error uploading file:", error)
+            toast.error("Error al subir la imagen")
+        } finally {
+            if (isAvatar) setIsUploadingAvatar(false)
+            else setIsUploadingCover(false)
         }
     }
 
@@ -289,19 +374,60 @@ export default function MyPropertiesPage() {
                         <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                             Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">Comercial</span>
                         </h1>
-                        <p className="text-slate-500 font-medium text-lg flex items-center gap-2">
-                            Hola, {user.displayName || 'Agente'} — <span className="text-sm font-bold opacity-60">Gestionando {properties.length} propiedades activas</span>
+                        <p className="text-slate-500 font-medium text-lg flex items-center gap-2 flex-wrap">
+                            Hola, {user.displayName || 'Agente'} —{" "}
+                            <Link href="#inventario" className="text-sm font-bold text-primary hover:underline inline-flex items-center gap-1">
+                                Gestionando {properties.length} propiedades activas
+                                <span className="material-icons text-sm">arrow_forward</span>
+                            </Link>
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => setIsProfileOpen(true)}
-                            className="p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary transition-all shadow-sm group"
-                            title="Editar Perfil"
-                        >
-                            <span className="material-icons text-slate-400 group-hover:text-primary transition-colors">settings</span>
-                        </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        {canManageCreator && (
+                            <>
+                                <Link
+                                    href="/creator"
+                                    className="border-2 border-primary text-primary dark:border-primary dark:text-primary px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-primary/10 transition-all"
+                                >
+                                    <span className="material-icons text-sm">admin_panel_settings</span> Panel Creador
+                                </Link>
+                                {!isProOrPremium && (
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            if (!auth?.currentUser) return
+                                            try {
+                                                const token = await auth.currentUser.getIdToken()
+                                                const res = await fetch('/api/admin/set-plan', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                                    body: JSON.stringify({ plan: 'pro' })
+                                                })
+                                                const data = await res.json()
+                                                if (res.ok) {
+                                                    setUserPlan('pro')
+                                                    toast.success('Tu cuenta ahora tiene Plan Pro.')
+                                                    return
+                                                }
+                                                if (res.status === 503 && db) {
+                                                    await setDoc(doc(db, 'users', auth.currentUser.uid), { plan: 'pro', updatedAt: new Date().toISOString() }, { merge: true })
+                                                    setUserPlan('pro')
+                                                    toast.success('Tu cuenta ahora tiene Plan Pro (guardado en tu perfil).')
+                                                    return
+                                                }
+                                                toast.error(data.error || 'Error al asignar plan')
+                                            } catch {
+                                                toast.error('Error al asignar plan')
+                                            }
+                                        }}
+                                        className="bg-indigo-600 text-white px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-xl hover:-translate-y-0.5 transition-all"
+                                    >
+                                        <span className="material-icons text-sm">workspace_premium</span> Activar Plan Pro en mi cuenta
+                                    </button>
+                                )}
+                            </>
+                        )}
                         <Link
                             href="/publish"
                             className="bg-slate-900 dark:bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-2xl shadow-primary/30 hover:-translate-y-1 active:scale-95 transition-all"
@@ -311,32 +437,40 @@ export default function MyPropertiesPage() {
                     </div>
                 </header>
 
-                <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
-                    <DialogContent className="sm:max-w-[480px] rounded-[2rem] border-none shadow-2xl">
-                        <DialogHeader>
-                            <DialogTitle className="text-2xl font-black tracking-tight">Mi Perfil Profesional</DialogTitle>
-                            <DialogDescription className="font-medium text-slate-500">
-                                Estos datos se mostrarán en todas tus publicaciones y los leads que recibas.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <form onSubmit={handleProfileUpdate} className="space-y-6 pt-6">
-                            <div className="flex flex-col items-center gap-4 mb-6">
-                                <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-100 flex items-center justify-center">
-                                    <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="w-full space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">URL de Imagen</label>
-                                    <input
-                                        type="url"
-                                        placeholder="https://..."
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profilePhoto}
-                                        onChange={(e) => setProfilePhoto(e.target.value)}
-                                    />
-                                </div>
+                {/* Inline Profile Section */}
+                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden">
+                    <div className="p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <div>
+                                <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Configuración del Perfil</h2>
+                                <p className="font-medium text-slate-500 mt-1">
+                                    {isProOrPremium
+                                        ? "Estos datos se mostrarán en todas tus publicaciones y los leads que recibas."
+                                        : "Plan Free: solo puedes editar datos básicos de contacto. Mejora a Pro o Premium para desbloquear el perfil completo."}
+                                </p>
+                                {isProOrPremium && (
+                                    <p className="text-sm text-slate-500 mt-2 flex items-center gap-2">
+                                        <span className="material-icons text-primary text-lg">link</span>
+                                        Tu perfil puede aparecer en <Link href="/inmobiliarias" className="font-bold text-primary hover:underline">Inmobiliarias</Link>. Inventario actual: <strong>{properties.length} propiedades</strong>.
+                                    </p>
+                                )}
                             </div>
+                            {!isProOrPremium && (
+                                <Link
+                                    href="/publish/pricing"
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 hover:-translate-y-0.5 transition-all"
+                                >
+                                    <span className="material-icons text-lg">workspace_premium</span>
+                                    Mejorar a Pro o Premium
+                                </Link>
+                            )}
+                        </div>
+                    </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                    <form onSubmit={handleProfileUpdate} className="p-8 space-y-8">
+                        {/* Free: solo datos básicos */}
+                        {!isProOrPremium && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Nombre Público</label>
                                     <input
@@ -348,59 +482,189 @@ export default function MyPropertiesPage() {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Inmobiliaria</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        placeholder="Ej: 099 123 456"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
+                                        value={profilePhone}
+                                        onChange={(e) => setProfilePhone(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Pro/Premium: perfil completo */}
+                        {isProOrPremium && (
+                            <>
+                        {/* Cover Photo */}
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Foto de Portada (Inmobiliaria)</label>
+                            <label className="relative w-full h-48 md:h-64 rounded-3xl overflow-hidden border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 group cursor-pointer block">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => handleFileUpload(e, 'cover')}
+                                    disabled={isUploadingCover}
+                                />
+                                {isUploadingCover ? (
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                        <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                                        <span className="font-medium text-sm">Subiendo portada...</span>
+                                    </div>
+                                ) : profileCoverPhoto ? (
+                                    <>
+                                        <img src={profileCoverPhoto} alt="Cover" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span className="text-white font-bold text-sm bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm flex items-center gap-2">
+                                                <span className="material-icons text-sm">upload</span> Cambiar Foto
+                                            </span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                        <span className="material-icons text-4xl mb-2 opacity-50">wallpaper</span>
+                                        <span className="font-medium text-sm">Haz clic para subir una portada</span>
+                                    </div>
+                                )}
+                            </label>
+                        </div>
+
+                        {/* Avatar & Basic Info */}
+                        <div className="flex flex-col md:flex-row gap-8 items-start">
+                            <div className="flex flex-col items-center gap-4 shrink-0 px-4 md:px-8">
+                                <label className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl bg-slate-100 flex items-center justify-center z-10 relative -top-16 md:-top-24 mb-[-4rem] md:mb-[-6rem] cursor-pointer group">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => handleFileUpload(e, 'avatar')}
+                                        disabled={isUploadingAvatar}
+                                    />
+                                    {isUploadingAvatar ? (
+                                        <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                                    ) : (
+                                        <>
+                                            <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <span className="material-icons text-white">photo_camera</span>
+                                            </div>
+                                        </>
+                                    )}
+                                </label>
+                                <div className="text-[10px] font-black uppercase text-slate-400 tracking-widest text-center mt-2">
+                                    Logo / Avatar
+                                </div>
+                            </div>
+
+                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-2">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Nombre Público</label>
                                     <input
                                         type="text"
-                                        placeholder="Empresa"
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileName}
+                                        onChange={(e) => setProfileName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Inmobiliaria / Empresa</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Atlantida Group"
                                         className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
                                         value={profileAgency}
                                         onChange={(e) => setProfileAgency(e.target.value)}
                                     />
                                 </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        placeholder="Ej: 099 123 456"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
+                                        value={profilePhone}
+                                        onChange={(e) => setProfilePhone(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Horario de Consultas</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Lun-Vie 9-18hs"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileHours}
+                                        onChange={(e) => setProfileHours(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Dirección de Oficina</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Ej: Av. 18 de Julio 1234"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileOfficeAddress}
+                                        onChange={(e) => setProfileOfficeAddress(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Email de Contacto</label>
+                                    <input
+                                        type="email"
+                                        placeholder="Ej: contacto@tuinmobiliaria.com"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileContactEmail}
+                                        onChange={(e) => setProfileContactEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Sitio Web</label>
+                                    <input
+                                        type="url"
+                                        placeholder="Ej: www.tuinmobiliaria.com"
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                        value={profileWebsite}
+                                        onChange={(e) => setProfileWebsite(e.target.value)}
+                                    />
+                                </div>
+                                <div className="md:col-span-2 space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest block">Redes Sociales</label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <input type="url" placeholder="Facebook" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialFacebook} onChange={(e) => setProfileSocialFacebook(e.target.value)} />
+                                        <input type="url" placeholder="Instagram" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialInstagram} onChange={(e) => setProfileSocialInstagram(e.target.value)} />
+                                        <input type="url" placeholder="Twitter / X" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialTwitter} onChange={(e) => setProfileSocialTwitter(e.target.value)} />
+                                        <input type="url" placeholder="LinkedIn" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialLinkedIn} onChange={(e) => setProfileSocialLinkedIn(e.target.value)} />
+                                    </div>
+                                </div>
+                                <div className="md:col-span-2 space-y-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Descripción / Presentación</label>
+                                    <textarea
+                                        placeholder="Cuéntanos sobre ti y tu experiencia..."
+                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium resize-none min-h-[100px]"
+                                        value={profileBio}
+                                        onChange={(e) => setProfileBio(e.target.value)}
+                                    />
+                                </div>
                             </div>
+                        </div>
+                            </>
+                        )}
 
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
-                                <input
-                                    type="tel"
-                                    required
-                                    placeholder="Ej: 099 123 456"
-                                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
-                                    value={profilePhone}
-                                    onChange={(e) => setProfilePhone(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Horario de Consultas</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ej: Lun-Vie 9-18hs"
-                                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                    value={profileHours}
-                                    onChange={(e) => setProfileHours(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="flex gap-3 pt-6">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsProfileOpen(false)}
-                                    className="flex-1 py-4 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-colors"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isUpdatingProfile}
-                                    className="flex-1 py-4 bg-slate-900 dark:bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-slate-900/20 disabled:opacity-50"
-                                >
-                                    {isUpdatingProfile ? "Actualizando..." : "Guardar Cambios"}
-                                </button>
-                            </div>
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                        <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
+                            <button
+                                type="submit"
+                                disabled={isUpdatingProfile}
+                                className="px-10 py-4 bg-slate-900 dark:bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-slate-900/20 disabled:opacity-50 hover:-translate-y-1 transition-all"
+                            >
+                                {isUpdatingProfile ? "Actualizando Perfil..." : "Guardar Cambios"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
                 {/* Performance Bento Strip */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -635,12 +899,12 @@ export default function MyPropertiesPage() {
                     </div>
                 </div>
 
-                {/* Properties Showcase */}
-                <div className="space-y-8 pt-12">
+                {/* Properties Showcase - anchor for "Gestionando X propiedades" link */}
+                <div id="inventario" className="space-y-8 pt-12 scroll-mt-32">
                     <div className="flex items-center justify-between">
                         <div>
                             <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Inventario de Propiedades</h2>
-                            <p className="text-slate-500 font-medium">Gestiona tus publicaciones directamente.</p>
+                            <p className="text-slate-500 font-medium">Gestiona tus publicaciones directamente. {properties.length} activas.</p>
                         </div>
                     </div>
 

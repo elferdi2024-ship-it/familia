@@ -104,5 +104,60 @@ export const POSTS: Post[] = [
         image: "https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=2000&auto=format&fit=crop",
         category: "Barrios",
         readTime: "10 min"
+    },
+    {
+        slug: "garantias-alquiler-uruguay-cual-elegir",
+        title: "Garantías de Alquiler en Uruguay: ¿Cuál te conviene más?",
+        excerpt: "Comparamos ANDA, Contaduría (CGN), Porto Seguro y Sura para que elijas la mejor opción según tu perfil.",
+        content: `Alquilar un apartamento en Uruguay requiere, casi involuntariamente, hablar de garantías. En 2026, la oferta se ha diversificado y digitalizado, facilitando el acceso a quienes no tienen una propiedad como respaldo.
+
+        ## 1. Garantías Públicas: ANDA y Contaduría (CGN)
+        Siguen siendo las reinas del mercado por su bajo costo y seguridad para el propietario.
+        - **ANDA:** Muy popular en todo el país. El costo es de una cuota social mensual. Es ideal si trabajas en el sector privado o eres jubilado.
+        - **Contaduría (CGN):** La opción obligada para funcionarios públicos y becarios. No tiene costo de comisión, pero el trámite suele ser más burocrático que las opciones privadas.
+
+        ## 2. Seguros de Alquiler (Porto, Sura, Mapfre)
+        Es la modalidad que más creció en los últimos 5 años. 
+        - **Ventaja:** El trámite se resuelve en 24-48 horas de forma 100% digital.
+        - **Costo:** Generalmente equivale a un mes de alquiler por año (se puede pagar en cuotas). 
+        - **Promoción:** Muchas aseguradoras hoy ofrecen cubrir también los gastos comunes y daños a la propiedad.
+
+        ## 3. Depósito en el BHU o LUC
+        - **Depósito:** Consiste en inmovilizar 5 o 6 meses de alquiler en una cuenta del Banco Hipotecario. Es seguro pero requiere un capital inicial alto.
+        - **Alquiler sin garantía (LUC):** Bajo la Ley de Urgente Consideración, es posible alquilar sin garantía, pero ante un impago, el desalojo es express (6 o 15 días).
+
+        *Consejo Pro:* En Barrio.uy podés filtrar propiedades según la garantía que ya tenés aprobada, ahorrando horas de llamadas innecesarias.`,
+        date: "2026-02-21",
+        author: "Legal Inmobiliario",
+        image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000&auto=format&fit=crop",
+        category: "Trámites",
+        readTime: "7 min"
+    },
+    {
+        slug: "invertir-pozo-vs-estrenar-rentabilidad-2026",
+        title: "Invertir en Pozo vs. Propiedad Terminada: ¿Cuál rinde más?",
+        excerpt: "Analizamos los retornos de inversión (Yield) en el mercado uruguayo actual para que tomes la mejor decisión.",
+        content: `El eterno dilema del inversor en Uruguay: ¿Compro un apartamento que se entrega en 2 años o uno listo para alquilar mañana? En el contexto de 2026, la respuesta depende de tu horizonte temporal y apetito de riesgo.
+
+        ## Comprar en Pozo: El juego de la apreciación
+        Comprar "en pozo" significa adquirir la unidad cuando el edificio aún no se ha construido o está en obra inicial. 
+        - **Ganancia:** Se suele comprar entre un **15% y 25% más barato** que el precio final de lista.
+        - **Riesgo:** Debes confiar en la trayectoria de la desarrolladora.
+        - **Ideal para:** Quien busca capitalizar su inversión al momento de la reventa.
+
+        ## Propiedad Terminada: El juego del flujo de caja
+        - **Ganancia:** Empiezas a cobrar alquiler desde el día 1.
+        - **Seguridad:** Ves lo que compras (terminaciones, vistas reales, sol).
+        - **Ideal para:** Quien necesita un ingreso mensual inmediato (rentistas).
+
+        ## Datos del Mercado 2026
+        Hoy en zonas como **Cordón y La Blanqueada**, la rentabilidad por alquiler (Yield) se sitúa cerca del 6% anual en dólares para unidades de 1 dormitorio. Si a esto le sumas la valorización del m², la rentabilidad total anual puede superar el 10% en proyectos de pozo bien seleccionados.
+
+        En Barrio.uy, las fichas de propiedades nuevas incluyen una estimación de rentabilidad basada en los promedios del barrio para que decidas con números en la mano.`,
+        date: "2026-02-19",
+        author: "Inversiones",
+        image: "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=2000&auto=format&fit=crop",
+        category: "Inversión",
+        readTime: "9 min"
     }
 ];

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,13 +14,26 @@ import {
   ArrowRight,
   BookOpen,
   TrendingUp,
+  Rss,
 } from "lucide-react";
-import { CompareBar } from "@/components/CompareBar";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { MagneticWrapper, RevealText, TiltCard } from "@repo/ui";
 import { PROPERTY_TYPES, OPERATIONS } from "@/lib/data";
 import { POSTS } from "@/data/posts";
 import { Typewriter } from "@/components/ui/typewriter";
+
+// Below-the-fold / animation-heavy components: separate chunk to improve LCP and TTI
+const MagneticWrapper = dynamic(
+  () => import("@repo/ui").then((m) => ({ default: m.MagneticWrapper })),
+  { ssr: true }
+);
+const RevealText = dynamic(
+  () => import("@repo/ui").then((m) => ({ default: m.RevealText })),
+  { ssr: true }
+);
+const TiltCard = dynamic(
+  () => import("@repo/ui").then((m) => ({ default: m.TiltCard })),
+  { ssr: true }
+);
 
 // ───── Page Component ─────
 
@@ -244,6 +258,13 @@ export default function HomePage() {
               bg: "bg-indigo-50",
               href: "/search?badge=Premium",
             },
+            {
+              icon: "business",
+              label: "Inmobiliarias",
+              color: "text-slate-600",
+              bg: "bg-slate-100",
+              href: "/inmobiliarias",
+            },
           ].map((cat, i) => (
             <Link
               key={i}
@@ -336,13 +357,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tendencias Section - BENTO GRID */}
+      {/* Destacadas Section - BENTO GRID */}
       <section className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-b border-primary/5">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 md:mb-16 gap-4">
           <div>
             <RevealText
               as="h2"
-              text="Tendencias"
+              text="Destacadas"
               className="text-4xl md:text-5xl lg:text-6xl font-serif font-black tracking-tighter"
             />
             <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium text-lg">
@@ -567,6 +588,61 @@ export default function HomePage() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-4 h-4 bg-primary rounded-full animate-ping"></div>
               <div className="w-4 h-4 bg-primary rounded-full absolute"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Barrio Feed CTA Section */}
+      <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-16">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-primary/30 p-8 md:p-14 shadow-2xl border border-white/5">
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-[80px]"></div>
+          <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-emerald-500/15 rounded-full blur-[60px]"></div>
+
+          <div className="relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest mb-6 backdrop-blur-md">
+                <Rss className="w-3 h-3" /> Nuevo
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
+                Barrio <span className="text-primary">Feed</span>
+              </h2>
+              <p className="text-slate-400 text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+                El feed social inmobiliario de Uruguay. Descubrí bajadas de precio, propiedades nuevas y opiniones de agentes verificados de tu barrio.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/feed"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-white font-black rounded-xl transition-all hover:scale-105 active:scale-95 shadow-xl shadow-primary/30 text-sm uppercase tracking-widest"
+                >
+                  <Rss className="w-4 h-4" />
+                  Ir al Feed
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Mini Feed Preview Cards */}
+            <div className="space-y-3">
+              {[
+                { type: "🔥 Bajó de precio", text: "Apto en Cordón — USD 125.000", badge: "Ley 18.795", color: "from-red-500/20 to-orange-500/20", border: "border-red-500/20" },
+                { type: "🏠 Nueva publicación", text: "Penthouse en Pocitos — USD 285.000", badge: "Elite", color: "from-blue-500/20 to-primary/20", border: "border-blue-500/20" },
+                { type: "📊 Actualización", text: "Pocitos, Cordón y P. Rodó: los barrios más...", badge: "", color: "from-slate-500/20 to-slate-600/20", border: "border-slate-500/20" },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className={`bg-gradient-to-r ${item.color} backdrop-blur-sm rounded-2xl p-4 border ${item.border} hover:scale-[1.02] transition-transform cursor-pointer`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-white/70">{item.type}</span>
+                    {item.badge && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-white/80">{item.badge}</span>
+                    )}
+                  </div>
+                  <p className="text-sm font-bold text-white/90 truncate">{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

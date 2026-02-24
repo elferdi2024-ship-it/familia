@@ -16,6 +16,15 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Helper — contar posts de hoy
+    function getPostsToday(uid) {
+      let oneDayAgo = request.time - duration.value(86400, 's');
+      return getAfter(/databases/$(database)/documents/feedPosts)
+        .where('authorId', '==', uid)
+        .where('createdAt', '>=', oneDayAgo)
+        .size();
+    }
+
     // Properties Collection
     match /properties/{propertyId} {
       allow read: if true;
@@ -36,7 +45,7 @@ service cloud.firestore {
 
     // Users Collection
     match /users/{userId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow write: if isOwner(userId);
     }
 
@@ -65,6 +74,20 @@ service cloud.firestore {
       allow read: if isAuthenticated() &&
                     resource.data.userId == request.auth.uid;
       allow write: if false;
+    }
+
+    // Feed Posts Collection
+    match /feedPosts/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated() 
+        && request.resource.data.authorId == request.auth.uid
+        && getPostsToday(request.auth.uid) < 5;
+      allow update: if isAuthenticated() && (
+        isOwner(resource.data.authorId) || 
+        isAdmin() || 
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'rankingScore', 'whatsappClicks', 'comments'])
+      );
+      allow delete: if isOwner(resource.data.authorId) || isAdmin();
     }
   }
 }

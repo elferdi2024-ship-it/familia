@@ -26,9 +26,13 @@ export async function getProperty(id: string) {
 
             let agentInfo = null
             if (data.userId) {
-                const agentSnap = await getDoc(doc(db, "users", data.userId))
-                if (agentSnap.exists()) {
-                    agentInfo = JSON.parse(JSON.stringify(agentSnap.data()))
+                try {
+                    const agentSnap = await getDoc(doc(db, "users", data.userId))
+                    if (agentSnap.exists()) {
+                        agentInfo = JSON.parse(JSON.stringify(agentSnap.data()))
+                    }
+                } catch (agentErr) {
+                    console.warn(`⚠️ Error fetching agent info for property ${id}:`, agentErr)
                 }
             }
 

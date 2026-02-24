@@ -14,10 +14,12 @@ import {
     updateProfile,
     sendEmailVerification
 } from "firebase/auth"
-import { auth } from "@repo/lib/firebase"
+import { auth, db } from "@repo/lib/firebase"
+import { doc, getDoc, onSnapshot } from "firebase/firestore"
 
 interface AuthContextType {
     user: User | null
+    userData: any | null
     loading: boolean
     loginWithGoogle: () => Promise<void>
     loginWithEmail: (email: string, password: string) => Promise<void>
@@ -28,6 +30,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
+    userData: null,
     loading: true,
     loginWithGoogle: async () => { },
     loginWithEmail: async () => { },
@@ -40,26 +43,40 @@ export const useAuth = () => useContext(AuthContext)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
+    const [userData, setUserData] = useState<any | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!auth || !auth.onAuthStateChanged) {
+        if (!auth) {
             setLoading(false)
             return
         }
 
-        let cancelled = false
+        let unsubscribeFirestore: (() => void) | null = null
 
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (!cancelled) {
-                setUser(currentUser)
+        const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
+            setUser(currentUser)
+
+            if (currentUser && db) {
+                // Listen to user document
+                unsubscribeFirestore = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
+                    if (doc.exists()) {
+                        setUserData(doc.data())
+                    } else {
+                        setUserData({ plan: 'free' })
+                    }
+                    setLoading(false)
+                })
+            } else {
+                setUserData(null)
+                if (unsubscribeFirestore) unsubscribeFirestore()
                 setLoading(false)
             }
         })
 
         return () => {
-            cancelled = true
-            unsubscribe()
+            unsubscribeAuth()
+            if (unsubscribeFirestore) unsubscribeFirestore()
         }
     }, [])
 
@@ -130,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithEmail, registerWithEmail, updateUserProfile, logout }}>
+        <AuthContext.Provider value={{ user, userData, loading, loginWithGoogle, loginWithEmail, registerWithEmail, updateUserProfile, logout }}>
             {children}
         </AuthContext.Provider>
     )

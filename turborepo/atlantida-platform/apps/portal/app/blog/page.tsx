@@ -1,124 +1,192 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { POSTS } from "@/data/posts"
+import { useState, useMemo } from "react"
+import { POSTS, type Post } from "@/data/posts"
 
-export const metadata = {
-    title: "Blog Inmobiliario | Barrio.uy Uruguay",
-    description: "Guías, consejos y análisis del mercado inmobiliario en Uruguay. Todo lo que necesitas saber para comprar, alquilar o invertir.",
-}
+const CATEGORIES = Array.from(new Set(POSTS.map((p) => p.category))).sort()
 
 export default function BlogPage() {
-    return (
-        <div className="min-h-screen bg-white dark:bg-slate-950">
-            {/* Premium Blog Hero */}
-            <header className="bg-slate-900 py-24 lg:py-32 relative overflow-hidden">
-                {/* Background effects */}
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
-                    <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2"></div>
-                </div>
+    const [activeTab, setActiveTab] = useState<"featured" | "newest" | "popular">("newest")
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+    const [search, setSearch] = useState("")
 
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col items-center text-center">
-                        <span className="px-4 py-2 bg-primary/10 backdrop-blur-md rounded-full text-primary text-xs font-black uppercase tracking-[0.3em] mb-8 border border-primary/20 animate-in fade-in slide-in-from-bottom-2 duration-700">
-                            Barrio.uy Insights
-                        </span>
-                        <h1 className="text-5xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-                            Mercado <span className="text-primary">&</span> <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-emerald-400">Tendencias</span>
-                        </h1>
-                        <p className="text-xl lg:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-                            Descubrí las mejores estrategias, guías de inversión y noticias <br className="hidden lg:block" />
-                            clave del mercado inmobiliario uruguayo.
-                        </p>
-                    </div>
+    const filteredPosts = useMemo(() => {
+        let list = [...POSTS]
+        if (selectedCategory) list = list.filter((p) => p.category === selectedCategory)
+        if (search.trim()) {
+            const q = search.trim().toLowerCase()
+            list = list.filter(
+                (p) =>
+                    p.title.toLowerCase().includes(q) ||
+                    p.excerpt.toLowerCase().includes(q) ||
+                    p.category.toLowerCase().includes(q)
+            )
+        }
+        if (activeTab === "newest" || activeTab === "featured") {
+            list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        }
+        if (activeTab === "popular") {
+            const parseMin = (s: string) => parseInt(s.replace(/\D/g, ""), 10) || 0
+            list.sort((a, b) => parseMin(b.readTime) - parseMin(a.readTime))
+        }
+        return list
+    }, [selectedCategory, search, activeTab])
+
+    return (
+        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 pt-24 md:pt-28">
+            {/* Header minimal */}
+            <header className="border-b border-slate-200 dark:border-slate-800">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+                    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                        Blog
+                    </h1>
+                    <p className="mt-2 text-slate-500 dark:text-slate-400 text-base max-w-xl">
+                        Guías, análisis y tendencias del mercado inmobiliario en Uruguay.
+                    </p>
+
+                    {/* Tabs */}
+                    <nav className="mt-8 flex flex-wrap items-center gap-1 border-b border-slate-200 dark:border-slate-800 -mb-px">
+                        {(["featured", "newest", "popular"] as const).map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                                    activeTab === tab
+                                        ? "border-slate-900 dark:border-white text-slate-900 dark:text-white"
+                                        : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                                }`}
+                            >
+                                {tab === "featured" && "Destacados"}
+                                {tab === "newest" && "Recientes"}
+                                {tab === "popular" && "Populares"}
+                            </button>
+                        ))}
+                    </nav>
                 </div>
             </header>
 
-            {/* Posts Grid */}
-            <main className="max-w-7xl mx-auto px-6 py-24">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                    {POSTS.map((post, idx) => (
-                        <article
-                            key={post.slug}
-                            className="group flex flex-col bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-3"
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+                {/* Search + Categories */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+                    <div className="relative flex-1 max-w-md">
+                        <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">
+                            search
+                        </span>
+                        <input
+                            type="search"
+                            placeholder="Buscar artículos..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600 text-sm"
+                        />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        <button
+                            onClick={() => setSelectedCategory(null)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                selectedCategory === null
+                                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900"
+                                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                            }`}
                         >
-                            <Link href={`/blog/${post.slug}`} className="relative h-72 lg:h-80 overflow-hidden">
-                                <Image
-                                    src={post.image}
-                                    alt={post.title}
-                                    fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <div className="absolute top-6 left-6">
-                                    <span className="px-4 py-1.5 bg-white/95 backdrop-blur text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-full shadow-xl">
-                                        {post.category}
-                                    </span>
-                                </div>
-                            </Link>
+                            Todos
+                        </button>
+                        {CATEGORIES.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    selectedCategory === cat
+                                        ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900"
+                                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                            <div className="p-10 flex-1 flex flex-col">
-                                <div className="flex items-center gap-4 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-6">
-                                    <span className="flex items-center gap-1.5">
-                                        <span className="material-icons text-sm text-primary/50">calendar_month</span>
-                                        {post.date}
-                                    </span>
-                                    <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
-                                    <span className="flex items-center gap-1.5">
-                                        <span className="material-icons text-sm text-primary/50">schedule</span>
-                                        {post.readTime}
-                                    </span>
-                                </div>
-                                <h2 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white mb-6 group-hover:text-primary transition-colors leading-[1.2]">
-                                    <Link href={`/blog/${post.slug}`}>
-                                        {post.title}
-                                    </Link>
-                                </h2>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-8 flex-1 line-clamp-3">
-                                    {post.excerpt}
-                                </p>
-                                <Link
-                                    href={`/blog/${post.slug}`}
-                                    className="inline-flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest hover:gap-4 transition-all"
-                                >
-                                    Sigue leyendo
-                                    <span className="material-icons text-sm">arrow_right_alt</span>
-                                </Link>
-                            </div>
-                        </article>
+                {/* Posts grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {filteredPosts.map((post) => (
+                        <ArticleCard key={post.slug} post={post} />
                     ))}
                 </div>
+
+                {filteredPosts.length === 0 && (
+                    <p className="text-center text-slate-500 dark:text-slate-400 py-16">
+                        No hay artículos que coincidan con tu búsqueda.
+                    </p>
+                )}
             </main>
 
-            {/* Premium Newsletter CTA */}
-            <section className="bg-slate-50 dark:bg-slate-900/50 py-32 border-t border-slate-100 dark:border-slate-800">
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    <div className="bg-white dark:bg-slate-900 rounded-[3rem] p-12 lg:p-20 shadow-2xl shadow-blue-900/5 border border-slate-100 dark:border-slate-800 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-
-                        <div className="relative z-10 space-y-8">
-                            <span className="material-icons text-5xl text-primary mb-4 p-4 bg-primary/5 rounded-3xl">mark_email_read</span>
-                            <h2 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Únete a la élite inmobiliaria</h2>
-                            <p className="text-slate-500 text-lg max-w-xl mx-auto">
-                                Analizamos miles de datos para enviarte solo lo que importa: oportunidades únicas y tendencias reales.
-                            </p>
-                            <form className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto pt-4">
-                                <input
-                                    type="email"
-                                    placeholder="Tu correo mejor calificado"
-                                    className="flex-1 bg-slate-50 dark:bg-slate-800 px-8 py-5 rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 text-slate-900 dark:text-white font-medium border border-slate-100 dark:border-slate-700 transition-all"
-                                    required
-                                />
-                                <button className="bg-primary text-white px-10 py-5 font-black text-sm uppercase tracking-widest rounded-2xl hover:scale-[1.03] active:scale-95 transition-all shadow-xl shadow-primary/20">
-                                    Suscribirme ahora
-                                </button>
-                            </form>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Respetamos tu privacidad • Cancelación en un clic</p>
-                        </div>
-                    </div>
+            {/* Newsletter - minimal */}
+            <section className="border-t border-slate-200 dark:border-slate-800 mt-20">
+                <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center">
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                        Novedades en tu correo
+                    </h2>
+                    <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm">
+                        Recibí análisis y guías del mercado inmobiliario uruguayo.
+                    </p>
+                    <form className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                        <input
+                            type="email"
+                            placeholder="tu@email.com"
+                            className="flex-1 px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            className="px-5 py-3 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium hover:opacity-90 transition-opacity"
+                        >
+                            Suscribirme
+                        </button>
+                    </form>
                 </div>
             </section>
         </div>
+    )
+}
+
+function ArticleCard({ post }: { post: Post }) {
+    return (
+        <article className="group flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
+            <Link href={`/blog/${post.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <span className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-slate-700 dark:text-slate-300 text-xs font-medium rounded-md">
+                    {post.category}
+                </span>
+            </Link>
+            <div className="p-5 flex-1 flex flex-col">
+                <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 text-xs mb-3">
+                    <span>{post.date}</span>
+                    <span>·</span>
+                    <span>{post.readTime}</span>
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white leading-snug group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors line-clamp-2">
+                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h2>
+                <p className="mt-2 text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 flex-1">
+                    {post.excerpt}
+                </p>
+                <Link
+                    href={`/blog/${post.slug}`}
+                    className="mt-4 text-sm font-medium text-slate-900 dark:text-white hover:underline inline-flex items-center gap-1"
+                >
+                    Leer más
+                    <span className="material-icons text-sm">arrow_forward</span>
+                </Link>
+            </div>
+        </article>
     )
 }

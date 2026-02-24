@@ -42,6 +42,7 @@ function PublishPageContent() {
 
     const handleNext = () => {
         const parsed = PublishStep1Schema.safeParse({
+            title: data.title,
             address: data.address,
             type: data.type,
             operation: data.operation,
@@ -157,6 +158,21 @@ function PublishPageContent() {
                                     </div>
                                 </div>
                             </div>
+                            {/* TITLE */}
+                            <div className="space-y-4">
+                                <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                                    <span className="material-icons text-lg">title</span>
+                                    Título de la publicación
+                                </label>
+                                <input
+                                    className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
+                                    placeholder="Ej: Espectacular apartamento sobre la rambla"
+                                    type="text"
+                                    value={data.title}
+                                    onChange={(e) => updateData({ title: e.target.value })}
+                                />
+                                <p className="text-xs text-slate-500 ml-4">El título debe ser atractivo y destacar las mejores características.</p>
+                            </div>
                             {/* LOCATION SEARCH */}
                             <div className="space-y-6">
                                 <div className="space-y-4">
@@ -184,6 +200,37 @@ function PublishPageContent() {
                                                 lng: data.longitude || -56.1645
                                             }}
                                             onLocationChange={(loc) => updateData({ latitude: loc.lat, longitude: loc.lng })}
+                                            onAddressFound={(addressData) => {
+                                                const updates: any = { address: addressData.address };
+
+                                                const normalize = (str: string) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                                                if (addressData.department) {
+                                                    const matchedDept = Object.keys(geoData).find(d => normalize(d) === normalize(addressData.department) || normalize(addressData.department).includes(normalize(d)));
+                                                    if (matchedDept) {
+                                                        updates.department = matchedDept;
+
+                                                        if (addressData.city) {
+                                                            const cities = Object.keys((geoData as Record<string, any>)[matchedDept] || {});
+                                                            const matchedCity = cities.find(c => normalize(c) === normalize(addressData.city) || normalize(addressData.city).includes(normalize(c)));
+                                                            if (matchedCity) {
+                                                                updates.city = matchedCity;
+
+                                                                if (addressData.neighborhood) {
+                                                                    const neighborhoods = (geoData as Record<string, any>)[matchedDept][matchedCity] || [];
+                                                                    const matchedNb = neighborhoods.find((n: string) => normalize(n) === normalize(addressData.neighborhood) || normalize(addressData.neighborhood).includes(normalize(n)));
+                                                                    if (matchedNb) {
+                                                                        updates.neighborhood = matchedNb;
+                                                                    } else {
+                                                                        updates.neighborhood = "Otro";
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                updateData(updates);
+                                            }}
                                         />
                                     </div>
                                     <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2">

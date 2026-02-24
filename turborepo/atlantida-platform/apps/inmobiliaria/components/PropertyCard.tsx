@@ -20,6 +20,7 @@ interface PropertyCardProps {
     images?: string[]
     type: "Venta" | "Alquiler"
     featured?: boolean
+    isViviendaPromovida?: boolean
 }
 
 export function PropertyCard({
@@ -33,7 +34,8 @@ export function PropertyCard({
     imageUrl,
     images,
     type,
-    featured
+    featured,
+    isViviendaPromovida
 }: PropertyCardProps) {
     const [imageLoading, setImageLoading] = useState(true)
     const { isFavorite, toggleFavorite } = useFavorites()
@@ -70,6 +72,7 @@ export function PropertyCard({
                     <Badge className="bg-primary/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">
                         {type}
                     </Badge>
+                    {isViviendaPromovida && <Badge className="bg-purple-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Vivienda Promovida</Badge>}
                     {isNew && <Badge className="bg-emerald-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Nuevo</Badge>}
                     {isOpportunity && <Badge className="bg-orange-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Oportunidad</Badge>}
                     {featured && <Badge className="bg-amber-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Destacado</Badge>}

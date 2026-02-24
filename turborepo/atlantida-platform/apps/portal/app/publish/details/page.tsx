@@ -9,9 +9,12 @@ import { PublishStep2Schema } from "@repo/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@repo/lib/tracking"
 
+const LAND_TYPES = ['Terreno']
+
 export default function PublishDetailsPage() {
     const { data, updateData } = usePublish()
     const router = useRouter()
+    const isLand = LAND_TYPES.includes(data.type)
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault()
@@ -60,45 +63,49 @@ export default function PublishDetailsPage() {
                         />
                     </section>
 
-                    {/* Section: Especificaciones */}
+                    {/* Section: Especificaciones (Dormitorios/Baños ocultos para Terreno) */}
                     <section>
                         <div className="flex items-center gap-2 mb-6">
                             <span className="material-icons text-primary">analytics</span>
                             <h2 className="text-lg font-semibold">Especificaciones de la Propiedad</h2>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                            <div className="space-y-1.5">
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Dormitorios</label>
-                                <select
-                                    value={data.bedrooms}
-                                    onChange={(e) => updateData({ bedrooms: Number(e.target.value) })}
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
-                                >
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4+</option>
-                                </select>
-                            </div>
-                            <div className="space-y-1.5">
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Baños</label>
-                                <select
-                                    value={data.bathrooms}
-                                    onChange={(e) => updateData({ bathrooms: Number(e.target.value) })}
-                                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
-                                >
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4+</option>
-                                </select>
-                            </div>
+                        <div className={`grid gap-6 ${isLand ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4'}`}>
+                            {!isLand && (
+                                <>
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Dormitorios</label>
+                                        <select
+                                            value={data.bedrooms}
+                                            onChange={(e) => updateData({ bedrooms: Number(e.target.value) })}
+                                            className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
+                                        >
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4+</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Baños</label>
+                                        <select
+                                            value={data.bathrooms}
+                                            onChange={(e) => updateData({ bathrooms: Number(e.target.value) })}
+                                            className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium"
+                                        >
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4+</option>
+                                        </select>
+                                    </div>
+                                </>
+                            )}
                             <div className="space-y-1.5">
                                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Metros Cuadrados (m²)</label>
                                 <div className="relative group">
                                     <input
                                         className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium pr-12"
-                                        placeholder="Ej: 85"
+                                        placeholder={isLand ? "Ej: 500" : "Ej: 85"}
                                         type="number"
                                         value={data.area || ""}
                                         onChange={(e) => updateData({ area: Number(e.target.value) })}
@@ -129,7 +136,8 @@ export default function PublishDetailsPage() {
                         </div>
                     </section>
 
-                    {/* Section: Amenities */}
+                    {/* Section: Amenities (oculto para Terreno) */}
+                    {!isLand && (
                     <section>
                         <div className="flex items-center gap-2 mb-6">
                             <span className="material-icons text-primary">checklist</span>
@@ -164,6 +172,7 @@ export default function PublishDetailsPage() {
                             ))}
                         </div>
                     </section>
+                    )}
 
                     {/* Section: Descripcion */}
                     <section>
@@ -185,7 +194,8 @@ export default function PublishDetailsPage() {
                         </div>
                     </section>
 
-                    {/* Section: Servicios (UY Specific) */}
+                    {/* Section: Servicios (UY Specific, oculto para Terreno) */}
+                    {!isLand && (
                     <section>
                         <div className="flex items-center gap-2 mb-6">
                             <span className="material-icons text-primary">plumbing</span>
@@ -241,6 +251,7 @@ export default function PublishDetailsPage() {
                             </div>
                         </div>
                     </section>
+                    )}
 
                     {/* Section: Planos */}
                     <section>

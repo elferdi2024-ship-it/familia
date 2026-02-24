@@ -12,6 +12,14 @@ import { PublishStep1Schema } from "@repo/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@repo/lib/tracking"
 import { LocationPicker } from "@/components/publish/LocationPicker"
+import { collection, query, where, getCountFromServer } from "firebase/firestore"
+import { db } from "@repo/lib/firebase"
+
+const PLAN_LIMITS: Record<string, number> = {
+    free: 1,
+    pro: 10,
+    premium: 999
+}
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
@@ -31,7 +39,7 @@ function PublishPageContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const editId = searchParams.get("edit")
-    const { user, loading } = useAuth()
+    const { user, userData, loading } = useAuth()
     const [showAuthModal, setShowAuthModal] = useState(false)
 
     useEffect(() => {
@@ -40,8 +48,9 @@ function PublishPageContent() {
         }
     }, [editId])
 
-    const handleNext = () => {
+    const handleNext = async () => {
         const parsed = PublishStep1Schema.safeParse({
+            title: data.title,
             address: data.address,
             type: data.type,
             operation: data.operation,
@@ -54,6 +63,31 @@ function PublishPageContent() {
             toast.error(first || "Completa los campos obligatorios")
             return
         }
+
+        // Check plan limits if not editing
+        if (!isEditing && user && db) {
+            try {
+                const q = query(collection(db, "properties"), where("userId", "==", user.uid))
+                const snapshot = await getCountFromServer(q)
+                const count = snapshot.data().count
+                const userPlan = userData?.plan || 'free'
+                const limit = PLAN_LIMITS[userPlan] || PLAN_LIMITS.free
+
+                if (count >= limit) {
+                    toast.error(`Has alcanzado el límite de tu plan (${limit} propiedades). Mejora tu plan para publicar más.`, {
+                        action: {
+                            label: "Ver Planes",
+                            onClick: () => router.push("/publish/pricing")
+                        }
+                    })
+                    return
+                }
+            } catch (error) {
+                console.error("Error checking property count:", error)
+                // If it fails, we let them proceed but log it
+            }
+        }
+
         trackEvent.publishStep1Completed()
         router.push("/publish/details")
     }
@@ -157,6 +191,21 @@ function PublishPageContent() {
                                     </div>
                                 </div>
                             </div>
+                            {/* TITLE */}
+                            <div className="space-y-4">
+                                <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                                    <span className="material-icons text-lg">title</span>
+                                    Título de la publicación
+                                </label>
+                                <input
+                                    className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
+                                    placeholder="Ej: Espectacular apartamento sobre la rambla"
+                                    type="text"
+                                    value={data.title}
+                                    onChange={(e) => updateData({ title: e.target.value })}
+                                />
+                                <p className="text-xs text-slate-500 ml-4">El título debe ser atractivo y destacar las mejores características.</p>
+                            </div>
                             {/* LOCATION SEARCH */}
                             <div className="space-y-6">
                                 <div className="space-y-4">
@@ -184,6 +233,37 @@ function PublishPageContent() {
                                                 lng: data.longitude || -56.1645
                                             }}
                                             onLocationChange={(loc) => updateData({ latitude: loc.lat, longitude: loc.lng })}
+                                            onAddressFound={(addressData) => {
+                                                const updates: any = { address: addressData.address };
+
+                                                const normalize = (str: string) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                                                if (addressData.department) {
+                                                    const matchedDept = Object.keys(geoData).find(d => normalize(d) === normalize(addressData.department) || normalize(addressData.department).includes(normalize(d)));
+                                                    if (matchedDept) {
+                                                        updates.department = matchedDept;
+
+                                                        if (addressData.city) {
+                                                            const cities = Object.keys((geoData as Record<string, any>)[matchedDept] || {});
+                                                            const matchedCity = cities.find(c => normalize(c) === normalize(addressData.city) || normalize(addressData.city).includes(normalize(c)));
+                                                            if (matchedCity) {
+                                                                updates.city = matchedCity;
+
+                                                                if (addressData.neighborhood) {
+                                                                    const neighborhoods = (geoData as Record<string, any>)[matchedDept][matchedCity] || [];
+                                                                    const matchedNb = neighborhoods.find((n: string) => normalize(n) === normalize(addressData.neighborhood) || normalize(addressData.neighborhood).includes(normalize(n)));
+                                                                    if (matchedNb) {
+                                                                        updates.neighborhood = matchedNb;
+                                                                    } else {
+                                                                        updates.neighborhood = "Otro";
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                updateData(updates);
+                                            }}
                                         />
                                     </div>
                                     <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2">

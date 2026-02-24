@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useRouter } from "next/navigation"
 import { ImageUploader } from "@/components/publish/ImageUploader"
+import { useAuth } from "@/contexts/AuthContext"
+import { Badge } from "@repo/ui"
 import { GUARANTEES, AMENITIES, AMENITIES_BY_CATEGORY } from "@/lib/data"
 import { PublishStep2Schema } from "@repo/lib/validations"
 import { toast } from "sonner"
@@ -11,6 +13,8 @@ import { trackEvent } from "@repo/lib/tracking"
 
 export default function PublishDetailsPage() {
     const { data, updateData } = usePublish()
+    const { userData } = useAuth()
+    const isPremium = userData?.plan === "premium"
     const router = useRouter()
 
     const handleNext = (e: React.FormEvent) => {
@@ -259,6 +263,59 @@ export default function PublishDetailsPage() {
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 material-icons text-slate-400">link</span>
                         </div>
                         <p className="mt-2 text-xs text-slate-500 italic font-medium">Cargue el plano para que los interesados tengan una mejor idea de la distribución.</p>
+                    </section>
+
+                    {/* Section: Visibilidad Premium */}
+                    <section className={`p-8 rounded-2xl border-2 transition-all ${isPremium ? 'bg-amber-500/5 border-amber-500/20' : 'bg-slate-50 border-slate-200'}`}>
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-2">
+                                <span className="material-icons text-amber-500">star</span>
+                                <h2 className="text-lg font-bold">Visibilidad Premium</h2>
+                            </div>
+                            {!isPremium && <Badge className="bg-slate-400">Sólo Pro/Premium</Badge>}
+                        </div>
+                        <div className="space-y-6">
+                            <label className={`flex items-center gap-4 p-5 rounded-xl border-2 transition-all ${data.featured ? 'bg-white dark:bg-slate-900 border-amber-500 shadow-lg shadow-amber-500/10' : 'bg-white/50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-800'} ${!isPremium ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:border-amber-500'}`}>
+                                <input
+                                    type="checkbox"
+                                    disabled={!isPremium}
+                                    checked={data.featured || false}
+                                    onChange={(e) => updateData({ featured: e.target.checked })}
+                                    className="w-6 h-6 rounded text-amber-500 focus:ring-amber-500"
+                                />
+                                <div className="flex-1">
+                                    <h3 className="font-bold flex items-center gap-2">
+                                        Destacar esta propiedad
+                                        <span className="material-icons text-amber-500 text-sm">bolt</span>
+                                    </h3>
+                                    <p className="text-xs text-slate-500">Aparece en los primeros resultados de búsqueda y con un distintivo especial.</p>
+                                </div>
+                                {!isPremium && (
+                                    <Link href="/publish/pricing" className="text-[10px] font-black uppercase text-primary border-b-2 border-primary/20 hover:border-primary transition-all">
+                                        Mejorar Plan
+                                    </Link>
+                                )}
+                            </label>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sincronización</p>
+                                    <p className="text-sm font-medium flex items-center gap-2">
+                                        <span className="material-icons text-emerald-500 text-sm">check_circle</span>
+                                        Algolia Cloud (Instantáneo)
+                                    </p>
+                                </div>
+                                <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Análisis</p>
+                                    <p className="text-sm font-medium flex items-center gap-2">
+                                        <span className={`material-icons text-sm ${isPremium ? 'text-emerald-500' : 'text-slate-300'}`}>
+                                            {isPremium ? 'check_circle' : 'lock'}
+                                        </span>
+                                        Vercel Speed Insights Full
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
                     {/* Section: Uruguay Specifics */}

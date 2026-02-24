@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore"
 
 export interface PublishData {
     // Step 1: Basic Info
+    title: string
     type: PropertyType | string
     operation: OperationType | string
     address: string
@@ -41,6 +42,7 @@ export interface PublishData {
 }
 
 const initialData: PublishData = {
+    title: "",
     type: "Apartamento",
     operation: "Venta",
     address: "",
@@ -122,6 +124,7 @@ export function PublishProvider({ children }: { children: ReactNode }) {
                 const property = { id: docSnap.id, ...docSnap.data() } as Property
                 setEditingId(id)
                 setData({
+                    title: (property as any).title || "",
                     type: property.type,
                     operation: property.operation,
                     address: property.address || "",

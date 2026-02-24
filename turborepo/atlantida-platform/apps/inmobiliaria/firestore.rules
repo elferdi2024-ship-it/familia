@@ -16,6 +16,15 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Helper — contar posts de hoy
+    function getPostsToday(uid) {
+      let oneDayAgo = request.time - duration.value(86400, 's');
+      return getAfter(/databases/$(database)/documents/feedPosts)
+        .where('authorId', '==', uid)
+        .where('createdAt', '>=', oneDayAgo)
+        .size();
+    }
+
     // Properties Collection
     match /properties/{propertyId} {
       allow read: if true;
@@ -65,6 +74,24 @@ service cloud.firestore {
       allow read: if isAuthenticated() &&
                     resource.data.userId == request.auth.uid;
       allow write: if false;
+    }
+
+    // ── Feed Engine Collections ──────────────────────────────────────
+    // Feed Posts: scores are SERVER-ONLY. Client cannot touch ranking.
+    match /feedPosts/{postId} {
+      allow read: if resource.data.status == 'published';
+      // Client can ONLY soft-delete their own posts (status → 'deleted')
+      allow update: if isAuthenticated()
+        && request.auth.uid == resource.data.authorId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+      allow create: if false; // Server-only (Cloud Functions / Admin SDK)
+      allow delete: if false;
+    }
+
+    // Feed Agent Profiles: read-only from client, managed by server
+    match /feedAgentProfiles/{agentId} {
+      allow read: if true;
+      allow write: if false; // Server-managed only
     }
   }
 }

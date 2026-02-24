@@ -5,11 +5,15 @@ const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || ''
 const ALGOLIA_ADMIN_KEY = process.env.ALGOLIA_ADMIN_KEY || ''
 const ALGOLIA_SEARCH_ONLY_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY || ''
 
-// Multi-index client for v5 (Admin)
-export const algoliaClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY)
+// Multi-index client for v5 (Admin) — lazy init to avoid crash when keys are missing
+export const algoliaClient = ALGOLIA_APP_ID && ALGOLIA_ADMIN_KEY
+    ? algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY)
+    : null
 
 // Search-only client for frontend
-export const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_KEY)
+export const searchClient = ALGOLIA_APP_ID && ALGOLIA_SEARCH_ONLY_KEY
+    ? algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_KEY)
+    : null
 
 // Index names
 export const PROPERTIES_INDEX = 'properties'
@@ -33,7 +37,7 @@ export async function syncPropertyToAlgolia(propertyId: string, propertyData: an
             } : undefined
         }
 
-        await algoliaClient.saveObject({
+        await algoliaClient!.saveObject({
             indexName: PROPERTIES_INDEX,
             body: record as any
         })
@@ -48,7 +52,7 @@ export async function deletePropertyFromAlgolia(propertyId: string) {
     if (!ALGOLIA_APP_ID || !ALGOLIA_ADMIN_KEY) return
 
     try {
-        await algoliaClient.deleteObject({
+        await algoliaClient!.deleteObject({
             indexName: PROPERTIES_INDEX,
             objectID: propertyId
         })

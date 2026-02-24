@@ -11,11 +11,14 @@ import { formatPrice } from "@/lib/data"
 import { trackEvent } from "@/lib/tracking"
 import { toast } from "sonner"
 
+const LAND_TYPES = ['Terreno']
+
 export default function PublishReviewPage() {
     const { data, updateData, resetData, isEditing, editingId } = usePublish()
     const { user } = useAuth()
     const router = useRouter()
     const [isPublishing, setIsPublishing] = useState(false)
+    const isLand = LAND_TYPES.includes(data.type)
     const [isEditingPrice, setIsEditingPrice] = useState(false)
     const [marketAnalysis, setMarketAnalysis] = useState<any>(null)
     const [analyzing, setAnalyzing] = useState(false)
@@ -112,30 +115,36 @@ export default function PublishReviewPage() {
 
         setIsPublishing(true)
         try {
+            const payload = { ...data }
+            if (LAND_TYPES.includes(data.type)) {
+                payload.bedrooms = 0
+                payload.bathrooms = 0
+            }
+
             if (isEditing && editingId) {
                 // UPDATE
                 const docRef = doc(db, "properties", editingId)
                 const updateProperty = {
-                    ...data,
+                    ...payload,
                     updatedAt: serverTimestamp(),
                 }
                 await updateDoc(docRef, updateProperty)
             } else {
                 // CREATE
                 const propertyRef = collection(db, "properties")
-                const title = data.description?.slice(0, 200) || `${data.type} ${data.operation} en ${data.neighborhood || data.address}`
+                const title = payload.description?.slice(0, 200) || `${payload.type} ${payload.operation} en ${payload.neighborhood || payload.address}`
                 const newProperty = {
-                    ...data,
-                    title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
+                    ...payload,
+                    title: title.length >= 10 ? title : `${payload.type} ${payload.operation} en ${payload.neighborhood || payload.address}`,
                     userId: user.uid,
                     agentName: user.displayName || "Usuario de Atlantida Group",
-                    agentPhone: data.agentPhone,
+                    agentPhone: payload.agentPhone,
                     publishedAt: serverTimestamp(),
                     updatedAt: serverTimestamp(),
                     status: "active", // Published immediately
                     featured: false,
                     views: 0,
-                    slug: `${data.type.toLowerCase()}-${(data.neighborhood || "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
+                    slug: `${payload.type.toLowerCase()}-${(payload.neighborhood || "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
                 }
                 await addDoc(propertyRef, newProperty)
             }
@@ -306,12 +315,16 @@ export default function PublishReviewPage() {
                                     <p className="text-slate-500 text-sm mb-4 flex items-center gap-1">
                                         <span className="material-icons text-sm">location_on</span> {data.address}, {data.city}
                                     </p>
-                                    <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400 text-sm font-medium border-y border-slate-100 dark:border-slate-800 py-3 mb-6 relative group">
+                                    <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400 text-sm font-medium border-y border-slate-100 dark:border-slate-800 py-3 mb-6 relative group flex-wrap">
                                         <Link href="/publish/details" className="absolute top-1/2 -translate-y-1/2 right-0 p-1 text-slate-300 hover:text-primary transition-colors" title="Editar Características">
                                             <span className="material-icons text-sm">edit</span>
                                         </Link>
-                                        <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">bed</span> {data.bedrooms} Dorm.</span>
-                                        <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">shower</span> {data.bathrooms} Baño</span>
+                                        {!isLand && (
+                                            <>
+                                                <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">bed</span> {data.bedrooms} Dorm.</span>
+                                                <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">shower</span> {data.bathrooms} Baño</span>
+                                            </>
+                                        )}
                                         <span className="flex items-center gap-1.5"><span className="material-icons text-sm text-slate-400">square_foot</span> {data.area}m²</span>
                                     </div>
                                     <div className="space-y-3">

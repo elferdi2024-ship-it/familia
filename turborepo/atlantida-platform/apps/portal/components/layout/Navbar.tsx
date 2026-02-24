@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { Instagram, Phone, MessageCircle } from "lucide-react"
 import { AnimatedThemeToggle as ThemeToggle } from "@/components/animated-theme-toggle"
-import { TubelightNavbar } from "@repo/ui/tubelight-navbar"
+import { LiquidGlassButton } from "@/components/ui/liquid-glass-button"
 
 export function Navbar() {
   const pathname = usePathname()
@@ -15,12 +15,6 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(!isHomePage)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const navItems = [
-    { name: 'Comprar', url: '/search' },
-    { name: 'Alquilar', url: '/search?operation=alquiler' },
-    { name: 'Vender', url: '/vender' },
-    { name: 'Contacto', url: '#contacto' }
-  ]
   const [showAuthModal, setShowAuthModal] = useState(false)
   const { user, logout } = useAuth()
 
@@ -40,9 +34,9 @@ export function Navbar() {
   const navLinks = [
     { href: "/search", label: "Comprar" },
     { href: "/search?operation=alquiler", label: "Alquilar" },
+    { href: "/inmobiliarias", label: "Inmobiliarias" },
     { href: "/servicios", label: "Servicios" },
     { href: "/vender", label: "Vender", className: "animate-pulse font-black text-primary" },
-
     { href: "/favorites", label: "Favoritos" },
     { href: "/blog", label: "Blog" },
     ...(user ? [{ href: "/my-properties", label: "Administración" }] : []),
@@ -77,22 +71,60 @@ export function Navbar() {
       </div>
 
       <div className={`relative max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-300 ${isScrolled ? "" : "py-3 md:py-5"}`}>
-        <div className="flex items-center z-10">
-          <Link href="/" className="flex items-center gap-2 group">
+        <div className="flex items-center gap-8 z-10">
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
             <img
               src="/logo-barrio-ok.png"
               alt="Barrio.uy"
               className={`h-16 md:h-18 w-auto object-contain transition-transform group-hover:scale-105 ${!isScrolled ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] brightness-0 invert" : "dark:brightness-0 dark:invert"}`}
             />
           </Link>
-        </div>
 
-        <div className="hidden md:block absolute left-1/2 -translate-x-1/2 z-0">
-          <TubelightNavbar items={navItems} />
+          {/* Desktop Left Nav Links */}
+          <div className="hidden lg:flex items-center gap-6">
+            <Link
+              href="/search"
+              className={`font-bold text-sm transition-colors ${isScrolled ? "text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-emerald-400" : "text-white/80 hover:text-white"
+                }`}
+            >
+              Comprar
+            </Link>
+            <Link
+              href="/search?operation=alquiler"
+              className={`font-bold text-sm transition-colors ${isScrolled ? "text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-emerald-400" : "text-white/80 hover:text-white"
+                }`}
+            >
+              Alquilar
+            </Link>
+            <Link
+              href="/inmobiliarias"
+              className={`font-bold text-sm transition-colors ${isScrolled ? "text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-emerald-400" : "text-white/80 hover:text-white"
+                }`}
+            >
+              Inmobiliarias
+            </Link>
+            <Link
+              href="/vender"
+              className={`font-black uppercase tracking-wider text-xs transition-colors px-3 py-1.5 rounded-lg border-2 border-primary/20 ${isScrolled ? "text-primary bg-primary/5 hover:bg-primary/10" : "text-white bg-white/10 hover:bg-white/20 border-white/20"
+                }`}
+            >
+              Vender mi Propiedad
+            </Link>
+          </div>
         </div>
 
         <div className="flex items-center gap-4 z-10 relative">
           <div className="hidden md:flex items-center gap-4">
+
+            {/* New Conecta con el Barrio Button */}
+            <LiquidGlassButton href="/feed" className="mr-2">
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              Conecta con el Barrio
+            </LiquidGlassButton>
+
             {user ? (
               <Link href="/publish" className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${pathname.startsWith("/publish")
                 ? isScrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
@@ -162,11 +194,21 @@ export function Navbar() {
             <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider text-slate-900 dark:text-white">
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Comprar</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search?operation=alquiler">Alquilar</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/inmobiliarias">Inmobiliarias</Link>
+              <div className="my-2">
+                <LiquidGlassButton href="/feed" className="w-full justify-center">
+                  <span className="relative flex h-2 w-2 mr-1">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  Conecta con el Barrio
+                </LiquidGlassButton>
+              </div>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/servicios">Servicios</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary animate-pulse text-primary" href="/vender">Vender mi Propiedad</Link>
 
               {user && (
-                <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Administración</Link>
+                <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/my-properties">Mis Publicaciones</Link>
               )}
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary flex items-center justify-between" href="/favorites">
                 Favoritos

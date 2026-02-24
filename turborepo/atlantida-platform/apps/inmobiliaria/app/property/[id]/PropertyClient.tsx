@@ -647,10 +647,11 @@ export default function PropertyClient({
                       {contactType === "visit" && (
                         <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                           <div>
-                            <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">
+                            <label htmlFor="visit-date" className="text-[10px] uppercase font-bold text-slate-400 ml-1">
                               Fecha
                             </label>
                             <input
+                              id="visit-date"
                               type="date"
                               required
                               value={visitDate}
@@ -659,10 +660,11 @@ export default function PropertyClient({
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">
+                            <label htmlFor="visit-time" className="text-[10px] uppercase font-bold text-slate-400 ml-1">
                               Horario
                             </label>
                             <select
+                              id="visit-time"
                               required
                               value={visitTime}
                               onChange={(e) => setVisitTime(e.target.value)}

@@ -1,7 +1,7 @@
 # PRD — Barrio.uy v5.0
 ### Plataforma Inmobiliaria Premium para Uruguay
 
-**Versión:** 5.0.0 | **Fecha:** 22 de Febrero 2026 | **Estado:** Go-To-Market (GTM) - Lanzamiento Oficial Q1 2026
+**Versión:** 5.1.0 | **Fecha:** 22 de Febrero 2026 | **Estado:** Go-To-Market (GTM) - Lanzamiento Oficial Q1 2026
 
 ---
 
@@ -479,22 +479,22 @@ CREADORES DE GANANCIA (Gain Creators)
 - 🔜 Push notifications
 - 🔜 ISR en páginas de propiedad
 - 🔜 Image optimization (AVIF)
-- 🔜 Redis cache layer
+- ✅ **Redis cache layer** (Implementado: `lib/cache.ts` — Vercel KV, activar en prod antes de Google Ads)
 
 **Comunicación:**
-- 🔜 Email notifications (leads)
+- ✅ **Email notifications (leads)** (Implementado: `lib/mail.ts` + `actions/notify-lead.ts` via Resend)
 - 🔜 WhatsApp integration API
 - 🔜 Chat en vivo (Intercom)
 - 🔜 SMS notifications (opcional)
 
 **Analytics:**
-- 🔜 Sentry error tracking
+- ✅ **Sentry error tracking** (Implementado: `sentry.client.config.ts`, `sentry.server.config.ts`)
 - 🔜 Hotjar heatmaps
 - 🔜 Google Analytics 4 eventos
 - 🔜 Mixpanel user tracking
 
 **SEO:**
-- 🔜 Blog con 10 artículos
+- ✅ **Blog activo** (3 artículos publicados — meta: 10 artículos en Mes 2)
 - 🔜 Landing pages por barrio
 - 🔜 Schema.org optimizado
 - 🔜 Internal linking strategy
@@ -502,10 +502,10 @@ CREADORES DE GANANCIA (Gain Creators)
 #### 🟢 COULD HAVE (Versión 2.0 - Q2-Q3 2026)
 
 **Búsqueda Avanzada:**
-- ⏳ Algolia instant search
-- ⏳ Búsqueda por voz
-- ⏳ Búsqueda por foto (ML)
-- ⏳ Recomendaciones personalizadas
+- ✅ **Algolia instant search** (Implementado: v5, `lib/algolia.ts`, búsqueda <50ms, typo-tolerant)
+- 🔜 Búsqueda por voz
+- 🔜 Búsqueda por foto (ML)
+- 🔜 Recomendaciones personalizadas
 
 **Features Premium:**
 - ⏳ Analytics avanzado propiedades

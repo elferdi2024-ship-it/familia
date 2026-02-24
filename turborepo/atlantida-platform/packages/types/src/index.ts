@@ -181,3 +181,70 @@ export interface BrandConfig {
     github?: string
   }
 }
+
+// ──────────────────────────────────────────────────────────────────────
+// Feed Engine Types — Barrio Feed
+// ──────────────────────────────────────────────────────────────────────
+
+export type FeedPostType = 'new_property' | 'price_drop' | 'market_update' | 'opinion'
+
+export type AgentPlan = 'free' | 'pro' | 'elite'
+
+/**
+ * Immutable snapshot of property data embedded in a feed post.
+ * Avoids expensive reads to the main `properties` collection.
+ */
+export interface PropertySnapshot {
+  id: string
+  slug: string
+  price: number
+  currency: 'USD' | 'UYU'
+  neighborhood: string
+  viviendaPromovida: boolean       // Ley 18.795
+  acceptedGuarantees: GuaranteeType[] // ANDA, CGN, Porto, etc.
+  mainImage: string
+  bedrooms: number
+  area: number
+}
+
+/**
+ * Core feed post model. `leadIntentScore` and `rankingScore`
+ * are updated exclusively by server-side logic (Cloud Functions / Server Actions).
+ */
+export interface FeedPost {
+  id: string
+  authorId: string
+  authorName: string
+  authorAvatar: string
+  authorSlug: string
+  authorVerified: boolean
+  plan: AgentPlan
+  text: string
+  hashtags: string[]
+  type: FeedPostType
+  propertySnapshot: PropertySnapshot | null
+  leadIntentScore: number
+  rankingScore: number
+  whatsappClicks: number
+  likes: number
+  comments: number
+  publishedAt: Date | { seconds: number; nanoseconds: number }
+  status: 'published' | 'hidden' | 'deleted'
+}
+
+/** Agent profile for the feed social layer */
+export interface FeedAgentProfile {
+  id: string
+  name: string
+  slug: string
+  avatar: string
+  company: string
+  phone: string
+  whatsapp: string
+  plan: AgentPlan
+  verified: boolean
+  bio: string
+  totalPosts: number
+  totalLeads: number
+  joinedAt: Date | { seconds: number; nanoseconds: number }
+}

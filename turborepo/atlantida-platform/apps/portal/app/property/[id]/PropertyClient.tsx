@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { db } from "@repo/lib/firebase";
 import {
@@ -17,8 +18,12 @@ import { Property, formatPrice, AMENITIES_BY_CATEGORY } from "@/lib/data";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { FloorplanViewer } from "@/components/FloorplanViewer";
 import { PropertyCarousel } from "@repo/ui";
-import { NeighborhoodMap } from "@/components/NeighborhoodMap";
 import { notifyLead } from "@/actions/notify-lead";
+
+const NeighborhoodMap = dynamic(
+  () => import("@/components/NeighborhoodMap").then((m) => ({ default: m.NeighborhoodMap })),
+  { ssr: false, loading: () => <div className="w-full aspect-[4/3] bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center"><span className="text-slate-400 text-sm">Cargando mapa...</span></div> }
+);
 import { toast } from "sonner";
 import { trackEvent } from "@repo/lib/tracking";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -647,10 +652,11 @@ export default function PropertyClient({
                       {contactType === "visit" && (
                         <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                           <div>
-                            <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">
+                            <label htmlFor="visit-date" className="text-[10px] uppercase font-bold text-slate-400 ml-1">
                               Fecha
                             </label>
                             <input
+                              id="visit-date"
                               type="date"
                               required
                               value={visitDate}
@@ -659,10 +665,11 @@ export default function PropertyClient({
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">
+                            <label htmlFor="visit-time" className="text-[10px] uppercase font-bold text-slate-400 ml-1">
                               Horario
                             </label>
                             <select
+                              id="visit-time"
                               required
                               value={visitTime}
                               onChange={(e) => setVisitTime(e.target.value)}

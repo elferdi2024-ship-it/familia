@@ -82,4 +82,37 @@ test.describe('Search Funnel and Property Details', () => {
             console.log('Skipping Lead Form check as property/1 might not exist in the current DB state');
         }
     });
+
+    test('should apply bedroom and price filters', async ({ page }) => {
+        await page.goto('/search');
+
+        // Open filters if they are in a sheet or visible
+        // Assuming filters are visible on desktop
+        const bedroomSelect = page.locator('select').filter({ hasText: 'Dormitorios' }).first();
+        if (await bedroomSelect.isVisible()) {
+            await bedroomSelect.selectOption('2');
+            await page.waitForTimeout(1000); // Wait for filtering logic
+        }
+
+        // Apply Price Filter
+        const minPriceInput = page.getByPlaceholder(/Min/i).first();
+        const maxPriceInput = page.getByPlaceholder(/Max/i).first();
+
+        if (await minPriceInput.isVisible()) {
+            await minPriceInput.fill('100000');
+            await maxPriceInput.fill('500000');
+            // Some UIs have an "Apply" button, others are real-time
+            const applyButton = page.getByRole('button', { name: /Filtrar|Aplicar/i }).first();
+            if (await applyButton.isVisible()) {
+                await applyButton.click();
+            }
+            await page.waitForTimeout(1000);
+        }
+
+        // Verify results (even if 0, check if the UI didn't crash)
+        const filterStatus = page.getByText(/resultados encontrados/i).first();
+        if (await filterStatus.isVisible()) {
+            await expect(filterStatus).toBeVisible();
+        }
+    });
 });

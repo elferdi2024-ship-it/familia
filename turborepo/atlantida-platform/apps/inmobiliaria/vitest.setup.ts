@@ -9,10 +9,10 @@ vi.mock('firebase/firestore', () => ({
     where: vi.fn(),
     getDocs: vi.fn(),
     doc: vi.fn(),
-    getDoc: vi.fn(),
-    addDoc: vi.fn(),
-    updateDoc: vi.fn(),
-    deleteDoc: vi.fn(),
+    getDoc: vi.fn(() => Promise.resolve({ exists: () => false, data: () => null })),
+    addDoc: vi.fn(() => Promise.resolve({ id: 'mock-id' })),
+    updateDoc: vi.fn(() => Promise.resolve()),
+    deleteDoc: vi.fn(() => Promise.resolve()),
     orderBy: vi.fn(),
     limit: vi.fn(),
     startAfter: vi.fn(),
@@ -20,6 +20,8 @@ vi.mock('firebase/firestore', () => ({
         now: vi.fn(() => ({ toDate: () => new Date() })),
         fromDate: vi.fn((d: Date) => ({ toDate: () => d })),
     },
+    onSnapshot: vi.fn(() => vi.fn()),
+    serverTimestamp: vi.fn(() => 'timestamp'),
 }))
 
 vi.mock('firebase/auth', () => ({
@@ -27,7 +29,7 @@ vi.mock('firebase/auth', () => ({
     signInWithPopup: vi.fn(),
     GoogleAuthProvider: vi.fn(),
     signOut: vi.fn(),
-    onAuthStateChanged: vi.fn(),
+    onAuthStateChanged: vi.fn(() => vi.fn()),
     createUserWithEmailAndPassword: vi.fn(),
     signInWithEmailAndPassword: vi.fn(),
     sendEmailVerification: vi.fn(),

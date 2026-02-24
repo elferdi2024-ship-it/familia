@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProperty } from "@/lib/properties"
 import { PropertyBreadcrumb } from "@/components/BreadcrumbSchema"
+import { PropertySchema } from "@/components/PropertySchema"
 
 // ISR: Regenerate property pages every 1 hour
 // Cached on Vercel CDN for fast loads (~200ms vs ~2-3s)
@@ -69,6 +70,7 @@ export default async function PropertyPage({ params }: { params: any }) {
                 id={id}
                 neighborhood={property.neighborhood}
             />
+            <PropertySchema property={property} id={id} />
             <PropertyClient
                 initialProperty={property}
                 initialAgentInfo={agentInfo}

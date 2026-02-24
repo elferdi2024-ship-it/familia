@@ -1,8 +1,40 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import withPWAInit from 'next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^\/property\//,
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'property-pages',
+        expiration: { maxEntries: 50, maxAgeSeconds: 86400 },
+      },
+    },
+    {
+      urlPattern: /\.(?:jpg|jpeg|png|webp|avif)$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'images',
+        expiration: { maxEntries: 200, maxAgeSeconds: 604800 },
+      },
+    },
+  ],
+});
 
 const nextConfig: NextConfig = {
+  trailingSlash: true,
   reactCompiler: true,
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react", "@radix-ui/react-slot", "@radix-ui/react-dialog", "@radix-ui/react-tabs"],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
   images: {
     remotePatterns: [
       {
@@ -26,6 +58,24 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: '/property/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=7200' },
+        ],
+      },
+      {
+        source: '/search',
+        headers: [
+          { key: 'Cache-Control', value: 'public, s-maxage=300, stale-while-revalidate=600' },
+        ],
+      },
+      {
+        source: '/',
+        headers: [
+          { key: 'Cache-Control', value: 'public, s-maxage=60, stale-while-revalidate=300' },
+        ],
+      },
       {
         source: '/:path*',
         headers: [
@@ -88,7 +138,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withPWA(nextConfig as any) as any, {
   silent: true,
   org: "dominio-total",
   project: "frontend",

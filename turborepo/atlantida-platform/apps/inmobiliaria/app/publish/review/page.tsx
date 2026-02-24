@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePublish } from "@/contexts/PublishContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { db } from "@repo/lib/firebase"
-import { collection, addDoc, updateDoc, doc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
+import { collection, addDoc, updateDoc, doc, serverTimestamp, query, where, getDocs, getDoc } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { formatPrice } from "@/lib/data"
@@ -113,10 +113,24 @@ export default function PublishReviewPage() {
         setIsPublishing(true)
         try {
             if (isEditing && editingId) {
-                // UPDATE
+                // UPDATE - Detect price change
                 const docRef = doc(db, "properties", editingId)
+                const existingSnap = await getDoc(docRef)
+
+                let extraUpdates = {}
+                if (existingSnap.exists()) {
+                    const existingData = existingSnap.data()
+                    if (existingData.price !== data.price) {
+                        extraUpdates = {
+                            priceUpdatedAt: serverTimestamp(),
+                            pricePrevious: existingData.price || 0
+                        }
+                    }
+                }
+
                 const updateProperty = {
                     ...data,
+                    ...extraUpdates,
                     updatedAt: serverTimestamp(),
                 }
                 await updateDoc(docRef, updateProperty)
@@ -132,6 +146,7 @@ export default function PublishReviewPage() {
                     agentPhone: data.agentPhone,
                     publishedAt: serverTimestamp(),
                     updatedAt: serverTimestamp(),
+                    priceUpdatedAt: serverTimestamp(), // Initial price update
                     status: "active", // Published immediately
                     featured: false,
                     views: 0,

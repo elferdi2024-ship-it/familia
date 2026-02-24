@@ -16,14 +16,15 @@ const defaultCenter = {
     lng: -56.1645
 }
 
-const MAP_LIBRARIES: ("marker" | "places")[] = ['marker']
+const MAP_LIBRARIES: ("marker" | "places")[] = ['marker', 'places']
 
 interface LocationPickerProps {
     center?: { lat: number; lng: number }
     onLocationChange: (location: { lat: number; lng: number }) => void
+    onAddressFound?: (addressData: { address: string, department: string, city: string, neighborhood: string }) => void
 }
 
-export function LocationPicker({ center, onLocationChange }: LocationPickerProps) {
+export function LocationPicker({ center, onLocationChange, onAddressFound }: LocationPickerProps) {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
@@ -48,11 +49,39 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
         setMap(null)
     }, [])
 
+    const geocodeLocation = React.useCallback((lat: number, lng: number) => {
+        if (!window.google) return;
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status === "OK" && results && results[0] && onAddressFound) {
+                const address = results[0].formatted_address;
+                let department = "";
+                let city = "";
+                let neighborhood = "";
+
+                results[0].address_components.forEach(component => {
+                    if (component.types.includes("administrative_area_level_1")) {
+                        department = component.long_name;
+                    }
+                    if (component.types.includes("locality") || component.types.includes("administrative_area_level_2")) {
+                        city = component.long_name;
+                    }
+                    if (component.types.includes("sublocality") || component.types.includes("neighborhood")) {
+                        neighborhood = component.long_name;
+                    }
+                });
+
+                onAddressFound({ address, department, city, neighborhood });
+            }
+        });
+    }, [onAddressFound]);
+
     const handleMapClick = (e: google.maps.MapMouseEvent) => {
         if (e.latLng) {
             const newPos = { lat: e.latLng.lat(), lng: e.latLng.lng() }
             setMarkerPosition(newPos)
             onLocationChange(newPos)
+            geocodeLocation(newPos.lat, newPos.lng)
         }
     }
 
@@ -61,6 +90,7 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
             const newPos = { lat: e.latLng.lat(), lng: e.latLng.lng() }
             setMarkerPosition(newPos)
             onLocationChange(newPos)
+            geocodeLocation(newPos.lat, newPos.lng)
         }
     }
 
@@ -89,6 +119,7 @@ export function LocationPicker({ center, onLocationChange }: LocationPickerProps
                     const newPos = { lat, lng }
                     setMarkerPosition(newPos)
                     onLocationChange(newPos)
+                    geocodeLocation(newPos.lat, newPos.lng)
                 }
             }
         })
