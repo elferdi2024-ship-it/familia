@@ -1,4 +1,15 @@
-# Atlantida Platform - Monorepo
+# Documentación (raíz del repo)
+
+La **documentación unificada** del proyecto está en el monorepo:
+
+- **Índice por rol y enlaces:** [turborepo/atlantida-platform/docs/README.md](../turborepo/atlantida-platform/docs/README.md)
+- **Auditoría y organización:** [turborepo/atlantida-platform/docs/AUDITORIA_SISTEMA_2026.md](../turborepo/atlantida-platform/docs/AUDITORIA_SISTEMA_2026.md)
+
+En esta carpeta `docs/` se mantienen documentos legacy o compartidos (legal, guías que aún se referencian desde la raíz). Para PRD, Roadmap, Deploy y guías técnicas, usar la estructura bajo `turborepo/atlantida-platform/docs/`.
+
+---
+
+# Atlantida Platform - Monorepo (referencia)
 
 Monorepo Turborepo para las plataformas inmobiliarias de MiBarrio.uy.
 

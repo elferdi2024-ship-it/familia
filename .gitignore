@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .antigravity_knowledge.md
+
+# build / logs (no versionar)
+build.log
+build_*.txt
+lint_output.txt
+**/testsprite_tests/tmp/
+auditoria_extracted.txt

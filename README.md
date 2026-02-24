@@ -2,6 +2,10 @@
 
 **La mejor experiencia mobile-first para buscar, publicar y gestionar propiedades en Uruguay.**
 
+> **Desarrollo principal (monorepo):** La fuente de verdad para desarrollo es el monorepo Turborepo.  
+> - **Código:** `turborepo/atlantida-platform/` — apps: **portal** (Barrio.uy) y **inmobiliaria** (MiBarrio.uy).  
+> - **Documentación unificada:** [turborepo/atlantida-platform/docs/README.md](turborepo/atlantida-platform/docs/README.md) (índice por rol: producto, técnico, guías, deploy).
+
 [![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2.3-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
@@ -45,8 +49,16 @@
 
 ```bash
 git clone <repo-url>
-cd neo
+cd INMOBILIARIA
+
+# Opción A: Monorepo (recomendado)
+cd turborepo/atlantida-platform
 npm install
+npm run dev
+
+# Opción B: App en raíz
+npm install
+npm run dev
 ```
 
 ### 2. Variables de entorno

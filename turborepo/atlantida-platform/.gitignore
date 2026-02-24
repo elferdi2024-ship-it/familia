@@ -23,6 +23,10 @@ yarn-error.log*
 .env*.local
 .env
 .env.vercel
+vercel-env-import.env
+
+# coverage (generado por tests)
+coverage/
 
 # typescript
 *.tsbuildinfo
