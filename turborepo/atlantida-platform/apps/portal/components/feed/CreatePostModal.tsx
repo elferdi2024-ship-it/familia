@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { db } from "@repo/lib/firebase"
 import { collection, addDoc, serverTimestamp, getDoc, doc, query, where, orderBy, limit, getDocs, Timestamp } from "firebase/firestore"
 import { toast } from "sonner"
-import type { FeedPostType, AgentPlan, Property, PropertySnapshot } from "@repo/types"
+import type { FeedPostType, AgentPlan, Property, PropertySnapshot, FeedAgentProfile } from "@repo/types"
 
 interface CreatePostModalProps {
     isOpen: boolean
@@ -23,7 +23,7 @@ const POST_TYPES: { id: FeedPostType; label: string; icon: React.ReactNode; colo
 
 export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
     const { user } = useAuth()
-    const [profile, setProfile] = useState<any>(null)
+    const [profile, setProfile] = useState<Partial<FeedAgentProfile> | null>(null)
     const [postType, setPostType] = useState<FeedPostType>('opinion')
     const [text, setText] = useState("")
     const [isPublishing, setIsPublishing] = useState(false)
@@ -59,8 +59,8 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
                         ...doc.data()
                     } as Property))
                     setAgentProperties(props)
-                } catch (sortError: any) {
-                    console.warn(`Query with ${sortField} failed, trying fallback:`, sortError.message)
+                } catch (sortError: unknown) {
+                    console.warn(`Query with ${sortField} failed, trying fallback:`, sortError instanceof Error ? sortError.message : String(sortError))
                     // If the specific price_drop index is missing, fallback to publishedAt
                     if (postType === 'price_drop') {
                         const fallbackQ = query(
@@ -180,9 +180,9 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
             setSelectedPropertyId(null)
             setPostType('opinion')
             onClose()
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error publishing post:", error)
-            toast.error("Error al publicar: " + error.message)
+            toast.error("Error al publicar: " + (error instanceof Error ? error.message : String(error)))
         } finally {
             setIsPublishing(false)
         }

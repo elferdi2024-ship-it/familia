@@ -112,9 +112,16 @@ Si en la URL de Vercel ves una versión antigua (por ejemplo sin "Inmobiliarias"
    Para el portal debe ser `turborepo/atlantida-platform/apps/portal` (si el repo es INMOBILIARIA). Si está en otra ruta, el build puede ser de otra app o de una estructura antigua.
 
 3. **Redeploy con caché limpia**  
-   Deployments → los tres puntos del último deploy → **Redeploy** → marcar **Clear build cache and redeploy**. Así se fuerza un build desde cero con el código actual de la rama.
+   Deployments → los tres puntos del último deploy → **Redeploy**. En el modal, **bajá** hasta ver la casilla **"Use existing Build Cache"** y **dejala desmarcada** para construir sin caché.  
+   **Importante:** Redeploy vuelve a construir **el mismo commit** que ese deploy. Si ese commit es viejo (ej. "feat(phase6)..."), seguirás viendo la versión vieja. Para ver la versión nueva necesitás un deploy que se haya disparado desde el **último** commit de `main` (por ejemplo después de un `git push`).
 
-4. **Firebase Auth (login con Google)**  
+4. **Purge de caché CDN / Data (si ya desplegaste el commit nuevo)**  
+   Si el último deploy **sí** es del commit correcto pero seguís viendo contenido viejo, puede ser caché de Vercel. Entrá a **Project → Settings** y buscá la sección **Caches** (o **Storage** según el plan). Ahí tenés:
+   - **Purge CDN Cache**: invalida respuestas cacheadas (HTML, assets, ISR).
+   - **Purge Data Cache**: borra el data cache del proyecto.  
+   Usá **Purge CDN Cache** primero y recargá la página (o probá en incógnito).
+
+5. **Firebase Auth (login con Google)**  
    Si la URL de deploy cambia (por ejemplo un nuevo preview), agregar ese dominio en Firebase Console → Authentication → Settings → **Authorized domains** (ej. `turborepo-inmob-market-portal-diexusk4q.vercel.app`).
 
 ---

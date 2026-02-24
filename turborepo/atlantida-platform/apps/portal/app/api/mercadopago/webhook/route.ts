@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-// @ts-ignore
 import { adminDb } from '@/lib/firebase-admin';
 
 export async function POST(req: Request) {
@@ -40,7 +39,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ received: true });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Mercado Pago Webhook Error:', error);
         return NextResponse.json(
             { error: 'Webhook processing failed' },

@@ -45,7 +45,7 @@ export async function getNearbyPlaces(lat: number, lng: number): Promise<Poi[]> 
                 return data.results.slice(0, 3).map((place: any) => ({
                     id: place.place_id,
                     label: place.name,
-                    category: type === "shopping_mall" ? "shopping" : type as any,
+                    category: type === "shopping_mall" ? "shopping" : type as Poi['category'],
                     lat: place.geometry.location.lat,
                     lng: place.geometry.location.lng,
                     description: place.vicinity || "Ubicación cercana",
