@@ -41,11 +41,10 @@ export async function getNearbyPlaces(lat: number, lng: number): Promise<Poi[]> 
             const data = await response.json();
 
             if (data.status === "OK" && data.results) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                return data.results.slice(0, 3).map((place: any) => ({
+                return data.results.slice(0, 3).map((place: { place_id: string; name: string; geometry: { location: { lat: number; lng: number } }; vicinity?: string }) => ({
                     id: place.place_id,
                     label: place.name,
-                    category: type === "shopping_mall" ? "shopping" : type as any,
+                    category: type === "shopping_mall" ? "shopping" : (type as string),
                     lat: place.geometry.location.lat,
                     lng: place.geometry.location.lng,
                     description: place.vicinity || "Ubicación cercana",

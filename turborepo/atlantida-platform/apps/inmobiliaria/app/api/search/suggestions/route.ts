@@ -17,7 +17,7 @@ export async function GET(request: Request) {
             return NextResponse.json({ suggestions: [] });
         }
 
-        const suggestions: any[] = [];
+        const suggestions: { id: string; label: string; type: string; value: string }[] = [];
         const propertiesRef = collection(db, 'properties');
 
         // Strategy 1: Title match (case-sensitive unfortunately in Firestore without full text search, 

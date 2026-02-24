@@ -18,8 +18,13 @@ export const searchClient = ALGOLIA_APP_ID && ALGOLIA_SEARCH_ONLY_KEY
 // Index names
 export const PROPERTIES_INDEX = 'properties'
 
+export interface PropertyDataAlgolia {
+    coordinates?: { lat: number; lng: number }
+    [key: string]: unknown
+}
+
 // Helper to push properties to Algolia
-export async function syncPropertyToAlgolia(propertyId: string, propertyData: any) {
+export async function syncPropertyToAlgolia(propertyId: string, propertyData: PropertyDataAlgolia) {
     if (!ALGOLIA_APP_ID || !ALGOLIA_ADMIN_KEY) {
         console.warn('Algolia keys missing. Skipping sync.')
         return
@@ -39,7 +44,7 @@ export async function syncPropertyToAlgolia(propertyId: string, propertyData: an
 
         await algoliaClient!.saveObject({
             indexName: PROPERTIES_INDEX,
-            body: record as any
+            body: record as Record<string, unknown>
         })
 
         console.log(`Property ${propertyId} synced to Algolia.`)

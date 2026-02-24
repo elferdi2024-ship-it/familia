@@ -16,6 +16,20 @@ export function PropertyCarousel({ images, altText = "Property Image", className
     const [direction, setDirection] = useState(0)
     const thumbnailContainerRef = useRef<HTMLDivElement>(null)
 
+    // Auto-scroll thumbnails to keep the active one in view (hook must run unconditionally)
+    useEffect(() => {
+        if (!images || images.length <= 1) return
+        if (!thumbnailContainerRef.current) return
+        const container = thumbnailContainerRef.current
+        const activeThumbnail = container.children[currentIndex] as HTMLElement
+        if (activeThumbnail) {
+            const containerCenter = container.clientWidth / 2
+            const thumbnailCenter = activeThumbnail.offsetLeft + activeThumbnail.clientWidth / 2
+            const scrollPos = thumbnailCenter - containerCenter
+            container.scrollTo({ left: scrollPos, behavior: 'smooth' })
+        }
+    }, [currentIndex, images])
+
     // Avoid unnecessary rendering if no images
     if (!images || images.length === 0) return null
 
@@ -31,19 +45,6 @@ export function PropertyCarousel({ images, altText = "Property Image", className
             </div>
         )
     }
-
-    // Auto-scroll thumbnails to keep the active one in view
-    useEffect(() => {
-        if (!thumbnailContainerRef.current) return
-        const container = thumbnailContainerRef.current
-        const activeThumbnail = container.children[currentIndex] as HTMLElement
-        if (activeThumbnail) {
-            const containerCenter = container.clientWidth / 2
-            const thumbnailCenter = activeThumbnail.offsetLeft + activeThumbnail.clientWidth / 2
-            const scrollPos = thumbnailCenter - containerCenter
-            container.scrollTo({ left: scrollPos, behavior: 'smooth' })
-        }
-    }, [currentIndex])
 
     const slideVariants = {
         enter: (direction: number) => ({

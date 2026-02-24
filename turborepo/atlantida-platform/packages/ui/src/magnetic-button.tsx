@@ -49,7 +49,7 @@ export const MagneticWrapper = React.forwardRef<HTMLDivElement, MagneticWrapperP
                 onMouseLeave={handleMouseLeave}
                 style={{ x, y }}
                 className={cn("relative transition-colors inline-block", className)}
-                {...(props as any)}
+                {...(props as React.ComponentProps<typeof motion.div>)}
             >
                 {/* Child wrapper to reverse the magnetic effect slightly for parallax inside the button itself */}
                 <motion.div style={{ x: useTransform(x, (val) => val * 0.5), y: useTransform(y, (val) => val * 0.5) }}>

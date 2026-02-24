@@ -11,7 +11,7 @@ interface ThemeToggleProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
-    const { setTheme, theme, resolvedTheme } = useTheme()
+    const { setTheme, resolvedTheme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
 
     // Ensure we only render the toggle after hydration to avoid mismatch

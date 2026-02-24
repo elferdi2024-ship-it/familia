@@ -19,7 +19,7 @@ export function RevealText({
     duration = 0.5,
     as: Component = "h2",
 }: RevealTextProps) {
-    const ref = React.useRef<any>(null)
+    const ref = React.useRef<HTMLElement>(null)
     const isInView = useInView(ref, { once: true, margin: "-10% 0px" })
 
     // Split text by lines
@@ -49,7 +49,10 @@ export function RevealText({
         },
     }
 
-    const MotionComponent = motion(Component as any) as any
+    // Framer Motion dynamic component typing
+    const MotionComponent = motion(Component as React.ElementType) as React.ComponentType<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement>; variants?: Variants; initial?: string; animate?: string }
+    >
 
     return (
         <MotionComponent

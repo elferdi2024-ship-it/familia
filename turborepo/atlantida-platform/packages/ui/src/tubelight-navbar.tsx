@@ -16,32 +16,30 @@ interface TubelightNavbarProps {
     className?: string
 }
 
+function findActiveTab(pathname: string, searchParams: URLSearchParams | null, items: NavItem[]): string {
+    const currentPath = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "")
+    const sortedItems = [...items].sort((a, b) => b.url.length - a.url.length)
+    const currentTab = sortedItems.find(item => {
+        if (item.url === "/") return currentPath === "/"
+        if (item.url.includes("?")) {
+            return currentPath === item.url || currentPath.startsWith(item.url + "&")
+        }
+        return currentPath.startsWith(item.url) && item.url !== "/" && item.url !== "#contacto"
+    })
+    return currentTab?.name ?? items[0].name
+}
+
 export function TubelightNavbar({ items, className }: TubelightNavbarProps) {
-    const [activeTab, setActiveTab] = useState(items[0].name)
     const [isMounted, setIsMounted] = useState(false)
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
     useEffect(() => {
-        setIsMounted(true)
-        const currentPath = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "")
+        const t = setTimeout(() => setIsMounted(true), 0)
+        return () => clearTimeout(t)
+    }, [])
 
-        // Sort items by length descending so more specific routes match first
-        const sortedItems = [...items].sort((a, b) => b.url.length - a.url.length)
-
-        const currentTab = sortedItems.find(item => {
-            if (item.url === "/") return currentPath === "/"
-            if (item.url.includes("?")) {
-                // Need exact or prefixed match for query parameters
-                return currentPath === item.url || currentPath.startsWith(item.url + "&")
-            }
-            return currentPath.startsWith(item.url) && item.url !== "/" && item.url !== "#contacto"
-        })
-
-        if (currentTab) {
-            setActiveTab(currentTab.name)
-        }
-    }, [pathname, searchParams, items])
+    const activeTab = findActiveTab(pathname, searchParams, items)
 
     return (
         <div className={cn("flex items-center gap-1 py-1 px-1 border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/50 backdrop-blur-md rounded-full shadow-sm", className)}>
@@ -52,7 +50,7 @@ export function TubelightNavbar({ items, className }: TubelightNavbarProps) {
                     <Link
                         key={item.name}
                         href={item.url}
-                        onClick={() => setActiveTab(item.name)}
+                        onClick={() => {}}
                         className={cn(
                             "relative cursor-pointer text-sm font-semibold px-5 py-2 rounded-full transition-colors",
                             isActive

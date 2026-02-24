@@ -16,15 +16,6 @@ service cloud.firestore {
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    // Helper — contar posts de hoy
-    function getPostsToday(uid) {
-      let oneDayAgo = request.time - duration.value(86400, 's');
-      return getAfter(/databases/$(database)/documents/feedPosts)
-        .where('authorId', '==', uid)
-        .where('createdAt', '>=', oneDayAgo)
-        .size();
-    }
-
     // Properties Collection
     match /properties/{propertyId} {
       allow read: if true;

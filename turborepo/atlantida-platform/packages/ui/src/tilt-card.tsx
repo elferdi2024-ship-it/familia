@@ -60,7 +60,7 @@ export const TiltCard = React.forwardRef<HTMLDivElement, TiltCardProps>(
                     transformStyle: "preserve-3d",
                 }}
                 className={cn("relative transition-transform ease-out", className)}
-                {...(props as any)}
+                {...(props as React.ComponentProps<typeof motion.div>)}
             >
                 {children}
             </motion.div>

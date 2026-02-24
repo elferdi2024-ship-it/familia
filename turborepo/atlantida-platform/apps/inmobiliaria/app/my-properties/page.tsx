@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { db } from "@repo/lib/firebase"
-import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Firestore } from "firebase/firestore"
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc, Timestamp } from "firebase/firestore"
 import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
@@ -34,11 +34,19 @@ interface Lead {
     leadName: string;
     leadEmail: string;
     leadMessage: string;
-    createdAt: any;
+    createdAt: Timestamp | string | number | Date;
     status: "new" | "contacted" | "closed";
     contactType?: "contact" | "visit";
     visitDate?: string;
     visitTime?: string;
+}
+
+function leadCreatedAtSeconds(c: Lead["createdAt"]): number | undefined {
+    if (!c) return undefined;
+    if (typeof c === "object" && "seconds" in c) return (c as Timestamp).seconds;
+    if (c instanceof Date) return c.getTime() / 1000;
+    if (typeof c === "number") return c >= 1e12 ? c / 1000 : c;
+    return undefined;
 }
 
 const Sparkline = ({ data, color = "#2563eb" }: { data: number[], color?: string }) => {
@@ -169,8 +177,8 @@ export default function MyPropertiesPage() {
 
             // Sort leads client-side
             leadsData.sort((a, b) => {
-                const dateA = a.createdAt?.seconds || 0
-                const dateB = b.createdAt?.seconds || 0
+                const dateA = leadCreatedAtSeconds(a.createdAt) ?? 0
+                const dateB = leadCreatedAtSeconds(b.createdAt) ?? 0
                 return dateB - dateA
             })
             setLeads(leadsData)
@@ -254,7 +262,7 @@ export default function MyPropertiesPage() {
     const exportToCSV = () => {
         const headers = ["Fecha", "Estado", "Nombre", "Email", "Propiedad", "Mensaje"]
         const rows = leads.map(lead => [
-            lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy',
+            leadCreatedAtSeconds(lead.createdAt) ? new Date(leadCreatedAtSeconds(lead.createdAt)! * 1000).toLocaleDateString() : 'Hoy',
             lead.status === 'new' ? 'Nuevo' : 'Leído',
             lead.leadName,
             lead.leadEmail,
@@ -526,7 +534,7 @@ export default function MyPropertiesPage() {
                                                     <TableCell className="py-6">
                                                         <div className="max-w-[200px]">
                                                             <p className="text-xs font-bold text-slate-600 dark:text-slate-400 truncate">{lead.propertyTitle}</p>
-                                                            <p className="text-[10px] font-medium text-slate-400 italic">Recibido: {lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy'}</p>
+                                                            <p className="text-[10px] font-medium text-slate-400 italic">Recibido: {leadCreatedAtSeconds(lead.createdAt) ? new Date(leadCreatedAtSeconds(lead.createdAt)! * 1000).toLocaleDateString() : 'Hoy'}</p>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="py-6">

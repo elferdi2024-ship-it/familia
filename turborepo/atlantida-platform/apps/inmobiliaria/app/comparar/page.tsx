@@ -68,7 +68,7 @@ export default function ComparePage() {
     }
 
     const features = [
-        { label: "Precio", key: "price", format: (val: any, p: Property) => formatPrice(val, p.currency) },
+        { label: "Precio", key: "price", format: (val: number | string, p: Property) => formatPrice(Number(val), p.currency) },
         { label: "Ubicación", key: "neighborhood" },
         { label: "Dormitorios", key: "bedrooms" },
         { label: "Baños", key: "bathrooms" },
@@ -128,7 +128,7 @@ export default function ComparePage() {
                                     <div key={f.key} className="h-16 flex items-center px-6">
                                         <div className="lg:hidden text-[10px] font-bold text-slate-400 uppercase block mb-1">{f.label}: </div>
                                         <span className="font-bold text-slate-900 dark:text-white">
-                                            {f.format ? f.format(p[f.key as keyof Property], p) : `${p[f.key as keyof Property] || ''}`}{f.suffix}
+                                            {f.format ? f.format(p[f.key as keyof Property] as string | number, p) : `${p[f.key as keyof Property] ?? ''}`}{f.suffix}
                                         </span>
                                     </div>
                                 ))}

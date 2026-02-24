@@ -2,7 +2,8 @@ import { track } from '@vercel/analytics'
 import { sendGAEvent } from '@next/third-parties/google'
 
 // Helper to track in both platforms
-const dualTrack = (eventName: string, properties?: Record<string, any>) => {
+type AllowedPropertyValues = string | number | boolean | null | undefined
+const dualTrack = (eventName: string, properties?: Record<string, AllowedPropertyValues>) => {
   // Vercel Analytics tracking
   track(eventName, properties)
 

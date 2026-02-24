@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useComparison } from "@/contexts/ComparisonContext"
 import { db } from "@repo/lib/firebase"
 import { collection, query, where, getDocs, documentId } from "firebase/firestore"
@@ -269,14 +269,14 @@ export default function ComparePage() {
                 <span className="material-icons text-primary">info</span>
                 <div>
                     <h4 className="font-bold text-slate-900 dark:text-blue-100">Consejo del experto</h4>
-                    <p className="text-slate-600 dark:text-blue-200/70 text-sm mt-1 leading-relaxed">Al comparar apartamentos en Montevideo, ten en cuenta que los "Gastos Comunes" pueden variar significativamente según los servicios centrales y el tipo de calefacción. No olvides consultar si la propiedad cuenta con tributos domiciliarios incluidos.</p>
+                    <p className="text-slate-600 dark:text-blue-200/70 text-sm mt-1 leading-relaxed">Al comparar apartamentos en Montevideo, ten en cuenta que los &quot;Gastos Comunes&quot; pueden variar significativamente según los servicios centrales y el tipo de calefacción. No olvides consultar si la propiedad cuenta con tributos domiciliarios incluidos.</p>
                 </div>
             </div>
         </div>
     )
 }
 
-function ArrowRight(props: any) {
+function ArrowRight(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             {...props}
