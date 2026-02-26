@@ -4,6 +4,7 @@
 // Used server-side for authoritative scoring and client-side for preview.
 // ──────────────────────────────────────────────────────────────────────
 import type { FeedPost, FeedPostType, AgentPlan } from '@repo/types'
+import { isFOMOTacticEnabled } from '@repo/lib'
 
 // ── Lead Intent Weights ───────────────────────────────────────────────
 // WhatsApp click is the highest-value signal: direct purchase intent.
@@ -28,6 +29,7 @@ export const PLAN_BOOSTS: Record<AgentPlan, number> = {
     free: 1.0,
     pro: 1.2,
     elite: 1.35,
+    premium: 1.35, // Premium (propiedades) = Elite (feed)
 }
 
 // ── Decay Constants ───────────────────────────────────────────────────
@@ -45,10 +47,28 @@ function toEpochMs(ts: Date | { seconds: number; nanoseconds: number } | number)
 }
 
 /**
+ * Days since publication (for FOMO age penalty).
+ */
+function daysSincePublished(publishedMs: number, nowMs: number): number {
+    return Math.max(0, Math.floor((nowMs - publishedMs) / (24 * 60 * 60 * 1000)))
+}
+
+/**
+ * Penalty multiplier for Free plan by age (FOMO): day 0-3 = 1, day 4-7 = 0.8, 8+ = 0.6.
+ */
+export function getFreeAgePenalty(publishedMs: number, nowMs = Date.now()): number {
+    const days = daysSincePublished(publishedMs, nowMs)
+    if (days > 7) return 0.6
+    if (days > 3) return 0.8
+    return 1.0
+}
+
+/**
  * Calculates the meritocratic ranking score for a feed post.
  *
  * Formula:
- *   Score = (LeadIntent × ZonaWeight × TypeWeight × PlanBoost) / (HoursSince + 2)^1.35
+ *   Score = (LeadIntent × ZonaWeight × TypeWeight × PlanBoost × [FreeAgePenalty]) / (HoursSince + 2)^1.35
+ * Free plan only: age penalty 0.8 at 4-7 days, 0.6 at 8+ days.
  *
  * @param post       - The feed post (needs leadIntentScore, type, plan, publishedAt)
  * @param zonaWeight - Neighborhood relevance multiplier (default 1.0)
@@ -62,11 +82,18 @@ export function calculateRankingScore(
     const publishedMs = toEpochMs(post.publishedAt)
     const hoursSince = Math.max(0, (nowMs - publishedMs) / (1000 * 60 * 60))
 
-    const relevance =
+    // Premium (plan propiedades) = mismo boost que Elite en el feed
+    const effectivePlan = post.plan === 'premium' ? 'elite' : post.plan
+    let relevance =
         post.leadIntentScore *
         zonaWeight *
         TYPE_WEIGHTS[post.type] *
-        PLAN_BOOSTS[post.plan]
+        (PLAN_BOOSTS[effectivePlan as keyof typeof PLAN_BOOSTS] ?? 1.0)
+
+    // FOMO: penalización gradual por antigüedad solo para Free (si la táctica está activa)
+    if (effectivePlan === 'free' && isFOMOTacticEnabled('ranking_penalty')) {
+        relevance *= getFreeAgePenalty(publishedMs, nowMs)
+    }
 
     return relevance / Math.pow(hoursSince + BASE_HOURS, GRAVITY)
 }

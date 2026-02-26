@@ -6,7 +6,7 @@ export interface Lead {
     leadName: string;
     leadEmail: string;
     leadMessage: string;
-    createdAt: any;
+    createdAt: unknown;
     status: "new" | "contacted" | "closed" | "interested" | "visit_scheduled" | "lost";
     contactType?: "contact" | "visit";
     visitDate?: string;

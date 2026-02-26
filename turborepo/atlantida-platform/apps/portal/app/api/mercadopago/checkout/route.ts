@@ -3,11 +3,13 @@ import { preApproval } from '@/lib/mercadopago';
 
 export async function POST(req: Request) {
     try {
-        const { planId, userEmail, userId, isYearly } = await req.json();
+        const { planId, userEmail, userId, isYearly, coupon } = await req.json();
 
         // Precios en UYU (alineados con la página de pricing). Anual = -20% sobre mensual.
-        const monthlyAmounts = planId === 'premium' ? 3600 : 1600;
-        const monthlyCharge = isYearly ? Math.round(monthlyAmounts * 0.8) : monthlyAmounts;
+        let monthlyAmounts = planId === 'premium' ? 3600 : 1600;
+        if (isYearly) monthlyAmounts = Math.round(monthlyAmounts * 0.8);
+        // Cupón Fundador: 30% OFF de por vida
+        const monthlyCharge = coupon === 'FUNDADOR30' ? Math.round(monthlyAmounts * 0.7) : monthlyAmounts;
         const planDetails = {
             title: planId === 'premium' ? 'Plan Premium - Barrio.uy' : 'Plan Pro - Barrio.uy',
             amount: monthlyCharge,

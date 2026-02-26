@@ -1,3 +1,7 @@
+/**
+ * @copyright (c) 2024-2025 Atlantida Platform. Todos los derechos reservados.
+ * Uso, copia o distribución no autorizados prohibidos.
+ */
 "use client"
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
@@ -17,9 +21,14 @@ import {
 import { auth, db } from "@repo/lib/firebase"
 import { doc, getDoc, onSnapshot } from "firebase/firestore"
 
+export interface UserData {
+    plan?: 'free' | 'pro' | 'premium';
+    [key: string]: any; // Allow other properties for now
+}
+
 interface AuthContextType {
     user: User | null
-    userData: any | null
+    userData: UserData | null
     loading: boolean
     loginWithGoogle: () => Promise<void>
     loginWithEmail: (email: string, password: string) => Promise<void>
@@ -43,7 +52,7 @@ export const useAuth = () => useContext(AuthContext)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
-    const [userData, setUserData] = useState<any | null>(null)
+    const [userData, setUserData] = useState<UserData | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -61,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 // Listen to user document
                 unsubscribeFirestore = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
                     if (doc.exists()) {
-                        setUserData(doc.data())
+                        setUserData(doc.data() as UserData)
                     } else {
                         setUserData({ plan: 'free' })
                     }
@@ -90,9 +99,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // Reverting to popup as redirect is losing session state in this environment
             // COOP headers in next.config.ts should now allow this to work without 'popup-closed-by-user' error
             await signInWithPopup(auth, provider)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error signing in with Google:", error)
-            if (error.code === 'auth/unauthorized-domain') {
+            if (error && typeof error === 'object' && 'code' in error && error.code === 'auth/unauthorized-domain') {
                 console.error("This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase Console.")
             }
             throw error

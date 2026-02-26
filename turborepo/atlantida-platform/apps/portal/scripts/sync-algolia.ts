@@ -43,18 +43,22 @@ async function syncAll() {
 
     console.log("🔍 Fetching properties from Firestore...")
     const snapshot = await getDocs(collection(db, "properties"))
-    const properties = snapshot.docs.map(doc => ({
-        objectID: doc.id,
-        ...doc.data(),
-        // Convert Firestore Timestamps to Unix timestamps for Algolia
-        publishedAt: doc.data().publishedAt?.toMillis() || Date.now(),
-        updatedAt: doc.data().updatedAt?.toMillis() || Date.now(),
-        // Geo-location format for Algolia
-        _geoloc: doc.data().geolocation ? {
-            lat: doc.data().geolocation.lat,
-            lng: doc.data().geolocation.lng
-        } : undefined
-    }))
+    const properties = snapshot.docs.map(doc => {
+        const data = doc.data()
+        const geo = data.geolocation
+            ? { lat: data.geolocation.lat, lng: data.geolocation.lng }
+            : (typeof data.Latitude === 'number' && typeof data.Longitude === 'number')
+                ? { lat: data.Latitude, lng: data.Longitude }
+                : undefined
+        return {
+            objectID: doc.id,
+            ...data,
+            geolocation: geo ?? data.geolocation,
+            publishedAt: data.publishedAt?.toMillis?.() || Date.now(),
+            updatedAt: data.updatedAt?.toMillis?.() || Date.now(),
+            _geoloc: geo
+        }
+    })
 
     console.log(`📦 Found ${properties.length} properties to sync.`)
 

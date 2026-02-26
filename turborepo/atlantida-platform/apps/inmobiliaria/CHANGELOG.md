@@ -2,6 +2,15 @@
 
 Todos los cambios notables de MiBarrio.uy.
 
+## [5.1.0] - 2026-02-25
+
+### Planes y experiencia de upgrade
+- **Documentación:** Planes Base/Pro/Premium documentados en [docs/PLANES_FUENTE_VERDAD.md](../../docs/PLANES_FUENTE_VERDAD.md) y [docs/REVISION_PLANES_BARRIO.md](../../docs/REVISION_PLANES_BARRIO.md).
+- **Tarjeta de upgrade:** En la pantalla de publicar (paso 1), cuando el usuario tiene plan Base y ya tiene 1 propiedad, se muestra una tarjeta destacada invitando a mejorar a Pro o Premium, con enlace a `/publish/pricing`.
+- Comportamiento alineado con el portal en límites por plan y mensajes de upgrade.
+
+---
+
 ## [5.0.0] - 2026-02-17
 
 ### Performance & Search (Algolia)

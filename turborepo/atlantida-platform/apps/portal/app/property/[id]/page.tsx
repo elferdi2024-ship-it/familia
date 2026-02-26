@@ -4,6 +4,8 @@ import PropertyClient from "./PropertyClient"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProperty } from "@/lib/properties"
+import { getNearbyPlaces } from "@/actions/get-nearby-places"
+import { getMarketIntelligence } from "@/lib/analytics"
 import { db } from "@repo/lib/firebase" // Used for debug console
 
 export const revalidate = 3600
@@ -66,7 +68,20 @@ async function PropertyContent({ id }: { id: string }) {
         )
     }
 
-    return <PropertyClient initialProperty={property} initialAgentInfo={agentInfo} />
+    const nearbyPlaces = property.geolocation
+        ? await getNearbyPlaces(property.geolocation.lat, property.geolocation.lng)
+        : []
+
+    const marketData = await getMarketIntelligence(property)
+
+    return (
+        <PropertyClient
+            initialProperty={property}
+            initialAgentInfo={agentInfo}
+            initialNearbyPlaces={nearbyPlaces}
+            initialMarketData={marketData}
+        />
+    )
 }
 
 export default async function PropertyPage({ params }: { params: any }) {

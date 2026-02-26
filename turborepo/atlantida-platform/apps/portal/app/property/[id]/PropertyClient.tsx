@@ -24,18 +24,32 @@ const NeighborhoodMap = dynamic(
   () => import("@/components/NeighborhoodMap").then((m) => ({ default: m.NeighborhoodMap })),
   { ssr: false, loading: () => <div className="w-full aspect-[4/3] bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center"><span className="text-slate-400 text-sm">Cargando mapa...</span></div> }
 );
+import { NearbyPlacesCard } from "@/components/NearbyPlacesCard";
+import { Poi } from "@repo/types";
+import type { MarketData } from "@/lib/analytics";
 import { toast } from "sonner";
 import { trackEvent } from "@repo/lib/tracking";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { getOrCreateConversation } from "@/lib/chat";
+import { ConversationThread } from "@/components/chat/ConversationThread";
+import { AuthModal } from "@/components/auth/AuthModal";
+import { Dialog, DialogContent } from "@repo/ui/dialog";
 
 interface PropertyClientProps {
   initialProperty: Property;
   initialAgentInfo: any;
+  /** Puntos de interés cercanos (desde server) para destacar y mapa */
+  initialNearbyPlaces?: Poi[];
+  /** Datos reales de mercado (barrio, tipo, operación) — null si no hay suficientes datos */
+  initialMarketData?: MarketData | null;
 }
 
 export default function PropertyClient({
   initialProperty,
   initialAgentInfo,
+  initialNearbyPlaces = [],
+  initialMarketData = null,
 }: PropertyClientProps) {
   const [property] = useState<Property>(initialProperty);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -57,6 +71,13 @@ export default function PropertyClient({
   const [visitTime, setVisitTime] = useState("");
   const [agentInfo] = useState(initialAgentInfo);
 
+  // Chat (consultar por este inmueble — requiere auth)
+  const { user } = useAuth();
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [chatConvId, setChatConvId] = useState<string | null>(null);
+  const [showAuthForChat, setShowAuthForChat] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
+
   // Parallax Effect
   const { scrollY } = useScroll();
   const headerY = useTransform(scrollY, [0, 500], [0, 150]);
@@ -76,6 +97,64 @@ export default function PropertyClient({
       }
     }
   }, [property.id]);
+
+  // Tras login, abrir chat si venía de "Chatear"
+  useEffect(() => {
+    if (!user || !showAuthForChat || !db || !property?.userId) return;
+    let cancelled = false;
+    (async () => {
+      setChatLoading(true);
+      try {
+        const cid = await getOrCreateConversation(db, {
+          agentId: property.userId,
+          leadId: user.uid,
+          leadName: user.displayName || "Usuario",
+          leadEmail: user.email || "",
+          propertyId: property.id,
+          propertyTitle: property.title || property.neighborhood || "Propiedad",
+        });
+        if (!cancelled) {
+          setChatConvId(cid);
+          setShowChatModal(true);
+          setShowAuthForChat(false);
+          setShowContactForm(false);
+        }
+      } catch (e) {
+        console.error("Error opening chat:", e);
+        toast.error("No se pudo abrir el chat.");
+      } finally {
+        if (!cancelled) setChatLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [user, showAuthForChat, property?.id, property?.userId, property?.title, property?.neighborhood]);
+
+  const openChat = async () => {
+    if (!user) {
+      setShowAuthForChat(true);
+      return;
+    }
+    if (!db || !property?.userId) return;
+    setChatLoading(true);
+    setShowContactForm(false);
+    try {
+      const cid = await getOrCreateConversation(db, {
+        agentId: property.userId,
+        leadId: user.uid,
+        leadName: user.displayName || "Usuario",
+        leadEmail: user.email || "",
+        propertyId: property.id,
+        propertyTitle: property.title || property.neighborhood || "Propiedad",
+      });
+      setChatConvId(cid);
+      setShowChatModal(true);
+    } catch (e) {
+      console.error("Error opening chat:", e);
+      toast.error("No se pudo abrir el chat.");
+    } finally {
+      setChatLoading(false);
+    }
+  };
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -371,52 +450,69 @@ export default function PropertyClient({
                 </div>
               )}
 
-            {/* Market Intelligence Teaser */}
-            <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl text-white shadow-xl">
-              <div className="flex flex-col md:flex-row gap-8 items-center">
-                <div className="flex-1 space-y-4 text-center md:text-left">
-                  <h3 className="text-2xl font-serif font-bold tracking-tight">
-                    Market Intelligence
-                  </h3>
-                  <p className="text-blue-100 leading-relaxed">
-                    Esta propiedad está un{" "}
-                    <span className="font-bold text-white underline">
-                      12.5% por debajo
-                    </span>{" "}
-                    del precio promedio en {property.neighborhood}. Es una
-                    oportunidad de inversión Clase A.
-                  </p>
-                  <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
-                    <div className="px-4 py-2 bg-white/20 backdrop-blur rounded-xl border border-white/20">
-                      <p className="text-[10px] uppercase font-bold text-blue-100">
-                        Plusvalía Est.
-                      </p>
-                      <p className="text-lg font-black">+4.2% anual</p>
+            {/* Market Intelligence — datos reales de Firestore */}
+            {initialMarketData ? (
+              <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl text-white shadow-xl">
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                  <div className="flex-1 space-y-4 text-center md:text-left">
+                    <h3 className="text-2xl font-serif font-bold tracking-tight">
+                      Market Intelligence
+                    </h3>
+                    <p className="text-blue-100 leading-relaxed">
+                      {initialMarketData.differencePercentage < 0 ? (
+                        <>Esta propiedad está un{" "}
+                          <span className="font-bold text-white underline">
+                            {Math.abs(initialMarketData.differencePercentage).toFixed(1)}% por debajo
+                          </span>{" "}
+                          del precio promedio por m² en {property.neighborhood}. {initialMarketData.status === "Very Competitive" || initialMarketData.status === "Competitive" ? "Oportunidad de inversión." : ""}
+                        </>
+                      ) : initialMarketData.differencePercentage > 0 ? (
+                        <>Esta propiedad está un{" "}
+                          <span className="font-bold text-white underline">
+                            {initialMarketData.differencePercentage.toFixed(1)}% por encima
+                          </span>{" "}
+                          del precio promedio por m² en {property.neighborhood}.
+                        </>
+                      ) : (
+                        <>Precio alineado con el promedio por m² en {property.neighborhood}.</>
+                      )}
+                    </p>
+                    <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
+                      <div className="px-4 py-2 bg-white/20 backdrop-blur rounded-xl border border-white/20">
+                        <p className="text-[10px] uppercase font-bold text-blue-100">Precio vs Promedio</p>
+                        <p className="text-lg font-black">{initialMarketData.differencePercentage >= 0 ? "+" : ""}{initialMarketData.differencePercentage.toFixed(1)}%</p>
+                      </div>
+                      <div className="px-4 py-2 bg-white/20 backdrop-blur rounded-xl border border-white/20">
+                        <p className="text-[10px] uppercase font-bold text-blue-100">Propiedades en zona</p>
+                        <p className="text-lg font-black">{initialMarketData.totalPropertiesInNeighborhood}</p>
+                      </div>
                     </div>
-                    <div className="px-4 py-2 bg-white/20 backdrop-blur rounded-xl border border-white/20">
-                      <p className="text-[10px] uppercase font-bold text-blue-100">
-                        ROI Alquiler
-                      </p>
-                      <p className="text-lg font-black">5.8% neto</p>
+                    <p className="text-[10px] text-blue-200/80">Basado en {initialMarketData.totalPropertiesInNeighborhood} propiedades similares en {property.neighborhood}.</p>
+                  </div>
+                  <div className="w-full md:w-64 h-48 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20 relative overflow-hidden">
+                    <div className="absolute inset-4 flex items-end gap-1">
+                      {[40, 60, 45, 75, 55, 90, 85].map((h, i) => (
+                        <div key={i} className="flex-1 bg-white/40 rounded-t-sm" style={{ height: `${h}%` }}></div>
+                      ))}
                     </div>
+                    <span className="relative font-bold text-xs uppercase tracking-widest bg-white text-blue-600 px-3 py-1 rounded-full shadow-lg">
+                      {initialMarketData.status === "Very Competitive" || initialMarketData.status === "Competitive" ? "Competitivo" : initialMarketData.status === "High" || initialMarketData.status === "Above Average" ? "Premium" : "Mercado"}
+                    </span>
                   </div>
-                </div>
-                <div className="w-full md:w-64 h-48 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20 relative overflow-hidden">
-                  <div className="absolute inset-4 flex items-end gap-1">
-                    {[40, 60, 45, 75, 55, 90, 85].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 bg-white/40 rounded-t-sm"
-                        style={{ height: `${h}%` }}
-                      ></div>
-                    ))}
-                  </div>
-                  <span className="relative font-bold text-xs uppercase tracking-widest bg-white text-blue-600 px-3 py-1 rounded-full shadow-lg">
-                    Tendencia Alcista
-                  </span>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-8 bg-slate-100 dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700">
+                <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Market Intelligence</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">No hay suficientes propiedades similares en {property.neighborhood} para mostrar análisis de mercado. Los datos se actualizan con cada nueva publicación.</p>
+              </div>
+            )}
+
+            {/* Puntos de interés — Diferencial destacado */}
+            <NearbyPlacesCard
+              places={initialNearbyPlaces}
+              hasCoordinates={Boolean(property.geolocation)}
+            />
 
             {/* Map & Neighborhood */}
             <div className="space-y-6">
@@ -433,43 +529,8 @@ export default function PropertyClient({
                 <NeighborhoodMap
                   location={`${property.address}, ${property.neighborhood}`}
                   coordinates={property.geolocation}
+                  initialPois={initialNearbyPlaces.length > 0 ? initialNearbyPlaces : undefined}
                 />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  {
-                    icon: "school",
-                    label: "Colegios",
-                    value: "4 a menos de 1km",
-                  },
-                  {
-                    icon: "shopping_bag",
-                    label: "Comercios",
-                    value: "Shopping a 5 min",
-                  },
-                  {
-                    icon: "park",
-                    label: "Áreas Verdes",
-                    value: "Parque Rodó a 200m",
-                  },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800"
-                  >
-                    <span className="material-icons text-primary/60">
-                      {item.icon}
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tighter">
-                        {item.label}
-                      </p>
-                      <p className="text-xs text-slate-500 font-medium">
-                        {item.value}
-                      </p>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
 
@@ -828,13 +889,63 @@ export default function PropertyClient({
             </button>
             <button
               onClick={() => setShowContactForm(true)}
-              className="h-12 px-5 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+              className="h-12 px-5 rounded-xl bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 font-bold shadow-lg active:scale-95 transition-transform"
             >
               Contactar
+            </button>
+            <button
+              onClick={openChat}
+              disabled={chatLoading}
+              className="h-12 px-5 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform disabled:opacity-50"
+            >
+              {chatLoading ? "..." : "Chatear"}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Auth modal para chat */}
+      <AuthModal isOpen={showAuthForChat} onClose={() => setShowAuthForChat(false)} />
+
+      {/* Chat modal */}
+      <Dialog open={showChatModal} onOpenChange={(open) => !open && setShowChatModal(false)}>
+        <DialogContent className="max-w-lg max-h-[85vh] flex flex-col p-0 gap-0">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+            <h3 className="font-bold text-slate-900 dark:text-white">Chat con el agente</h3>
+            <button onClick={() => setShowChatModal(false)} className="text-slate-400 hover:text-slate-600">
+              <span className="material-icons">close</span>
+            </button>
+          </div>
+          {chatConvId && user && (
+            <ConversationThread
+              conversationId={chatConvId}
+              currentUserId={user.uid}
+              otherUserName={agentInfo?.displayName || property.agentName || "Agente"}
+              propertyTitle={property.title || property.neighborhood}
+              isLead
+              onFirstMessageSent={async (firstMessageText) => {
+                if (!db || firstMessageText.length < 10) return;
+                try {
+                  await addDoc(collection(db, "leads"), {
+                    source: "chat",
+                    conversationId: chatConvId,
+                    propertyId: property.id,
+                    propertyTitle: property.title || property.neighborhood,
+                    agentId: property.userId,
+                    leadName: user.displayName || "Usuario",
+                    leadEmail: user.email || "",
+                    leadMessage: firstMessageText,
+                    status: "new",
+                    createdAt: serverTimestamp(),
+                  });
+                } catch (e) {
+                  console.error("Error creating lead from chat:", e);
+                }
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Mobile Contact Form Sheet */}
       {showContactForm && (

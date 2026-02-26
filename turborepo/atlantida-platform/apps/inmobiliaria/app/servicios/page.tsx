@@ -105,7 +105,7 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -12, scale: 1.02 }}
-            className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col h-full ring-1 ring-transparent hover:ring-primary/10"
+            className="group relative bg-white dark:bg-slate-900 rounded-2xl p-7 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col h-full ring-1 ring-transparent hover:ring-primary/10"
         >
             {/* Animated Background Gradient */}
             <div
@@ -121,14 +121,14 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
 
             <div className="relative z-10 mb-8">
                 <div
-                    className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 ease-out"
+                    className="w-20 h-20 rounded-xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 ease-out"
                     style={{ backgroundColor: service.color, boxShadow: `0 15px 35px -5px ${service.color}55` }}
                 >
                     <service.icon className="w-9 h-9 text-white/90" />
                 </div>
             </div>
 
-            <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:to-slate-600 dark:group-hover:from-white dark:group-hover:to-slate-400 transition-all relative z-10 w-fit">
+            <h3 className="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:to-slate-600 dark:group-hover:from-white dark:group-hover:to-slate-400 transition-all relative z-10 w-fit">
                 {service.title}
             </h3>
 
@@ -139,7 +139,7 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
             {/* Feature Tags */}
             <div className="flex flex-wrap gap-2 mb-10 relative z-10">
                 {service.features?.map((f: string, i: number) => (
-                    <span key={i} className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-primary group-hover:shadow-sm transition-all duration-300">
+                    <span key={i} className="text-[10px] font-semibold px-3 py-1.5 rounded-md bg-slate-50 dark:bg-slate-800 text-slate-400 border border-slate-100 dark:border-slate-700 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-primary group-hover:shadow-sm transition-all duration-300">
                         {f}
                     </span>
                 ))}
@@ -148,10 +148,10 @@ function ServiceCard({ service, onClick }: { service: any, onClick: () => void }
             <div className="pt-6 border-t border-slate-50 dark:border-slate-800 transition-colors group-hover:border-primary/10 relative z-10">
                 <button
                     onClick={onClick}
-                    className="w-full flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-primary transition-all group-active:scale-[0.98]"
+                    className="w-full flex items-center justify-between gap-3 text-sm font-semibold text-slate-500 group-hover:text-primary transition-all group-active:scale-[0.98]"
                 >
                     <span>Comenzar solicitud</span>
-                    <div className="w-10 h-10 rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:shadow-lg group-hover:shadow-primary/30">
+                    <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:shadow-lg group-hover:shadow-primary/30">
                         <ChevronRight className="w-5 h-5" />
                     </div>
                 </button>
@@ -222,7 +222,7 @@ function ContactModal({
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "100%", opacity: 0 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-t-[2.5rem] rounded-b-none sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-auto max-h-[85dvh]"
+                        className="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-t-2xl rounded-b-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-auto max-h-[85dvh]"
                     >
                         {/* Mobile Handle */}
                         <div className="sm:hidden absolute top-0 left-0 right-0 h-6 flex items-center justify-center z-20 pointer-events-none">
@@ -244,8 +244,8 @@ function ContactModal({
                         ) : (
                             <>
                                 <div className="shrink-0 p-6 pt-16 sm:pt-6 md:p-8 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
-                                    <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">Solicitud de Servicio</h3>
-                                    <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-30">
+                                    <h3 className="text-lg md:text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Solicitud de Servicio</h3>
+                                    <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors z-30">
                                         <X className="w-6 h-6 text-slate-400" />
                                     </button>
                                 </div>
@@ -253,37 +253,37 @@ function ContactModal({
                                     <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 pb-12 sm:pb-8">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Nombre y Apellido</label>
+                                                <label className="text-[11px] font-semibold text-slate-400 ml-1">Nombre y Apellido</label>
                                                 <div className="relative">
                                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                    <input required name="name" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Juan Pérez" />
+                                                    <input required name="name" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Juan Pérez" />
                                                 </div>
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Teléfono</label>
+                                                <label className="text-[11px] font-semibold text-slate-400 ml-1">Teléfono</label>
                                                 <div className="relative">
                                                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                    <input required name="phone" type="tel" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: 099 123 456" />
+                                                    <input required name="phone" type="tel" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: 099 123 456" />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Email de Contacto</label>
+                                            <label className="text-[11px] font-semibold text-slate-400 ml-1">Email de Contacto</label>
                                             <div className="relative">
                                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <input required name="email" type="email" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="juan@ejemplo.com" />
+                                                <input required name="email" type="email" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="juan@ejemplo.com" />
                                             </div>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Tipo de Servicio</label>
+                                            <label className="text-[11px] font-semibold text-slate-400 ml-1">Tipo de Servicio</label>
                                             <div className="relative">
                                                 <select
                                                     required
                                                     name="service_type"
                                                     defaultValue={selectedService}
-                                                    className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium appearance-none"
+                                                    className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium appearance-none"
                                                 >
                                                     <option value="">Seleccione un servicio</option>
                                                     {[...OWNER_SERVICES, ...INVESTOR_SERVICES].map(s => (
@@ -295,23 +295,23 @@ function ContactModal({
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Zona de la propiedad</label>
+                                            <label className="text-[11px] font-semibold text-slate-400 ml-1">Zona de la propiedad</label>
                                             <div className="relative">
                                                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <input required name="zone" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Pocitos, Montevideo" />
+                                                <input required name="zone" type="text" className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium" placeholder="Ej: Pocitos, Montevideo" />
                                             </div>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Mensaje / Detalle</label>
-                                            <textarea name="message" rows={4} className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium resize-none" placeholder="Cuéntanos un poco más sobre tu necesidad..."></textarea>
+                                            <label className="text-[11px] font-semibold text-slate-400 ml-1">Mensaje / Detalle</label>
+                                            <textarea name="message" rows={4} className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all text-sm font-medium resize-none" placeholder="Cuéntanos un poco más sobre tu necesidad..."></textarea>
                                         </div>
 
                                         <div className="pt-2 sm:pt-4">
                                             <button
                                                 disabled={isSubmitting}
                                                 type="submit"
-                                                className="w-full py-5 bg-primary text-white rounded-[1.5rem] font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
+                                                className="w-full py-5 bg-primary text-white rounded-lg font-semibold shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
                                             >
                                                 {isSubmitting ? (
                                                     <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -322,7 +322,7 @@ function ContactModal({
                                                     </>
                                                 )}
                                             </button>
-                                            <p className="mt-4 text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">Respuesta garantizada en menos de 24hs</p>
+                                            <p className="mt-4 text-[11px] text-center text-slate-400 font-medium">Respuesta garantizada en menos de 24hs</p>
                                         </div>
                                     </form>
                                 </div>
@@ -381,7 +381,7 @@ export default function ServicesPage() {
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-8"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold mb-8"
                         >
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                             Soluciones Integrales MiBarrio.uy
@@ -391,7 +391,7 @@ export default function ServicesPage() {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-5xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[0.95]"
+                            className="text-5xl md:text-8xl font-semibold tracking-tight text-white mb-8 leading-[0.95]"
                         >
                             Impulsamos tu <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-emerald-300">Patrimonio Inmobiliario</span>
@@ -414,7 +414,7 @@ export default function ServicesPage() {
                         >
                             <button
                                 onClick={() => scrollTo(ownersRef as React.RefObject<HTMLDivElement>)}
-                                className="group relative px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(59,130,246,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
+                                className="group relative px-10 py-5 bg-primary text-white rounded-xl font-semibold text-lg shadow-[0_20px_40px_rgba(59,130,246,0.3)] hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
                             >
                                 <span className="relative z-10">🏠 Soy Propietario</span>
                                 <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
@@ -422,7 +422,7 @@ export default function ServicesPage() {
                             </button>
                             <button
                                 onClick={() => scrollTo(investorsRef as React.RefObject<HTMLDivElement>)}
-                                className="group relative px-12 py-6 bg-emerald-500 text-white rounded-[2rem] font-black text-lg shadow-[0_20px_40px_rgba(16,185,129,0.3)] hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
+                                className="group relative px-10 py-5 bg-emerald-500 text-white rounded-xl font-semibold text-lg shadow-[0_20px_40px_rgba(16,185,129,0.3)] hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-4 overflow-hidden border-2 border-white/20"
                             >
                                 <span className="relative z-10">📈 Soy Inversor</span>
                                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors relative z-10">
@@ -452,8 +452,8 @@ export default function ServicesPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                         <div className="max-w-2xl">
-                            <span className="text-primary font-black uppercase tracking-[0.2em] text-sm mb-4 block">Gestión Especializada</span>
-                            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">Soluciones para <br /><span className="text-slate-400">Propietarios</span></h2>
+                            <span className="text-primary font-semibold text-sm mb-4 block">Gestión Especializada</span>
+                            <h2 className="text-4xl md:text-6xl font-semibold text-slate-900 dark:text-white leading-tight">Soluciones para <br /><span className="text-slate-400">Propietarios</span></h2>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl md:max-w-xs font-medium">Desde la preparación hasta la firma. Nos ocupamos de cada detalle técnico y legal.</p>
                     </div>
@@ -475,8 +475,8 @@ export default function ServicesPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
                         <div className="max-w-2xl">
-                            <span className="text-emerald-500 font-black uppercase tracking-[0.2em] text-sm mb-4 block">Inteligencia de Mercado</span>
-                            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">Estrategia para <br /><span className="text-slate-400">Inversores</span></h2>
+                            <span className="text-emerald-500 font-semibold text-sm mb-4 block">Inteligencia de Mercado</span>
+                            <h2 className="text-4xl md:text-6xl font-semibold text-slate-900 dark:text-white leading-tight">Estrategia para <br /><span className="text-slate-400">Inversores</span></h2>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl md:max-w-xs font-medium">Invertir requiere datos, visión y acompañamiento profesional constante.</p>
                     </div>
@@ -495,27 +495,27 @@ export default function ServicesPage() {
             <section className="py-24 px-4 bg-slate-900 text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] -z-1" />
                 <div className="max-w-4xl mx-auto text-center relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black mb-6">Un solo equipo. Múltiples soluciones.</h2>
+                    <h2 className="text-3xl md:text-4xl font-semibold mb-6">Un solo equipo. Múltiples soluciones.</h2>
                     <p className="text-slate-400 text-lg md:text-xl leading-relaxed">
                         Centralizamos servicios técnicos, legales y estratégicos para que no tengas que coordinar proveedores por separado.
                         Trabajamos con profesionales de confianza y procesos claros.
                     </p>
                     <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
-                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-blue-600">100%</span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-blue-400 transition-colors">Respaldo Integral</span>
+                        <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-br from-blue-400 to-blue-600">100%</span>
+                            <span className="text-[10px] font-semibold text-slate-500 group-hover:text-blue-400 transition-colors">Respaldo Integral</span>
                         </div>
-                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
-                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-emerald-400 to-emerald-600">+15</span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-emerald-400 transition-colors">Aliados Técnicos</span>
+                        <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-br from-emerald-400 to-emerald-600">+15</span>
+                            <span className="text-[10px] font-semibold text-slate-500 group-hover:text-emerald-400 transition-colors">Aliados Técnicos</span>
                         </div>
-                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
-                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-orange-400 to-red-500">8/10</span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-orange-400 transition-colors">Conversión Leads</span>
+                        <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-br from-orange-400 to-red-500">8/10</span>
+                            <span className="text-[10px] font-semibold text-slate-500 group-hover:text-orange-400 transition-colors">Conversión Leads</span>
                         </div>
-                        <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
-                            <span className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-br from-purple-400 to-pink-600">24hs</span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500 group-hover:text-purple-400 transition-colors">Respuesta Media</span>
+                        <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col items-center group hover:bg-white/10 transition-all">
+                            <span className="text-4xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-br from-purple-400 to-pink-600">24hs</span>
+                            <span className="text-[10px] font-semibold text-slate-500 group-hover:text-purple-400 transition-colors">Respuesta Media</span>
                         </div>
                     </div>
                 </div>
@@ -528,21 +528,21 @@ export default function ServicesPage() {
                     <div className="flex flex-col sm:flex-row flex-wrap gap-6 justify-center">
                         <button
                             onClick={() => openModal("Gestionar mi propiedad")}
-                            className="group px-8 py-5 bg-white dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-slate-900 rounded-2xl font-black text-slate-900 dark:text-white transition-all duration-300 border-2 border-slate-900 dark:border-white flex items-center justify-center gap-3 active:scale-95"
+                            className="group px-8 py-5 bg-white dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-slate-900 rounded-lg font-semibold text-slate-900 dark:text-white transition-all duration-300 border-2 border-slate-900 dark:border-white flex items-center justify-center gap-3 active:scale-95"
                         >
                             Gestionar mi propiedad
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <button
                             onClick={() => openModal("Analizar una inversión")}
-                            className="group px-8 py-5 bg-emerald-50 dark:bg-emerald-950/20 hover:bg-emerald-500 hover:text-white rounded-2xl font-black text-emerald-600 dark:text-emerald-400 transition-all duration-300 border-2 border-emerald-500/20 flex items-center justify-center gap-3 active:scale-95"
+                            className="group px-8 py-5 bg-emerald-50 dark:bg-emerald-950/20 hover:bg-emerald-500 hover:text-white rounded-lg font-semibold text-emerald-600 dark:text-emerald-400 transition-all duration-300 border-2 border-emerald-500/20 flex items-center justify-center gap-3 active:scale-95"
                         >
                             Analizar una inversión
                             <TrendingUp className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                         </button>
                         <button
                             onClick={() => openModal("Hablar con un asesor")}
-                            className="px-8 py-5 bg-primary text-white hover:bg-blue-700 rounded-2xl font-black shadow-2xl shadow-primary/30 transition-all flex items-center justify-center gap-3 active:scale-95"
+                            className="px-8 py-5 bg-primary text-white hover:bg-blue-700 rounded-lg font-semibold shadow-2xl shadow-primary/30 transition-all flex items-center justify-center gap-3 active:scale-95"
                         >
                             <MessageSquare className="w-5 h-5" />
                             Hablar con un asesor

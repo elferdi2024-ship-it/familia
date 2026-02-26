@@ -1,6 +1,6 @@
 # Atlantida Platform - Monorepo
 
-Monorepo Turborepo para las plataformas inmobiliarias de MiBarrio.uy.
+Monorepo Turborepo para las plataformas inmobiliarias de **Barrio.uy** y **MiBarrio.uy**.
 
 ## Estructura
 
@@ -10,10 +10,10 @@ atlantida-platform/
 │   ├── portal/              # Marketplace multi-agente (Barrio.uy)
 │   └── inmobiliaria/        # Web exclusiva MiBarrio.uy
 ├── packages/
-│   ├── ui/                  # Componentes UI compartidos
-│   ├── lib/                 # Librerías compartidas (Firebase, Algolia, etc.)
-│   ├── types/               # TypeScript types compartidos
-│   └── config/              # Configuraciones compartidas
+│   ├── ui/                  # Componentes UI compartidos (shadcn/ui + custom)
+│   ├── lib/                 # Librerías compartidas (Firebase, Algolia, Mercado Pago, SEO)
+│   ├── types/               # TypeScript types compartidos (Poi, Property, Agent)
+│   └── config/              # Configuraciones compartidas (brand, tailwind)
 ├── turbo.json               # Configuración Turborepo
 ├── package.json             # Package root con workspaces
 └── tsconfig.json            # TypeScript config base
@@ -49,145 +49,87 @@ Las apps corren en:
 - **Portal**: http://localhost:3000
 - **Inmobiliaria**: http://localhost:3001
 
-### Build
-
-```bash
-# Build de todas las apps
-npm run build
-
-# Build específico
-npm run build:portal
-npm run build:inmobiliaria
-```
-
 ## Apps
 
 ### Portal (Barrio.uy)
-Marketplace inmobiliario donde múltiples agentes pueden:
-- Registrarse como agentes
-- Publicar propiedades
-- Gestionar leads
-- Ver analytics de sus propiedades
-- Suscribirse a planes premium
+Marketplace inmobiliario robusto con:
+- **Agentes**: Registro, gestión de perfil, ranking de desempeño y feed de noticias.
+- **Propiedades**: Publicación paso a paso, gestión de favoritos y comparación.
+- **Leads**: Gestión de contactos, integración con WhatsApp y analytics.
+- **Suscripciones**: Planes Base, Pro y Premium (UYU) integrados con Mercado Pago; tarjeta de upgrade cuando el usuario free alcanza el límite; [docs/PLANES_FUENTE_VERDAD.md](docs/PLANES_FUENTE_VERDAD.md).
+- **Herramientas**: Calculadora hipotecaria, mapa de servicios "En el barrio" (POIs).
 
 ### Inmobiliaria (MiBarrio.uy)
-Sitio web exclusivo de la inmobiliaria con:
-- Propiedades exclusivas de MiBarrio.uy
-- Branding premium personalizado
-- Tours virtuales
-- Contenido exclusivo
-- Diseño elegante y profesional
+Sitio web corporativo de alta gama:
+- **Exclusividad**: Solo muestra propiedades de la inmobiliaria matriz.
+- **Branding Premium**: Diseño diferenciado y elegante enfocado en conversión.
+- **SEO Programático**: Páginas optimizadas por barrio y tipo de operación.
+- **Servicios**: Tasaciones, gestión personalizada y tours virtuales.
 
 ## Packages Compartidos
 
 ### @repo/ui
-Componentes UI reutilizables:
-- Button, Input, Select, Checkbox
-- Card, Badge, Avatar
-- Dialog, Sheet, Tooltip
-- Table, Dropdown
-
-```tsx
-import { Button, Card } from '@repo/ui'
-```
+Sistema de diseño unificado:
+- **Core**: Buttons, Inputs, Dialogs, Sheets (basado en radix-ui y lucide).
+- **Inmobiliario**: PropertyCard, NearbyPlacesCard, LeadForm, SearchBar.
+- **Layout**: Navbars, Footers y Sidebars configurables por marca.
 
 ### @repo/lib
-Utilidades y servicios:
-- Firebase (auth, firestore, storage)
-- Algolia (búsqueda)
-- Tracking (analytics)
-- Utils (cn, formatters)
-
-```tsx
-import { db, auth } from '@repo/lib/firebase'
-import { trackEvent } from '@repo/lib/tracking'
-```
+Motor de la plataforma:
+- **Servicios**: Firebase (Auth/Firestore), Algolia (Búsqueda real-time), Mercado Pago (Pagos).
+- **Core**: SEO Metadata global, sistema de mails (Resend), tracking de eventos.
+- **Utils**: Formateadores de moneda uruguaya, cálculo de distancias y validaciones.
 
 ### @repo/types
-Interfaces TypeScript compartidas:
-- Property, Agent, Lead
-- SearchFilters, BrandConfig
-
-```tsx
-import type { Property, Agent } from '@repo/types'
-```
+Definiciones estandarizadas:
+- **Entidades**: `Property`, `Agent`, `Lead`, `Poi` (Points of Interest).
+- **Config**: `BrandConfig`, `SearchFilters`, `PoiCategory`.
 
 ## Variables de Entorno
 
-Cada app necesita su propio `.env.local`:
+Copiar `.env.example` a `.env.local` en cada app.
 
 ```env
 # Firebase
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
+NEXT_PUBLIC_FIREBASE_API_KEY=...
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
 
-# Algolia
-NEXT_PUBLIC_ALGOLIA_APP_ID=
-NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=
-ALGOLIA_ADMIN_KEY=
+# Búsqueda & Pago
+NEXT_PUBLIC_ALGOLIA_APP_ID=...
+NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=...
+MP_ACCESS_TOKEN=... (Mercado Pago Admin)
 
-# Sentry
-SENTRY_DSN=
-SENTRY_AUTH_TOKEN=
-
-# Google Maps
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
-
-# Resend (Email)
-RESEND_API_KEY=
+# Otros
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=...
+RESEND_API_KEY=...
+KV_REST_API_URL=... (Upstash Redis para Rate Limiting)
 ```
 
 ## Deploy en Vercel
 
-### Configuración
-1. Importar repositorio en Vercel
-2. Vercel detectará automáticamente Turborepo
-3. Crear 2 proyectos:
-   - **atlantida-portal**: Root Directory = `apps/portal`
-   - **atlantida-inmobiliaria**: Root Directory = `apps/inmobiliaria`
+### Proyectos Independientes
+1. **atlantida-portal**: Root Directory = `apps/portal`
+2. **atlantida-inmobiliaria**: Root Directory = `apps/inmobiliaria`
 
-### Dominios
-- Portal: `Barrio.uy.uy`
-- Inmobiliaria: `mibarrio.uy`
+*Vercel detecta automáticamente el monorepo y aplica el caching de Turborepo.*
 
 ## Scripts Útiles
 
 ```bash
-# Linting
-npm run lint
-
-# Type checking
-npm run typecheck
-
-# Limpiar todo
-npm run clean
-
-# Formatear código
-npm run format
+npm run typecheck    # Verificación de tipos global (Crítico para CI)
+npm run lint         # Análisis estático
+npm run clean        # Borrar caches y node_modules
 ```
 
-## Arquitectura de Decisiones
+## Documentación
 
-### ¿Por qué Turborepo?
-1. **Código compartido**: 60-70% del código es reutilizable
-2. **Builds paralelos**: Turborepo optimiza builds automáticamente
-3. **Cache inteligente**: Solo rebuild lo que cambió
-4. **Soporte Vercel nativo**: Deploy simplificado
-5. **Escalabilidad**: Fácil agregar más apps/marcas
-
-### ¿Por qué no Multi-tenant?
-- Las diferencias de branding son significativas (30-40%)
-- Cada app necesita deploy independiente
-- Escalabilidad de equipos separados
+Índice completo de documentación: **[docs/README.md](docs/README.md)**. Incluye deploy, PRD, planes (Base/Pro/Premium), guías de agente y playbooks de ventas.
 
 ## Próximos Pasos
 
-1. [ ] Migrar imports de `@/components/ui` a `@repo/ui`
-2. [ ] Migrar imports de `@/lib` a `@repo/lib`
-3. [ ] Personalizar layouts por app
-4. [ ] Configurar Sentry por app
-5. [ ] Setup CI/CD en Vercel
+1. [x] Centralizar tipos `Poi` y `Property` en `@repo/types`.
+2. [x] Refactorizar `SearchContent` para mapeo de datos robusto.
+3. [ ] Migración completa de componentes legacy a `@repo/ui`.
+4. [ ] Implementación de PWA (Service Workers + Offline support).
+5. [x] Planes Base/Pro/Premium documentados; Analytics & CRM básico para Premium en Mi propiedades.
+6. [ ] Dashboard avanzado de estadísticas (métricas por período, etc.).

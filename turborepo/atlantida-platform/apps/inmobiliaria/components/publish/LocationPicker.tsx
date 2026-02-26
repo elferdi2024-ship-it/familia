@@ -106,9 +106,9 @@ export function LocationPicker({ center, onLocationChange, onAddressFound }: Loc
         })
 
         // Handle Drag End
-        const listener = marker.addListener("dragend", (event: any) => {
+        const listener = marker.addListener("dragend", () => {
             // AdvancedMarkerElement updates position automatically
-            const pos = marker.position as any
+            const pos = marker.position
             if (pos) {
                 // Handle both LatLng object and LatLngLiteral safely
                 const lat = typeof pos.lat === 'function' ? pos.lat() : pos.lat

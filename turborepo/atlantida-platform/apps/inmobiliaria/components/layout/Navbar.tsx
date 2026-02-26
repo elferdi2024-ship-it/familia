@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
-import { Instagram, Phone, MessageCircle } from "lucide-react"
+import { Instagram, Phone, MessageCircle, Menu, X, UserCircle } from "lucide-react"
 import { AnimatedThemeToggle as ThemeToggle } from "@/components/animated-theme-toggle"
 import { TubelightNavbar } from "@repo/ui/tubelight-navbar"
 
@@ -42,7 +42,7 @@ export function Navbar() {
     { href: "/search", label: "Comprar", className: "font-bold" },
     { href: "/search?operation=alquiler", label: "Alquilar", className: "font-bold" },
     { href: "/servicios", label: "Servicios", className: "font-extrabold text-primary" },
-    { href: "/vender", label: "Vender", className: "font-black text-white bg-primary hover:bg-primary/90 hover:text-white px-4 py-1.5 rounded-full shadow-lg shadow-primary/20 transition-all hover:scale-105" },
+    { href: "/vender", label: "Vender", className: "font-semibold text-white bg-primary hover:bg-primary/90 hover:text-white px-4 py-1.5 rounded-lg shadow-lg shadow-primary/20 transition-all hover:scale-[1.02]" },
     { href: "/sobre-nosotros", label: "Sobre Nosotros" },
   ]
 
@@ -55,18 +55,18 @@ export function Navbar() {
       <div className={`transition-all duration-500 overflow-hidden ${isScrolled ? "h-0 opacity-0" : "h-8 md:h-10 opacity-100 bg-slate-900/40 backdrop-blur-sm border-b border-white/10"}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between text-white/80">
           <div className="flex items-center gap-6">
-            <a href="tel:+59899123456" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+            <a href="tel:+59899123456" className="flex items-center gap-2 text-[11px] font-semibold hover:text-white transition-colors group">
               <Phone className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
               <span>+598 99 123 456</span>
             </a>
           </div>
           <div className="flex items-center gap-5">
-            <a href="https://wa.me/59899123456" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+            <a href="https://wa.me/59899123456" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-semibold hover:text-white transition-colors group">
               <MessageCircle className="w-3.5 h-3.5 text-[#25D366] group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">WHATSAPP</span>
             </a>
             <div className="w-px h-3 bg-white/10"></div>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-bold tracking-widest hover:text-white transition-colors group">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[11px] font-semibold hover:text-white transition-colors group">
               <Instagram className="w-3.5 h-3.5 text-[#E4405F] group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">INSTAGRAM</span>
             </a>
@@ -85,7 +85,7 @@ export function Navbar() {
           </Link>
         </div>
 
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-0 items-center gap-1 text-sm font-bold uppercase tracking-wider">
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-0 items-center gap-1 text-sm font-semibold">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== "#" && pathname.startsWith(link.href))
             // Custom logic: If link has explicit styling (like Vender button), rely less on default link styles
@@ -119,7 +119,7 @@ export function Navbar() {
         <div className="flex items-center gap-4 z-10 relative">
           <div className="hidden md:flex items-center gap-4">
             {user ? (
-              <Link href="/publish" className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${pathname.startsWith("/publish")
+              <Link href="/publish" className={`px-5 py-2 text-sm font-semibold transition-colors rounded-lg ${pathname.startsWith("/publish")
                 ? isScrolled ? "text-primary bg-primary/5" : "text-white bg-white/10"
                 : isScrolled
                   ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
@@ -130,7 +130,7 @@ export function Navbar() {
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className={`px-5 py-2 text-sm font-bold transition-colors rounded-lg ${isScrolled
+                className={`px-5 py-2 text-sm font-semibold transition-colors rounded-lg ${isScrolled
                   ? "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-primary/5"
                   : "text-white/90 hover:text-white hover:bg-white/10"
                   }`}
@@ -144,25 +144,25 @@ export function Navbar() {
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
-                  <span className={`text-xs font-bold leading-none capitalize ${isScrolled ? "text-slate-900 dark:text-white" : "text-white underline underline-offset-4 decoration-primary/50"}`}>{user.displayName?.split(' ')[0]}</span>
+                  <span className={`text-xs font-semibold leading-none capitalize ${isScrolled ? "text-slate-900 dark:text-white" : "text-white underline underline-offset-4 decoration-primary/50"}`}>{user.displayName?.split(' ')[0]}</span>
                   <div className="flex gap-2">
-                    <Link href="/my-properties" className={`text-[10px] font-bold transition-colors uppercase tracking-wider ${isScrolled ? "text-primary hover:text-primary/80" : "text-primary hover:text-white"}`}>Panel</Link>
+                    <Link href="/my-properties" className={`text-[10px] font-semibold transition-colors ${isScrolled ? "text-primary hover:text-primary/80" : "text-primary hover:text-white"}`}>Panel</Link>
                     <span className={`text-[10px] ${isScrolled ? "text-slate-300" : "text-white/30"}`}>|</span>
-                    <button onClick={logout} className={`text-[10px] font-bold transition-colors uppercase tracking-wider ${isScrolled ? "text-slate-400 hover:text-primary" : "text-white/60 hover:text-white"}`}>Salir</button>
+                    <button onClick={logout} className={`text-[10px] font-semibold transition-colors ${isScrolled ? "text-slate-400 hover:text-primary" : "text-white/60 hover:text-white"}`}>Salir</button>
                   </div>
                 </div>
                 <Link href="/my-properties" className="w-10 h-10 rounded-full border-2 border-primary/20 overflow-hidden bg-slate-100 hover:border-primary transition-all">
                   {user.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
                   ) : (
-                    <span className="material-icons flex items-center justify-center h-full text-slate-400">person</span>
+                    <UserCircle className="w-full h-full p-1.5 text-slate-400" />
                   )}
                 </Link>
               </div>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="bg-primary text-white px-7 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 active:scale-[0.98] transition-all"
+                className="bg-primary text-white px-7 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 Ingresar
               </button>
@@ -170,7 +170,7 @@ export function Navbar() {
           </div>
 
           <button
-            className={`md:hidden w-10 h-10 flex items-center justify-center rounded-full transition-colors ${isScrolled
+            className={`md:hidden w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${isScrolled
               ? "bg-primary/5 text-primary hover:bg-primary/10"
               : "bg-white/10 text-white hover:bg-white/20"
               }`}
@@ -179,7 +179,7 @@ export function Navbar() {
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
           >
-            <span className="material-icons" aria-hidden="true">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+            {isMobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -188,10 +188,10 @@ export function Navbar() {
       {
         isMobileMenuOpen && (
           <div id="mobile-menu" role="navigation" aria-label="Menú móvil" className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-background border-b border-primary/10 shadow-2xl animate-in slide-in-from-top duration-300">
-            <div className="flex flex-col p-6 gap-6 font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+            <div className="flex flex-col p-6 gap-6 font-semibold text-slate-900 dark:text-white">
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search">Comprar</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/search?operation=alquiler">Alquilar</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary font-extrabold" href="/servicios">Servicios</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-primary font-semibold" href="/servicios">Servicios</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/vender">Vender</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary" href="/sobre-nosotros">Sobre Nosotros</Link>
 
@@ -222,12 +222,12 @@ export function Navbar() {
                       {user.photoURL ? (
                         <img src={user.photoURL} alt={user.displayName || "User"} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="material-icons flex items-center justify-center h-full text-slate-400">person</span>
+                        <UserCircle className="w-full h-full p-1.5 text-slate-400" />
                       )}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white capitalize">{user.displayName}</p>
-                      <button onClick={logout} className="text-xs font-bold text-primary">Cerrar sesión</button>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white capitalize">{user.displayName}</p>
+                      <button onClick={logout} className="text-xs font-semibold text-primary">Cerrar sesión</button>
                     </div>
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export function Navbar() {
                     setIsMobileMenuOpen(false)
                     setShowAuthModal(true)
                   }}
-                  className="bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/20"
+                  className="bg-primary text-white py-4 rounded-lg font-semibold shadow-lg shadow-primary/20 active:scale-[0.98]"
                 >
                   Ingresar a mi cuenta
                 </button>

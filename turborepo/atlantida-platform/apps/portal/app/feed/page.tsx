@@ -42,12 +42,12 @@ function FeedSkeleton() {
 
 export default function FeedPage() {
     return (
-        <div className="mx-auto flex w-full max-w-[1400px] justify-center gap-0 lg:gap-4 xl:gap-8 px-0 sm:px-4 pt-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-[1400px] justify-center gap-0 lg:gap-4 xl:gap-8 px-0 sm:px-4 pt-4 lg:px-8 lg:pt-6">
             <FeedLeftSidebar />
 
-            <main className="w-full max-w-2xl flex-1 pb-20">
+            <main className="w-full max-w-2xl xl:max-w-3xl flex-1 pb-20 md:pb-10">
                 {/* ── Header ───────────────────────────────────── */}
-                <div className="mb-0 px-4 py-3 bg-white/80 dark:bg-black/80 backdrop-blur-md sticky top-[80px] z-30 border-b border-l border-r border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div className="mb-0 px-4 py-3 bg-white/80 dark:bg-black/80 backdrop-blur-md sticky top-[80px] z-30 border-b border-l border-r border-slate-200 dark:border-slate-800 md:rounded-t-xl md:border md:border-slate-200 md:dark:border-slate-800 flex items-center justify-between">
                     <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                         Inicio
                     </h1>

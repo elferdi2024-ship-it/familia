@@ -1,5 +1,7 @@
 // ──────────────────────────────────────────────────────────────────────
 // @repo/types — Schema Definitivo Atlantida Platform
+// @copyright (c) 2024-2025 Atlantida Platform. Todos los derechos reservados.
+// Uso, copia o distribución no autorizados prohibidos.
 // ──────────────────────────────────────────────────────────────────────
 
 export type OperationType = "Venta" | "Alquiler" | "Alquiler Temporal"
@@ -41,7 +43,7 @@ export const AMENITIES_BY_CATEGORY = {
   "Comodidades": [
     { name: "Aire Acondicionado", icon: "ac_unit" },
     { name: "Calefacción", icon: "wb_sunny" },
-    { name: "Detectores de Humo", icon: "detector_smoke" },
+    { name: "Detectores de Humo", icon: "smoke_detector" },
     { name: "Lavadero", icon: "local_laundry_service" },
     { name: "Losa Radiante", icon: "solar_power" },
     { name: "Acepta Mascotas", icon: "pets" },
@@ -155,7 +157,7 @@ export interface Lead {
   phone?: string
   message?: string
   type: 'contact' | 'visit' | 'whatsapp'
-  status: 'new' | 'contacted' | 'closed'
+  status: 'new' | 'contacted' | 'negotiating' | 'closed'
   createdAt: string | Date
 }
 
@@ -188,7 +190,7 @@ export interface BrandConfig {
 
 export type FeedPostType = 'new_property' | 'price_drop' | 'market_update' | 'opinion'
 
-export type AgentPlan = 'free' | 'pro' | 'elite'
+export type AgentPlan = 'free' | 'pro' | 'elite' | 'premium'
 
 /**
  * Immutable snapshot of property data embedded in a feed post.
@@ -247,4 +249,19 @@ export interface FeedAgentProfile {
   totalPosts: number
   totalLeads: number
   joinedAt: Date | { seconds: number; nanoseconds: number }
+}
+
+/** Categorías de puntos de interés soportadas (Google Places type → interno) */
+export type PoiCategory = "school" | "restaurant" | "park" | "shopping" | "pharmacy" | "health" | "transit"
+
+export interface Poi {
+  id: string
+  label: string
+  category: PoiCategory
+  categoryLabel: string
+  lat: number
+  lng: number
+  description: string
+  /** Distancia en metros desde el punto de referencia (propiedad) */
+  distanceMeters: number
 }

@@ -6,6 +6,9 @@ import { MapPin, GraduationCap, Utensils, Trees, ShoppingBag } from "lucide-reac
 import { Button } from "@repo/ui"
 import { Badge } from "@repo/ui"
 
+import { getNearbyPlaces } from "@/actions/get-nearby-places"
+import { Poi } from "@repo/types"
+
 const containerStyle = {
     width: '100%',
     height: '100%',
@@ -18,27 +21,28 @@ const defaultCenter = {
     lng: -56.1645
 }
 
-interface Poi {
-    id: string
-    label: string
-    category: "school" | "restaurant" | "park" | "shopping"
-    lat: number
-    lng: number
-    description: string
-}
-
-import { getNearbyPlaces } from "@/actions/get-nearby-places"
-
-const CATEGORY_COLORS = {
+const CATEGORY_COLORS: Record<string, string> = {
     school: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
     restaurant: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png",
     park: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
     shopping: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+    pharmacy: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    health: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    transit: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
 }
 
 const MAP_LIBRARIES: ("marker" | "places")[] = ['marker']
 
-export function NeighborhoodMap({ location, coordinates }: { location: string, coordinates?: { lat: number, lng: number } }) {
+export function NeighborhoodMap({
+    location,
+    coordinates,
+    initialPois,
+}: {
+    location: string
+    coordinates?: { lat: number; lng: number }
+    /** Si se pasan, se usan y no se hace fetch (evita doble llamada en página de propiedad) */
+    initialPois?: Poi[]
+}) {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
@@ -53,10 +57,14 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
     const center = coordinates || defaultCenter
 
     React.useEffect(() => {
+        if (initialPois && initialPois.length > 0) {
+            setPois(initialPois)
+            return
+        }
         if (coordinates) {
             getNearbyPlaces(coordinates.lat, coordinates.lng).then(setPois)
         }
-    }, [coordinates])
+    }, [coordinates, initialPois])
 
     const filteredPois = activeCategory
         ? pois.filter(poi => poi.category === activeCategory)
@@ -119,6 +127,22 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
                     >
                         <Utensils className="h-3 w-3" /> Gastronomía
                     </Button>
+                    <Button
+                        variant={activeCategory === "park" ? "secondary" : "ghost"}
+                        size="sm"
+                        onClick={() => setActiveCategory(activeCategory === "park" ? null : "park")}
+                        className="text-xs h-8 gap-1"
+                    >
+                        <Trees className="h-3 w-3" /> Parques
+                    </Button>
+                    <Button
+                        variant={activeCategory === "shopping" ? "secondary" : "ghost"}
+                        size="sm"
+                        onClick={() => setActiveCategory(activeCategory === "shopping" ? null : "shopping")}
+                        className="text-xs h-8 gap-1"
+                    >
+                        <ShoppingBag className="h-3 w-3" /> Comercios
+                    </Button>
                 </div>
             </div>
 
@@ -138,22 +162,19 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
                         mapId: "DEMO_MAP_ID"
                     }}
                 >
-                    {/* Markers managed via pure component helper or SideEffect */}
                     <AdvancedMarker map={map} position={center} title={location} />
 
-                    {/* POI Markers */}
                     {filteredPois.map((poi) => (
                         <AdvancedMarker
                             key={poi.id}
                             map={map}
                             position={{ lat: poi.lat, lng: poi.lng }}
                             title={poi.label}
-                            icon={CATEGORY_COLORS[poi.category]}
+                            icon={CATEGORY_COLORS[poi.category] ?? "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
                             onClick={() => setSelectedPoi(poi)}
                         />
                     ))}
 
-                    {/* InfoWindow for Selected POI */}
                     {selectedPoi && (
                         <InfoWindowF
                             position={{ lat: selectedPoi.lat, lng: selectedPoi.lng }}
@@ -163,7 +184,7 @@ export function NeighborhoodMap({ location, coordinates }: { location: string, c
                                 <h4 className="font-bold text-sm mb-1">{selectedPoi.label}</h4>
                                 <p className="text-xs text-gray-600 mb-2">{selectedPoi.description}</p>
                                 <Badge variant="outline" className="text-[10px] uppercase">
-                                    {selectedPoi.category === 'restaurant' ? 'Gastronomía' : selectedPoi.category}
+                                    {selectedPoi.categoryLabel}
                                 </Badge>
                             </div>
                         </InfoWindowF>

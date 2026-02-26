@@ -12,9 +12,11 @@
     "clean": "rm -rf .next node_modules",
     "seed:generate": "tsx scripts/generate-seeds.ts",
     "seed:push": "tsx scripts/seed.ts",
-    "algolia:sync": "tsx scripts/sync-algolia.ts"
+    "algolia:sync": "tsx scripts/sync-algolia.ts",
+    "founder:init": "tsx scripts/init-founder-config.ts"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@next/third-parties": "^16.1.6",
     "@radix-ui/react-slot": "^1.2.3",
     "@react-google-maps/api": "^2.20.8",

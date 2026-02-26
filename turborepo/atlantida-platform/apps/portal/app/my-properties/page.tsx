@@ -9,15 +9,15 @@ import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@repo/ui/table"
 import { Badge } from "@repo/ui/badge"
+import { Lock } from "lucide-react"
+import { PropertyHealthCard } from "@/components/PropertyHealthCard"
+import { VirtualTourGuideCard } from "@/components/VirtualTourGuideCard"
+import { LeadKanban, type Lead as KanbanLead } from "@/components/LeadKanban"
+import { ConversationList } from "@/components/chat/ConversationList"
+import { ConversationThread } from "@/components/chat/ConversationThread"
+import { isFOMOTacticEnabled } from "@repo/lib"
+import { trackEvent } from "@repo/lib/tracking"
 import {
     Dialog,
     DialogContent,
@@ -36,10 +36,12 @@ interface Lead {
     leadEmail: string;
     leadMessage: string;
     createdAt: any;
-    status: "new" | "contacted" | "closed";
+    status: "new" | "contacted" | "negotiating" | "closed";
     contactType?: "contact" | "visit";
     visitDate?: string;
     visitTime?: string;
+    conversationId?: string;
+    source?: string;
 }
 
 const Sparkline = ({ data, color = "#2563eb" }: { data: number[], color?: string }) => {
@@ -69,14 +71,50 @@ const Sparkline = ({ data, color = "#2563eb" }: { data: number[], color?: string
     )
 }
 
+const DashboardSkeleton = () => (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-28 px-4">
+        <div className="max-w-6xl mx-auto space-y-4 animate-pulse">
+            <div className="h-16 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="h-28 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+                <div className="h-28 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+                <div className="h-28 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+            </div>
+            <div className="h-64 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+            <div className="h-80 rounded-lg bg-slate-200 dark:bg-slate-800 shimmer-block" />
+            <style>{`
+                .shimmer-block {
+                    position: relative;
+                    overflow: hidden;
+                }
+                .shimmer-block::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    transform: translateX(-100%);
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+                    animation: dashboard-shimmer 1.5s infinite;
+                }
+                .dark .shimmer-block::after {
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+                }
+                @keyframes dashboard-shimmer {
+                    100% { transform: translateX(100%); }
+                }
+            `}</style>
+        </div>
+    </div>
+)
+
 export default function MyPropertiesPage() {
     const { user, loading: authLoading } = useAuth()
     const [properties, setProperties] = useState<Property[]>([])
     const [leads, setLeads] = useState<Lead[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
+    /** Abre el hilo de chat desde el drawer del lead (conversationId + leadName). */
+    const [chatFromLead, setChatFromLead] = useState<{ conversationId: string; leadName: string } | null>(null)
     const [searchTerm, setSearchTerm] = useState("")
-    const [statusFilter, setStatusFilter] = useState("all")
     const { updateUserProfile } = useAuth()
 
     // Profile Edit States
@@ -99,8 +137,11 @@ export default function MyPropertiesPage() {
     const [isUploadingCover, setIsUploadingCover] = useState(false)
     const [userPlan, setUserPlan] = useState<'free' | 'pro' | 'premium' | 'elite'>('free')
     const [canManageCreator, setCanManageCreator] = useState(false)
+    const [showLeadsModal, setShowLeadsModal] = useState<string | null>(null)
 
     const isProOrPremium = userPlan === 'pro' || userPlan === 'premium' || userPlan === 'elite'
+    /** Perfil Agencia (logo, cover, empresa, redes) solo para Premium/Elite. Pro tiene solo Perfil Profesional (nombre, teléfono, bio, avatar para el feed). */
+    const isPremiumOrElite = userPlan === 'premium' || userPlan === 'elite'
 
     useEffect(() => {
         if (user && auth) {
@@ -155,7 +196,7 @@ export default function MyPropertiesPage() {
                     : { displayName: profileName }
             )
             if (db) {
-                if (isProOrPremium) {
+                if (isPremiumOrElite) {
                     await setDoc(doc(db, "users", user!.uid), {
                         displayName: profileName,
                         photoURL: profilePhoto,
@@ -171,6 +212,15 @@ export default function MyPropertiesPage() {
                         socialInstagram: profileSocialInstagram,
                         socialTwitter: profileSocialTwitter,
                         socialLinkedIn: profileSocialLinkedIn,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true })
+                } else if (isProOrPremium) {
+                    await setDoc(doc(db, "users", user!.uid), {
+                        displayName: profileName,
+                        photoURL: profilePhoto,
+                        phone: profilePhone,
+                        workingHours: profileHours,
+                        bio: profileBio,
                         updatedAt: new Date().toISOString()
                     }, { merge: true })
                 } else {
@@ -289,25 +339,22 @@ export default function MyPropertiesPage() {
         }
     }
 
-    const handleMarkAsContacted = async (leadId: string) => {
+    const handleLeadStatusChange = async (leadId: string, newStatus: "new" | "contacted" | "negotiating" | "closed") => {
         if (!db) return
         try {
             const leadRef = doc(db, "leads", leadId)
-            await updateDoc(leadRef, { status: "contacted" })
-            setLeads(leads.map(l => l.id === leadId ? { ...l, status: "contacted" } : l))
-            setSelectedLead(null) // Close modal if open
+            await updateDoc(leadRef, { status: newStatus })
+            setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l))
+            setSelectedLead(null)
+            toast.success("Estado actualizado")
         } catch (error) {
             console.error("Error updating lead:", error)
+            toast.error("Error al actualizar estado")
         }
     }
 
     if (authLoading || (loading && user)) {
-        return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 px-4 flex flex-col items-center">
-                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                <p className="mt-4 text-slate-500 font-medium">Cargando tu panel...</p>
-            </div>
-        )
+        return <DashboardSkeleton />
     }
 
     if (!user) {
@@ -315,7 +362,7 @@ export default function MyPropertiesPage() {
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 px-4 flex flex-col items-center">
                 <span className="material-icons text-6xl text-slate-300 mb-4">lock</span>
                 <h1 className="text-2xl font-bold">Inicia sesión para ver tus propiedades</h1>
-                <Link href="/" className="mt-6 px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg shadow-primary/20">
+                <Link href="/" className="mt-6 px-6 py-3 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors">
                     Volver al Inicio
                 </Link>
             </div>
@@ -325,26 +372,17 @@ export default function MyPropertiesPage() {
     const newLeadsCount = leads.filter(l => l.status === 'new').length
     const totalViews = properties.reduce((acc, curr) => acc + (curr.views || 0), 0)
 
-    const filteredLeads = leads.filter(lead => {
-        const matchesSearch =
-            lead.leadName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            lead.leadEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            lead.propertyTitle.toLowerCase().includes(searchTerm.toLowerCase())
-
-        const matchesStatus = statusFilter === "all" || lead.status === statusFilter
-
-        return matchesSearch && matchesStatus
-    })
+    const statusLabel = (s: string) => ({ new: "Nuevo", contacted: "Contactado", negotiating: "Negociando", closed: "Cerrado" }[s] || s)
 
     const exportToCSV = () => {
         const headers = ["Fecha", "Estado", "Nombre", "Email", "Propiedad", "Mensaje"]
         const rows = leads.map(lead => [
             lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy',
-            lead.status === 'new' ? 'Nuevo' : 'Leído',
+            statusLabel(lead.status || 'new'),
             lead.leadName,
             lead.leadEmail,
             lead.propertyTitle,
-            lead.leadMessage.replace(/\n/g, " ")
+            (lead.leadMessage || "").replace(/\n/g, " ")
         ])
 
         const csvContent = "data:text/csv;charset=utf-8,"
@@ -361,23 +399,45 @@ export default function MyPropertiesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pt-24 md:pt-32 pb-24 px-4 selection:bg-primary/20">
-            <div className="max-w-6xl mx-auto space-y-12">
+        <div className="min-h-screen bg-[#f8fafc] dark:bg-[#020617] pt-24 md:pt-30 pb-24 px-4 selection:bg-primary/20">
+            <div className="max-w-6xl mx-auto space-y-8">
+
+                {/* Tu plan actual — visible para comparar precios */}
+                <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/80 px-4 py-3 shadow-sm">
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">Tu plan actual</span>
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold rounded-md ${userPlan === 'free' ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200' :
+                            userPlan === 'pro' ? 'bg-slate-800 dark:bg-slate-700 text-white' :
+                                'bg-violet-900/90 dark:bg-violet-800/90 text-white'
+                            }`}>
+                            {userPlan === 'free' && 'Plan Base'}
+                            {userPlan === 'pro' && 'Plan Pro'}
+                            {(userPlan === 'premium' || userPlan === 'elite') && 'Plan Premium'}
+                        </span>
+                    </div>
+                    <Link
+                        href="/publish/pricing"
+                    className="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-primary inline-flex items-center gap-1 transition-all active:scale-[0.98]"
+                    >
+                        Comparar precios
+                        <span className="material-icons text-base">arrow_forward</span>
+                    </Link>
+                </div>
 
                 {/* Header & Profiler */}
-                <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-in fade-in slide-in-from-top-4 duration-700">
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-5 animate-in fade-in slide-in-from-top-4 duration-700">
                     <div className="space-y-2">
-                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] w-fit">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold w-fit">
+                            <span className="w-1.5 h-1.5 rounded-sm bg-slate-400 dark:bg-slate-500" />
                             Agent Workspace
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                            Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">Comercial</span>
+                        <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                            Dashboard <span className="text-slate-600 dark:text-slate-300">Comercial</span>
                         </h1>
-                        <p className="text-slate-500 font-medium text-lg flex items-center gap-2 flex-wrap">
+                        <p className="text-slate-500 font-medium text-base flex items-center gap-2 flex-wrap">
                             Hola, {user.displayName || 'Agente'} —{" "}
-                            <Link href="#inventario" className="text-sm font-bold text-primary hover:underline inline-flex items-center gap-1">
-                                Gestionando {properties.length} propiedades activas
+                            <Link href="#inventario" className="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:underline inline-flex items-center gap-1">
+                                {properties.length} propiedades activas
                                 <span className="material-icons text-sm">arrow_forward</span>
                             </Link>
                         </p>
@@ -388,7 +448,7 @@ export default function MyPropertiesPage() {
                             <>
                                 <Link
                                     href="/creator"
-                                    className="border-2 border-primary text-primary dark:border-primary dark:text-primary px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-primary/10 transition-all"
+                                    className="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-5 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98]"
                                 >
                                     <span className="material-icons text-sm">admin_panel_settings</span> Panel Creador
                                 </Link>
@@ -421,7 +481,7 @@ export default function MyPropertiesPage() {
                                                 toast.error('Error al asignar plan')
                                             }
                                         }}
-                                        className="bg-indigo-600 text-white px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-xl hover:-translate-y-0.5 transition-all"
+                                        className="bg-slate-800 dark:bg-slate-700 text-white px-5 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 hover:bg-slate-700 dark:hover:bg-slate-600 transition-all active:scale-[0.98]"
                                     >
                                         <span className="material-icons text-sm">workspace_premium</span> Activar Plan Pro en mi cuenta
                                     </button>
@@ -430,7 +490,7 @@ export default function MyPropertiesPage() {
                         )}
                         <Link
                             href="/publish"
-                            className="bg-slate-900 dark:bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-2 shadow-2xl shadow-primary/30 hover:-translate-y-1 active:scale-95 transition-all"
+                            className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-6 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 hover:bg-slate-800 dark:hover:bg-slate-200 transition-all active:scale-[0.98]"
                         >
                             <span className="material-icons text-sm">add_circle</span> Publicar Inmueble
                         </Link>
@@ -438,29 +498,35 @@ export default function MyPropertiesPage() {
                 </header>
 
                 {/* Inline Profile Section */}
-                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden">
+                <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
                     <div className="p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <div>
-                                <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Configuración del Perfil</h2>
+                                <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">Configuración del Perfil</h2>
                                 <p className="font-medium text-slate-500 mt-1">
                                     {isProOrPremium
                                         ? "Estos datos se mostrarán en todas tus publicaciones y los leads que recibas."
                                         : "Plan Free: solo puedes editar datos básicos de contacto. Mejora a Pro o Premium para desbloquear el perfil completo."}
                                 </p>
-                                {isProOrPremium && (
+                                {isPremiumOrElite && (
                                     <p className="text-sm text-slate-500 mt-2 flex items-center gap-2">
-                                        <span className="material-icons text-primary text-lg">link</span>
-                                        Tu perfil puede aparecer en <Link href="/inmobiliarias" className="font-bold text-primary hover:underline">Inmobiliarias</Link>. Inventario actual: <strong>{properties.length} propiedades</strong>.
+                                        <span className="material-icons text-slate-400 text-lg">link</span>
+                                        Tu perfil de agencia aparece en <Link href="/inmobiliarias" className="font-bold text-slate-800 dark:text-slate-200 hover:underline">Inmobiliarias</Link>. Inventario actual: <strong>{properties.length} propiedades</strong>.
+                                    </p>
+                                )}
+                                {userPlan === 'pro' && (
+                                    <p className="text-sm text-slate-500 mt-2 flex items-center gap-2">
+                                        <span className="material-icons text-slate-400 text-lg">campaign</span>
+                                        Destacá en el <Link href="/feed" className="font-bold text-slate-800 dark:text-slate-200 hover:underline">Feed</Link> de Barrio.uy con tu badge Pro. Sin página en Inmobiliarias.
                                     </p>
                                 )}
                             </div>
                             {!isProOrPremium && (
                                 <Link
                                     href="/publish/pricing"
-                                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 hover:-translate-y-0.5 transition-all"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-200 transition-all active:scale-[0.98]"
                                 >
-                                    <span className="material-icons text-lg">workspace_premium</span>
+                                    <span className="material-icons text-base">workspace_premium</span>
                                     Mejorar a Pro o Premium
                                 </Link>
                             )}
@@ -495,162 +561,200 @@ export default function MyPropertiesPage() {
                             </div>
                         )}
 
-                        {/* Pro/Premium: perfil completo */}
-                        {isProOrPremium && (
-                            <>
-                        {/* Cover Photo */}
-                        <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Foto de Portada (Inmobiliaria)</label>
-                            <label className="relative w-full h-48 md:h-64 rounded-3xl overflow-hidden border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 group cursor-pointer block">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(e) => handleFileUpload(e, 'cover')}
-                                    disabled={isUploadingCover}
-                                />
-                                {isUploadingCover ? (
-                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                                        <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
-                                        <span className="font-medium text-sm">Subiendo portada...</span>
-                                    </div>
-                                ) : profileCoverPhoto ? (
-                                    <>
-                                        <img src={profileCoverPhoto} alt="Cover" className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <span className="text-white font-bold text-sm bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm flex items-center gap-2">
-                                                <span className="material-icons text-sm">upload</span> Cambiar Foto
-                                            </span>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                                        <span className="material-icons text-4xl mb-2 opacity-50">wallpaper</span>
-                                        <span className="font-medium text-sm">Haz clic para subir una portada</span>
-                                    </div>
-                                )}
-                            </label>
-                        </div>
-
-                        {/* Avatar & Basic Info */}
-                        <div className="flex flex-col md:flex-row gap-8 items-start">
-                            <div className="flex flex-col items-center gap-4 shrink-0 px-4 md:px-8">
-                                <label className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl bg-slate-100 flex items-center justify-center z-10 relative -top-16 md:-top-24 mb-[-4rem] md:mb-[-6rem] cursor-pointer group">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="hidden"
-                                        onChange={(e) => handleFileUpload(e, 'avatar')}
-                                        disabled={isUploadingAvatar}
-                                    />
-                                    {isUploadingAvatar ? (
-                                        <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                                    ) : (
-                                        <>
-                                            <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
-                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <span className="material-icons text-white">photo_camera</span>
-                                            </div>
-                                        </>
-                                    )}
-                                </label>
-                                <div className="text-[10px] font-black uppercase text-slate-400 tracking-widest text-center mt-2">
-                                    Logo / Avatar
+                        {/* Pro: Perfil Profesional (nombre, teléfono, horario, bio, avatar para el Feed). Sin página en Inmobiliarias. */}
+                        {userPlan === 'pro' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl space-y-6">
+                                <div className="md:col-span-2 flex flex-col items-center gap-4">
+                                    <label className="relative w-24 h-24 rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 shadow-sm bg-slate-100 flex items-center justify-center cursor-pointer group">
+                                        <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFileUpload(e, 'avatar')} disabled={isUploadingAvatar} />
+                                        {isUploadingAvatar ? (
+                                            <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+                                        ) : (
+                                            <>
+                                                <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <span className="material-icons text-white text-2xl">photo_camera</span>
+                                                </div>
+                                            </>
+                                        )}
+                                    </label>
+                                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Tu foto (se ve en el Feed)</span>
                                 </div>
-                            </div>
-
-                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-2">
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Nombre Público</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileName}
-                                        onChange={(e) => setProfileName(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Inmobiliaria / Empresa</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ej: Atlantida Group"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileAgency}
-                                        onChange={(e) => setProfileAgency(e.target.value)}
-                                    />
+                                    <input type="text" required className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" value={profileName} onChange={(e) => setProfileName(e.target.value)} />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
-                                    <input
-                                        type="tel"
-                                        required
-                                        placeholder="Ej: 099 123 456"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
-                                        value={profilePhone}
-                                        onChange={(e) => setProfilePhone(e.target.value)}
-                                    />
+                                    <input type="tel" required placeholder="Ej: 099 123 456" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary" value={profilePhone} onChange={(e) => setProfilePhone(e.target.value)} />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Horario de Consultas</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ej: Lun-Vie 9-18hs"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileHours}
-                                        onChange={(e) => setProfileHours(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Dirección de Oficina</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Ej: Av. 18 de Julio 1234"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileOfficeAddress}
-                                        onChange={(e) => setProfileOfficeAddress(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Email de Contacto</label>
-                                    <input
-                                        type="email"
-                                        placeholder="Ej: contacto@tuinmobiliaria.com"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileContactEmail}
-                                        onChange={(e) => setProfileContactEmail(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Sitio Web</label>
-                                    <input
-                                        type="url"
-                                        placeholder="Ej: www.tuinmobiliaria.com"
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                                        value={profileWebsite}
-                                        onChange={(e) => setProfileWebsite(e.target.value)}
-                                    />
-                                </div>
-                                <div className="md:col-span-2 space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest block">Redes Sociales</label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <input type="url" placeholder="Facebook" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialFacebook} onChange={(e) => setProfileSocialFacebook(e.target.value)} />
-                                        <input type="url" placeholder="Instagram" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialInstagram} onChange={(e) => setProfileSocialInstagram(e.target.value)} />
-                                        <input type="url" placeholder="Twitter / X" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialTwitter} onChange={(e) => setProfileSocialTwitter(e.target.value)} />
-                                        <input type="url" placeholder="LinkedIn" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialLinkedIn} onChange={(e) => setProfileSocialLinkedIn(e.target.value)} />
-                                    </div>
+                                    <input type="text" placeholder="Ej: Lun-Vie 9-18hs" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" value={profileHours} onChange={(e) => setProfileHours(e.target.value)} />
                                 </div>
                                 <div className="md:col-span-2 space-y-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Descripción / Presentación</label>
-                                    <textarea
-                                        placeholder="Cuéntanos sobre ti y tu experiencia..."
-                                        className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium resize-none min-h-[100px]"
-                                        value={profileBio}
-                                        onChange={(e) => setProfileBio(e.target.value)}
-                                    />
+                                    <textarea placeholder="Cuéntanos sobre ti y tu experiencia..." className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium resize-none min-h-[100px]" value={profileBio} onChange={(e) => setProfileBio(e.target.value)} />
                                 </div>
                             </div>
-                        </div>
+                        )}
+
+                        {/* Premium/Elite: Perfil Agencia (logo, cover, empresa, redes, etc.) — aparece en Inmobiliarias */}
+                        {isPremiumOrElite && (
+                            <>
+                                {/* Cover Photo */}
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Foto de Portada (Inmobiliaria)</label>
+                                    <label className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 group cursor-pointer block">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={(e) => handleFileUpload(e, 'cover')}
+                                            disabled={isUploadingCover}
+                                        />
+                                        {isUploadingCover ? (
+                                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                                <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                                                <span className="font-medium text-sm">Subiendo portada...</span>
+                                            </div>
+                                        ) : profileCoverPhoto ? (
+                                            <>
+                                                <img src={profileCoverPhoto} alt="Cover" className="w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <span className="text-white font-bold text-sm bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm flex items-center gap-2">
+                                                        <span className="material-icons text-sm">upload</span> Cambiar Foto
+                                                    </span>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                                                <span className="material-icons text-4xl mb-2 opacity-50">wallpaper</span>
+                                                <span className="font-medium text-sm">Haz clic para subir una portada</span>
+                                            </div>
+                                        )}
+                                    </label>
+                                </div>
+
+                                {/* Avatar & Basic Info */}
+                                <div className="flex flex-col md:flex-row gap-8 items-start">
+                                    <div className="flex flex-col items-center gap-4 shrink-0 px-4 md:px-8">
+                                        <label className="relative w-32 h-32 rounded-xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-md bg-slate-100 flex items-center justify-center z-10 relative -top-16 md:-top-24 mb-[-4rem] md:mb-[-6rem] cursor-pointer group">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={(e) => handleFileUpload(e, 'avatar')}
+                                                disabled={isUploadingAvatar}
+                                            />
+                                            {isUploadingAvatar ? (
+                                                <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                                            ) : (
+                                                <>
+                                                    <img src={profilePhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} alt="Avatar" className="w-full h-full object-cover" />
+                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <span className="material-icons text-white">photo_camera</span>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </label>
+                                        <div className="text-[10px] font-black uppercase text-slate-400 tracking-widest text-center mt-2">
+                                            Logo / Avatar
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-2">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Nombre Público</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileName}
+                                                onChange={(e) => setProfileName(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Inmobiliaria / Empresa</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Ej: Atlantida Group"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileAgency}
+                                                onChange={(e) => setProfileAgency(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">WhatsApp de Contacto</label>
+                                            <input
+                                                type="tel"
+                                                required
+                                                placeholder="Ej: 099 123 456"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-bold text-primary"
+                                                value={profilePhone}
+                                                onChange={(e) => setProfilePhone(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Horario de Consultas</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Ej: Lun-Vie 9-18hs"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileHours}
+                                                onChange={(e) => setProfileHours(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Dirección de Oficina</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Ej: Av. 18 de Julio 1234"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileOfficeAddress}
+                                                onChange={(e) => setProfileOfficeAddress(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Email de Contacto</label>
+                                            <input
+                                                type="email"
+                                                placeholder="Ej: contacto@tuinmobiliaria.com"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileContactEmail}
+                                                onChange={(e) => setProfileContactEmail(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Sitio Web</label>
+                                            <input
+                                                type="url"
+                                                placeholder="Ej: www.tuinmobiliaria.com"
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+                                                value={profileWebsite}
+                                                onChange={(e) => setProfileWebsite(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="md:col-span-2 space-y-2">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest block">Redes Sociales</label>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <input type="url" placeholder="Facebook" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialFacebook} onChange={(e) => setProfileSocialFacebook(e.target.value)} />
+                                                <input type="url" placeholder="Instagram" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialInstagram} onChange={(e) => setProfileSocialInstagram(e.target.value)} />
+                                                <input type="url" placeholder="Twitter / X" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialTwitter} onChange={(e) => setProfileSocialTwitter(e.target.value)} />
+                                                <input type="url" placeholder="LinkedIn" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm" value={profileSocialLinkedIn} onChange={(e) => setProfileSocialLinkedIn(e.target.value)} />
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-2 space-y-1">
+                                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">Descripción / Presentación</label>
+                                            <textarea
+                                                placeholder="Cuéntanos sobre ti y tu experiencia..."
+                                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium resize-none min-h-[100px]"
+                                                value={profileBio}
+                                                onChange={(e) => setProfileBio(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </>
                         )}
 
@@ -658,7 +762,7 @@ export default function MyPropertiesPage() {
                             <button
                                 type="submit"
                                 disabled={isUpdatingProfile}
-                                className="px-10 py-4 bg-slate-900 dark:bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-slate-900/20 disabled:opacity-50 hover:-translate-y-1 transition-all"
+                                className="px-6 py-3 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-semibold text-sm disabled:opacity-50 hover:bg-slate-800 dark:hover:bg-slate-200 transition-all active:scale-[0.98]"
                             >
                                 {isUpdatingProfile ? "Actualizando Perfil..." : "Guardar Cambios"}
                             </button>
@@ -666,16 +770,38 @@ export default function MyPropertiesPage() {
                     </form>
                 </div>
 
+                {/* Tarjeta upgrade cuando usuario free ya tiene 1 propiedad */}
+                {userPlan === 'free' && properties.length >= 1 && (
+                    <div className="mb-8 p-5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                                <span className="material-icons text-2xl text-slate-500 dark:text-slate-400">workspace_premium</span>
+                                <div>
+                                    <h3 className="text-base font-semibold text-slate-900 dark:text-white">Has alcanzado el límite del Plan Base</h3>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">Desbloquea más propiedades y mayor visibilidad con Plan Pro o Premium.</p>
+                                </div>
+                            </div>
+                            <Link
+                                href="/publish/pricing"
+                                className="shrink-0 inline-flex items-center gap-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold py-2.5 px-5 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all active:scale-[0.98]"
+                            >
+                                Ver planes
+                                <span className="material-icons text-base">arrow_forward</span>
+                            </Link>
+                        </div>
+                    </div>
+                )}
+
                 {/* Performance Bento Strip */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="md:col-span-1 p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 flex flex-col justify-between group">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="md:col-span-1 p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between group">
                         <div className="flex justify-between items-start">
-                            <span className="material-icons text-primary/40 text-3xl">home_work</span>
-                            <Badge variant="outline" className="text-[10px] font-black border-primary/20 text-primary">LIVE</Badge>
+                            <span className="material-icons text-slate-400 dark:text-slate-500 text-2xl">home_work</span>
+                            <Badge variant="outline" className="text-[10px] font-semibold border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">LIVE</Badge>
                         </div>
                         <div className="mt-8">
-                            <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Inmuebles Activos</h4>
-                            <p className="text-4xl font-black tracking-tighter mt-1">{properties.length}</p>
+                            <h4 className="text-[11px] font-semibold text-slate-500">Inmuebles activos</h4>
+                            <p className="text-4xl font-bold tracking-tight mt-1">{properties.length}</p>
                             <div className="mt-4 flex items-center gap-1.5 overflow-hidden">
                                 {Array.from({ length: Math.min(properties.length, 5) }).map((_, i) => (
                                     <div key={i} className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
@@ -684,26 +810,26 @@ export default function MyPropertiesPage() {
                         </div>
                     </div>
 
-                    <div className="md:col-span-2 p-8 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:text-white/10 transition-colors">
-                            <span className="material-icons text-[150px]">rocket_launch</span>
+                    <div className="md:col-span-2 p-5 bg-slate-800 dark:bg-slate-800/90 rounded-lg text-white shadow-sm relative overflow-hidden group border border-slate-700 dark:border-slate-700">
+                        <div className="absolute top-0 right-0 p-6 text-white/5">
+                            <span className="material-icons text-[120px]">rocket_launch</span>
                         </div>
                         <div className="relative z-10 h-full flex flex-col justify-between">
                             <div>
-                                <h4 className="text-[10px] font-black uppercase text-white/50 tracking-widest">Interés Mensual</h4>
-                                <p className="text-5xl font-black tracking-tighter mt-2">{totalViews.toLocaleString()}</p>
-                                <p className="text-xs font-bold text-white/60 mt-2 flex items-center gap-1">
-                                    <span className="material-icons text-emerald-400 text-sm">trending_up</span>
+                                <h4 className="text-[10px] font-semibold uppercase text-white/50 tracking-widest">Interés Mensual</h4>
+                                <p className="text-4xl font-bold tracking-tight mt-2">{totalViews.toLocaleString()}</p>
+                                <p className="text-xs font-medium text-white/60 mt-2 flex items-center gap-1">
+                                    <span className="material-icons text-emerald-400/90 text-sm">trending_up</span>
                                     Crecimiento del +14% vs periodo anterior
                                 </p>
                             </div>
-                            <div className="mt-8">
-                                <Sparkline data={[120, 180, 140, 220, 190, 260, 240, 310, 280, 340]} color="#38bdf8" />
+                            <div className="mt-6">
+                                <Sparkline data={[120, 180, 140, 220, 190, 260, 240, 310, 280, 340]} color="#94a3b8" />
                             </div>
                         </div>
                     </div>
 
-                    <div className="md:col-span-1 p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div className="md:col-span-1 p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
                         <div className="flex justify-between items-start">
                             <span className="material-icons text-amber-500/40 text-3xl">mail</span>
                             <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
@@ -711,192 +837,238 @@ export default function MyPropertiesPage() {
                             </div>
                         </div>
                         <div className="mt-8">
-                            <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Nuevos Leads</h4>
-                            <p className="text-4xl font-black tracking-tighter mt-1">{leads.length}</p>
+                            <h4 className="text-[11px] font-semibold text-slate-500">Nuevos leads</h4>
+                            <p className="text-4xl font-bold tracking-tight mt-1">{leads.length}</p>
                             <p className="text-[10px] font-bold text-slate-500 mt-2">Ticket promedio: {(leads.length / (totalViews || 1) * 100).toFixed(1)}% conversión</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Pipeline & Message Center */}
-                <div className="space-y-6">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between items-center gap-6">
-                        <div className="text-center md:text-left">
-                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Pipeline de Interesados</h2>
-                            <p className="text-slate-500 font-medium">Gestiona tus contactos y solicitudes de visita desde aquí.</p>
+                {/* Tour Virtual — guía para Pro/Premium, blur + CTA para Free */}
+                <section className="space-y-4">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Tour Virtual</h2>
+                    <p className="text-slate-500 font-medium text-sm">Cómo crear un recorrido guiado por habitaciones o 360° para destacar tus propiedades.</p>
+                    <VirtualTourGuideCard userPlan={userPlan} />
+                </section>
+
+                {/* Mensajes — chat en tiempo real (Pro/Premium) */}
+                <section className="space-y-4">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Mensajes</h2>
+                    <p className="text-slate-500 font-medium text-sm">Conversaciones en tiempo real con interesados. Responde desde acá.</p>
+                    <ConversationList agentId={user?.uid ?? ""} userPlan={userPlan} />
+                </section>
+
+                {/* Analytics & CRM básico (Plan Premium) */}
+                {(userPlan === 'premium' || userPlan === 'elite') && (
+                    <div className="mb-10 p-5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <div className="flex items-center gap-2 mb-6">
+                            <span className="material-icons text-slate-500 dark:text-slate-400 text-xl">analytics</span>
+                            <h2 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Analytics & CRM</h2>
+                            <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-semibold border-0">Premium</Badge>
                         </div>
-                        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                            <div className="relative">
-                                <span className="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                                <input
-                                    type="text"
-                                    placeholder="Filtrar por nombre o inmueble..."
-                                    className="pl-10 pr-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-none rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary/20 w-full md:w-80 outline-none transition-all"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
+                        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                                <p className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest">Nuevos</p>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{leads.filter(l => (l.status || 'new') === 'new').length}</p>
                             </div>
-                            <button
-                                onClick={exportToCSV}
-                                className="px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                            >
-                                <span className="material-icons text-xs">download</span> Exportar
-                            </button>
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                                <p className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest">Contactados</p>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{leads.filter(l => l.status === 'contacted').length}</p>
+                            </div>
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                                <p className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest">Negociando</p>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{leads.filter(l => l.status === 'negotiating').length}</p>
+                            </div>
+                            <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+                                <p className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest">Cerrados</p>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{leads.filter(l => l.status === 'closed').length}</p>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden relative">
-                        {leads.length === 0 ? (
-                            <div className="py-24 flex flex-col items-center text-center px-6">
-                                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
-                                    <span className="material-icons text-slate-300 text-4xl">inbox_customize</span>
-                                </div>
-                                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Aún no hay leads</h3>
-                                <p className="text-slate-500 max-w-sm font-medium leading-relaxed">Las consultas de los interesados aparecerán aquí automáticamente en tiempo real.</p>
-                            </div>
-                        ) : (
-                            <div className="overflow-x-auto">
-                                <Table>
-                                    <TableHeader className="bg-slate-50/50 dark:bg-slate-800/50">
-                                        <TableRow className="border-none">
-                                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-widest text-slate-400">Estado</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Interesado</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Inmueble</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Tipo de Lead</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400 text-right pr-8">Acción</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <AnimatePresence mode="popLayout">
-                                            {filteredLeads.map((lead, i) => (
-                                                <TableRow
-                                                    key={lead.id}
-                                                    className="group border-b border-slate-50 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
-                                                >
-                                                    <TableCell className="pl-8 py-6">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className={`w-2 h-2 rounded-full ${lead.status === 'new' ? 'bg-red-500 animate-pulse' : 'bg-slate-300'}`}></div>
-                                                            <span className={`text-[10px] font-black uppercase tracking-widest ${lead.status === 'new' ? 'text-red-600' : 'text-slate-400'}`}>
-                                                                {lead.status === 'new' ? 'Sin Leer' : 'Gestionado'}
-                                                            </span>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
-                                                        <div>
-                                                            <p className="font-bold text-slate-900 dark:text-white">{lead.leadName}</p>
-                                                            <p className="text-xs text-slate-400 font-medium">{lead.leadEmail}</p>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
-                                                        <div className="max-w-[200px]">
-                                                            <p className="text-xs font-bold text-slate-600 dark:text-slate-400 truncate">{lead.propertyTitle}</p>
-                                                            <p className="text-[10px] font-medium text-slate-400 italic">Recibido: {lead.createdAt?.seconds ? new Date(lead.createdAt.seconds * 1000).toLocaleDateString() : 'Hoy'}</p>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
-                                                        <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-2 ${lead.contactType === 'visit' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-slate-100 text-slate-600'}`}>
-                                                            <span className="material-icons text-xs">{lead.contactType === 'visit' ? 'calendar_month' : 'chat_bubble'}</span>
-                                                            {lead.contactType === 'visit' ? 'Solicitó Visita' : 'Consulta Gral.'}
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6 text-right pr-8">
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <button
-                                                                    className="bg-primary text-white p-2.5 rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center ml-auto"
-                                                                    onClick={() => setSelectedLead(lead)}
-                                                                >
-                                                                    <span className="material-icons text-lg">forum</span>
-                                                                </button>
-                                                            </DialogTrigger>
-                                                            <DialogContent className="rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
-                                                                <div className="p-8 pb-0 flex items-center justify-between">
-                                                                    <div>
-                                                                        <h3 className="text-2xl font-black tracking-tight">{selectedLead?.leadName}</h3>
-                                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{selectedLead?.leadEmail}</p>
-                                                                    </div>
-                                                                    <div className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest ${selectedLead?.contactType === 'visit' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
-                                                                        {selectedLead?.contactType === 'visit' ? 'SOLICITA VISITA' : 'CONSULTA GENERAL'}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="p-8 space-y-8">
-                                                                    <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 italic text-slate-700 dark:text-slate-300 relative">
-                                                                        <span className="material-icons absolute -top-3 -left-1 text-primary/20 text-4xl">format_quote</span>
-                                                                        {selectedLead?.leadMessage}
-                                                                    </div>
-
-                                                                    {selectedLead?.contactType === 'visit' && (
-                                                                        <div className="grid grid-cols-2 gap-4">
-                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
-                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                                                                                    <span className="material-icons text-lg">event</span>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Fecha Sugerida</p>
-                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitDate}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
-                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                                                                                    <span className="material-icons text-lg">schedule</span>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Hora Sugerida</p>
-                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitTime}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-
-                                                                    <div className="bg-slate-900 dark:bg-slate-800 p-6 rounded-3xl text-white flex items-center justify-between">
-                                                                        <div className="flex items-center gap-4">
-                                                                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-                                                                                <span className="material-icons text-primary underline-offset-4">apartment</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <p className="text-[10px] font-black uppercase text-white/50 tracking-widest">En respuesta a:</p>
-                                                                                <p className="font-bold truncate max-w-[180px]">{selectedLead?.propertyTitle}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <Link
-                                                                            href={`/property/${selectedLead?.propertyId}`}
-                                                                            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
-                                                                        >
-                                                                            VER PROPIEDAD <span className="material-icons text-sm">arrow_outward</span>
-                                                                        </Link>
-                                                                    </div>
-
-                                                                    <div className="flex gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                const body = `Hola ${selectedLead?.leadName}, recibimos tu consulta sobre ${selectedLead?.propertyTitle}. Soy ${user.displayName} de ${profileAgency || 'Atlantida Group'}...`
-                                                                                window.location.href = `mailto:${selectedLead?.leadEmail}?subject=Re: ${selectedLead?.propertyTitle}&body=${encodeURIComponent(body)}`
-                                                                            }}
-                                                                            className="flex-1 py-4 bg-primary text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
-                                                                        >
-                                                                            <span className="material-icons text-sm">send</span> Responder Email
-                                                                        </button>
-                                                                        {selectedLead?.status === 'new' && (
-                                                                            <button
-                                                                                onClick={() => selectedLead && handleMarkAsContacted(selectedLead.id)}
-                                                                                className="px-6 border border-slate-200 dark:border-slate-800 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-colors"
-                                                                            >
-                                                                                Cerrar Ticket
-                                                                            </button>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            </DialogContent>
-                                                        </Dialog>
-                                                    </TableCell>
-                                                </TableRow>
+                        <div>
+                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-3">Leads por propiedad</p>
+                            <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                                {(() => {
+                                    const byProperty = leads.reduce<Record<string, number>>((acc, l) => {
+                                        const key = l.propertyTitle || 'Sin propiedad'
+                                        acc[key] = (acc[key] || 0) + 1
+                                        return acc
+                                    }, {})
+                                    const entries = Object.entries(byProperty).sort((a, b) => b[1] - a[1])
+                                    if (entries.length === 0) return <p className="p-4 text-sm text-slate-500">Aún no hay leads.</p>
+                                    return (
+                                        <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+                                            {entries.map(([title, count]) => (
+                                                <li key={title} className="flex justify-between items-center px-4 py-3 text-sm">
+                                                    <span className="font-medium text-slate-700 dark:text-slate-300 truncate max-w-[280px]">{title}</span>
+                                                    <span className="font-black text-slate-900 dark:text-white shrink-0 ml-2">{count}</span>
+                                                </li>
                                             ))}
-                                        </AnimatePresence>
-                                    </TableBody>
-                                </Table>
+                                        </ul>
+                                    )
+                                })()}
                             </div>
-                        )}
+                        </div>
                     </div>
+                )}
+
+                {/* Pipeline Kanban CRM */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 w-full max-w-md">
+                        <span className="material-icons text-slate-400 text-sm">search</span>
+                        <input
+                            type="text"
+                            placeholder="Filtrar por nombre o inmueble..."
+                            className="flex-1 pl-2 pr-4 py-2.5 bg-transparent border-none text-sm font-medium focus:outline-none"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <LeadKanban
+                        leads={leads.map(l => ({ ...l, status: (l.status || "new") as KanbanLead["status"] }))}
+                        onStatusChange={handleLeadStatusChange}
+                        userPlan={userPlan}
+                        searchTerm={searchTerm}
+                        onExportCSV={exportToCSV}
+                        renderLeadDetailModal={(lead, onClose) => {
+                            if (!lead) return null
+                            return (
+                                <Dialog open={!!lead} onOpenChange={(open) => !open && onClose()}>
+                                    <DialogContent className="rounded-lg border border-slate-200 dark:border-slate-700 shadow-xl p-0 overflow-hidden max-w-lg">
+                                        <div className="p-8 pb-0 flex items-center justify-between">
+                                            <div>
+                                                <h3 className="text-2xl font-black tracking-tight">{lead.leadName}</h3>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{lead.leadEmail}</p>
+                                            </div>
+                                            <div className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-widest ${lead.contactType === 'visit' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'}`}>
+                                                {lead.contactType === 'visit' ? 'SOLICITA VISITA' : 'CONSULTA GENERAL'}
+                                            </div>
+                                        </div>
+                                        <div className="p-8 space-y-8">
+                                            <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 italic text-slate-700 dark:text-slate-300 relative">
+                                                <span className="material-icons absolute -top-3 -left-1 text-primary/20 text-4xl">format_quote</span>
+                                                {lead.leadMessage}
+                                            </div>
+
+                                            {lead.contactType === 'visit' && (
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-lg bg-slate-700 dark:bg-slate-600 text-white flex items-center justify-center">
+                                                            <span className="material-icons text-lg">event</span>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Fecha Sugerida</p>
+                                                            <p className="font-bold text-slate-700 dark:text-slate-200">{lead.visitDate}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-lg bg-slate-700 dark:bg-slate-600 text-white flex items-center justify-center">
+                                                            <span className="material-icons text-lg">schedule</span>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Hora Sugerida</p>
+                                                            <p className="font-bold text-slate-700 dark:text-slate-200">{lead.visitTime}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Notas e historial — blur para Free */}
+                                            <div className={`relative rounded-xl border overflow-hidden ${isProOrPremium ? "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700" : ""}`}>
+                                                {!isProOrPremium && (
+                                                    <div className="absolute inset-0 z-10 bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center py-8">
+                                                        <Lock className="w-10 h-10 text-white/80 mb-2" />
+                                                        <p className="text-white font-bold text-sm text-center px-4">Notas e historial exclusivos de Pro y Premium</p>
+                                                        <Link href="/publish/pricing" className="mt-3 px-4 py-2 bg-white text-slate-900 rounded-lg font-semibold text-xs hover:bg-slate-100">
+                                                            Mejorá a Pro →
+                                                        </Link>
+                                                    </div>
+                                                )}
+                                                <div className="p-4">
+                                                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Notas internas</p>
+                                                    <p className="text-sm text-slate-500 dark:text-slate-400 italic">Sin notas aún. {isProOrPremium && "Agregá notas para seguir el historial."}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="bg-slate-800 dark:bg-slate-700 p-5 rounded-xl text-white flex items-center justify-between">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center">
+                                                        <span className="material-icons text-primary underline-offset-4">apartment</span>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] font-black uppercase text-white/50 tracking-widest">En respuesta a:</p>
+                                                        <p className="font-bold truncate max-w-[180px]">{lead.propertyTitle}</p>
+                                                    </div>
+                                                </div>
+                                                <Link
+                                                    href={`/property/${lead.propertyId}`}
+                                                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                                                >
+                                                    VER PROPIEDAD <span className="material-icons text-sm">arrow_outward</span>
+                                                </Link>
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-50 dark:border-slate-800">
+                                                <button
+                                                    onClick={() => {
+                                                        const body = `Hola ${lead.leadName}, recibimos tu consulta sobre ${lead.propertyTitle}. Soy ${user?.displayName || "Agente"} de ${profileAgency || "Atlantida Group"}...`
+                                                        window.location.href = `mailto:${lead.leadEmail}?subject=Re: ${lead.propertyTitle}&body=${encodeURIComponent(body)}`
+                                                    }}
+                                                    className="flex-1 min-w-[140px] py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-lg font-semibold text-sm shadow-xl shadow-slate-900/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                                                >
+                                                    <span className="material-icons text-sm">send</span> Responder Email
+                                                </button>
+                                                {(lead as Lead).conversationId && isProOrPremium && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setChatFromLead({ conversationId: (lead as Lead).conversationId!, leadName: lead.leadName })
+                                                            onClose()
+                                                        }}
+                                                        className="flex-1 min-w-[140px] py-4 bg-primary text-white rounded-lg font-semibold text-sm shadow-xl shadow-primary/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                                                    >
+                                                        <span className="material-icons text-sm">chat</span> Ir al chat
+                                                    </button>
+                                                )}
+                                                {isProOrPremium && (
+                                                    <select
+                                                        value={lead.status}
+                                                        onChange={(e) => handleLeadStatusChange(lead.id, e.target.value as Lead["status"])}
+                                                        className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-lg font-semibold text-xs bg-white dark:bg-slate-900"
+                                                    >
+                                                        <option value="new">Nuevo</option>
+                                                        <option value="contacted">Contactado</option>
+                                                        <option value="negotiating">Negociando</option>
+                                                        <option value="closed">Cerrado</option>
+                                                    </select>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
+                            )
+                        }}
+                    />
+
+                    {/* Modal: chat con el lead desde el drawer */}
+                    <Dialog open={!!chatFromLead} onOpenChange={(open) => !open && setChatFromLead(null)}>
+                        <DialogContent className="rounded-lg border border-slate-200 dark:border-slate-700 shadow-xl p-0 overflow-hidden max-w-lg max-h-[85vh] flex flex-col">
+                            {chatFromLead && user && (
+                                <>
+                                    <DialogHeader className="p-4 border-b border-slate-200 dark:border-slate-700 shrink-0">
+                                        <DialogTitle>Chat con {chatFromLead.leadName}</DialogTitle>
+                                        <DialogDescription>Conversación en tiempo real.</DialogDescription>
+                                    </DialogHeader>
+                                    <div className="flex-1 min-h-0 overflow-hidden p-4">
+                                        <ConversationThread
+                                            conversationId={chatFromLead.conversationId}
+                                            currentUserId={user.uid}
+                                            otherUserName={chatFromLead.leadName}
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </DialogContent>
+                    </Dialog>
                 </div>
 
                 {/* Properties Showcase - anchor for "Gestionando X propiedades" link */}
@@ -909,13 +1081,13 @@ export default function MyPropertiesPage() {
                     </div>
 
                     {properties.length === 0 ? (
-                        <div className="p-16 bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center text-center">
-                            <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-8">
+                        <div className="p-16 bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center text-center">
+                            <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6">
                                 <span className="material-icons text-slate-300 text-5xl">inventory_2</span>
                             </div>
                             <h3 className="text-xl font-bold mb-2">Comienza tu viaje comercial</h3>
                             <p className="text-slate-500 mb-8 max-w-sm">Publica tu primera propiedad y activa el generador de leads de Atlantida Group.</p>
-                            <Link href="/publish" className="bg-primary text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary/30">Publicar Mi Primer Inmueble</Link>
+                            <Link href="/publish" className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-6 py-3 rounded-lg font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-200 transition-all active:scale-[0.98]">Publicar Mi Primer Inmueble</Link>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -926,9 +1098,9 @@ export default function MyPropertiesPage() {
                                         layout
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-6 flex flex-col sm:flex-row gap-6 hover:shadow-2xl hover:shadow-slate-200/50 transition-all group"
+                                        className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-4 flex flex-col sm:flex-row gap-4 hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all group"
                                     >
-                                        <Link href={`/property/${property.id}`} className="w-full sm:w-48 h-48 rounded-3xl overflow-hidden relative shadow-inner shrink-0 cursor-pointer block">
+                                        <Link href={`/property/${property.id}`} className="w-full sm:w-48 h-44 rounded-lg overflow-hidden relative shrink-0 cursor-pointer block">
                                             <img src={property.images[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Home" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                             <div className="absolute bottom-4 left-4">
@@ -959,6 +1131,32 @@ export default function MyPropertiesPage() {
                                                 </div>
                                             </Link>
 
+                                            {/* Salud de la propiedad (FOMO) */}
+                                            {isFOMOTacticEnabled('health_card') && (
+                                                <div className="mt-4">
+                                                    <PropertyHealthCard property={{ id: property.id, title: property.neighborhood, neighborhood: property.neighborhood, publishedAt: property.publishedAt }} userPlan={userPlan} />
+                                                </div>
+                                            )}
+
+                                            {/* Teaser de leads para Free: "X interesados (Oculto)" */}
+                                            {isFOMOTacticEnabled('teaser') && userPlan === 'free' && (() => {
+                                                const leadsCountForProperty = leads.filter(l => l.propertyId === property.id).length
+                                                return leadsCountForProperty > 0 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            trackEvent.fomoTeaserClicked({ propertyId: property.id, leadsCount: leadsCountForProperty, userPlan })
+                                                            setShowLeadsModal(property.id)
+                                                        }}
+                                                        className="flex items-center gap-2 text-sm text-slate-500 mt-2 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+                                                    >
+                                                        <Lock className="w-4 h-4 shrink-0" />
+                                                        <span>{leadsCountForProperty} interesado{leadsCountForProperty !== 1 ? 's' : ''} (Oculto)</span>
+                                                        <span className="text-orange-600 dark:text-orange-400 font-semibold">Ver quiénes →</span>
+                                                    </button>
+                                                )
+                                            })()}
+
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
                                                     {formatPrice(property.price, property.currency)}
@@ -966,14 +1164,14 @@ export default function MyPropertiesPage() {
                                                 <div className="flex items-center gap-2">
                                                     <Link
                                                         href={`/publish?edit=${property.id}`}
-                                                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
+                                                        className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200/50 dark:hover:bg-slate-700 transition-all active:scale-95"
                                                         title="Editar"
                                                     >
                                                         <span className="material-icons text-lg">edit</span>
                                                     </Link>
                                                     <button
                                                         onClick={() => handleDelete(property.id)}
-                                                        className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                                                        className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 hover:bg-red-50 transition-all active:scale-95"
                                                         title="Borrar"
                                                     >
                                                         <span className="material-icons text-lg">delete_outline</span>
@@ -987,6 +1185,37 @@ export default function MyPropertiesPage() {
                         </div>
                     )}
                 </div>
+
+                {/* Modal FOMO: teaser de leads (blur + CTA) */}
+                {showLeadsModal && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowLeadsModal(null)}>
+                        <div className="bg-white dark:bg-slate-900 rounded-lg p-5 max-w-md w-full shadow-xl border border-slate-200 dark:border-slate-800" onClick={e => e.stopPropagation()}>
+                            <div className="text-center blur-sm select-none pointer-events-none">
+                                <p className="text-slate-400 dark:text-slate-500">María G. • Hace 2h</p>
+                                <p className="text-slate-400 dark:text-slate-500">Carlos R. • Hace 5h</p>
+                                <p className="text-slate-400 dark:text-slate-500">Ana M. • Ayer</p>
+                            </div>
+                            <div className="mt-4 text-center">
+                                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                                    <strong>Desbloqueá el contacto directo</strong> con tus interesados mejorando a Pro.
+                                </p>
+                                <Link
+                                    href="/publish/pricing"
+                                    className="inline-block bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2.5 rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 text-sm font-semibold transition-all active:scale-[0.98]"
+                                >
+                                    Ver planes y desbloquear
+                                </Link>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowLeadsModal(null)}
+                                    className="block mt-2 text-slate-500 dark:text-slate-400 text-sm hover:underline w-full"
+                                >
+                                    Tal vez después
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

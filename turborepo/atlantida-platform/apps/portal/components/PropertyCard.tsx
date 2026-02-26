@@ -69,13 +69,13 @@ export function PropertyCard({
                 )}
 
                 <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
-                    <Badge className="bg-primary/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">
+                    <Badge className="bg-primary/90 backdrop-blur-md border-none font-semibold text-[10px] rounded-md">
                         {type}
                     </Badge>
-                    {isViviendaPromovida && <Badge className="bg-purple-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Vivienda Promovida</Badge>}
-                    {isNew && <Badge className="bg-emerald-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Nuevo</Badge>}
-                    {isOpportunity && <Badge className="bg-orange-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Oportunidad</Badge>}
-                    {featured && <Badge className="bg-amber-500/90 backdrop-blur-md border-none font-bold uppercase tracking-wider text-[10px]">Destacado</Badge>}
+                    {isViviendaPromovida && <Badge className="bg-purple-500/90 backdrop-blur-md border-none font-semibold text-[10px] rounded-md">Vivienda Promovida</Badge>}
+                    {isNew && <Badge className="bg-emerald-500/90 backdrop-blur-md border-none font-semibold text-[10px] rounded-md">Nuevo</Badge>}
+                    {isOpportunity && <Badge className="bg-orange-500/90 backdrop-blur-md border-none font-semibold text-[10px] rounded-md">Oportunidad</Badge>}
+                    {featured && <Badge className="bg-amber-500/90 backdrop-blur-md border-none font-semibold text-[10px] rounded-md">Destacado</Badge>}
                 </div>
 
                 <div className="absolute top-3 right-3 flex gap-2 z-10">
@@ -102,17 +102,17 @@ export function PropertyCard({
 
             <div className="p-4 md:p-5">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Apartamento</span>
-                    <div className="flex items-center gap-1 text-[11px] font-bold text-slate-500">
+                    <span className="text-[10px] font-semibold text-slate-400">Apartamento</span>
+                    <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-500">
                         <MapPin className="h-3 w-3 text-primary/60" /> {location}
                     </div>
                 </div>
 
                 <Link href={`/property/${id}`}>
-                    <h3 className="line-clamp-1 text-base font-bold text-slate-800 dark:text-white group-hover:text-primary transition-colors">{title}</h3>
+                    <h3 className="line-clamp-1 text-base font-semibold text-slate-800 dark:text-white group-hover:text-primary transition-colors">{title}</h3>
                 </Link>
 
-                <div className="mt-3 flex items-center gap-4 text-[12px] font-bold text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div className="mt-3 flex items-center gap-4 text-[12px] font-semibold text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-4">
                     <div className="flex items-center gap-1.5">
                         <Bed className="h-4 w-4 text-slate-400" />
                         <span>{bedrooms} Dorm.</span>
@@ -125,12 +125,12 @@ export function PropertyCard({
 
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Precio Total</span>
-                        <span className="text-2xl font-black text-primary tracking-tight">
+                        <span className="text-[10px] text-slate-400 font-semibold">Precio Total</span>
+                        <span className="text-2xl font-bold text-primary tracking-tight">
                             {currency} {price.toLocaleString()}
                         </span>
                     </div>
-                    <Link href={`/property/${id}`} className="bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-900 dark:text-white px-4 py-2 rounded-lg font-bold text-xs transition-all flex items-center gap-2">
+                    <Link href={`/property/${id}`} className="bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-900 dark:text-white px-4 py-2 rounded-lg font-semibold text-xs transition-all flex items-center gap-2">
                         Ver <ArrowRight className="h-3 w-3" />
                     </Link>
                 </div>

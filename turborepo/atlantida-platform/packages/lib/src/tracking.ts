@@ -67,6 +67,18 @@ export const trackEvent = {
 
   // PWA
   pwaInstalled: () => dualTrack('pwa_installed'),
+
+  // FOMO / Upgrade
+  upgradeOfferShown: (data: { userId: string; source: string }) =>
+    dualTrack('fomo_upgrade_offer_shown', data),
+  upgradeOfferClicked: (data: { userId: string; discount: string; source: string }) =>
+    dualTrack('fomo_upgrade_offer_clicked', data),
+  fomoBadgeViewed: (data: { propertyId?: string; userPlan: string; location: string }) =>
+    dualTrack('fomo_badge_viewed', data),
+  fomoTeaserClicked: (data: { propertyId: string; leadsCount: number; userPlan: string }) =>
+    dualTrack('fomo_teaser_clicked', data),
+  fomoHealthCardViewed: (data: { propertyId: string; status: string; userPlan: string }) =>
+    dualTrack('fomo_health_card_viewed', data),
 }
 
 // Performance monitoring helper

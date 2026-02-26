@@ -8,14 +8,6 @@ import Link from "next/link"
 import { formatPrice, Property } from "@/lib/data"
 import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@repo/ui/table"
 import { Badge } from "@repo/ui/badge"
 import {
     Dialog,
@@ -25,6 +17,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@repo/ui/dialog"
+import { Lock } from "lucide-react"
+import { PropertyHealthCard } from "@/components/PropertyHealthCard"
+import { VirtualTourGuideCard } from "@/components/VirtualTourGuideCard"
+import { LeadKanban, type Lead as KanbanLead } from "@/components/LeadKanban"
+import { ConversationList } from "@/components/chat/ConversationList"
+import { ConversationThread } from "@/components/chat/ConversationThread"
+import { isFOMOTacticEnabled } from "@repo/lib"
+import { trackEvent } from "@repo/lib/tracking"
 
 interface Lead {
     id: string;
@@ -35,10 +35,12 @@ interface Lead {
     leadEmail: string;
     leadMessage: string;
     createdAt: Timestamp | string | number | Date;
-    status: "new" | "contacted" | "closed";
+    status: "new" | "contacted" | "negotiating" | "closed";
     contactType?: "contact" | "visit";
     visitDate?: string;
     visitTime?: string;
+    conversationId?: string;
+    source?: string;
 }
 
 function leadCreatedAtSeconds(c: Lead["createdAt"]): number | undefined {
@@ -82,8 +84,8 @@ export default function MyPropertiesPage() {
     const [leads, setLeads] = useState<Lead[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
+    const [chatFromLead, setChatFromLead] = useState<{ conversationId: string; leadName: string } | null>(null)
     const [searchTerm, setSearchTerm] = useState("")
-    const [statusFilter, setStatusFilter] = useState("all")
     const { updateUserProfile } = useAuth()
 
     // Profile Edit States
@@ -94,6 +96,9 @@ export default function MyPropertiesPage() {
     const [profileHours, setProfileHours] = useState("")
     const [profilePhoto, setProfilePhoto] = useState(user?.photoURL || "")
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
+    const [userPlan, setUserPlan] = useState<'free' | 'pro' | 'premium' | 'elite'>('free')
+    const [showLeadsModal, setShowLeadsModal] = useState<string | null>(null)
+    const isProOrPremium = userPlan === 'pro' || userPlan === 'premium' || userPlan === 'elite'
 
     useEffect(() => {
         if (user) {
@@ -104,6 +109,7 @@ export default function MyPropertiesPage() {
                 const docSnap = await getDoc(doc(db, "users", user.uid))
                 if (docSnap.exists()) {
                     const data = docSnap.data()
+                    setUserPlan((data.plan as 'free' | 'pro' | 'premium' | 'elite') || 'free')
                     setProfilePhone(data.phone || "")
                     setProfileAgency(data.agencyName || "")
                     setProfileHours(data.workingHours || "")
@@ -212,15 +218,17 @@ export default function MyPropertiesPage() {
         }
     }
 
-    const handleMarkAsContacted = async (leadId: string) => {
+    const handleLeadStatusChange = async (leadId: string, newStatus: "new" | "contacted" | "negotiating" | "closed") => {
         if (!db) return
         try {
             const leadRef = doc(db, "leads", leadId)
-            await updateDoc(leadRef, { status: "contacted" })
-            setLeads(leads.map(l => l.id === leadId ? { ...l, status: "contacted" } : l))
-            setSelectedLead(null) // Close modal if open
+            await updateDoc(leadRef, { status: newStatus })
+            setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l))
+            setSelectedLead(null)
+            toast.success("Estado actualizado")
         } catch (error) {
             console.error("Error updating lead:", error)
+            toast.error("Error al actualizar estado")
         }
     }
 
@@ -248,26 +256,17 @@ export default function MyPropertiesPage() {
     const newLeadsCount = leads.filter(l => l.status === 'new').length
     const totalViews = properties.reduce((acc, curr) => acc + (curr.views || 0), 0)
 
-    const filteredLeads = leads.filter(lead => {
-        const matchesSearch =
-            lead.leadName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            lead.leadEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            lead.propertyTitle.toLowerCase().includes(searchTerm.toLowerCase())
-
-        const matchesStatus = statusFilter === "all" || lead.status === statusFilter
-
-        return matchesSearch && matchesStatus
-    })
+    const statusLabel = (s: string) => ({ new: "Nuevo", contacted: "Contactado", negotiating: "Negociando", closed: "Cerrado" }[s] || s)
 
     const exportToCSV = () => {
         const headers = ["Fecha", "Estado", "Nombre", "Email", "Propiedad", "Mensaje"]
         const rows = leads.map(lead => [
             leadCreatedAtSeconds(lead.createdAt) ? new Date(leadCreatedAtSeconds(lead.createdAt)! * 1000).toLocaleDateString() : 'Hoy',
-            lead.status === 'new' ? 'Nuevo' : 'Leído',
+            statusLabel(lead.status || 'new'),
             lead.leadName,
             lead.leadEmail,
             lead.propertyTitle,
-            lead.leadMessage.replace(/\n/g, " ")
+            (lead.leadMessage || "").replace(/\n/g, " ")
         ])
 
         const csvContent = "data:text/csv;charset=utf-8,"
@@ -462,185 +461,183 @@ export default function MyPropertiesPage() {
                     </div>
                 </div>
 
-                {/* Pipeline & Message Center */}
-                <div className="space-y-6">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between items-center gap-6">
-                        <div className="text-center md:text-left">
-                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Pipeline de Interesados</h2>
-                            <p className="text-slate-500 font-medium">Gestiona tus contactos y solicitudes de visita desde aquí.</p>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                            <div className="relative">
-                                <span className="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                                <input
-                                    type="text"
-                                    placeholder="Filtrar por nombre o inmueble..."
-                                    className="pl-10 pr-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-none rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary/20 w-full md:w-80 outline-none transition-all"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            <button
-                                onClick={exportToCSV}
-                                className="px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                            >
-                                <span className="material-icons text-xs">download</span> Exportar
-                            </button>
-                        </div>
-                    </div>
+                {/* Tour Virtual — guía para Pro/Premium, blur + CTA para Free */}
+                <section className="space-y-4">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Tour Virtual</h2>
+                    <p className="text-slate-500 font-medium text-sm">Cómo crear un recorrido guiado por habitaciones o 360° para destacar tus propiedades.</p>
+                    <VirtualTourGuideCard userPlan={userPlan} />
+                </section>
 
-                    <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden relative">
-                        {leads.length === 0 ? (
-                            <div className="py-24 flex flex-col items-center text-center px-6">
-                                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
-                                    <span className="material-icons text-slate-300 text-4xl">inbox_customize</span>
-                                </div>
-                                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Aún no hay leads</h3>
-                                <p className="text-slate-500 max-w-sm font-medium leading-relaxed">Las consultas de los interesados aparecerán aquí automáticamente en tiempo real.</p>
-                            </div>
-                        ) : (
-                            <div className="overflow-x-auto">
-                                <Table>
-                                    <TableHeader className="bg-slate-50/50 dark:bg-slate-800/50">
-                                        <TableRow className="border-none">
-                                            <TableHead className="py-6 pl-8 font-black text-[10px] uppercase tracking-widest text-slate-400">Estado</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Interesado</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Inmueble</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400">Tipo de Lead</TableHead>
-                                            <TableHead className="py-6 font-black text-[10px] uppercase tracking-widest text-slate-400 text-right pr-8">Acción</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <AnimatePresence mode="popLayout">
-                                            {filteredLeads.map((lead, i) => (
-                                                <TableRow
-                                                    key={lead.id}
-                                                    className="group border-b border-slate-50 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
-                                                >
-                                                    <TableCell className="pl-8 py-6">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className={`w-2 h-2 rounded-full ${lead.status === 'new' ? 'bg-red-500 animate-pulse' : 'bg-slate-300'}`}></div>
-                                                            <span className={`text-[10px] font-black uppercase tracking-widest ${lead.status === 'new' ? 'text-red-600' : 'text-slate-400'}`}>
-                                                                {lead.status === 'new' ? 'Sin Leer' : 'Gestionado'}
-                                                            </span>
+                {/* Mensajes — chat interno (acceso libre en esta app) */}
+                <section className="space-y-4">
+                    <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Mensajes</h2>
+                    <p className="text-slate-500 font-medium text-sm">Conversaciones en tiempo real con interesados.</p>
+                    <ConversationList agentId={user?.uid ?? ""} />
+                </section>
+
+                {/* Pipeline Kanban CRM */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm w-full max-w-md">
+                        <span className="material-icons text-slate-400 text-sm">search</span>
+                        <input
+                            type="text"
+                            placeholder="Filtrar por nombre o inmueble..."
+                            className="flex-1 pl-2 pr-4 py-3 bg-transparent border-none text-sm font-medium focus:outline-none"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <LeadKanban
+                        leads={leads.map(l => ({
+                            ...l,
+                            status: (l.status || "new") as KanbanLead["status"],
+                            createdAt: typeof l.createdAt === "object" && l.createdAt && "seconds" in l.createdAt
+                                ? { seconds: (l.createdAt as { seconds: number }).seconds }
+                                : { seconds: leadCreatedAtSeconds(l.createdAt) ?? 0 }
+                        }))}
+                        onStatusChange={handleLeadStatusChange}
+                        userPlan={userPlan}
+                        searchTerm={searchTerm}
+                        onExportCSV={exportToCSV}
+                        renderLeadDetailModal={(lead, onClose) => {
+                            if (!lead) return null
+                            return (
+                                <Dialog open={!!lead} onOpenChange={(open) => !open && onClose()}>
+                                    <DialogContent className="rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden max-w-lg">
+                                        <div className="p-8 pb-0 flex items-center justify-between">
+                                            <div>
+                                                <h3 className="text-2xl font-black tracking-tight">{lead.leadName}</h3>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{lead.leadEmail}</p>
+                                            </div>
+                                            <div className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest ${lead.contactType === 'visit' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
+                                                {lead.contactType === 'visit' ? 'SOLICITA VISITA' : 'CONSULTA GENERAL'}
+                                            </div>
+                                        </div>
+                                        <div className="p-8 space-y-8">
+                                            <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 italic text-slate-700 dark:text-slate-300 relative">
+                                                <span className="material-icons absolute -top-3 -left-1 text-primary/20 text-4xl">format_quote</span>
+                                                {lead.leadMessage}
+                                            </div>
+
+                                            {lead.contactType === 'visit' && (
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                                            <span className="material-icons text-lg">event</span>
                                                         </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
                                                         <div>
-                                                            <p className="font-bold text-slate-900 dark:text-white">{lead.leadName}</p>
-                                                            <p className="text-xs text-slate-400 font-medium">{lead.leadEmail}</p>
+                                                            <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Fecha Sugerida</p>
+                                                            <p className="font-bold text-indigo-700 dark:text-indigo-400">{lead.visitDate}</p>
                                                         </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
-                                                        <div className="max-w-[200px]">
-                                                            <p className="text-xs font-bold text-slate-600 dark:text-slate-400 truncate">{lead.propertyTitle}</p>
-                                                            <p className="text-[10px] font-medium text-slate-400 italic">Recibido: {leadCreatedAtSeconds(lead.createdAt) ? new Date(leadCreatedAtSeconds(lead.createdAt)! * 1000).toLocaleDateString() : 'Hoy'}</p>
+                                                    </div>
+                                                    <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                                            <span className="material-icons text-lg">schedule</span>
                                                         </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6">
-                                                        <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-2 ${lead.contactType === 'visit' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-slate-100 text-slate-600'}`}>
-                                                            <span className="material-icons text-xs">{lead.contactType === 'visit' ? 'calendar_month' : 'chat_bubble'}</span>
-                                                            {lead.contactType === 'visit' ? 'Solicitó Visita' : 'Consulta Gral.'}
+                                                        <div>
+                                                            <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Hora Sugerida</p>
+                                                            <p className="font-bold text-indigo-700 dark:text-indigo-400">{lead.visitTime}</p>
                                                         </div>
-                                                    </TableCell>
-                                                    <TableCell className="py-6 text-right pr-8">
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <button
-                                                                    className="bg-primary text-white p-2.5 rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center ml-auto"
-                                                                    onClick={() => setSelectedLead(lead)}
-                                                                >
-                                                                    <span className="material-icons text-lg">forum</span>
-                                                                </button>
-                                                            </DialogTrigger>
-                                                            <DialogContent className="rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
-                                                                <div className="p-8 pb-0 flex items-center justify-between">
-                                                                    <div>
-                                                                        <h3 className="text-2xl font-black tracking-tight">{selectedLead?.leadName}</h3>
-                                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{selectedLead?.leadEmail}</p>
-                                                                    </div>
-                                                                    <div className={`px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest ${selectedLead?.contactType === 'visit' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
-                                                                        {selectedLead?.contactType === 'visit' ? 'SOLICITA VISITA' : 'CONSULTA GENERAL'}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="p-8 space-y-8">
-                                                                    <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 italic text-slate-700 dark:text-slate-300 relative">
-                                                                        <span className="material-icons absolute -top-3 -left-1 text-primary/20 text-4xl">format_quote</span>
-                                                                        {selectedLead?.leadMessage}
-                                                                    </div>
+                                                    </div>
+                                                </div>
+                                            )}
 
-                                                                    {selectedLead?.contactType === 'visit' && (
-                                                                        <div className="grid grid-cols-2 gap-4">
-                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
-                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                                                                                    <span className="material-icons text-lg">event</span>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Fecha Sugerida</p>
-                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitDate}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="p-4 bg-indigo-50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-100/50 flex items-center gap-3">
-                                                                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                                                                                    <span className="material-icons text-lg">schedule</span>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Hora Sugerida</p>
-                                                                                    <p className="font-bold text-indigo-700 dark:text-indigo-400">{selectedLead?.visitTime}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
+                                            {/* Notas e historial — blur para Free */}
+                                            <div className={`relative rounded-2xl border overflow-hidden ${isProOrPremium ? "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700" : ""}`}>
+                                                {!isProOrPremium && (
+                                                    <div className="absolute inset-0 z-10 bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center py-8">
+                                                        <Lock className="w-10 h-10 text-white/80 mb-2" />
+                                                        <p className="text-white font-bold text-sm text-center px-4">Notas e historial exclusivos de Pro y Premium</p>
+                                                        <Link href="/publish/pricing" className="mt-3 px-4 py-2 bg-white text-slate-900 rounded-xl font-semibold text-xs hover:bg-slate-100">
+                                                            Mejorá a Pro →
+                                                        </Link>
+                                                    </div>
+                                                )}
+                                                <div className="p-4">
+                                                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-2">Notas internas</p>
+                                                    <p className="text-sm text-slate-500 dark:text-slate-400 italic">Sin notas aún. {isProOrPremium && "Agregá notas para seguir el historial."}</p>
+                                                </div>
+                                            </div>
 
-                                                                    <div className="bg-slate-900 dark:bg-slate-800 p-6 rounded-3xl text-white flex items-center justify-between">
-                                                                        <div className="flex items-center gap-4">
-                                                                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-                                                                                <span className="material-icons text-primary underline-offset-4">apartment</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <p className="text-[10px] font-black uppercase text-white/50 tracking-widest">En respuesta a:</p>
-                                                                                <p className="font-bold truncate max-w-[180px]">{selectedLead?.propertyTitle}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <Link
-                                                                            href={`/property/${selectedLead?.propertyId}`}
-                                                                            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
-                                                                        >
-                                                                            VER PROPIEDAD <span className="material-icons text-sm">arrow_outward</span>
-                                                                        </Link>
-                                                                    </div>
+                                            <div className="bg-slate-900 dark:bg-slate-800 p-6 rounded-3xl text-white flex items-center justify-between">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                                                        <span className="material-icons text-primary underline-offset-4">apartment</span>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] font-black uppercase text-white/50 tracking-widest">En respuesta a:</p>
+                                                        <p className="font-bold truncate max-w-[180px]">{lead.propertyTitle}</p>
+                                                    </div>
+                                                </div>
+                                                <Link
+                                                    href={`/property/${lead.propertyId}`}
+                                                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                                                >
+                                                    VER PROPIEDAD <span className="material-icons text-sm">arrow_outward</span>
+                                                </Link>
+                                            </div>
 
-                                                                    <div className="flex gap-4 pt-4 border-t border-slate-50 dark:border-slate-800">
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                const body = `Hola ${selectedLead?.leadName}, recibimos tu consulta sobre ${selectedLead?.propertyTitle}. Soy ${user.displayName} de ${profileAgency || 'Atlantida Group'}...`
-                                                                                window.location.href = `mailto:${selectedLead?.leadEmail}?subject=Re: ${selectedLead?.propertyTitle}&body=${encodeURIComponent(body)}`
-                                                                            }}
-                                                                            className="flex-1 py-4 bg-primary text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
-                                                                        >
-                                                                            <span className="material-icons text-sm">send</span> Responder Email
-                                                                        </button>
-                                                                        {selectedLead?.status === 'new' && (
-                                                                            <button
-                                                                                onClick={() => selectedLead && handleMarkAsContacted(selectedLead.id)}
-                                                                                className="px-6 border border-slate-200 dark:border-slate-800 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-colors"
-                                                                            >
-                                                                                Cerrar Ticket
-                                                                            </button>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            </DialogContent>
-                                                        </Dialog>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </AnimatePresence>
-                                    </TableBody>
-                                </Table>
-                            </div>
-                        )}
-                    </div>
+                                            <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-50 dark:border-slate-800">
+                                                <button
+                                                    onClick={() => {
+                                                        const body = `Hola ${lead.leadName}, recibimos tu consulta sobre ${lead.propertyTitle}. Soy ${user?.displayName || "Agente"} de ${profileAgency || "Atlantida Group"}...`
+                                                        window.location.href = `mailto:${lead.leadEmail}?subject=Re: ${lead.propertyTitle}&body=${encodeURIComponent(body)}`
+                                                    }}
+                                                    className="flex-1 min-w-[140px] py-4 bg-primary text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-icons text-sm">send</span> Responder Email
+                                                </button>
+                                                {(lead as Lead).conversationId && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setChatFromLead({ conversationId: (lead as Lead).conversationId!, leadName: lead.leadName })
+                                                            onClose()
+                                                        }}
+                                                        className="flex-1 min-w-[140px] py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl flex items-center justify-center gap-2"
+                                                    >
+                                                        <span className="material-icons text-sm">chat</span> Ir al chat
+                                                    </button>
+                                                )}
+                                                {isProOrPremium && (
+                                                    <select
+                                                        value={lead.status}
+                                                        onChange={(e) => handleLeadStatusChange(lead.id, e.target.value as Lead["status"])}
+                                                        className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs uppercase tracking-widest bg-white dark:bg-slate-900"
+                                                    >
+                                                        <option value="new">Nuevo</option>
+                                                        <option value="contacted">Contactado</option>
+                                                        <option value="negotiating">Negociando</option>
+                                                        <option value="closed">Cerrado</option>
+                                                    </select>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
+                            )
+                        }}
+                    />
+
+                    <Dialog open={!!chatFromLead} onOpenChange={(open) => !open && setChatFromLead(null)}>
+                        <DialogContent className="rounded-lg border border-slate-200 dark:border-slate-700 shadow-xl p-0 overflow-hidden max-w-lg max-h-[85vh] flex flex-col">
+                            {chatFromLead && user && (
+                                <>
+                                    <DialogHeader className="p-4 border-b border-slate-200 dark:border-slate-700 shrink-0">
+                                        <DialogTitle>Chat con {chatFromLead.leadName}</DialogTitle>
+                                        <DialogDescription>Conversación en tiempo real.</DialogDescription>
+                                    </DialogHeader>
+                                    <div className="flex-1 min-h-0 overflow-hidden p-4">
+                                        <ConversationThread
+                                            conversationId={chatFromLead.conversationId}
+                                            currentUserId={user.uid}
+                                            otherUserName={chatFromLead.leadName}
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </DialogContent>
+                    </Dialog>
                 </div>
 
                 {/* Properties Showcase */}
@@ -703,6 +700,30 @@ export default function MyPropertiesPage() {
                                                 </div>
                                             </Link>
 
+                                            {isFOMOTacticEnabled('health_card') && (
+                                                <div className="mt-4">
+                                                    <PropertyHealthCard property={{ id: property.id, title: property.neighborhood, neighborhood: property.neighborhood, publishedAt: property.publishedAt }} userPlan={userPlan} />
+                                                </div>
+                                            )}
+
+                                            {isFOMOTacticEnabled('teaser') && userPlan === 'free' && (() => {
+                                                const leadsCountForProperty = leads.filter(l => l.propertyId === property.id).length
+                                                return leadsCountForProperty > 0 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            trackEvent.fomoTeaserClicked({ propertyId: property.id, leadsCount: leadsCountForProperty, userPlan })
+                                                            setShowLeadsModal(property.id)
+                                                        }}
+                                                        className="flex items-center gap-2 text-sm text-slate-500 mt-2 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+                                                    >
+                                                        <Lock className="w-4 h-4 shrink-0" />
+                                                        <span>{leadsCountForProperty} interesado{leadsCountForProperty !== 1 ? 's' : ''} (Oculto)</span>
+                                                        <span className="text-orange-600 dark:text-orange-400 font-semibold">Ver quiénes →</span>
+                                                    </button>
+                                                )
+                                            })()}
+
                                             <div className="mt-6 flex items-center justify-between">
                                                 <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
                                                     {formatPrice(property.price, property.currency)}
@@ -731,6 +752,36 @@ export default function MyPropertiesPage() {
                         </div>
                     )}
                 </div>
+
+                {showLeadsModal && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowLeadsModal(null)}>
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800" onClick={e => e.stopPropagation()}>
+                            <div className="text-center blur-sm select-none pointer-events-none">
+                                <p className="text-slate-400 dark:text-slate-500">María G. • Hace 2h</p>
+                                <p className="text-slate-400 dark:text-slate-500">Carlos R. • Hace 5h</p>
+                                <p className="text-slate-400 dark:text-slate-500">Ana M. • Ayer</p>
+                            </div>
+                            <div className="mt-4 text-center">
+                                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                                    <strong>Desbloqueá el contacto directo</strong> con tus interesados mejorando a Pro.
+                                </p>
+                                <Link
+                                    href="/publish/pricing"
+                                    className="inline-block bg-primary text-white px-4 py-2.5 rounded-xl hover:bg-primary/90 text-sm font-bold transition-colors"
+                                >
+                                    Ver planes y desbloquear
+                                </Link>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowLeadsModal(null)}
+                                    className="block mt-2 text-slate-500 dark:text-slate-400 text-sm hover:underline w-full"
+                                >
+                                    Tal vez después
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

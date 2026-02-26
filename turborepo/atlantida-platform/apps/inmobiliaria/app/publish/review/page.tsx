@@ -130,6 +130,7 @@ export default function PublishReviewPage() {
 
                 const updateProperty = {
                     ...data,
+                    ...(data.latitude != null && data.longitude != null ? { geolocation: { lat: data.latitude, lng: data.longitude } } : {}),
                     ...extraUpdates,
                     updatedAt: serverTimestamp(),
                 }
@@ -140,6 +141,7 @@ export default function PublishReviewPage() {
                 const title = data.description?.slice(0, 200) || `${data.type} ${data.operation} en ${data.neighborhood || data.address}`
                 const newProperty = {
                     ...data,
+                    ...(data.latitude != null && data.longitude != null ? { geolocation: { lat: data.latitude, lng: data.longitude } } : {}),
                     title: title.length >= 10 ? title : `${data.type} ${data.operation} en ${data.neighborhood || data.address}`,
                     userId: user.uid,
                     agentName: user.displayName || "Usuario de Atlantida Group",

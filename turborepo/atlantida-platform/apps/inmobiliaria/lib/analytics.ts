@@ -1,3 +1,7 @@
+/**
+ * @copyright (c) 2024-2025 Atlantida Platform. Todos los derechos reservados.
+ * Uso, copia o distribución no autorizados prohibidos.
+ */
 import { db } from "@repo/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Property } from "./data";

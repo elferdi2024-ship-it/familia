@@ -8,7 +8,7 @@
  * Firestore rules block all client writes to score fields.
  */
 
-import { onCall, HttpsError } from "firebase-functions/v2/https"
+import { onCall, HttpsError, CallableRequest } from "firebase-functions/v2/https"
 import { getFirestore, FieldValue } from "firebase-admin/firestore"
 import { initializeApp } from "firebase-admin/app"
 
@@ -27,6 +27,7 @@ const PLAN_BOOSTS: Record<string, number> = {
     free: 1.0,
     pro: 1.2,
     elite: 1.35,
+    premium: 1.35, // mismo boost que elite (plan Premium = Elite en feed)
 }
 
 const LEAD_INTENT_WEIGHTS: Record<string, number> = {
@@ -105,25 +106,25 @@ async function trackLeadIntent(postId: string, action: string, userId?: string) 
 // ── Exported Cloud Functions ──────────────────────────────────────
 
 /** WhatsApp click: +12 points — highest purchase intent signal */
-export const onWhatsAppClick = onCall(async (request) => {
+export const onWhatsAppClick = onCall(async (request: CallableRequest<any>) => {
     const { postId } = request.data
     return trackLeadIntent(postId, "whatsapp_click", request.auth?.uid)
 })
 
 /** Property detail click: +10 points */
-export const onPropertyClick = onCall(async (request) => {
+export const onPropertyClick = onCall(async (request: CallableRequest<any>) => {
     const { postId } = request.data
     return trackLeadIntent(postId, "property_click", request.auth?.uid)
 })
 
 /** Comment on post: +3 points */
-export const onComment = onCall(async (request) => {
+export const onComment = onCall(async (request: CallableRequest<any>) => {
     const { postId } = request.data
     return trackLeadIntent(postId, "comment", request.auth?.uid)
 })
 
 /** Like on post: +1 point */
-export const onLike = onCall(async (request) => {
+export const onLike = onCall(async (request: CallableRequest<any>) => {
     const { postId } = request.data
     return trackLeadIntent(postId, "like", request.auth?.uid)
 })

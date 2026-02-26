@@ -53,3 +53,23 @@ matcher: [
 </Suspense>
 ```
 También es necesario usar `suppressHydrationWarning` en la etiqueta `<html>` si se usa `next-themes`.
+
+## 7. Build Failure: Tipos Duplicados o Inconsistentes (Poi, etc.)
+**Síntoma:** Error `Module declarations cannot be nested` o errores de tipo en archivos `"use server"` que funcionaban localmente pero fallan en Vercel.
+**Causa:** Definir interfaces fundamentales (como `Poi`) en múltiples archivos de acciones locales. Esto causa que TypeScript pierda la referencia única al pasar datos del servidor al cliente.
+**Solución:** Mover todos los tipos compartidos al paquete `@repo/types`. No definirlos localmente en las apps.
+
+## 8. Algolia: Error de Mapeo de Propiedades
+**Síntoma:** Error de tipo al mapear hits de Algolia a la interfaz `Property`. Campos como `views`, `publishedAt` o `gastosComunes` dan error.
+**Causa:** Los datos que vienen de Algolia (hits) no siempre cumplen con la interfaz de TypeScript de forma estricta.
+**Solución:** 
+1. Realizar un mapeo explícito en `SearchContent.tsx`.
+2. Usar `as unknown as Property` después de asegurar que todos los campos requeridos tienen al menos un valor por defecto.
+3. Asegurar que numéricos sean transformados con `Number(hit.field) || 0`.
+
+## 9. Error de Importación en CI: "Module not found" con Alias `@/`
+**Síntoma:** El build local funciona, pero Vercel falla diciendo que no encuentra un módulo importado con `@/`.
+**Causa:** Uso de alias de app en componentes que deberían ser compartidos o rutas circulares.
+**Solución:**
+1. Si el archivo es usado por más de una app, moverlo a `packages/lib` o `packages/ui`.
+2. Verificar que los componentes compartidos no importen nada usando `@/` (deben usar rutas relativas o imports de paquetes `@repo/...`).

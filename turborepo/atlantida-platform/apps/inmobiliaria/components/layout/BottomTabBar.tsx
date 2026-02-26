@@ -6,12 +6,13 @@ import { useFavorites } from "@/contexts/FavoritesContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useState } from "react"
+import { Home, Search, Heart, PlusCircle } from "lucide-react"
 
 const tabs = [
-    { href: "/", icon: "home", label: "Inicio" },
-    { href: "/search?filters=open", icon: "search", label: "Buscar" },
-    { href: "/favorites", icon: "favorite", label: "Favoritos" },
-    { href: "/publish", icon: "add_circle", label: "Publicar" },
+    { href: "/", icon: Home, label: "Inicio" },
+    { href: "/search?filters=open", icon: Search, label: "Buscar" },
+    { href: "/favorites", icon: Heart, label: "Favoritos" },
+    { href: "/publish", icon: PlusCircle, label: "Publicar" },
 ]
 
 export function BottomTabBar() {
@@ -40,14 +41,10 @@ export function BottomTabBar() {
 
                         const content = (
                             <>
-                                <span className={`material-icons transition-all ${isActive ? "text-[26px]" : "text-[22px]"
-                                    }`}>
-                                    {tab.icon === "favorite" && isActive ? "favorite" :
-                                        tab.icon === "favorite" ? "favorite_border" : tab.icon}
-                                </span>
+                                <tab.icon className={`transition-all ${isActive ? "w-6 h-6 fill-current" : "w-5 h-5"}`} />
 
                                 {/* Badge for favorites count */}
-                                {tab.icon === "favorite" && favorites.length > 0 && (
+                                {tab.icon === Heart && favorites.length > 0 && (
                                     <span className="absolute -top-0.5 right-1 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">
                                         {favorites.length}
                                     </span>

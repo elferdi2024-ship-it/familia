@@ -46,7 +46,7 @@ const PRICING_PLANS = [
     },
     {
         id: 'elite',
-        name: 'Plan Elite',
+        name: 'Plan Premium',
         description: 'Para inmobiliarias consolidadas y equipos.',
         price: '$1290',
         period: '/mes',
@@ -57,18 +57,24 @@ const PRICING_PLANS = [
             { text: 'Perfil Agencia (Logo)', included: true },
             { text: '4x Alcance en Feed', included: true },
             { text: 'Destacados Ilimitados', included: true },
-            { text: 'Insignia Verificada Elite', included: true },
+            { text: 'Insignia Verificada Premium', included: true },
             { text: 'Hasta 5 Agentes', included: true },
         ]
     }
 ]
 
+const PLAN_ICON_BG: Record<string, string> = {
+    free: "bg-slate-50 dark:bg-slate-900/20",
+    pro: "bg-indigo-50 dark:bg-indigo-900/20",
+    elite: "bg-orange-50 dark:bg-orange-900/20",
+}
+
 export function PricingModal({ isOpen, onClose }: PricingModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="sm:max-w-[1000px] p-0 overflow-hidden bg-slate-50 dark:bg-slate-950 border-none shadow-2xl rounded-3xl">
+            <DialogContent className="sm:max-w-[1000px] p-0 overflow-hidden bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl rounded-xl">
                 <div className="p-8 md:p-12 text-center pb-8 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                    <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">Conecta con todos en Barrio</h2>
+                    <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-3">Conecta con todos en Barrio</h2>
                     <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
                         Expande tu alcance en el mercado inmobiliario utilizando nuestra red impulsada por comunidad. Obtén más leads destacando frente a los clientes correctos.
                     </p>
@@ -79,31 +85,31 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                         {PRICING_PLANS.map((plan) => (
                             <div
                                 key={plan.id}
-                                className={`relative flex flex-col bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border ${plan.popular
-                                        ? 'border-primary ring-4 ring-primary/10 shadow-2xl shadow-primary/20 scale-105 z-10'
-                                        : 'border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none'
+                                className={`relative flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border transition-all ${plan.popular
+                                        ? 'border-primary ring-4 ring-primary/10 shadow-lg shadow-primary/20 md:scale-[1.02] z-10'
+                                        : 'border-slate-200 dark:border-slate-800 shadow-md'
                                     }`}
                             >
                                 {plan.popular && (
-                                    <div className="absolute top-0 inset-x-0 bg-primary text-white text-[10px] font-black tracking-widest uppercase py-1 text-center">
+                                    <div className="absolute top-0 inset-x-0 bg-primary text-white text-[10px] font-semibold py-1 text-center">
                                         Más Popular
                                     </div>
                                 )}
 
                                 <div className={`p-8 ${plan.popular ? 'pt-10' : ''}`}>
-                                    <div className={`w-12 h-12 rounded-xl bg-${plan.color}-50 dark:bg-${plan.color}-900/20 flex items-center justify-center mb-4`}>
+                                    <div className={`w-12 h-12 rounded-lg ${PLAN_ICON_BG[plan.id]} flex items-center justify-center mb-4`}>
                                         {plan.icon}
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{plan.name}</h3>
+                                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{plan.name}</h3>
                                     <p className="text-xs text-slate-500 dark:text-slate-400 min-h-[40px]">{plan.description}</p>
 
                                     <div className="mt-6 mb-8 flex items-baseline gap-1">
-                                        <span className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">{plan.price}</span>
-                                        <span className="text-sm font-bold text-slate-400">{plan.period}</span>
+                                        <span className="text-4xl font-bold text-slate-900 dark:text-white tracking-tight">{plan.price}</span>
+                                        <span className="text-sm font-semibold text-slate-400">{plan.period}</span>
                                     </div>
 
                                     <button
-                                        className={`w-full py-3.5 rounded-xl font-bold transition-all shadow-lg active:scale-95 ${plan.popular
+                                        className={`w-full py-3.5 rounded-lg font-semibold transition-all shadow-md active:scale-[0.98] ${plan.popular
                                                 ? 'bg-primary text-white shadow-primary/30 hover:bg-emerald-600'
                                                 : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700'
                                             }`}
@@ -114,7 +120,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                                 </div>
 
                                 <div className="p-8 pt-0 mt-auto">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">¿Qué incluye?</p>
+                                    <p className="text-[11px] font-semibold text-slate-500 mb-4">Qué incluye</p>
                                     <ul className="space-y-4">
                                         {plan.features.map((feature, idx) => (
                                             <li key={idx} className="flex items-start gap-3">

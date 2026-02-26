@@ -2,6 +2,22 @@
 
 Todos los cambios notables de Barrio.uy.
 
+## [5.1.0] - 2026-02-25
+
+### Planes y pricing
+- **Documentación:** Fuente única de verdad de planes en [docs/PLANES_FUENTE_VERDAD.md](../../docs/PLANES_FUENTE_VERDAD.md) y revisión en [docs/REVISION_PLANES_BARRIO.md](../../docs/REVISION_PLANES_BARRIO.md).
+- **Copy en pricing:** Plan Base: "Estadísticas Básicas" → "Panel de publicaciones y contactos". Pro: "2x Visibilidad" → "Mayor visibilidad en Feed y búsqueda". Premium: "4x Visibilidad" → "Máxima visibilidad en Feed y búsqueda".
+- **Tarjeta de upgrade:** En `/publish` (paso 1) y en Mi propiedades se muestra la tarjeta "Has alcanzado el límite del Plan Base" cuando el usuario es free y ya tiene 1 propiedad, con enlace a `/publish/pricing`.
+- **Límites en publicar:** En `/publish` se comprueba el plan del usuario (Firestore) y el límite de propiedades al avanzar; toast con "Ver Planes" si se supera.
+
+### Analytics & CRM (Premium)
+- **Nuevo:** Sección "Analytics & CRM" en Mi propiedades solo para plan Premium/Elite: resumen por estado (Nuevos, Contactados, Cerrados) y tabla "Leads por propiedad". Export CSV ya existente como parte del CRM.
+
+### Feed y ranking
+- **Corregido:** Usuarios con plan Premium reciben el mismo boost que Elite en el feed (normalización premium → elite al guardar post y en cálculo de ranking y Cloud Functions).
+
+---
+
 ## [5.0.0] - 2026-02-17
 
 ### Performance & Search (Algolia)

@@ -44,6 +44,7 @@ Configurar en el panel del hosting (Vercel → Project → Settings → Environm
 | `CREATOR_EMAILS` | Emails de creadores, separados por coma | Sí |
 | `NEXT_PUBLIC_APP_URL` | URL de la app (ej. `https://barrio.uy`) | Sí |
 | `MP_ACCESS_TOKEN` | Mercado Pago (producción: APP_USR-...) | Si usas pricing |
+| `NEXT_PUBLIC_FOUNDER_MODE` | Banner Fundadores: `active` \| `closed` \| `disabled` | Opcional (default: `disabled`) |
 | Resto (Algolia, Sentry, Resend, etc.) | Según uso | Opcional |
 
 **Importante:** No subas el JSON de la cuenta de servicio a Git. Solo copia los 3 valores (Project ID, Client Email, Private Key) en las variables de entorno.
@@ -84,9 +85,36 @@ Mismas variables públicas de Firebase, Algolia, Sentry, etc. que uses en el por
 
 1. Revisar que la URL de producción cargue (ej. `https://barrio.uy`).  
 2. Probar login con Google (elferdi2024@gmail.com).  
-3. Ir a **Mi dashboard** → comprobar que ves **Panel Creador** y **Activar Plan Pro**.  
-4. Probar **Activar Plan Pro** y que el perfil pase a Pro.  
-5. Entrar a **Panel Creador** (`/creator`) y listar usuarios / asignar plan.
+3. Ir a **Mi propiedades** → comprobar que ves el panel y, si aplica, la tarjeta de upgrade cuando el plan es Base y ya tienes 1 propiedad.
+4. Ir a **Publicar** (`/publish`) y verificar límites por plan (Base: 1, Pro: 10, Premium: ilimitado) y la tarjeta “Ver planes” al alcanzar el límite.
+5. Entrar a **Panel Creador** (`/creator`) y listar usuarios / asignar plan (free, pro, premium, elite).
+6. Planes y precios: [docs/PLANES_FUENTE_VERDAD.md](PLANES_FUENTE_VERDAD.md).
+
+---
+
+## 3.1. Pricing y oferta Fundadores (portal)
+
+Resumen completo de la implementación: [PRICING_FUNDADORES_IMPLEMENTACION.md](PRICING_FUNDADORES_IMPLEMENTACION.md).
+
+Para que el banner de cupos Fundadores y la pricing page funcionen en producción:
+
+1. **Firestore: documento `config/launch`**  
+   Desde la raíz de `apps/portal`, con `.env.local` que tenga las variables de Firebase Admin (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`):
+   ```bash
+   npm run founder:init
+   ```
+   Esto crea o actualiza `config/launch` con `founderSlotsUsed: 0`. Para incrementar el contador cuando un usuario se suscriba como Fundador, tu webhook de Mercado Pago o tu flujo post-pago debe hacer un incremento en ese documento (solo admin o backend).
+
+2. **Vercel: variable de entorno**  
+   En el proyecto del portal, añadí:
+   - `NEXT_PUBLIC_FOUNDER_MODE` = `active` (muestra banner y precios con −30%).  
+   Valores: `active` | `closed` | `disabled`. Cuando los 30 cupos se agoten, podés cambiar a `closed` o dejar que el banner muestre “cupos agotados” automáticamente.
+
+3. **Mercado Pago (opcional)**  
+   El backend ya aplica 30% de descuento cuando recibe el cupón `FUNDADOR30` en el checkout. Si además querés el cupón visible en el dashboard de MP, creá en Mercado Pago el cupón con código `FUNDADOR30`.
+
+4. **Reglas Firestore**  
+   Las reglas ya incluyen: lectura pública de `config/*` y creación de `corporate_leads` con validación de nombre, email y rango. Escritura en `config` solo para admins.
 
 ---
 
@@ -126,9 +154,15 @@ Si en la URL de Vercel ves una versión antigua (por ejemplo sin "Inmobiliarias"
 
 ---
 
-## 6. Checklist pre-deploy
+## 7. Solución de Problemas (Troubleshooting)
 
-- [ ] Build local OK: `npm run build` (o `build:portal` / `build:inmobiliaria`).  
-- [ ] Variables de entorno de producción configuradas (sobre todo Firebase Admin y CREATOR_EMAILS en portal).  
-- [ ] No hay archivos sensibles (JSON de cuenta de servicio, `.env.local`) en el repositorio.  
-- [ ] `NEXT_PUBLIC_APP_URL` apunta a la URL real de producción.
+Si el build falla en Vercel pero funciona localmente, consulta las guías específicas de errores:
+
+- [Guía de Errores - Portal (Barrio.uy)](../apps/portal/GUIA_ERRORES_DEPLOY.md)
+- [Guía de Errores - Inmobiliaria (MiBarrio.uy)](../apps/inmobiliaria/GUIA_ERRORES_DEPLOY.md)
+
+**Temas frecuentes:**
+- Errores de tipos duplicados (centralizar en `@repo/types`).
+- Mapeo de datos de Algolia (mapeo explícito en `SearchContent.tsx`).
+- Imports con alias `@/` en componentes compartidos (usar rutas relativas).
+- Envolver `useSearchParams` en `Suspense`.

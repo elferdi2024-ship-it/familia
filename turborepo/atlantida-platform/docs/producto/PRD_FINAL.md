@@ -1,7 +1,9 @@
-# PRD — Barrio.uy v11.0
+# PRD — Barrio.uy v11.1
 ### Plataforma Inmobiliaria Premium para Uruguay
 
-**Versión:** 11.0.0 | **Fecha:** 23 de Febrero 2026 | **Estado:** 100% Production Ready (Monetización Portal, SEO & E2E Verified)
+**Versión:** 11.1.0 | **Fecha:** 25 de Febrero 2026 | **Estado:** 100% Production Ready (Monetización Portal, Estrategia FOMO Free→Pro, SEO & E2E Verified)
+
+> **⚠️ Principio de diseño obligatorio:** **Mobile-first es CLAVE.** La experiencia se diseña primero para móvil (pulgar, touch, viewport pequeño). Actualmente **varias capas del diseño están rotas**; toda nueva funcionalidad y las próximas iteraciones deben priorizar vista móvil y reparar layout. Ver [DISEÑO_MOBILE_FIRST.md](../DISEÑO_MOBILE_FIRST.md).
 
 ---
 
@@ -493,6 +495,7 @@ CREADORES DE GANANCIA (Gain Creators)
 - ✅ Integración Stripe (Checkout + Webhooks)
 - ✅ Límites de publicación por plan (Free/Pro/Premium)
 - ✅ Gating de funcionalidades Premium en UI
+- ✅ **Estrategia FOMO (conversión Free→Pro):** badge en feed (Estándar/Destacado), teaser de leads, salud de la propiedad, penalización por antigüedad en ranking, pricing “Lo que te perdés”, oferta 24h; configurable por `NEXT_PUBLIC_FOMO_MODE`. Ver [ESTRATEGIA_FOMO_BARRIO.md](../ESTRATEGIA_FOMO_BARRIO.md) y [CAMBIOS_ESTRATEGIA_FOMO.md](../CAMBIOS_ESTRATEGIA_FOMO.md).
 
 **Optimización:**
 - 🔜 Push notifications
@@ -815,7 +818,7 @@ interface FeedPost {
 
 ### 7.1 Principios de Diseño
 
-#### 1. Mobile-First Real
+#### 1. Mobile-First Real **(OBLIGATORIO — CLAVE DEL PRODUCTO)**
 ```
 ❌ NO: "Responsive design adaptado desde desktop"
 ✅ SÍ: "Diseñado para pulgar, escalado a desktop"
@@ -827,6 +830,7 @@ Implementación:
 - Forms con keyboard apropiado
 - Touch targets espaciados
 ```
+**Estado conocido:** Varias capas del diseño están actualmente rotas en móvil. Toda implementación o corrección debe validarse primero en viewport móvil (375px–428px) y priorizar la reparación de layout. Ver [DISEÑO_MOBILE_FIRST.md](../DISEÑO_MOBILE_FIRST.md).
 
 #### 2. Speed is a Feature
 ```
@@ -1438,6 +1442,12 @@ Components UI: >60%
 - PwC - "Emerging Trends in Real Estate"
 - Statista - "Online Real Estate Market in Latin America"
 
+**Documentación interna (Barrio.uy):**
+- [PLANES_FUENTE_VERDAD.md](../PLANES_FUENTE_VERDAD.md) — Límites, precios e inclusiones Base/Pro/Premium
+- [REVISION_PLANES_BARRIO.md](../REVISION_PLANES_BARRIO.md) — Verificación y cambios por iteración
+- [ESTRATEGIA_FOMO_BARRIO.md](../ESTRATEGIA_FOMO_BARRIO.md) — Tácticas de conversión Free→Pro y configuración
+- [CAMBIOS_ESTRATEGIA_FOMO.md](../CAMBIOS_ESTRATEGIA_FOMO.md) — Detalle de implementación FOMO (portal e inmobiliaria)
+
 ---
 
 ### 15.3 Stack Alternativo Evaluado
@@ -1484,6 +1494,7 @@ Durante la planificación, se evaluaron las siguientes alternativas:
 | 3.0 | Ene 2026 | Roadmap 2026 y plan de monetización | [Autor] |
 | 4.0 | Feb 2026 | PRD completo y detallado | Claude + Founders |
 | **8.0** | **23 Feb 2026** | **100% Production Ready: Monetización (Stripe), SEO Avanzado, Algolia Sync Automatizado y Testeo E2E (58.3% coverage).** | **Antigravity AI** |
+| **11.1** | **25 Feb 2026** | **Estrategia FOMO: conversión Free→Pro (badge, teaser leads, salud propiedad, penalización ranking, pricing “lo que te perdés”, oferta 24h). Config en @repo/lib; docs ESTRATEGIA_FOMO_BARRIO, CAMBIOS_ESTRATEGIA_FOMO.** | **Equipo producto** |
 
 ---
 
@@ -1526,4 +1537,4 @@ Combinamos **UX de clase mundial** (Funda.nl benchmark) + **datos relevantes de 
 
 **🏠 Barrio.uy - Encontrá tu próximo hogar.**
 
-*Versión 4.0.0 | Febrero 2026 | Estado: Producción + Roadmap 2026*
+*Versión 11.1.0 | Febrero 2026 | Estado: Producción + Estrategia FOMO + Roadmap 2026*

@@ -12,9 +12,25 @@ import { PublishStep1Schema } from "@repo/lib/validations"
 import { toast } from "sonner"
 import { trackEvent } from "@repo/lib/tracking"
 import { LocationPicker } from "@/components/publish/LocationPicker"
+import { UpgradeOffer } from "@/components/publish/UpgradeOffer"
+import { db } from "@repo/lib/firebase"
+import { collection, query, where, getCountFromServer, getDoc, doc } from "firebase/firestore"
+import { LockKeyhole, LogIn, ArrowRight, Home, Tag, Type, MapPin, Search, ChevronDown, Info, ArrowLeft, Sparkles } from "lucide-react"
+
+const PLAN_LIMITS: Record<string, number> = {
+    free: 1,
+    pro: 10,
+    elite: 999,
+    premium: 999
+}
 
 function PublishPageContent() {
     const { data, updateData, startEditing, isEditing } = usePublish()
+    const publishFlowSteps = [
+        { title: "Información básica", done: true },
+        { title: "Detalles", done: false },
+        { title: "Revisión y publicar", done: false },
+    ]
 
     const cities = useMemo(() => {
         if (!data.department) return []
@@ -33,6 +49,8 @@ function PublishPageContent() {
     const editId = searchParams.get("edit")
     const { user, loading } = useAuth()
     const [showAuthModal, setShowAuthModal] = useState(false)
+    const [propertyCount, setPropertyCount] = useState<number | null>(null)
+    const [userPlan, setUserPlan] = useState<string>('free')
 
     useEffect(() => {
         if (editId) {
@@ -40,7 +58,25 @@ function PublishPageContent() {
         }
     }, [editId])
 
-    const handleNext = () => {
+    useEffect(() => {
+        if (!user || !db || isEditing) return
+        const loadPlanAndCount = async () => {
+            try {
+                const userSnap = await getDoc(doc(db!, "users", user.uid))
+                const plan = (userSnap.data()?.plan as string) || 'free'
+                setUserPlan(plan)
+                if (plan !== 'free') return
+                const q = query(collection(db!, "properties"), where("userId", "==", user.uid))
+                const snapshot = await getCountFromServer(q)
+                setPropertyCount(snapshot.data().count)
+            } catch {
+                setPropertyCount(null)
+            }
+        }
+        loadPlanAndCount()
+    }, [user?.uid, isEditing])
+
+    const handleNext = async () => {
         const parsed = PublishStep1Schema.safeParse({
             title: data.title,
             address: data.address,
@@ -54,6 +90,22 @@ function PublishPageContent() {
             const first = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
             toast.error(first || "Completa los campos obligatorios")
             return
+        }
+        if (!isEditing && user && db) {
+            try {
+                const q = query(collection(db!, "properties"), where("userId", "==", user.uid))
+                const snapshot = await getCountFromServer(q)
+                const count = snapshot.data().count
+                const limit = PLAN_LIMITS[userPlan] ?? PLAN_LIMITS.free
+                if (count >= limit) {
+                    toast.error(`Has alcanzado el límite de tu plan (${limit} propiedades). Mejora tu plan para publicar más.`, {
+                        action: { label: "Ver Planes", onClick: () => router.push("/publish/pricing") }
+                    })
+                    return
+                }
+            } catch (e) {
+                console.error("Error checking property count:", e)
+            }
         }
         trackEvent.publishStep1Completed()
         router.push("/publish/details")
@@ -71,21 +123,21 @@ function PublishPageContent() {
         return (
             <div className="min-h-screen pt-32 pb-20 px-6 flex flex-col items-center justify-center font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
                 <div className="max-w-md w-full text-center space-y-6">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span className="material-icons text-4xl text-primary">lock_person</span>
+                    <div className="w-20 h-20 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
+                        <LockKeyhole className="w-8 h-8 text-primary" />
                     </div>
-                    <h1 className="text-3xl font-extrabold mb-2">Ingresa para publicar</h1>
+                    <h1 className="text-3xl font-semibold mb-2">Ingresa para publicar</h1>
                     <p className="text-slate-500 dark:text-slate-400 text-lg mb-8">
                         Para publicar una propiedad en Barrio.uy necesitas tener una cuenta. Es gratis y te tomará menos de 1 minuto.
                     </p>
                     <button
                         onClick={() => setShowAuthModal(true)}
-                        className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+                        className="w-full bg-primary text-white py-4 rounded-lg font-semibold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                     >
-                        <span className="material-icons">login</span>
+                        <LogIn className="w-4 h-4" />
                         Iniciar Sesión / Registrarse
                     </button>
-                    <Link href="/" className="block text-slate-400 hover:text-primary font-bold text-sm mt-8 transition-colors">
+                    <Link href="/" className="block text-slate-400 hover:text-primary font-semibold text-sm mt-8 transition-colors">
                         Volver al inicio
                     </Link>
                 </div>
@@ -108,48 +160,95 @@ function PublishPageContent() {
                                 </h1>
                                 <p className="text-slate-500 dark:text-slate-400">Cuéntanos sobre el tipo de propiedad y su ubicación.</p>
                             </div>
-                            <span className="text-sm font-bold text-primary px-4 py-2 bg-primary/10 rounded-full">Paso 1 de 3</span>
+                            <span className="text-sm font-semibold text-primary px-4 py-2 bg-primary/10 rounded-md">Paso 1 de 3</span>
                         </div>
                         <div className="h-3 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                             <div className="h-full bg-primary w-1/3 rounded-full"></div>
                         </div>
+                        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            {publishFlowSteps.map((step, index) => (
+                                <div
+                                    key={step.title}
+                                    className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${step.done
+                                        ? "border-primary/30 bg-primary/5"
+                                        : "border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70"
+                                        }`}
+                                >
+                                    <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${step.done ? "bg-primary text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
+                                        }`}>
+                                        {index + 1}
+                                    </span>
+                                    <span className={`text-sm font-medium ${step.done ? "text-primary" : "text-slate-500 dark:text-slate-400"}`}>
+                                        {step.title}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+
+                    {!isEditing && userPlan === 'free' && propertyCount !== null && propertyCount >= 1 && user && (
+                        <>
+                            <UpgradeOffer userId={user.uid} />
+                            <div className="mb-8 p-6 rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                    <div className="flex items-start gap-4">
+                                        <Sparkles className="w-7 h-7 text-primary" />
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Has alcanzado el límite del Plan Base</h3>
+                                            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Desbloquea más propiedades y mayor visibilidad con Plan Pro o Premium.</p>
+                                        </div>
+                                    </div>
+                                    <Link
+                                        href="/publish/pricing"
+                                        className="shrink-0 inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                                    >
+                                        Ver planes
+                                        <ArrowRight className="w-4 h-4" />
+                                    </Link>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
                     {/* FORM CARD */}
                     <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 rounded-lg p-8 md:p-12">
                         <section className="space-y-12">
                             {/* PROPERTY & OPERATION TYPE */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="md:col-span-2">
+                                    <p className="text-sm font-semibold text-primary tracking-wide">Paso 1 · Define el tipo y la operación</p>
+                                </div>
                                 <div className="space-y-4">
-                                    <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                                        <span className="material-icons text-lg">home</span>
+                                    <label className="text-sm font-semibold text-slate-500 flex items-center gap-2">
+                                        <Home className="w-4 h-4" />
                                         Tipo de Propiedad
                                     </label>
                                     <div className="relative group">
                                         <select
                                             value={data.type}
                                             onChange={(e) => updateData({ type: e.target.value })}
-                                            className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer outline-none"
+                                            className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg appearance-none font-medium cursor-pointer outline-none"
                                         >
                                             {PROPERTY_TYPES.map(type => (
                                                 <option key={type} value={type}>{type}</option>
                                             ))}
                                         </select>
                                         <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <span className="material-icons text-slate-400 group-hover:text-primary transition-colors">expand_more</span>
+                                            <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors" />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="space-y-4">
-                                    <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                                        <span className="material-icons text-lg">sell</span>
+                                    <label className="text-sm font-semibold text-slate-500 flex items-center gap-2">
+                                        <Tag className="w-4 h-4" />
                                         Operación
                                     </label>
-                                    <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-full h-16">
+                                    <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-lg h-16">
                                         {OPERATIONS.map(op => (
                                             <button
                                                 key={op}
                                                 onClick={() => updateData({ operation: op })}
-                                                className={`flex-1 rounded-full font-bold transition-all flex items-center justify-center ${data.operation === op ? "bg-primary text-white" : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                                className={`flex-1 rounded-md font-semibold transition-all flex items-center justify-center ${data.operation === op ? "bg-primary text-white" : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
                                                     }`}
                                             >
                                                 {op}
@@ -160,12 +259,13 @@ function PublishPageContent() {
                             </div>
                             {/* TITLE */}
                             <div className="space-y-4">
-                                <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                                    <span className="material-icons text-lg">title</span>
+                                <p className="text-sm font-semibold text-primary tracking-wide">Paso 2 · Crea un título atractivo</p>
+                                <label className="text-sm font-semibold text-slate-500 flex items-center gap-2">
+                                    <Type className="w-4 h-4" />
                                     Título de la publicación
                                 </label>
                                 <input
-                                    className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
+                                    className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg font-medium"
                                     placeholder="Ej: Espectacular apartamento sobre la rambla"
                                     type="text"
                                     value={data.title}
@@ -175,15 +275,16 @@ function PublishPageContent() {
                             </div>
                             {/* LOCATION SEARCH */}
                             <div className="space-y-6">
+                                <p className="text-sm font-semibold text-primary tracking-wide">Paso 3 · Marca la ubicación exacta</p>
                                 <div className="space-y-4">
-                                    <label className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                                        <span className="material-icons text-lg">location_on</span>
+                                    <label className="text-sm font-semibold text-slate-500 flex items-center gap-2">
+                                        <MapPin className="w-4 h-4" />
                                         Ubicación de la propiedad
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-6 top-1/2 -translate-y-1/2 material-icons text-primary">search</span>
+                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
                                         <input
-                                            className="w-full h-16 pl-14 pr-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
+                                            className="w-full h-16 pl-14 pr-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg font-medium"
                                             placeholder="Calle, número, barrio o ciudad..."
                                             type="text"
                                             value={data.address}
@@ -234,18 +335,18 @@ function PublishPageContent() {
                                         />
                                     </div>
                                     <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                                        <span className="material-icons text-primary text-base">info</span>
+                                        <Info className="w-4 h-4 text-primary" />
                                         Arrastra el pin para ubicar exactamente la propiedad.
                                     </p>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
                                     <div className="space-y-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Departamento</label>
+                                        <label className="text-xs font-semibold text-slate-400 ml-4">Departamento</label>
                                         <div className="relative group">
                                             <select
                                                 value={data.department}
                                                 onChange={(e) => updateData({ department: e.target.value, city: "", neighborhood: "" })}
-                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer"
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg appearance-none font-medium cursor-pointer"
                                             >
                                                 <option value="">Selecciona...</option>
                                                 {Object.keys(geoData).map(dept => (
@@ -253,18 +354,18 @@ function PublishPageContent() {
                                                 ))}
                                             </select>
                                             <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                                <ChevronDown className="w-4 h-4 text-slate-400" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Localidad / Ciudad</label>
+                                        <label className="text-xs font-semibold text-slate-400 ml-4">Localidad / Ciudad</label>
                                         <div className="relative group">
                                             <select
                                                 disabled={!data.department}
                                                 value={data.city}
                                                 onChange={(e) => updateData({ city: e.target.value, neighborhood: "" })}
-                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer disabled:opacity-50"
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg appearance-none font-medium cursor-pointer disabled:opacity-50"
                                             >
                                                 <option value="">Selecciona...</option>
                                                 {cities.map(city => (
@@ -272,18 +373,18 @@ function PublishPageContent() {
                                                 ))}
                                             </select>
                                             <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                                <ChevronDown className="w-4 h-4 text-slate-400" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-4">Barrio</label>
+                                        <label className="text-xs font-semibold text-slate-400 ml-4">Barrio</label>
                                         <div className="relative group">
                                             <select
                                                 disabled={!data.city}
                                                 value={data.neighborhood}
                                                 onChange={(e) => updateData({ neighborhood: e.target.value })}
-                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full appearance-none font-medium cursor-pointer disabled:opacity-50"
+                                                className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg appearance-none font-medium cursor-pointer disabled:opacity-50"
                                             >
                                                 <option value="">Selecciona...</option>
                                                 {neighborhoods.map(nb => (
@@ -292,16 +393,16 @@ function PublishPageContent() {
                                                 <option value="Otro">Otro...</option>
                                             </select>
                                             <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                                                <span className="material-icons text-slate-400 text-sm">expand_more</span>
+                                                <ChevronDown className="w-4 h-4 text-slate-400" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 {data.neighborhood === "Otro" && (
                                     <div className="space-y-4 pt-4">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-6">Especificar Barrio</label>
+                                        <label className="text-xs font-semibold text-slate-400 ml-6">Especificar Barrio</label>
                                         <input
-                                            className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-full font-medium"
+                                            className="w-full h-16 px-6 bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg font-medium"
                                             placeholder="Escribe el nombre del barrio"
                                             type="text"
                                             onChange={(e) => updateData({ neighborhood: e.target.value })}
@@ -312,16 +413,16 @@ function PublishPageContent() {
                         </section>
                         {/* NAVIGATION BUTTONS */}
                         <div className="mt-12 md:mt-16 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between pt-6 md:pt-8 border-t border-slate-100 dark:border-slate-800 gap-3">
-                            <Link href="/my-properties" className="flex items-center gap-2 text-slate-500 font-bold hover:text-primary transition-colors px-6">
-                                <span className="material-icons">arrow_back</span>
+                            <Link href="/my-properties" className="flex items-center gap-2 text-slate-500 font-semibold hover:text-primary transition-colors px-6">
+                                <ArrowLeft className="w-4 h-4" />
                                 Volver
                             </Link>
                             <button
                                 onClick={handleNext}
-                                className="bg-primary text-white h-14 md:h-16 px-8 md:px-12 rounded-full font-bold text-base md:text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                                className="bg-primary text-white h-14 md:h-16 px-8 md:px-12 rounded-lg font-semibold text-base md:text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                             >
                                 Siguiente
-                                <span className="material-icons">arrow_forward</span>
+                                <ArrowRight className="w-4 h-4" />
                             </button>
                         </div>
                     </div>

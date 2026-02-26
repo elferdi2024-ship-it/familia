@@ -115,10 +115,13 @@ export default function PublishReviewPage() {
 
         setIsPublishing(true)
         try {
-            const payload = { ...data }
+            const payload = { ...data } as Record<string, unknown>
             if (LAND_TYPES.includes(data.type)) {
                 payload.bedrooms = 0
                 payload.bathrooms = 0
+            }
+            if (data.latitude != null && data.longitude != null) {
+                payload.geolocation = { lat: data.latitude, lng: data.longitude }
             }
 
             if (isEditing && editingId) {
@@ -132,10 +135,12 @@ export default function PublishReviewPage() {
             } else {
                 // CREATE
                 const propertyRef = collection(db, "properties")
-                const title = payload.description?.slice(0, 200) || `${payload.type} ${payload.operation} en ${payload.neighborhood || payload.address}`
+                const desc = typeof payload.description === "string" ? payload.description.slice(0, 200) : ""
+                const fallback = `${String(payload.type ?? "")} ${String(payload.operation ?? "")} en ${String(payload.neighborhood ?? payload.address ?? "")}`
+                const title = desc || fallback
                 const newProperty = {
                     ...payload,
-                    title: title.length >= 10 ? title : `${payload.type} ${payload.operation} en ${payload.neighborhood || payload.address}`,
+                    title: title.length >= 10 ? title : fallback,
                     userId: user.uid,
                     agentName: user.displayName || "Usuario de Atlantida Group",
                     agentPhone: payload.agentPhone,
@@ -144,7 +149,7 @@ export default function PublishReviewPage() {
                     status: "active", // Published immediately
                     featured: false,
                     views: 0,
-                    slug: `${payload.type.toLowerCase()}-${(payload.neighborhood || "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
+                    slug: `${String(payload.type ?? "").toLowerCase()}-${String(payload.neighborhood ?? "prop").toLowerCase().replace(/\s+/g, "-")}-${Date.now().toString().slice(-4)}`,
                 }
                 await addDoc(propertyRef, newProperty)
             }

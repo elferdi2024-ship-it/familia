@@ -29,6 +29,13 @@ export default function TerminosPage() {
                     </section>
 
                     <section>
+                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">0. Propiedad intelectual del software</h2>
+                        <p>
+                            El software, código fuente, diseño y tecnología de la plataforma son propiedad exclusiva de <strong>Atlantida Platform</strong>. Queda prohibida la copia, distribución, ingeniería inversa o uso no autorizado del código. Para más detalles, consulta nuestro <a href="/aviso-legal" className="text-primary font-semibold hover:underline">Aviso Legal</a>.
+                        </p>
+                    </section>
+
+                    <section>
                         <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">1. Naturaleza del Servicio</h2>
                         <p>
                             Barrio.uy es una plataforma tecnológica que <strong>actúa exclusivamente como un espacio virtual intermediario</strong>. Nuestro servicio conecta a usuarios interesados en inmuebles con agentes inmobiliarios, desarrolladores y propietarios independientes que publican sus anuncios.

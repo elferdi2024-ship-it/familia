@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { Scale } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'Términos y Condiciones | MiBarrio.uy',
-    description: 'Condiciones de uso para agentes inmobiliarios y desarrolladores en MiBarrio.uy.',
+    title: 'Términos y Condiciones | Barrio.uy',
+    description: 'Condiciones de uso para agentes inmobiliarios y desarrolladores en Barrio.uy.',
 }
 
 export default function TerminosPage() {
@@ -14,7 +14,7 @@ export default function TerminosPage() {
                     <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center">
                         <Scale className="w-6 h-6 text-amber-500" />
                     </div>
-                    <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Términos y Condiciones (Agentes)</h1>
+                    <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Términos y Condiciones</h1>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 md:p-12 shadow-sm border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 space-y-8 leading-relaxed">
@@ -24,7 +24,14 @@ export default function TerminosPage() {
                             Última actualización: <strong>{new Date().toLocaleDateString('es-UY')}</strong>
                         </p>
                         <p className="mt-4">
-                            Estos Términos y Condiciones regulan el uso de la plataforma <strong>MiBarrio.uy</strong> para agentes inmobiliarios, desarrolladores y propietarios independientes (en adelante, "el Anunciante").
+                            Estos Términos y Condiciones regulan el uso de la plataforma <strong>Barrio.uy</strong> para agentes inmobiliarios, desarrolladores y propietarios independientes (en adelante, &quot;el Anunciante&quot;).
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">0. Propiedad intelectual del software</h2>
+                        <p>
+                            El software, código fuente, diseño y tecnología de la plataforma son propiedad exclusiva de <strong>Atlantida Platform</strong>. Queda prohibida la copia, distribución, ingeniería inversa o uso no autorizado del código. Para más detalles, consulta nuestro <a href="/aviso-legal" className="text-primary font-semibold hover:underline">Aviso Legal</a>.
                         </p>
                     </section>
 
@@ -34,7 +41,7 @@ export default function TerminosPage() {
                             El Anunciante es el <strong>único responsable</strong> por la veracidad, exactitud y legalidad de las propiedades publicadas en la plataforma, incluyendo precios, áreas, descripciones y el estado de exclusividad.
                         </p>
                         <p className="mt-2 text-rose-600 dark:text-rose-400 font-bold">
-                            Está terminantemente prohibido publicar propiedades que ya hayan sido vendidas o alquiladas con el fin de retener leads ("bait and switch"). MiBarrio.uy se reserva el derecho de suspender o eliminar cuentas que incurran en estas prácticas.
+                            Está terminantemente prohibido publicar propiedades que ya hayan sido vendidas o alquiladas con el fin de retener leads ("bait and switch"). Barrio.uy se reserva el derecho de suspender o eliminar cuentas que incurran en estas prácticas.
                         </p>
                     </section>
 
@@ -44,14 +51,14 @@ export default function TerminosPage() {
                             Al subir fotografías, planos o renders, el Anunciante declara tener los derechos de autor correspondientes u ostentar la autorización expresa del creador de la imagen (Ley N° 17.616).
                         </p>
                         <p className="mt-2 text-rose-600 dark:text-rose-400 font-bold">
-                            MiBarrio.uy no tolerará el "robo" de fotografías con marcas de agua de portales de la competencia y procederá a bajar las publicaciones reportadas.
+                            Barrio.uy no tolerará el "robo" de fotografías con marcas de agua de portales de la competencia y procederá a bajar las publicaciones reportadas.
                         </p>
                     </section>
 
                     <section>
                         <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">3. Ausencia de Comisión Intermediaria</h2>
                         <p>
-                            MiBarrio.uy funciona bajo un modelo de suscripción (Freemium/SaaS) o pago por funcionalidades destacadas. <strong>No cobramos comisiones</strong> generadas por la concreción de ventas o alquileres originadas a través de nuestros leads, ni actuamos como corredor inmobiliario.
+                            Barrio.uy funciona bajo un modelo de suscripción (Freemium/SaaS) o pago por funcionalidades destacadas. <strong>No cobramos comisiones</strong> generadas por la concreción de ventas o alquileres originadas a través de nuestros leads, ni actuamos como corredor inmobiliario.
                         </p>
                     </section>
 

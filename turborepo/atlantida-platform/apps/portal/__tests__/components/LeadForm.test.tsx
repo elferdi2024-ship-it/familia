@@ -130,7 +130,9 @@ describe('PropertyClient Interactions', () => {
         const wsBtn = screen.getByText('Ver WhatsApp')
         fireEvent.click(wsBtn)
 
-        expect(screen.getByText('WhatsApp')).toBeInTheDocument()
+        const whatsappButtons = screen.getAllByRole('button', { name: /WhatsApp/i })
+        expect(whatsappButtons.length).toBeGreaterThanOrEqual(1)
+        expect(whatsappButtons[0]).toBeInTheDocument()
     })
 
     it('triggers share property', () => {

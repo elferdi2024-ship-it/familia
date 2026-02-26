@@ -1,4 +1,4 @@
-import { onDocumentWritten } from 'firebase-functions/v2/firestore';
+import { onDocumentWritten, FirestoreEvent } from 'firebase-functions/v2/firestore';
 import { algoliasearch } from 'algoliasearch';
 
 const client = algoliasearch(
@@ -12,7 +12,7 @@ const PROPERTIES_INDEX = 'properties';
  * ⚡ Real-time Algolia Sychronization
  * Maintains search consistency by mirroring Firestore changes to Algolia.
  */
-export const onPropertyWrite = onDocumentWritten('properties/{propertyId}', async (event) => {
+export const onPropertyWrite = onDocumentWritten('properties/{propertyId}', async (event: FirestoreEvent<any | undefined, { propertyId: string }>) => {
     const { propertyId } = event.params;
     const change = event.data;
 

@@ -1,3 +1,7 @@
+/**
+ * @copyright (c) 2024-2025 Atlantida Platform. Todos los derechos reservados.
+ * Uso, copia o distribución no autorizados prohibidos.
+ */
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";

@@ -69,7 +69,7 @@ Cuando un visitante use Barrio.uy y presione el botón "Consultar" en tu anuncio
 
 ## 🗣️ 5. Pasos de Evaluación y Feedback (Tu Tarea)
 
-Como Beta Tester y para garantizar tus beneficios (Plan Premium gratuito), te pedimos completar el siguiente circuito en esta Fase 1:
+Como Beta Tester y para garantizar tus beneficios (Plan Premium gratuito), te pedimos completar el siguiente circuito en esta Fase 1. *Referencia de planes:* [PLANES_FUENTE_VERDAD.md](../PLANES_FUENTE_VERDAD.md).
 
 - [ ] Carga **al menos 5 propiedades reales** siguiendo los 4 pasos del Wizard.
 - [ ] Realiza una búsqueda simulando ser un comprador. Aplica los filtros (Ej. "Filtro Vivienda Promovida" o "ANDA"). ¿Sentiste que fue rápido?

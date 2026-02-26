@@ -30,7 +30,13 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — NUNCA versionar (API keys, secrets). Crítico para seguridad.
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.vercel
 .env*
 
 # vercel

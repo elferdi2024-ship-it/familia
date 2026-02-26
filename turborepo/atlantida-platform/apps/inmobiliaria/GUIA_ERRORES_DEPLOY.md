@@ -54,14 +54,25 @@ matcher: [
 ```
 También es necesario usar `suppressHydrationWarning` en la etiqueta `<html>` si se usa `next-themes`.
 
-## 6. Build Failure: Module not found (@/components/ui/...)
-**Síntoma:** Error 1 en build de Vercel (o local `turbo run build`). Logs indican `Module not found: Can't resolve '@/components/ui/badge'`, `dialog`, `table` o `@/lib/firebase`.
-**Causa:** En un monorepo con Turborepo, la aplicación intentaba importar estos archivos desde su propio directorio (`apps/inmobiliaria/components/ui`), pero estos componentes residen en los paquetes compartidos (`packages/ui` y `packages/lib`).
+6. Build Failure: Module not found (@/components/ui/...)
+**Síntoma:** Error 1 en build de Vercel (o local `turbo run build`). Logs indican `Module not found: Can't resolve '@/components/ui/badge'`.
+**Causa:** Importar componentes compartidos usando el alias local `@/` en lugar del paquete compartido `@repo/ui`.
+**Solución:** Cambiar imports a `@repo/ui/...` o `@repo/lib/...`.
+
+## 7. Build Failure: Tipos Duplicados o Inconsistentes (Poi, etc.)
+**Síntoma:** Error `Module declarations cannot be nested` o errores de tipo en archivos `"use server"` que fallan en Vercel pero no en local.
+**Causa:** Definir la misma interfaz (ej. `Poi`) en varios archivos de acciones locales.
+**Solución:** Centralizar todos los tipos de negocio en el paquete comercial `@repo/types`.
+
+## 8. Algolia: Error de Mapeo de Propiedades
+**Síntoma:** Error de TypeScript al mapear resultados de búsqueda de Algolia a la interfaz `Property`.
+**Causa:** Inconsistencia entre los datos indexados en Algolia y la interfaz estricta de la aplicación.
 **Solución:**
-1. No crear los archivos localmente.
-2. Cambiar las importaciones para usar los paquetes del repositorio:
-   - De: `import { Badge } from "@/components/ui/badge"`
-   - A: `import { Badge } from "@repo/ui/badge"`
-   - De: `import { db } from "@/lib/firebase"`
-   - A: `import { db } from "@repo/lib/firebase"`
-3. Asegurar que `@repo/ui` y `@repo/lib` estén en `dependencies` del `package.json` de la app.
+1. Mapear cada campo explícitamente en `SearchContent.tsx`.
+2. Utilizar `as unknown as Property` para el casteo final tras asegurar valores por defecto.
+3. Usar `Number()` para campos que deban ser numéricos.
+
+## 9. Error de Importación en CI: "Module not found" con Alias `@/`
+**Síntoma:** Vercel no encuentra un módulo importado con `@/` que en local funciona.
+**Causa:** Rutas circulares o uso de alias en componentes que se comparten entre aplicaciones.
+**Solución:** Usar rutas relativas adecuadas o mover la lógica a paquetes `@repo`.

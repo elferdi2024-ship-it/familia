@@ -3,6 +3,8 @@ import PropertyClient from "./PropertyClient"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProperty } from "@/lib/properties"
+import { getNearbyPlaces } from "@/actions/get-nearby-places"
+import { getMarketIntelligence } from "@/lib/analytics"
 import { PropertyBreadcrumb } from "@/components/BreadcrumbSchema"
 import { PropertySchema } from "@/components/PropertySchema"
 
@@ -10,7 +12,7 @@ import { PropertySchema } from "@/components/PropertySchema"
 // Cached on Vercel CDN for fast loads (~200ms vs ~2-3s)
 export const revalidate = 3600
 
-export default async function PropertyPage({ params }: { params: any }) {
+export default async function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params
     const id = resolvedParams?.id
 
@@ -63,6 +65,12 @@ export default async function PropertyPage({ params }: { params: any }) {
         )
     }
 
+    const nearbyPlaces = property.geolocation
+        ? await getNearbyPlaces(property.geolocation.lat, property.geolocation.lng)
+        : []
+
+    const marketData = await getMarketIntelligence(property)
+
     return (
         <>
             <PropertyBreadcrumb
@@ -74,12 +82,14 @@ export default async function PropertyPage({ params }: { params: any }) {
             <PropertyClient
                 initialProperty={property}
                 initialAgentInfo={agentInfo}
+                initialNearbyPlaces={nearbyPlaces}
+                initialMarketData={marketData}
             />
         </>
     )
 }
 
-export async function generateMetadata({ params }: { params: any }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const { property } = await getProperty(id)
 

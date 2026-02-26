@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { db } from "@repo/lib/firebase"
 import { collection, getDocs, limit, query } from 'firebase/firestore'
 import { POSTS } from '@/data/posts'
+import { getAllNeighborhoods } from '@/lib/neighborhoods'
 
 const baseUrl = 'https://familia-theta.vercel.app'
 
@@ -62,17 +63,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
 
     // SEO neighborhood pages
-    for (const barrio of BARRIOS_MONTEVIDEO) {
-        if (!barrio) continue
+    const neighborhoods = getAllNeighborhoods()
+    for (const n of neighborhoods) {
+        entries.push({
+            url: `${baseUrl}/barrio/${n.slug}`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        })
+
+        // Mantener compatibilidad con las rutas de comprar/alquilar si el usuario las usa
         entries.push(
             {
-                url: `${baseUrl}/comprar/${barrio.toLowerCase()}`,
+                url: `${baseUrl}/comprar/${n.slug}`,
                 lastModified: now,
                 changeFrequency: 'daily',
                 priority: 0.7,
             },
             {
-                url: `${baseUrl}/alquilar/${barrio.toLowerCase()}`,
+                url: `${baseUrl}/alquilar/${n.slug}`,
                 lastModified: now,
                 changeFrequency: 'daily',
                 priority: 0.7,

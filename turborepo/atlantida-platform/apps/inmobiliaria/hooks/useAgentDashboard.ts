@@ -57,8 +57,15 @@ export function useAgentDashboard() {
             } as Lead))
 
             leadsData.sort((a, b) => {
-                const dateA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt).getTime()
-                const dateB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt).getTime()
+                const getMs = (createdAt: any) => {
+                    if (!createdAt) return 0
+                    if (typeof createdAt === 'object' && 'seconds' in createdAt) {
+                        return (createdAt.seconds as number) * 1000
+                    }
+                    return new Date(createdAt as string).getTime()
+                }
+                const dateA = getMs(a.createdAt)
+                const dateB = getMs(b.createdAt)
                 return dateB - dateA
             })
             setLeads(leadsData)

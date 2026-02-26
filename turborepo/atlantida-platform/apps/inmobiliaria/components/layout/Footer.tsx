@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Facebook, Instagram, AtSign, Send } from "lucide-react"
 
 export function Footer() {
     return (
@@ -13,20 +14,20 @@ export function Footer() {
                             MiBarrio.uy Soluciones Inmobiliarias. Líderes en el mercado inmobiliario uruguayo. Conectando personas con su lugar ideal.
                         </p>
                         <div className="flex gap-4 mt-8">
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
-                                <span className="material-icons text-xl">facebook</span>
+                            <Link className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
+                                <Facebook className="w-4 h-4" />
                             </Link>
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
-                                <span className="material-icons text-xl">camera_alt</span>
+                            <Link className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
+                                <Instagram className="w-4 h-4" />
                             </Link>
-                            <Link className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
-                                <span className="material-icons text-xl">alternate_email</span>
+                            <Link className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="/" target="_blank">
+                                <AtSign className="w-4 h-4" />
                             </Link>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-xs">Explorar</h4>
+                        <h4 className="font-semibold text-slate-900 dark:text-white mb-6 text-xs">Explorar</h4>
                         <ul className="space-y-4 text-sm text-slate-500 font-medium">
                             <li><Link className="hover:text-primary transition-colors" href="/search">Venta</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="/search">Alquiler</Link></li>
@@ -36,14 +37,14 @@ export function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-xs">Empresa</h4>
+                        <h4 className="font-semibold text-slate-900 dark:text-white mb-6 text-xs">Empresa</h4>
                         <ul className="space-y-4 text-sm text-slate-500 font-medium">
                             <li><Link className="hover:text-primary transition-colors" href="/nosotros">Sobre Nosotros</Link></li>
                             <li><Link className="hover:text-primary transition-colors" href="/#contacto">Contacto</Link></li>
                             <li>
                                 <Link className="hover:text-primary transition-colors flex items-center gap-2" href="/blog">
                                     Blog Inmobiliario
-                                    <span className="px-1.5 py-0.5 bg-primary text-white text-[8px] font-black rounded-md animate-pulse">NUEVO</span>
+                                    <span className="px-1.5 py-0.5 bg-primary text-white text-[8px] font-semibold rounded-md animate-pulse">NUEVO</span>
                                 </Link>
                             </li>
                             <li><Link className="hover:text-primary transition-colors" href="/invertir">Invertir</Link></li>
@@ -51,12 +52,12 @@ export function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-xs">Newsletter</h4>
+                        <h4 className="font-semibold text-slate-900 dark:text-white mb-6 text-xs">Newsletter</h4>
                         <p className="text-sm text-slate-500 font-medium mb-6">Recibe las mejores ofertas y tendencias del mercado en tu email.</p>
                         <div className="flex gap-2">
                             <input className="bg-primary/5 border-none rounded-xl w-full text-sm font-medium focus:ring-1 focus:ring-primary px-4" placeholder="Tu email" type="email" />
-                            <button className="bg-primary text-white w-12 h-12 rounded-xl flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-primary/20">
-                                <span className="material-icons text-sm">send</span>
+                            <button className="bg-primary text-white w-12 h-12 rounded-lg flex items-center justify-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20">
+                                <Send className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
@@ -64,16 +65,17 @@ export function Footer() {
 
                 <div className="pt-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex flex-col items-center md:items-start gap-1">
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <p className="text-[10px] font-semibold text-slate-400">
                             © {new Date().getFullYear()} MIBARRIO.UY SOLUCIONES INMOBILIARIAS - TODOS LOS DERECHOS RESERVADOS
                         </p>
-                        <p className="text-[9px] font-bold text-slate-400/60 uppercase tracking-tighter">
+                        <p className="text-[9px] font-semibold text-slate-400/60">
                             Desarrollado con <span className="text-red-500/50">❤️</span> por <span className="text-primary/60">Facundo Fernández</span>
                         </p>
                     </div>
-                    <div className="flex gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <div className="flex gap-6 text-[10px] font-semibold text-slate-400">
                         <Link className="hover:text-primary" href="/privacidad">Privacidad</Link>
                         <Link className="hover:text-primary" href="/terminos-y-condiciones">Términos</Link>
+                        <Link className="hover:text-primary" href="/aviso-legal">Aviso Legal</Link>
                         <Link className="hover:text-primary" href="/privacidad">Cookies</Link>
                     </div>
                 </div>

@@ -147,9 +147,9 @@ export default function PublishDetailsPage() {
                             {Object.entries(AMENITIES_BY_CATEGORY).map(([category, items]) => (
                                 <div key={category} className="space-y-4">
                                     <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest px-1">{category}</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                                         {items.map(amenity => (
-                                            <label key={amenity.name} className="flex items-center gap-3 cursor-pointer group">
+                                            <label key={amenity.name} className="flex items-center gap-3 cursor-pointer group min-w-0">
                                                 <input
                                                     type="checkbox"
                                                     checked={data.amenities.includes(amenity.name)}

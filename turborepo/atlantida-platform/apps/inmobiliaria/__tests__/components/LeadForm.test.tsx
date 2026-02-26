@@ -142,7 +142,7 @@ describe('LeadForm inside PropertyClient', () => {
         })
 
         // Success state
-        expect(screen.getByText('¡Consulta Enviada!')).toBeInTheDocument()
+        expect(await screen.findByText(/¡Consulta Enviada!/i)).toBeInTheDocument()
     })
 
     it('submits a visit lead successfully', async () => {
@@ -161,6 +161,6 @@ describe('LeadForm inside PropertyClient', () => {
             expect(addDoc).toHaveBeenCalledTimes(1)
         })
 
-        expect(screen.getByText('¡Consulta Enviada!')).toBeInTheDocument()
+        expect(await screen.findByText(/¡Consulta Enviada!/i)).toBeInTheDocument()
     })
 })

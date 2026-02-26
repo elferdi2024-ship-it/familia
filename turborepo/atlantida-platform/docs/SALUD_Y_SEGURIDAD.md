@@ -1,4 +1,4 @@
-# Salud del sistema y seguridad — Evaluación
+v# Salud del sistema y seguridad — Evaluación
 
 **Fecha:** 24 Febrero 2026  
 **Ámbito:** Estructura de archivos/carpetas, funcionamiento y seguridad (Portal + Inmobiliaria).
